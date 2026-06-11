@@ -1,4 +1,3 @@
-
 # Note - this test must fall at the very end of the features specs
 require 'spec_helper'
 
@@ -73,7 +72,7 @@ describe "testing deletions" do
     expect(versions).to be_empty
   end
 
-  it "deletes a work" do
+  it "deletes a work", js: true do
     work = Work.find_by(title: 'test')
     work_count = Work.all.count
     unless @owner.account_type == "Individual Researcher"
@@ -90,8 +89,11 @@ describe "testing deletions" do
       links.first.click
       page.find('.tabs').click_link('Settings')
       expect(page).to have_content(work.title)
-      expect(page).to have_selector('a', text: 'Delete Work')
-      page.find('a', text: 'Delete Work').click
+      click_link "Danger Zone"
+      accept_confirm do
+        click_link('Delete Work')
+      end
+      expect(page).to have_content("Work deleted successfully")
       # check that each child association has deleted
       del_work_count = Work.all.count
       expect(del_work_count).to eq (work_count - 1)

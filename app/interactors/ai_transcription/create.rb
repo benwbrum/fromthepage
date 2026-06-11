@@ -41,12 +41,17 @@ class AiTranscription::Create < ApplicationInteractor
     check_user_permission
 
     @sanitized_model = sanitize_model
-    @sanitized_prompt = sanitize_prompt
+    @sanitized_prompt = build_prompt
 
     @ai_transcription = find_or_generate_ai_transcription
   end
 
   private
+
+  def build_prompt
+    return sanitize_prompt if @prompt_file.present? || !@collection.field_based
+    AiTranscription::Lib::FieldBasedPromptBuilder.new(collection: @collection).build
+  end
 
   def find_or_generate_ai_transcription
     ai_transcription = @page.ai_transcription

@@ -22,6 +22,7 @@ gem 'mission_control-jobs'
 gem 'aws-sdk-s3', require: false
 gem 'dotenv-rails'
 gem 'dotenv', require: 'dotenv/load'
+gem 'get_process_mem'
 
 # Authentication / Security
 gem 'devise'

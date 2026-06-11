@@ -39,7 +39,7 @@ ruby:
     }
   end
 
-  if user_signed_in?
+  if user_signed_in? && notes_visible?(@collection, current_user)
     tabs << {
       name: t('.versions'),
       selected: 2,

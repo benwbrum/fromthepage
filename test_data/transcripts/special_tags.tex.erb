@@ -1,3 +1,11 @@
+\ifdefined\DocumentMetadata
+\DocumentMetadata{
+lang=en,
+pdfversion=1.7,
+pdfstandard=ua-1,
+pdftitle={Special-Tags-Work},
+}
+\fi
 \documentclass{article}
 
 % Required Packages
@@ -5,7 +13,8 @@
 \usepackage{xltabular}
 \usepackage{booktabs}
 \usepackage[normalem]{ulem}
-\usepackage[bookmarks=true, bookmakrsopen=true, linktoc=all]{hyperref}
+\usepackage[english]{babel}
+\usepackage[bookmarks=true, bookmarksopen=true, linktoc=all, pdflang=en, pdfdisplaydoctitle=true]{hyperref}
 \usepackage{titlesec}
 \usepackage{xcolor}
 \usepackage{pdfcomment}
@@ -25,6 +34,15 @@
 \titleformat{\subsection}[hang]{\large\bfseries}{}{0pt}{}
 \titleformat{\subsubsection}[hang]{\normalsize\bfseries}{}{0pt}{}
 
+%% Set PDF tab order to follow structure (WCAG PDF3)
+\ifdefined\pdfextension
+\pdfextension pagesattr {/Tabs /S}
+\else
+\pdfpagesattr{/Tabs /S}
+\fi
+
+
+\hypersetup{pdftitle={Special-Tags-Work}}
 
 \begin{document}
 
@@ -95,7 +113,7 @@ Col 1 & Col 2 & Col 3 \\
 \\{}
 \sout{\textit{[to be?]}}\\{}
 \\{}
-thither \textsuperscript{\underline{for}}\sout{an many}\textsuperscript{\sout{\textit{[[unclear]]}} many}years\\{}
+thither \textsuperscript{\underline{for}}\sout{an many}\textsuperscript{\sout{\textit{[[unclear][\textbackslash{}unclear]]}} many}years\\{}
 \\{}
 Strike \sout{through} or \sout{s} or \sout{str} for struck through text\\{}
 \\{}
@@ -122,6 +140,8 @@ Catchword \{catchword\} for catchwords\\{}
 \textit{\{page break 1\}}\\{}
 \\{}
 $(\psi_1, \psi_2,  \psi_3) = \vec{\psi}(\vec{x},t) = V^{-1/2}\sum_k \sqrt{\frac{\hbar}{2k}} (\vec{a_k} e^{i \vec{k}\dot\vec{x} - ikt} + c.c.)$
+\\{}
+\\{}
 
 
 \{\{startnewpage\}\}

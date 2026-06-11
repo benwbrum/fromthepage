@@ -30,5 +30,9 @@ FactoryBot.define do
     trait :review_required do
       review_type { :required }
     end
+
+    trait :field_based do
+      field_based { true }
+    end
   end
 end

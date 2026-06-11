@@ -15,6 +15,10 @@ describe DisplayController do
   end
 
   describe '#ai_text' do
+    before do
+      login_as owner
+    end
+
     let!(:page) { pages.first }
     let!(:ai_transcription) { create(:ai_transcription, page: page, source_text: 'AI generated text content', status: :finished) }
 

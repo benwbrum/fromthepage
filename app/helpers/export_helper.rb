@@ -77,102 +77,106 @@ module ExportHelper
     processed
   end
 
-  def write_work_exports(works, out, export_user, bulk_export)
+  def write_work_exports(works, path, bulk_export)
     # owner-level exports
     if bulk_export.owner_mailing_list
-      export_owner_mailing_list_csv(out: out, owner: export_user)
+      export_owner_mailing_list_csv(path: path, owner: bulk_export.user)
     end
 
     if bulk_export.owner_detailed_activity
-      export_owner_detailed_activity_csv(out: out, owner: export_user, report_arguments: bulk_export.report_arguments)
+      export_owner_detailed_activity_csv(path: path, owner: bulk_export.user, report_arguments: bulk_export.report_arguments)
     end
 
     # admin-level exports
     if bulk_export.admin_searches
-      export_admin_searches_csv(out: out, report_arguments: bulk_export.report_arguments)
+      export_admin_searches_csv(path: path, report_arguments: bulk_export.report_arguments)
     end
 
     # collection-level exports
     if bulk_export.collection_activity
-      export_collection_activity_csv(out: out, collection: bulk_export.collection, report_arguments: bulk_export.report_arguments)
+      export_collection_activity_csv(path: path, collection: bulk_export.collection, report_arguments: bulk_export.report_arguments)
     end
 
     if bulk_export.collection_contributors
-      export_collection_contributors_csv(out: out, collection: bulk_export.collection, report_arguments: bulk_export.report_arguments)
+      export_collection_contributors_csv(path: path, collection: bulk_export.collection, report_arguments: bulk_export.report_arguments)
     end
 
     if bulk_export.subject_csv_collection
-      export_subject_csv(out: out, collection: bulk_export.collection, work: works)
+      export_subject_csv(path: path, collection: bulk_export.collection, work: works)
     end
 
     if bulk_export.subject_details_csv_collection
-      export_subject_details_csv(out: out, collection: bulk_export.collection)
+      export_subject_details_csv(path: path, collection: bulk_export.collection)
     end
 
     if bulk_export.table_csv_collection
-      export_table_csv_collection(out: out, collection: bulk_export.collection)
+      export_table_csv_collection(path: path, collection: bulk_export.collection)
     end
 
     if bulk_export.work_metadata_csv
-      export_work_metadata_csv(out: out, collection: bulk_export.collection)
+      export_work_metadata_csv(path: path, collection: bulk_export.collection)
     end
 
     if bulk_export.static
-      export_static_site(dirname: 'site', out: out, collection: bulk_export.collection)
+      export_static_site(dirname: 'site', path: path, collection: bulk_export.collection)
     end
 
     if bulk_export.notes_csv
-      export_collection_notes_csv(out: out, collection: bulk_export.collection)
+      export_collection_notes_csv(path: path, collection: bulk_export.collection)
     end
 
     if bulk_export.page_details_csv_collection
-      export_page_details_csv_collection(out: out, collection: bulk_export.collection)
+      export_page_details_csv_collection(path: path, collection: bulk_export.collection)
     end
 
     if bulk_export.work_level? || bulk_export.page_level?
       by_work = bulk_export.organization.to_sym == :by_work
       original_filenames = bulk_export.use_uploaded_filename
-      works.each do |work|
+      works.find_each(batch_size: 1) do |work|
         log(msg: "\t#{DateTime.now} Exporting work\t#{work.id}\t#{work.title}\n", logger: bulk_export.custom_logger)
+        before_work_mem = GetProcessMem.new.mb
+        log(
+          msg: "\t[MEM] START WORK #{work.id} RSS=#{before_work_mem.round(1)}MB\n",
+          logger: bulk_export.custom_logger
+        )
 
-        @work = work
         if by_work
-          add_readme_to_zip(work: work, out: out, by_work: by_work, original_filenames: original_filenames)
+          add_readme_to_zip(work: work, path: path, by_work: by_work, original_filenames: original_filenames)
         end
 
         # work-specific exports
         if bulk_export.table_csv_work
-          export_table_csv_work(out: out, work: work, by_work: by_work, original_filenames: original_filenames)
+          export_table_csv_work(path: path, work: work, by_work: by_work, original_filenames: original_filenames)
         end
 
         if bulk_export.page_details_csv_work
-          export_page_details_csv_work(out: out, work: work, by_work: by_work, original_filenames: original_filenames)
+          export_page_details_csv_work(path: path, work: work, by_work: by_work, original_filenames: original_filenames)
         end
 
         if bulk_export.tei_work
-          export_tei(work: work, out: out, export_user: export_user, by_work: by_work, original_filenames: original_filenames)
+          export_tei(work: work, path: path, export_user: bulk_export.user, by_work: by_work, original_filenames: original_filenames)
         end
 
         if bulk_export.plaintext_verbatim_work
-          format='verbatim'
-          export_plaintext_transcript(work: work, name: format, out: out, by_work: by_work, original_filenames: original_filenames)
-          export_plaintext_translation(work: work, name: format, out: out, by_work: by_work, original_filenames: original_filenames)
+          format = 'verbatim'
+          export_plaintext_transcript(work: work, name: format, path: path, by_work: by_work, original_filenames: original_filenames)
+          export_plaintext_translation(work: work, name: format, path: path, by_work: by_work, original_filenames: original_filenames)
         end
 
         if bulk_export.plaintext_emended_work
-          format='expanded'
-          export_plaintext_transcript(work: work, name: format, out: out, by_work: by_work, original_filenames: original_filenames)
-          export_plaintext_translation(work: work, name: format, out: out, by_work: by_work, original_filenames: original_filenames)
+          format = 'expanded'
+          export_plaintext_transcript(work: work, name: format, path: path, by_work: by_work, original_filenames: original_filenames)
+          export_plaintext_translation(work: work, name: format, path: path, by_work: by_work, original_filenames: original_filenames)
         end
 
         if bulk_export.plaintext_searchable_work
-          format='searchable'
-          export_plaintext_transcript(work: work, name: format, out: out, by_work: by_work, original_filenames: original_filenames)
+          format = 'searchable'
+          export_plaintext_transcript(work: work, name: format, path: path, by_work: by_work, original_filenames: original_filenames)
         end
 
         if bulk_export.html_work
           %w[full text transcript translation].each do |format|
-            export_view(work: work, name: format, out: out, export_user: export_user, by_work: by_work, original_filenames: original_filenames)
+            export_view(work: work, name: format, path: path, export_user: bulk_export.user, by_work: by_work, original_filenames: original_filenames)
           end
         end
 
@@ -183,53 +187,66 @@ module ExportHelper
 
         if bulk_export.facing_edition_work
           # NOTE: Facing editions should always preserve_lb
-          export_printable_to_zip(work, 'facing', 'pdf', out, by_work, original_filenames, true, include_metadata, include_contributors, include_notes)
+          export_printable_to_zip(work, 'facing', 'pdf', path, by_work, original_filenames, true, include_metadata, include_contributors, include_notes)
         end
 
         if bulk_export.text_pdf_work
-          export_printable_to_zip(work, 'text', 'pdf', out, by_work, original_filenames, preserve_lb, include_metadata, include_contributors, include_notes)
+          export_printable_to_zip(work, 'text', 'pdf', path, by_work, original_filenames, preserve_lb, include_metadata, include_contributors, include_notes)
         end
 
         if bulk_export.text_only_pdf_work
-          export_printable_to_zip(work, 'text_only', 'pdf', out, by_work, original_filenames, preserve_lb, include_metadata, include_contributors, include_notes)
+          export_printable_to_zip(work, 'text_only', 'pdf', path, by_work, original_filenames, preserve_lb, include_metadata, include_contributors, include_notes)
         end
 
         if bulk_export.text_docx_work
-          export_printable_to_zip(work, 'text', 'doc', out, by_work, original_filenames, preserve_lb, include_metadata, include_contributors, include_notes)
+          export_printable_to_zip(work, 'text', 'doc', path, by_work, original_filenames, preserve_lb, include_metadata, include_contributors, include_notes)
         end
 
         # Page-specific exports
-
-        @work.pages.each_with_index do |page, i|
+        work.pages.find_each.with_index do |page, i|
           if bulk_export.plaintext_verbatim_page
-            format='verbatim'
-            export_plaintext_transcript_pages(name: format, out: out, page: page, by_work: by_work, original_filenames: original_filenames, index: nil)
-            export_plaintext_translation_pages(name: format, out: out, page: page, by_work: by_work, original_filenames: original_filenames)
+            format = 'verbatim'
+            export_plaintext_transcript_pages(name: format, path: path, page: page, by_work: by_work, original_filenames: original_filenames, index: nil)
+            export_plaintext_translation_pages(name: format, path: path, page: page, by_work: by_work, original_filenames: original_filenames)
           end
 
           if bulk_export.plaintext_emended_page
-            format='expanded'
-            export_plaintext_transcript_pages(name: format, out: out, page: page, by_work: by_work, original_filenames: original_filenames, index: nil)
-            export_plaintext_translation_pages(name: format, out: out, page: page, by_work: by_work, original_filenames: original_filenames)
+            format = 'expanded'
+            export_plaintext_transcript_pages(name: format, path: path, page: page, by_work: by_work, original_filenames: original_filenames, index: nil)
+            export_plaintext_translation_pages(name: format, path: path, page: page, by_work: by_work, original_filenames: original_filenames)
           end
 
           if bulk_export.plaintext_searchable_page
-            format='searchable'
-            export_plaintext_transcript_pages(name: format, out: out, page: page, by_work: by_work, original_filenames: original_filenames, index: nil)
+            format = 'searchable'
+            export_plaintext_transcript_pages(name: format, path: path, page: page, by_work: by_work, original_filenames: original_filenames, index: nil)
           end
 
           if bulk_export.plaintext_verbatim_zero_index_page
-            format='verbatim'
-            export_plaintext_transcript_pages(name: format, out: out, page: page, by_work: by_work, original_filenames: :zero_index, index: i)
+            format = 'verbatim'
+            export_plaintext_transcript_pages(name: format, path: path, page: page, by_work: by_work, original_filenames: :zero_index, index: i)
           end
         end
-
 
         if bulk_export.html_page
-          @work.pages.each do |page|
-            export_html_full_pages(out: out, page: page, by_work: by_work, original_filenames: original_filenames)
+          work.pages.each do |page|
+            export_html_full_pages(path: path, page: page, by_work: by_work, original_filenames: original_filenames)
           end
         end
+
+        after_work_mem = GetProcessMem.new.mb
+        log(
+          msg: "\t[MEM] END WORK #{work.id} RSS=#{after_work_mem.round(1)}MB\n",
+          logger: bulk_export.custom_logger
+        )
+
+        GC.start(full_mark: true, immediate_sweep: true)
+
+        after_gc = GetProcessMem.new.mb
+
+        log(
+          msg: "\t[MEM] AFTER GC WORK #{work.id} RSS=#{after_gc.round(1)}MB\n",
+          logger: bulk_export.custom_logger
+        )
       end
     end
   end

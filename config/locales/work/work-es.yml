@@ -1,6 +1,25 @@
 ---
 es:
   work:
+    ai_transcriptions:
+      create:
+        success: Se ha lanzado un servicio de transcripción con IA.
+      form:
+        ai_transcription: Transcripción por IA
+        contact_us: Contacta con %{email} para actualizar a un plan que incluya borradores de IA.
+        description: Iniciar la transcripción mediante IA para las páginas de esta obra.
+        description_complete: Todas las páginas de esta obra cuentan con transcripciones mediante IA.
+        failed: Fallido
+        finished: Finalizado
+        generate: Crea borradores de IA para páginas que no los tengan.
+        in_progress: En curso
+        not_started: No ha comenzado
+        pages: Páginas
+        queued: En cola
+        retry: Reintentar trabajos fallidos
+        total_tokens_used: Total de tokens utilizados
+      update:
+        success: Reintentando la tarea de transcripción de IA.
     configurable_printout:
       description: Exportar esta obra en un formato imprimible
       export: Exportar
@@ -20,6 +39,8 @@ es:
       word_wrap: Ajuste de línea
     create:
       work_created: Obra creada con éxito
+    delete:
+      success: Obra eliminado correctamente
     describe:
       always_show_fullscreen: Mostrar siempre pantalla completa
       approve: Aprobar
@@ -93,15 +114,16 @@ es:
       additional_metadata: Metadatos adicionales
       additional_metadata_description: Estos campos de metadatos se muestran en la pantalla Acerca de de esta obra y en las exportaciones de TEI, pero no afectan la funcionalidad de FromThePage.
       allowed_collaborators: Colaboradores permitidos
-      apply: Aplicar
       author: Autor
       collaborators_can_edit_titles: Permitir que los colaboradores editen los títulos de las páginas
       collection: Recopilación
       confirm_delete_work: "¿Estás seguro de que desea eliminar esta obra? ¡Después de borrar no podrás recuperarlo!"
       current_url: La URL actual para esta obra es %{current_url}. Si deseas editar la sección de obra de la URL, utiliza  letras minúsculas y guiones entre las palabras.
       delete_work: Eliminar obra
+      delete_work_description: Al pulsar este botón se eliminará la obra y todas sus páginas. Esta acción es irreversible.
       description: Descripción
       description_message: La descripción se mostrará en la pantalla Resumen del proyecto y en la pantalla Acerca del proyecto. Se mostrará una parte abreviada de la descripción en la pantalla de inicio de la organización y en la pantalla Buscar un proyecto.
+      destroy_everything: Destruir todo
       document_date: Fecha del documento
       document_date_hint: La fecha del documento está en el formato EDTF (por ejemplo, 1843, 2001-02, 1643-06-30)
       document_history: Historia del documento
@@ -132,6 +154,7 @@ es:
       source_box_folder: Caja/carpeta de origen
       source_collection_name: Nombre de la colección de origen
       source_location: Ubicación de origen
+      subject_change_warning: "¿Está seguro de que desea trasladar esta obra a una nueva colección? Perderá todos los vínculos temáticos."
       support_translation: Traducción de soporte
       support_translation_description: Una obra puede traducirse y transcribirse. Cuando esté marcado, la obra tendrá una pestaña de Traducción para cada página.
       transcription_conventions: Convenciones de transcripción
@@ -148,6 +171,13 @@ es:
       remove_collaborator: Quitar colaborador
       work_collaborators: Colaboradores de obra
       work_collaborators_description: Los colaboradores podrán transcribir y editar obras privadas.
+    edit_tabs:
+      ai: AI
+      danger_zone: Zona de peligro
+      general: General
+      metadata: Metadatos
+      privacy_access: Privacidad y acceso
+      task_configuration: Configuración de tareas
     incomplete: Metadatos incompletos.
     metadata_overview:
       notes_and_questions: notas y preguntas
@@ -213,3 +243,5 @@ es:
     undescribed: Sin metadatos.
     update:
       work_updated: Obra actualizada con éxito
+    users_list:
+      no_users_collaborators: Sin colaboradores

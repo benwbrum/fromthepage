@@ -42,8 +42,9 @@
 -content_for :page_title, selected == 1 ? "#{work_title}" : "#{selected_tab} - #{work_title}"
 -content_for :meta_description, "#{work_title} - #{tab_title}. #{strip_tags(@work.description)}"
 
-h1 =@work.title
-.tabs
-  -for tab in tabs
-      =link_to_unless tab[:selected] == selected, tab[:name], tab[:path]
-        a.active =tab[:name]
+#work-tabs
+  h1 =@work.title
+  .tabs
+    -for tab in tabs
+        =link_to_unless tab[:selected] == selected, tab[:name], tab[:path]
+          a.active =tab[:name]

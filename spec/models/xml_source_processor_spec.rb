@@ -53,6 +53,21 @@ RSpec.describe XmlSourceProcessor, type: :model do
         expect(PageArticleLink.all.count).to eq(0)
       end
     end
+
+    context 'with wiki heading markup containing a wiki link' do
+      let(:page) { create(:page, work: work, source_text: '==[[Alexander A. S. Garrotte]]==') }
+
+      it 'converts the line to an entryHeading and preserves the linked title' do
+        xml = page.wiki_to_xml(page, Page::TEXT_TYPE::TRANSCRIPTION)
+        doc = REXML::Document.new(xml)
+        heading = doc.elements['//entryHeading']
+
+        expect(heading).to be_present
+        expect(heading.attributes['title']).to eq('Alexander A. S. Garrotte')
+        expect(heading.attributes['depth']).to eq('2')
+        expect(heading.elements['link']).to be_present
+      end
+    end
   end
   describe '#valid_xml_from_source' do
     let(:collection) { build_stubbed(:collection) }

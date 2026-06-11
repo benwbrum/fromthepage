@@ -181,6 +181,49 @@ describe AiTranscription::Create do
     end
   end
 
+  context 'when collection is field_based' do
+    let!(:collection) { create(:collection, :field_based, owner_user_id: owner.id) }
+    let!(:work)       { create(:work, collection: collection) }
+    let!(:page)       { create(:page, :with_image, work: work) }
+    let!(:text_field) do
+      create(:transcription_field, :text_field,
+             label: 'Name', collection: collection, position: 1, line_number: 1)
+    end
+    let!(:select_field) do
+      create(:transcription_field, :select_field,
+             label: 'County', options: 'Beaver;Box Elder',
+             collection: collection, position: 2, line_number: 2)
+    end
+
+    it 'builds a field-based prompt instead of the default file prompt' do
+      expect(result.success?).to be_truthy
+      prompt = result.ai_transcription.prompt
+      expect(prompt).to include(text_field.id.to_s)
+      expect(prompt).to include('Name')
+      expect(prompt).to include(select_field.id.to_s)
+      expect(prompt).to include('County')
+    end
+
+    it 'does not use the default text transcription prompt' do
+      default_prompt_fragment = 'Preserve the original formatting'
+      expect(result.ai_transcription.prompt).not_to include(default_prompt_fragment)
+    end
+
+    it 'sets status to processing' do
+      expect(result.ai_transcription.status).to eq('processing')
+    end
+
+    context 'when a custom prompt_file is supplied' do
+      let(:prompt_file) { 'test_data/ai_transcriptions/custom_prompt.txt' }
+
+      it 'uses the custom file prompt instead of the field-based prompt' do
+        expect(result.success?).to be_truthy
+        expect(result.ai_transcription.prompt).to eq("This is a custom prompt\n")
+        expect(result.ai_transcription.prompt).not_to include(text_field.id.to_s)
+      end
+    end
+  end
+
   context 'when user has no permission' do
     let!(:user) { create(:unique_user) }
     let!(:collection) { create(:collection, owner_user_id: owner.id, restricted: true, blocked_users: [user]) }
