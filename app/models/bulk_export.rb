@@ -107,8 +107,11 @@ class BulkExport < ApplicationRecord
 
   def clean_zip_file
     output.purge
+
     File.unlink(zip_file_name) if File.exist?(zip_file_name)
     File.unlink(log_file) if File.exist?(log_file)
+    FileUtils.rm_rf(artifacts_path) if Dir.exist?(artifacts_path)
+
     self.status = :cleaned
     self.save
   end
@@ -132,38 +135,58 @@ class BulkExport < ApplicationRecord
     path
   end
 
+  def artifacts_path
+    path = "tmp/fromthepage_exports/export_#{self.id}"
+    FileUtils.mkdir_p(path)
+
+    path
+  end
+
+  def artifacts_zip_path
+    "tmp/fromthepage_exports/export_#{self.id}.zip"
+  end
+
   def zip_file_name
     File.join(zip_file_path, "export_#{self.id}.zip")
   end
 
   def export_to_zip
-    works_scope = Work.includes(pages: [:notes, { page_versions: :user }])
     works =
       if self.work.present?
-        works_scope.where(id: self.work.id)
+        Work.where(id: self.work.id)
       elsif self.document_set.present?
-        works_scope.where(id: self.document_set.works.pluck(:id))
+        Work.where(id: self.document_set.works.pluck(:id))
       elsif self.collection.present?
-        works_scope.where(collection_id: self.collection.id)
+        Work.where(collection_id: self.collection.id)
       else
-        works_scope.none
+        Work.none
       end
 
-    zip_filename = "export_#{self.id}.zip"
+    write_work_exports(works, artifacts_path, self)
 
-    Tempfile.create([zip_filename, '.zip']) do |tmpfile|
-      Zip::OutputStream.open(tmpfile.path) do |out|
-        write_work_exports(works, out, self.user, self)
+    FileUtils.rm_f(artifacts_zip_path)
+
+    Zip::File.open(artifacts_zip_path, create: true) do |zip|
+      Dir.glob("#{artifacts_path}/**/*").each do |file|
+        next if File.directory?(file)
+
+        relative_path = Pathname.new(file)
+          .relative_path_from(Pathname.new(artifacts_path))
+          .to_s
+
+        zip.add(relative_path, file)
       end
+    end
 
-      tmpfile.rewind
-
-      self.output.attach(
-        io: tmpfile,
-        filename: zip_filename,
+    File.open(artifacts_zip_path) do |file|
+      output.attach(
+        io: file,
+        filename: File.basename(artifacts_zip_path),
         content_type: 'application/zip'
       )
     end
+
+    FileUtils.rm_f(artifacts_zip_path)
   end
 
   def submit_export_process

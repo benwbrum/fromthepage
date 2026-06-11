@@ -7,7 +7,6 @@ namespace :fromthepage do
     end
   end
 
-
   desc 'Process a bulk export'
   task :process_bulk_export, [:bulk_export_id] => :environment do |t, args|
     bulk_export_id = args.bulk_export_id
@@ -25,5 +24,19 @@ namespace :fromthepage do
     #   user_id: bulk_export.user_id,
     #   bulk_export_id: bulk_export.id
     # )
+  end
+
+  # NOTE: This is temporary
+  desc 'Process a bulk export thru job'
+  task :process_bulk_export_job, [:bulk_export_id] => :environment do |t, args|
+    bulk_export_id = args.bulk_export_id
+    bulk_export = BulkExport.find(bulk_export_id)
+
+    bulk_export.update!(status: :queued)
+
+    BulkExport::ProcessJob.perform_later(
+      user_id: bulk_export.user_id,
+      bulk_export_id: bulk_export.id
+    )
   end
 end

@@ -18,10 +18,6 @@ describe Work::Export::Printable do
   end
 
   let!(:page) do
-    create(:page, title: 'Special Tags Page', work: work, source_text: source_text, xml_text: xml_text, search_text: 'Search text',
-      status: :transcribed)
-  end
-  let!(:page) do
     page = create(:page, title: 'Special Tags Page', work: work, search_text: 'Search text', status: :transcribed)
     page.update!(source_text: source_text)
 
@@ -81,6 +77,66 @@ describe Work::Export::Printable do
       expect(result.success?).to be_truthy
       expect(result.tex_string.rstrip).to eq(expected_tex_string.rstrip)
       expect(File.exist?(result.file)).to be_truthy
+    end
+  end
+
+  describe '#tex_string_for_conversion' do
+    subject(:exporter) do
+      described_class.new(
+        work: work,
+        format: format,
+        edition: 'text',
+        include_metadata: true,
+        include_contributors: true,
+        include_notes: true,
+        preserve_lb: false,
+        time: time
+      )
+    end
+
+    context 'when format is not pdf' do
+      let(:format) { 'doc' }
+
+      it 'returns the original tex string' do
+        expect(exporter.tex_string_for_conversion).to eq(exporter.tex_string)
+      end
+    end
+
+    context 'when format is pdf' do
+      let(:format) { 'pdf' }
+      let(:tex_without_metadata) { "\\documentclass{article}\n\\begin{document}\n" }
+
+      it 'removes the document metadata wrapper before conversion' do
+        sanitized_tex = exporter.tex_string_for_conversion
+
+        expect(sanitized_tex).not_to include("\\ifdefined\\DocumentMetadata")
+        expect(sanitized_tex).not_to include("\\DocumentMetadata{")
+        expect(sanitized_tex).to include("\\documentclass{article}")
+      end
+
+      it 'returns the original tex when no metadata wrapper exists' do
+        allow(exporter).to receive(:tex_string).and_return(tex_without_metadata)
+
+        expect(exporter.tex_string_for_conversion).to eq(tex_without_metadata)
+      end
+
+      it 'removes metadata wrapper with varying whitespace and multiline content' do
+        allow(exporter).to receive(:tex_string).and_return(<<~TEX)
+            \\ifdefined\\DocumentMetadata
+            \\DocumentMetadata{
+              lang=en,
+              pdftitle={A title with {nested} braces}
+            }
+            \\fi
+          \\documentclass{article}
+          \\begin{document}
+        TEX
+
+        expect(exporter.tex_string_for_conversion).to eq(<<~TEX)
+          \\documentclass{article}
+          \\begin{document}
+        TEX
+      end
     end
   end
 end
