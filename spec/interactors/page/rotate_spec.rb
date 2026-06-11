@@ -16,10 +16,9 @@ describe Page::Rotate do
   it 'no changes' do
     expect(result.success?).to be_truthy
 
-    expect(page.reload).to have_attributes(
-      base_width: original_base_width,
-      base_height: original_base_height
-    )
+    page.reload
+    expect(page.base_width).to eq(original_base_width)
+    expect(page.base_height).to eq(original_base_height)
   end
 
   context '90 degrees' do
@@ -28,10 +27,9 @@ describe Page::Rotate do
     it 'rotates image' do
       expect(result.success?).to be_truthy
 
-      expect(page.reload).to have_attributes(
-        base_width: original_base_height,
-        base_height: original_base_width
-      )
+      page.reload
+      expect(page.base_width).to eq(original_base_height)
+      expect(page.base_height).to eq(original_base_width)
     end
   end
 
@@ -41,10 +39,23 @@ describe Page::Rotate do
     it 'rotates image' do
       expect(result.success?).to be_truthy
 
-      expect(page.reload).to have_attributes(
-        base_width: original_base_width,
-        base_height: original_base_height
-      )
+      page.reload
+      expect(page.base_width).to eq(original_base_height)
+      expect(page.base_height).to eq(original_base_width)
+    end
+  end
+
+  context 'using legacy base_image' do
+    let!(:page) { create(:page, :with_legacy_image, work: work, position: 1) }
+    let(:orientation) { 90 }
+
+    it 'rotates image' do
+      expect(result.success?).to be_truthy
+
+      page.reload
+      expect(page.base_width).to eq(original_base_height)
+      expect(page.base_height).to eq(original_base_width)
+      expect(page.image.attached?).to be_truthy
     end
   end
 end

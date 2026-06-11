@@ -115,7 +115,7 @@ describe "uploads data for collections", order: :defined do
     page.find('.tabs').click_link("Pages")
     page.find('a', text: "Add New Page").click
     attach_file(
-      'page_base_image',
+      'page_image',
       Rails.root.join('test_data/uploads/JWGravesAmnestyPage1.jpg'),
       make_visible: true
     )
@@ -127,7 +127,7 @@ describe "uploads data for collections", order: :defined do
     expect(page).to have_content(pages.first.title)
     click_link('Add New Page')
     attach_file(
-      'page_base_image',
+      'page_image',
       Rails.root.join('test_data/uploads/JWGravesAmnestyPage2.jpg'),
       make_visible: true
     )

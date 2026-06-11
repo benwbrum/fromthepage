@@ -96,6 +96,8 @@ module TranscribeHelper
         [page.ia_leaf.iiif_image_info_url]
       elsif browser.platform.ios? && browser.webkit?
         ["#{url_for(:root)}image-service/#{page.id}/info.json"]
+      elsif page.image.attached?
+        [{ type: 'image', url: Rails.application.routes.url_helpers.url_for(page.image) }.to_json]
       else
         [{ type: 'image', url: file_to_url(page.canonical_facsimile_url) }.to_json]
       end
