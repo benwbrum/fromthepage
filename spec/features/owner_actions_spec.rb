@@ -3,13 +3,18 @@
 require 'spec_helper'
 
 describe 'owner actions' do
-  before do
-    DatabaseCleaner.start
+  before do |example|
+    DatabaseCleaner.start unless example.metadata[:js]
     login_as(owner, scope: :user)
   end
 
-  after do
-    DatabaseCleaner.clean
+  after do |example|
+    if example.metadata[:js]
+      owner.all_owner_collections.each(&:destroy!)
+      owner.destroy!
+    else
+      DatabaseCleaner.clean
+    end
   end
 
   let(:owner) { create(:unique_user, :owner, account_type: 'Small Organization') }
