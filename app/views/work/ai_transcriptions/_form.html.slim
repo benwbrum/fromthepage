@@ -49,3 +49,10 @@
             .collection-stats_counters
               .counter [data-prefix=@total_token_count]
                 =t('.total_tokens_used')
+
+      tr
+        td(colspan="2")
+          h3 =t('.segmentation')
+          p =t('.segmentation_description')
+          =link_to(segment_collection_work_ai_transcriptions_path(collection.owner, collection, work), class: 'button action-btn', data: { turbo: true, turbo_method: :post })
+            span =t('.segment_collection')

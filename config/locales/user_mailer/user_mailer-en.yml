@@ -7,6 +7,13 @@ en:
       message: We just wanted to let you know that the following note has been added to a page you worked on in work %{work}, in the collection %{collection}.
       text:
         view_note: 'You can respond to the note in %{collection}: %{work} at the URL: %{url}.'
+    segmentation_finished:
+      subject: 'Segmentation of "%{work}" is complete'
+      heading: 'Segmentation of "%{work}" is complete'
+      greeting: 'Hi %{user},'
+      body: "The segmentation of \"%{work}\" in the collection \"%{collection}\" is complete. Pages identified as possible document starts are highlighted in the transcription view."
+      candidate_count_label: "Pages identified as possible document starts:"
+      view_work: View work
     bulk_export_finished:
       html:
         ready_message: has been processed and is ready at %{this_link}.

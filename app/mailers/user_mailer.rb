@@ -24,6 +24,13 @@ class UserMailer < ActionMailer::Base
     mail to: @document_upload.user.email, subject: 'Upload processing complete - no images found'
   end
 
+  def segmentation_finished(user, work, collection)
+    @user = user
+    @work = work
+    @collection = collection
+    mail to: @user.email, subject: t('.segmentation_finished.subject', work: @work.title)
+  end
+
   def bulk_export_finished(bulk_export)
     @bulk_export = bulk_export
 

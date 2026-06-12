@@ -25,6 +25,17 @@ class Work::AiTranscriptionsController < WorkController
     respond_to(&:turbo_stream)
   end
 
+  def segment
+    Segmentation::BulkSegmentJob.perform_later(
+      work_id: @work.id,
+      collection_id: @collection.id,
+      user_id: current_user.id
+    )
+
+    flash[:notice] = t('work.ai_transcriptions.segment.success')
+    redirect_to edit_collection_work_ai_transcriptions_path(@collection.owner, @collection, @work)
+  end
+
   def update
     @result = AiTranscription::BulkRetry.new(
       collection: @collection,

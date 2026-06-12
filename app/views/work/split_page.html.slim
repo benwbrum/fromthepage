@@ -1,0 +1,8 @@
+= turbo_frame_tag "segmentation-banner-#{@split_page.id}"
+  .segmentation-banner
+    .segmentation-banner-content
+      p.segmentation-banner-message =t('transcribe.display_page.segmentation_success', title: @new_work_title, count: @split_count)
+      .segmentation-banner-actions
+        =link_to(t('transcribe.display_page.segmentation_view_work'), collection_read_work_path(@collection.owner, @collection, @new_work), class: 'button outline', data: { turbo_frame: '_top' })
+        button.button.outline(type='button' data-segmentation-dismiss)
+          =t('transcribe.display_page.segmentation_dismiss')

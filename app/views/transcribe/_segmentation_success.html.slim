@@ -1,0 +1,7 @@
+.segmentation-banner[id="segmentation-banner-#{page.id}"]
+  .segmentation-banner-content
+    p.segmentation-banner-message =t('transcribe.display_page.segmentation_success', title: new_work_title, count: count)
+    .segmentation-banner-actions
+      =link_to(t('transcribe.display_page.segmentation_view_work'), collection_read_work_path(collection.owner, collection, new_work), class: 'button outline')
+      button.button.outline(type='button' data-segmentation-dismiss)
+        =t('transcribe.display_page.segmentation_dismiss')

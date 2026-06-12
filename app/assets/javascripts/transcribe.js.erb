@@ -150,3 +150,33 @@ window.addEventListener('DOMContentLoaded', function() {
     });
   }
 });
+
+// Segmentation banner dismiss (success state)
+document.addEventListener('click', function(e) {
+  if (e.target.closest('[data-segmentation-dismiss]')) {
+    var banner = e.target.closest('.segmentation-banner');
+    if (banner) { banner.remove(); }
+  }
+});
+
+// Segmentation banner toggle
+window.addEventListener('DOMContentLoaded', function() {
+  var toggleBtn = document.querySelector('[data-segmentation-toggle]');
+  var cancelBtn = document.querySelector('[data-segmentation-cancel]');
+  var form = document.querySelector('[data-segmentation-form]');
+
+  if (toggleBtn && form) {
+    toggleBtn.addEventListener('click', function() {
+      form.style.display = 'block';
+      toggleBtn.closest('.segmentation-banner-actions').style.display = 'none';
+    });
+  }
+
+  if (cancelBtn && form) {
+    cancelBtn.addEventListener('click', function() {
+      form.style.display = 'none';
+      var actions = document.querySelector('.segmentation-banner-actions');
+      if (actions) { actions.style.display = ''; }
+    });
+  }
+});

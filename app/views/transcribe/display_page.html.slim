@@ -1,4 +1,5 @@
 =javascript_include_tag "transcribe"
+=render partial: 'transcribe/segmentation_banner', locals: { page: @page, work: @work, collection: @collection }
 -if current_page?(collection_oneoff_review_page_path(@collection.owner, @collection, @page)) || @quality_sampling || @user
   =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 12, :collection_id => @collection.id }})
   .review-breadcrumbs
@@ -307,7 +308,7 @@
             showCustomAlert();
         }
 
-      $('form').submit(function(event) {
+      $('#custom_form_id').submit(function(event) {
         var isMarkedBlank = $('#page_mark_blank').is(':checked');
         var hasTranscribedvalue = $('.page-editarea_textarea').length < 0;
         var hasTranscribedText = $('.page-editarea_textarea').length > 0 && $('.page-editarea_textarea').val().trim().length > 0;
