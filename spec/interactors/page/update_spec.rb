@@ -28,7 +28,7 @@ describe Page::Update do
     let(:page_params) do
       {
         title: 'Updated title',
-        base_image: Rack::Test::UploadedFile.new(file_path, file_type)
+        image: Rack::Test::UploadedFile.new(file_path, file_type)
       }
     end
 
@@ -36,11 +36,11 @@ describe Page::Update do
       expect(result.success?).to be_truthy
       expect(result.page).to have_attributes(
         title: 'Updated title',
-        base_image: Rails.root.join("public/images/working/upload/#{result.page.id}.jpg").to_s,
         work_id: work.id,
         status: 'new',
         translation_status: 'new'
       )
+      expect(result.page.image.attached?).to be_truthy
     end
   end
 
@@ -50,7 +50,7 @@ describe Page::Update do
     let(:page_params) do
       {
         title: 'New page',
-        base_image: Rack::Test::UploadedFile.new(file_path, file_type)
+        image: Rack::Test::UploadedFile.new(file_path, file_type)
       }
     end
 
