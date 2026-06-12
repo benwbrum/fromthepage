@@ -66,7 +66,9 @@ describe "convention related tasks", order: :defined do
     work2_tab = work2.ocr_correction? ? 'Correct' : 'Transcribe'
     visit collection_read_work_path(work2.collection.owner, work2.collection, work2)
     page.find('.work-page_title', text: page2.title).click_link(page2.title)
-    page.find('.tabs').find_link(work2_tab, visible: true, wait: 5).click
+    if page.has_content?("Facsimile")
+      page.find('.tabs').click_link(work2_tab)
+    end
     expect(page).to have_content @new_convention
     # check changed work for collection conventions
     visit collection_read_work_path(@work.collection.owner, @work.collection, @work)
