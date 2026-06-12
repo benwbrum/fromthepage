@@ -22,7 +22,7 @@ describe 'needs review' do
   let(:collection) { create(:collection, owner_user_id: owner.id, works: []) }
   let(:work) { create(:work, collection: collection, owner: owner, supports_translation: true) }
   let!(:pages) do
-    6.times.map do |index|
+    5.times.map do |index|
       create(:page, work: work, position: index + 1, title: "Review Page #{index + 1}")
     end
   end
@@ -122,9 +122,9 @@ describe 'needs review' do
   end
 
   it "filters list of review pages" do
-    page4.update!(status: :needs_review, source_text: 'Review Text')
-    page5.update!(status: :needs_review, source_text: 'Review Text 2')
-    page6.update!(translation_status: :needs_review, source_translation: 'Review Translate Text')
+    mark_transcription_for_review(page4, 'Review Text')
+    mark_transcription_for_review(page5, 'Review Text 2')
+    mark_translation_for_review(page6, 'Review Translate Text')
     work.work_statistic.recalculate
     visit collection_read_work_path(work.collection.owner, work.collection, work)
     expect(page).to have_content(work.title)
@@ -160,7 +160,7 @@ describe 'needs review' do
   end
 
   it "views collection pages that need review" do
-    page4.update!(status: :needs_review, source_text: 'Review Text')
+    mark_transcription_for_review(page4, 'Review Text')
     visit collection_path(collection.owner, collection)
     expect(page).to have_content("About")
     expect(page).to have_content("Works")
@@ -174,8 +174,8 @@ describe 'needs review' do
   end
 
   it "checks collection overview stats view" do
-    page4.update!(status: :needs_review, source_text: 'Review Text')
-    page6.update!(translation_status: :needs_review, source_translation: 'Review Translate Text')
+    mark_transcription_for_review(page4, 'Review Text')
+    mark_translation_for_review(page6, 'Review Translate Text')
     work.work_statistic.recalculate
     visit collection_path(collection.owner, collection)
     collection.works.each do |w|
@@ -208,8 +208,8 @@ describe 'needs review' do
   end
 
   it "checks statistics in works list", js: true do
-    page4.update!(status: :needs_review, source_text: 'Review Text')
-    page6.update!(translation_status: :needs_review, source_translation: 'Review Translate Text')
+    mark_transcription_for_review(page4, 'Review Text')
+    mark_translation_for_review(page6, 'Review Translate Text')
     work.work_statistic.recalculate
     logout(:user)
     login_as(owner, scope: :user)
@@ -332,5 +332,21 @@ describe 'needs review' do
     find('#save_button_top').click
     expect(page).to have_content('Translation Needs Review Workflow Text')
     expect(Page.find_by(id: review_page.id).translation_status_needs_review?).to be_truthy
+  end
+
+  def mark_transcription_for_review(review_page, text)
+    review_page.update_columns(
+      source_text: text,
+      status: Page.statuses.fetch(:needs_review)
+    )
+    expect(review_page.reload).to be_status_needs_review
+  end
+
+  def mark_translation_for_review(review_page, text)
+    review_page.update_columns(
+      source_translation: text,
+      translation_status: Page.translation_statuses.fetch(:needs_review)
+    )
+    expect(review_page.reload).to be_translation_status_needs_review
   end
 end
