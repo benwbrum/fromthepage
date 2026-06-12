@@ -256,11 +256,7 @@ describe 'owner actions' do
   it 'deletes a work', js: true do
     work = create(:work, :with_pages, title: 'This is an empty work', owner: owner, collection: collection)
 
-    visit dashboard_owner_path
-    page.find('.maincol').find('a', text: collection.title).click
-    page.click_link('Show All')
-    page.find('.collection-works').find('a', text: work.title).click
-    page.find('.tabs').click_link('Settings')
+    visit edit_collection_work_path(collection.owner, collection, work)
     expect(page).to have_content(work.title)
     expect(page).to have_content('Work title')
     click_link('Danger Zone')

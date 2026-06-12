@@ -63,9 +63,10 @@ describe "convention related tasks", order: :defined do
     # check unchanged work for collection conventions
     work2 = @collection.works.where(transcription_conventions: nil).where.not(id: @work.id).first
     page2 = work2.pages.second
+    work2_tab = work2.ocr_correction? ? 'Correct' : 'Transcribe'
     visit collection_read_work_path(work2.collection.owner, work2.collection, work2)
     page.find('.work-page_title', text: page2.title).click_link(page2.title)
-    page.find('.tabs').find_link('Transcribe', visible: true, wait: 5).click
+    page.find('.tabs').find_link(work2_tab, visible: true, wait: 5).click
     expect(page).to have_content @new_convention
     # check changed work for collection conventions
     visit collection_read_work_path(@work.collection.owner, @work.collection, @work)
