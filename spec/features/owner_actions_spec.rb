@@ -416,8 +416,8 @@ describe 'owner actions' do
   end
 
   def work_with_subject_link
-    work = create(:work, :with_pages, owner: owner, collection: second_collection)
-    test_page = work.pages.first
+    work = create(:work, owner: owner, collection: second_collection, pages: [])
+    test_page = create(:page, work: work)
     test_page.update!(source_text: '[[Switzerland]]')
     article = create(:article, title: 'Switzerland', collection: second_collection)
     create(:page_article_link, page: test_page, article: article, display_text: 'Switzerland')
