@@ -122,9 +122,9 @@ describe 'needs review' do
   end
 
   it "filters list of review pages" do
-    page4.update!(status: :needs_review)
-    page5.update!(status: :needs_review)
-    page6.update!(translation_status: :needs_review)
+    page4.update!(status: :needs_review, source_text: 'Review Text')
+    page5.update!(status: :needs_review, source_text: 'Review Text 2')
+    page6.update!(translation_status: :needs_review, source_translation: 'Review Translate Text')
     work.work_statistic.recalculate
     visit collection_read_work_path(work.collection.owner, work.collection, work)
     expect(page).to have_content(work.title)
@@ -160,7 +160,7 @@ describe 'needs review' do
   end
 
   it "views collection pages that need review" do
-    page4.update!(status: :needs_review)
+    page4.update!(status: :needs_review, source_text: 'Review Text')
     visit collection_path(collection.owner, collection)
     expect(page).to have_content("About")
     expect(page).to have_content("Works")
@@ -174,8 +174,8 @@ describe 'needs review' do
   end
 
   it "checks collection overview stats view" do
-    page4.update!(status: :needs_review)
-    page6.update!(translation_status: :needs_review)
+    page4.update!(status: :needs_review, source_text: 'Review Text')
+    page6.update!(translation_status: :needs_review, source_translation: 'Review Translate Text')
     work.work_statistic.recalculate
     visit collection_path(collection.owner, collection)
     collection.works.each do |w|
@@ -208,8 +208,8 @@ describe 'needs review' do
   end
 
   it "checks statistics in works list", js: true do
-    page4.update!(status: :needs_review)
-    page6.update!(translation_status: :needs_review)
+    page4.update!(status: :needs_review, source_text: 'Review Text')
+    page6.update!(translation_status: :needs_review, source_translation: 'Review Translate Text')
     work.work_statistic.recalculate
     logout(:user)
     login_as(owner, scope: :user)
