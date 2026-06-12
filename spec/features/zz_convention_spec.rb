@@ -86,9 +86,8 @@ describe "convention related tasks", order: :defined do
     expect(page).not_to have_content @new_convention
     expect(page.find('#work_transcription_conventions')).to have_content @work_convention
     click_button('Revert')
-    script = "$('#collection-settings-save').click()"
-    page.execute_script(script)
     expect(page).to have_content("Work updated successfully")
+    expect(@work.reload.transcription_conventions).to be_nil
     visit "/display/read_work?work_id=#{@work.id}"
     page.find('.work-page_title', text: @page.title).click_link(@page.title)
     if page.has_content?("Facsimile")
