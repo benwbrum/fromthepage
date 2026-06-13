@@ -166,7 +166,6 @@ namespace :fromthepage do
 
         deleted_files += 1
         deleted_bytes += bytes
-        puts "Deleted #{path}"
       end
     end
 
