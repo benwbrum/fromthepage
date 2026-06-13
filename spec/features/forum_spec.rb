@@ -20,7 +20,7 @@ describe 'forum tab for collection' do
   after do
     messageboard_group = collection.reload.messageboard_group
     collection.destroy!
-    Thredded::Messageboard.where(messageboard_group: messageboard_group).destroy_all if messageboard_group
+    Thredded::Messageboard.where(messageboard_group_id: messageboard_group.id).destroy_all if messageboard_group
     messageboard_group&.destroy!
     owner.destroy!
   end
