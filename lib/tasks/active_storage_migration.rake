@@ -137,9 +137,9 @@ namespace :fromthepage do
 
     pages = if collection
               collection.pages
-            else
+    else
               Page.joins(:work).where(works: { owner_user_id: user.id })
-            end
+    end
     pages = pages.where.not(base_image: [nil, ''])
 
     deleted_files = 0
