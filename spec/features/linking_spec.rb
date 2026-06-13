@@ -91,6 +91,7 @@ describe 'subject linking' do
 
     visit collection_path(owner, collection)
     page.find('.tabs').click_link('Subjects')
+    page.find('a.tree-item', text: places_category.title).click
     click_link(article.title)
     page.find('.tabs').click_link('Settings')
     accept_confirm { click_link('Delete Subject') }
@@ -181,6 +182,7 @@ describe 'subject linking' do
 
     fill_in_editor_field '[[Texas]]'
     find('#save_button_top').click
+    continue_from_uncategorized_subjects
     expect(page).to have_content('Transcription')
     expect(page).to have_content('Texas')
   end
@@ -194,6 +196,7 @@ describe 'subject linking' do
 
     fill_in_editor_field '[[Texas]]'
     find('#save_button_top').click
+    continue_from_uncategorized_subjects
     expect(page).to have_content('Transcription')
     expect(page).to have_content('Texas')
   end
@@ -275,11 +278,18 @@ describe 'subject linking' do
 
     visit collection_path(owner, collection)
     page.find('.tabs').click_link('Subjects')
+    page.find('a.tree-item', text: 'Uncategorized').click
     expect(page).to have_content('Ada Lovelace')
     click_link('Ada Lovelace')
     expect(page.find('.article-links').first('li')).to have_content('Ada Lovelace')
     expect(page.find('.article-links')).to have_selector('li', count: 2)
     expect(page.find('.article-links')).not_to have_selector('li', count: 1)
+  end
+
+  def continue_from_uncategorized_subjects
+    expect(page).to have_content('Uncategorized Subjects')
+    click_link('Continue')
+    page.find('.tabs').click_link('Overview')
   end
 
   def create_categorized_article(title, category)
