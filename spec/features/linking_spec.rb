@@ -29,8 +29,8 @@ describe 'subject linking' do
       create(:page, work: work, position: index + 1, title: "Linking Page #{index + 1}")
     end
   end
-  let(:people_category) { create(:category, collection: collection, title: 'People') }
-  let(:places_category) { create(:category, collection: collection, title: 'Places') }
+  let(:people_category) { collection.categories.find_by!(title: 'People') }
+  let(:places_category) { collection.categories.find_by!(title: 'Places') }
   let(:texas_article) { create_categorized_article('Texas', places_category) }
 
   it 'looks at subjects in a collection', js: true do
@@ -58,7 +58,7 @@ describe 'subject linking' do
 
     visit collection_article_show_path(owner, collection, article)
     expect(page).to have_content('Description')
-    click_link('Edit the description in the settings tab')
+    page.find('.tabs').click_link('Settings')
 
     expect(page).to have_content('Description')
     expect(page).not_to have_content('Related Subjects')
