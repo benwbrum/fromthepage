@@ -8,7 +8,7 @@ describe 'search text transformation' do
 
   let(:xml_text) do
     <<~XML
-      <?xml version='1.0' encoding='ISO-8859-15'?>
+      <?xml version='1.0' encoding='UTF-8'?>
       <page>
         <p>A very <link target_title='rain' link_id='77064' target_id='49'>rainy</link> day the children
         <lb/>did not go to <link target_title='school' link_id='77065' target_id='254'>school</link>.
@@ -32,7 +32,7 @@ describe 'search text transformation' do
 
   let(:translated_text) do
     <<~XML
-      <?xml version="1.0" encoding="ISO-8859-15"?>
+      <?xml version="1.0" encoding="UTF-8"?>
       <page>
         <p>Se almacenará un historial de <lb/>modificaciones para poder recuperar desde
         <lb/>una versión previa.</p>
