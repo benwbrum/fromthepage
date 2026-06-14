@@ -12,11 +12,6 @@ describe "convention related tasks", order: :defined do
     @clean_conventions = @clean_conventions.split("\n")[1]
     @new_convention = "Collection level transcription convention"
     @work_convention = "Work level transcription conventions"
-    if @work.ocr_correction == true
-      @tab = "Correct"
-    else
-      @tab = "Transcribe"
-    end
   end
 
   before :each do
@@ -26,10 +21,7 @@ describe "convention related tasks", order: :defined do
   it "checks for collection level transcription conventions" do
     visit collection_read_work_path(@work.collection.owner, @work.collection, @work)
     page.find('.work-page_title', text: @page.title).click_link(@page.title)
-    # if the page isn't already transcribed, must go to Transcribe tab
-    if page.has_content?("Facsimile")
-      page.find('.tabs').click_link(@tab)
-    end
+    open_transcription_if_available(@work)
     expect(page).to have_content @clean_conventions
     expect(page).to have_content("More help")
   end
@@ -45,9 +37,7 @@ describe "convention related tasks", order: :defined do
     expect(page).to have_content("Work updated successfully")
     visit collection_read_work_path(@work.collection.owner, @work.collection, @work)
     page.find('.work-page_title', text: @page.title).click_link(@page.title)
-    if page.has_content?("Facsimile")
-      page.find('.tabs').click_link(@tab)
-    end
+    open_transcription_if_available(@work)
     expect(page).not_to have_content @clean_conventions
     expect(page).to have_content @work_convention
     convention_work = Work.find_by(id: @work.id)
@@ -63,19 +53,14 @@ describe "convention related tasks", order: :defined do
     # check unchanged work for collection conventions
     work2 = @collection.works.where(transcription_conventions: nil).where.not(id: @work.id).first
     page2 = work2.pages.second
-    work2_tab = work2.ocr_correction? ? 'Correct' : 'Transcribe'
     visit collection_read_work_path(work2.collection.owner, work2.collection, work2)
     page.find('.work-page_title', text: page2.title).click_link(page2.title)
-    if page.has_content?("Facsimile")
-      page.find('.tabs').click_link(work2_tab)
-    end
+    open_transcription_if_available(work2)
     expect(page).to have_content @new_convention
     # check changed work for collection conventions
     visit collection_read_work_path(@work.collection.owner, @work.collection, @work)
     page.find('.work-page_title', text: @page.title).click_link(@page.title)
-    if page.has_content?("Facsimile")
-      page.find('.tabs').click_link(@tab)
-    end
+    open_transcription_if_available(@work)
     expect(page).not_to have_content @new_convention
     expect(page).to have_content @work_convention
   end
@@ -92,10 +77,14 @@ describe "convention related tasks", order: :defined do
     expect(@work.reload.transcription_conventions).to be_nil
     visit "/display/read_work?work_id=#{@work.id}"
     page.find('.work-page_title', text: @page.title).click_link(@page.title)
-    if page.has_content?("Facsimile")
-      page.find('.tabs').click_link(@tab)
-    end
+    open_transcription_if_available(@work)
     expect(page).to have_content @new_convention
     expect(page).not_to have_content @work_convention
+  end
+
+  def open_transcription_if_available(work)
+    tab = work.reload.ocr_correction? ? 'Correct' : 'Transcribe'
+    tabs = page.find('.tabs')
+    tabs.click_link(tab) if tabs.has_link?(tab)
   end
 end
