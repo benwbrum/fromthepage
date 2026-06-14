@@ -44,7 +44,7 @@ describe 'document sets' do
     ArticlesCategory.where(article_id: collection.article_ids).delete_all
     collection.categories.destroy_all
     collection.document_sets.each do |set|
-      set.document_set_works.destroy_all
+      DocumentSetWork.where(document_set_id: set.id).delete_all
       set.destroy!
     end
     collection.destroy!
@@ -69,10 +69,11 @@ describe 'document sets' do
     script = "$('#collection-settings-save').click()"
     page.execute_script(script)
     expect(page).to have_content('Document set has been saved')
-    expect(DocumentSet.find_by(id: document_sets.first.id).title).to eq 'Edited Test Document Set 1'
-    expect(page.find('h1')).to have_content(document_sets.first.title)
+    edited_set = document_sets.first.reload
+    expect(edited_set.title).to eq 'Edited Test Document Set 1'
+    expect(page.find('h1')).to have_content(edited_set.title)
 
-    doc_set = document_sets.first
+    doc_set = edited_set
     work_ids = doc_set.work_ids
 
     page.find('.side-tabs').click_link('Manage Works')
