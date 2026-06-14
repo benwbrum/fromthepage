@@ -10,7 +10,9 @@ describe 'document sets' do
     create(:collection, :docset_enabled, owner_user_id: owner.id, works: [], hide_completed: false)
   end
   let(:works) do
-    Array.new(3) { create(:work, :with_pages, collection: collection, owner: owner) }
+    Array.new(4) do
+      create(:work, :with_pages, collection: collection, owner: owner, supports_translation: true)
+    end
   end
   let(:document_set) do
     create(:document_set, :public, collection: collection, owner: owner, works: works.first(2))
@@ -19,7 +21,7 @@ describe 'document sets' do
     create(:document_set, :private, collection: collection, owner: owner, works: [works.third])
   end
   let(:other_private_set) do
-    create(:document_set, :private, collection: collection, owner: owner, works: [works.second])
+    create(:document_set, :private, collection: collection, owner: owner, works: [works.fourth])
   end
   let(:document_sets) { [document_set, private_set, other_private_set] }
   let(:category) { collection.categories.first }
@@ -28,6 +30,7 @@ describe 'document sets' do
 
   before do
     works
+    collection.reload
     document_sets
     article.categories << category
     outside_article.categories << category
@@ -107,6 +110,7 @@ describe 'document sets' do
     page.find('.button', text: 'Create a Document Set').click
     page.fill_in 'document_set_title', with: 'Test Document Set 3'
     page.find_button('Create Document Set').click
+    expect(page).to have_selector('h1', text: 'Test Document Set 3')
     created_set = DocumentSet.find_by!(title: 'Test Document Set 3', collection: collection)
     expect(page.current_path).to eq collection_settings_path(owner, created_set)
     page.find('.side-tabs').click_link('Privacy & Access')
@@ -360,11 +364,7 @@ describe 'document sets' do
     visit collection_article_show_path(document_set.owner, document_set, article.id)
     page.find('.article-links').find('a', text: set_pages.first.title).click
     expect(page.find('.breadcrumbs')).to have_selector('a', text: document_set.title)
-    if page.has_content?("This page is not transcribed")
-      page.find('.tabs').click_link("Transcribe")
-      find('#save_button_top').click
-      page.click_link("Overview")
-    end
+    visit collection_display_page_path(document_set.owner, document_set, set_pages.first.work, set_pages.first)
     page.find('a', text: article.title).click
     expect(page.current_path).to eq collection_article_show_path(document_set.owner, document_set, article.id)
     expect(page.find('.breadcrumbs')).to have_selector('a', text: document_set.title)
@@ -480,7 +480,7 @@ describe 'document sets' do
     visit collection_path(document_set.owner, document_set)
     expect(page).to have_selector('h1', text: document_set.title)
     expect(page).to have_content('Works')
-    expect(page).not_to have_selector('a', text: 'Pages That Need Transcription')
+    expect(page).to have_selector('a', text: 'Pages That Need Transcription')
     expect(page).not_to have_selector('a', text: 'Pages That Need Review')
   end
 
@@ -504,8 +504,9 @@ describe 'document sets' do
     visit edit_collection_path(collection.owner, collection)
     page.find('.side-tabs').click_link('Look & Feel')
     page.check("Enable document sets")
+    expect(page).to have_content('Collection has been updated')
     expect(page.find_link("Edit Sets")).not_to match_css('[disabled]')
-    page.click_link('Edit Sets')
+    visit document_sets_path(collection_id: collection)
     expect(page.current_path).to eq document_sets_path
     expect(collection.reload.supports_document_sets).to be true
   end
