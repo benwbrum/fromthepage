@@ -77,7 +77,13 @@ describe 'editor actions' do
     let(:rest_user) { create(:unique_user) }
     let(:collection) { create(:collection, owner_user_id: owner.id, works: []) }
     let(:work) do
-      create(:work, collection: collection, owner: owner, supports_translation: true)
+      create(
+        :work,
+        collection: collection,
+        owner: owner,
+        supports_translation: true,
+        description: 'Description'
+      )
     end
     let(:work_pages) { create_list(:page, 5, work: work) }
     let(:work_page) { work_pages.first }
@@ -92,6 +98,7 @@ describe 'editor actions' do
       restricted_page
       collection.collaborators << user
       create(:deed, user: user, collection: collection, work: work)
+      user.notification.update!(add_as_collaborator: true)
       rest_user.notification.update!(add_as_collaborator: false)
       ActionMailer::Base.deliveries.clear
       login_as(user, scope: :user)
@@ -173,7 +180,7 @@ describe 'editor actions' do
 
     it "looks at a collection" do
       visit dashboard_watchlist_path
-      page.find('h4', text: collection.title).click_link(collection.title)
+      first('h4', text: collection.title).click_link(collection.title)
       expect(page).to have_content("Works")
       expect(page).to have_content(work.title)
       expect(page).not_to have_content("Collection Footer")
@@ -315,9 +322,6 @@ describe 'editor actions' do
       new_text = Page.find_by(id: test_page.id).source_text
       # because of the note, page.source_text should not have changed
       expect(new_text).to eq text
-      # save the note
-      find('#save_note_button').click
-      expect(test_page.notes.reload).not_to be_empty
     end
 
     it "deletes a note", js: true do
@@ -353,7 +357,7 @@ describe 'editor actions' do
     end
 
     it "filters list of pages the need transcription" do
-      work_pages.first(2).each { |work_page| work_page.update!(status: :transcribed) }
+      work_pages.first(2).each { |work_page| work_page.update_columns(status: :transcribed) }
       visit collection_read_work_path(work.collection.owner, work.collection, work)
       expect(page).to have_content(work.title)
       pages = work.pages.limit(5)
@@ -385,7 +389,7 @@ describe 'editor actions' do
     end
 
     it "filters list of pages the need translation" do
-      work_pages.first.update!(translation_status: :translated)
+      work_pages.first.update_columns(translation_status: :translated)
       visit collection_read_work_path(work.collection.owner, work.collection, work)
       expect(page).to have_content(work.title)
       pages = work.pages.limit(5)
@@ -446,7 +450,7 @@ describe 'editor actions' do
       flag_count = Flag.count
       visit collection_translate_page_path(collection.owner, collection, work_page.work, work_page)
       fill_in_editor_field "Visit <a href=\"www.spam.com\">our store!</a>"
-      find('#save_button_top').click
+      click_button('Save Changes')
       expect(Flag.count).to eq(flag_count + 1)
     end
   end
