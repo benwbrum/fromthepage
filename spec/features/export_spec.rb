@@ -8,12 +8,9 @@ describe 'export tasks' do
   let(:collection) { create(:collection, owner_user_id: owner.id, works: []) }
   let(:work) { create(:work, collection: collection, owner: owner) }
   let(:work_page) do
-    create(
-      :page,
-      :transcribed,
-      work: work,
-      source_text: 'Isolated export transcript'
-    )
+    page = create(:page, :transcribed, work: work)
+    page.update!(source_text: 'Isolated export transcript')
+    page
   end
 
   before do
