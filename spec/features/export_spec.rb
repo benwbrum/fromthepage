@@ -6,12 +6,19 @@ describe 'export tasks' do
   let(:owner) { create(:unique_user, :owner) }
   let(:admin) { create(:unique_user, :admin) }
   let(:collection) { create(:collection, owner_user_id: owner.id, works: []) }
-  let(:work) { create(:work, :transcribed, collection: collection, owner: owner) }
-  let(:work_page) { work.pages.first }
+  let(:work) { create(:work, collection: collection, owner: owner) }
+  let(:work_page) do
+    create(
+      :page,
+      :transcribed,
+      work: work,
+      source_text: '<page><p>Isolated export transcript</p></page>'
+    )
+  end
 
   before do
     DatabaseCleaner.start
-    work_page.update!(source_text: '<page><p>Isolated export transcript</p></page>')
+    work_page
     login_as(owner, scope: :user)
   end
 
