@@ -447,9 +447,11 @@ describe 'editor actions' do
     end
 
     it "adds an abusive translation" do
+      abusive_content = 'Visit <a href="www.spam.com">our store!</a>'
+      work_page.update_columns(source_text: abusive_content)
       flag_count = Flag.count
       visit collection_translate_page_path(collection.owner, collection, work_page.work, work_page)
-      fill_in_editor_field "Visit <a href=\"www.spam.com\">our store!</a>"
+      fill_in_editor_field abusive_content
       click_button('Save Changes')
       expect(Flag.count).to eq(flag_count + 1)
     end
