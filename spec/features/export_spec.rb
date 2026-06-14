@@ -12,7 +12,7 @@ describe 'export tasks' do
       :page,
       :transcribed,
       work: work,
-      source_text: '<page><p>Isolated export transcript</p></page>'
+      source_text: 'Isolated export transcript'
     )
   end
 
@@ -62,6 +62,7 @@ describe 'export tasks' do
   end
 
   it 'exports a work as plain text' do
+    expect(work.reload.verbatim_transcription_plaintext).to include('Isolated export transcript')
     visit collection_export_path(owner, collection)
 
     expect(page).to have_content('Export Individual Works')
