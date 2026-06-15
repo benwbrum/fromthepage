@@ -1,42 +1,55 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
-describe "forum tab for collection", order: :defined do
-  before :all do
-    @owner = User.find_by(login: OWNER)
-    @collections = @owner.all_owner_collections
-    @collection = @collections.second
-    @set_collection = @collections.last
-    @title = "This is an empty work"
+describe 'forum tab for collection' do
+  let(:owner) { create(:unique_user, :owner) }
+  let(:collection) do
+    create(
+      :collection,
+      owner_user_id: owner.id,
+      works: [],
+      title: "Forum Collection #{SecureRandom.hex(4)}"
+    )
   end
 
-  before :each do
-    login_as(@owner, scope: :user)
+  before do
+    login_as(owner, scope: :user)
   end
 
-  it "sets slugs" do
-    Collection.find_each(&:save)
-    Work.find_each(&:save)
-    User.find_each(&:save)
+  after do
+    messageboard_group = collection.reload.messageboard_group
+    collection.destroy!
+    Thredded::Messageboard.where(messageboard_group_id: messageboard_group.id).destroy_all if messageboard_group
+    messageboard_group&.destroy!
+    owner.destroy!
   end
 
-  it "visits a collection then enables its forum and access forum", js: true do
-    visit collection_path(@collection.owner, @collection)
-    # Goto settings tab enable forums and then visit forums tab
-    page.find('.tabs').click_link("Settings")
+  it 'enables, accesses, and disables the collection forum', js: true do
+    visit collection_path(owner, collection)
+    page.find('.tabs').click_link('Settings')
     page.find('.side-tabs').click_link('Look & Feel')
+
     page.check('Enable forums')
+
     expect(page).to have_checked_field('Enable forums')
     expect(page).to have_content('Collection has been updated')
-    page.find('.tabs').click_link("Forum")
-    expect(page).to have_content("All Messageboards")
-    expect(page).to have_content("Create a New Messageboard")
+    expect(collection.reload).to be_messageboards_enabled
 
-    # Goto settings tab again and disable it
-    page.find('.tabs').click_link("Settings")
+    page.find('.tabs').click_link('Forum')
+
+    expect(page).to have_content('All Messageboards')
+    expect(page).to have_content('Create a New Messageboard')
+
+    page.find('.tabs').click_link('Settings')
     page.find('.side-tabs').click_link('Look & Feel')
     page.uncheck('Enable forums')
+
     expect(page).to have_unchecked_field('Enable forums')
+    expect(collection.reload).not_to be_messageboards_enabled
+
     visit current_path
-    expect(page.find('.tabs')).to_not have_content("Forum")
+
+    expect(page.find('.tabs')).not_to have_link('Forum')
   end
 end
