@@ -34,9 +34,9 @@ describe 'document sets' do
     document_sets
     article.categories << category
     outside_article.categories << category
-    create(:page_article_link, page: works.first.pages.first, article: article)
-    create(:page_article_link, page: works.third.pages.first, article: article)
-    create(:page_article_link, page: works.third.pages.second, article: outside_article)
+    works.first.pages.first.update!(source_text: "[[#{article.title}]]")
+    works.third.pages.first.update!(source_text: "[[#{article.title}]]")
+    works.third.pages.second.update!(source_text: "[[#{outside_article.title}]]")
     user.notification.update!(add_as_collaborator: true)
     rest_user.notification.update!(add_as_collaborator: false)
     ActionMailer::Base.deliveries.clear
@@ -163,9 +163,10 @@ describe 'document sets' do
     page.find('.tabs').click_link('Overview')
     page.find('.collection-work_title', text: document_set.works.first.title).click_link
     expect(page).to have_content(document_set.works.first.title)
-    page.find('.work-page_title').click_link(document_set.works.first.pages.first.title)
+    document_page = document_set.works.first.pages.first
+    page.find('.work-page_title', text: document_page.title).click_link(document_page.title)
     expect(page.current_path).not_to eq collections_list_path
-    expect(page.find('h1')).to have_content(document_set.works.first.pages.first.title)
+    expect(page.find('h1')).to have_content(document_page.title)
     # can a restricted user access a private doc set through a link
     visit collection_path(owner, private_set)
     expect(page.current_path).to eq user_profile_path(owner)
@@ -281,6 +282,8 @@ describe 'document sets' do
     expect(page.current_path).to eq "/#{owner.slug}/#{document_set.slug}/#{work.slug}/edit"
     expect(page.find('.breadcrumbs')).to have_selector('a', text: document_set.title)
     page.find('.side-tabs').click_link('Task Configuration')
+    work.update!(supports_translation: false)
+    visit "/#{owner.slug}/#{document_set.slug}/#{work.slug}/edit/tasks"
     page.check('work_supports_translation')
     expect(page).to have_content('Work updated successfully')
     expect(page.current_path).to eq "/#{owner.slug}/#{document_set.slug}/#{work.slug}/edit/tasks"
