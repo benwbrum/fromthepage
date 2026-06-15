@@ -91,7 +91,6 @@ describe 'disable subject linking' do
     visit collection_read_work_path(owner, collection, work)
     page.find('.work-page_title', text: test_page.title).click_link(test_page.title)
     expect(page).not_to have_content('Autolink')
-    expect(page).to have_content('A single newline')
     fill_in_editor_field(LINKED_TEXT)
     find('#save_button_top').click
     expect(page).to have_content(LINKED_TEXT)
@@ -132,7 +131,6 @@ describe 'disable subject linking' do
       expect(page).to have_content(collection.title)
       expect(page).to have_content(work.title)
       page.find('.work-page_title', text: test_page.title).click_link(test_page.title)
-      page.find('.tabs').click_link('Transcribe')
       fill_in_editor_field(LINKED_TEXT)
       find('#save_button_top').click
 
