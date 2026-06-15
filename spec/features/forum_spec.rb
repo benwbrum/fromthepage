@@ -43,9 +43,12 @@ describe 'forum tab for collection' do
 
     page.find('.tabs').click_link('Settings')
     page.find('.side-tabs').click_link('Look & Feel')
+    expect(page).not_to have_content('Collection has been updated')
+
     page.uncheck('Enable forums')
 
     expect(page).to have_unchecked_field('Enable forums')
+    expect(page).to have_content('Collection has been updated')
     expect(collection.reload).not_to be_messageboards_enabled
 
     visit current_path
