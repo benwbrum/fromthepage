@@ -9,11 +9,14 @@ describe 'collection settings tasks' do
   let(:notify_user) { create(:unique_user, :admin) }
   let(:collection) { create(:collection, owner_user_id: owner.id, works: [], hide_completed: true) }
   let(:works) do
-    3.times.map do
+    created_works = 3.times.map do
       created_work = create(:work, owner: owner, collection: collection)
       2.times { |index| create(:page, work: created_work, position: index + 1) }
       created_work.reload
     end
+
+    collection.works.reset
+    created_works
   end
   let(:work) { works.second }
   let(:work_page) { work.pages.first }
@@ -296,7 +299,7 @@ describe 'collection settings tasks' do
     visit collection_path(collection.owner, collection)
     expect(page).to have_content("About")
     expect(page).to have_content("Works")
-    page.click_link(I18n.t('collection.show.pages_need_correction_or_transcription'))
+    page.click_link(I18n.t('collection.show.pages_need_transcription'))
     expect(page).to have_selector('h3', text: "Pages That Need Transcription")
     # make sure a page exists; don't specify which one
     expect(page).to have_selector('.work-page')
