@@ -6,29 +6,11 @@ module Page::Lib::Common
       raise StandardError, error_msg
     end
 
-    filename = "#{Rails.root}/public/images/working/upload/#{@page.id}.jpg"
+    @page.image.attach(image_file)
 
-    dirname = File.dirname(filename)
-    FileUtils.mkdir_p(dirname) unless Dir.exist? dirname
-
-    FileUtils.mv(image_file.tempfile, filename)
-    FileUtils.chmod('u=wr,go=r', filename)
-    @page.base_image = filename
-    @page.shrink_factor = 0
-    assign_dimensions
+    @page.save!
   rescue StandardError => e
     context.errors = e.message
     context.fail!
-  end
-
-  def assign_dimensions
-    File.unlink @page.thumbnail_filename if File.exist?(@page.thumbnail_filename)
-
-    image = Magick::ImageList.new(@page.base_image)
-    @page.base_width = image.columns
-    @page.base_height = image.rows
-    @page.save!
-
-    @page.thumbnail_image
   end
 end

@@ -21,10 +21,10 @@
             =f.select :translation_status, options_for_select(option_array, page.translation_status)
       tr
         th
-          h3 = f.label :base_image, t('page.form.page_image')
+          h3 = f.label :image, t('page.form.page_image')
         td
           .input-file [data-controller='file-picker']
-            =f.file_field :base_image, tabindex: '-1', accept: 'image/*'
+            =f.file_field :image, tabindex: '-1', accept: 'image/*'
             input(type="text" tabindex="-1" placeholder=t('page.form.click_to_browse_a_file') aria-label=t('page.form.click_to_browse_a_file') readonly)
             button(type="button") #{t('page.form.browse')}
   .sidecol
@@ -32,7 +32,7 @@
     =time_tag page.created_on
       =t('page.form.created', date: l(page.created_on.localtime))
 
--if page.base_image.present?
+-if page.image.attached? || page.base_image.present?
   hr
   .headline
     h2.headline_title =t('page.form.page_image')
@@ -45,7 +45,10 @@
         =link_to rotate_page_index_path(page_id: page.id, orientation: 270), class: 'button outline', title: t('page.form.rotate_counterclockwise'), method: :post do
           =svg_symbol "#icon-rotate-ccw", class: 'icon'
 
-  .page-image-preview =image_tag("#{file_to_url(page.canonical_facsimile_url)}?#{Time.now.to_i}")
+  -if page.image.attached?
+    .page-image-preview =image_tag(page.image)
+  -else
+    .page-image-preview =image_tag("#{file_to_url(page.canonical_facsimile_url)}?#{Time.now.to_i}")
 
 .toolbar
   .toolbar_group.w100

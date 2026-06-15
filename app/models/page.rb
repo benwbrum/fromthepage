@@ -117,6 +117,9 @@ class Page < ApplicationRecord
     'image/tiff'
   ].freeze
 
+  validates :image, content_type: ACCEPTED_FILE_TYPES
+  has_one_attached :image
+
   enum :status, {
     new: 'new',
     blank: 'blank',
@@ -307,36 +310,10 @@ class Page < ApplicationRecord
       self.ia_leaf.facsimile_url
     elsif self.sc_canvas
       self.sc_canvas.facsimile_url
+    elsif self.image.attached?
+      Rails.application.routes.url_helpers.url_for(image)
     else
       base_image
-    end
-  end
-
-  def base_height
-    if self[:base_height].blank?
-      if self.sc_canvas
-        self.sc_canvas.height
-      elsif self.ia_leaf
-        self.ia_leaf.page_h
-      else
-        nil
-      end
-    else
-      self[:base_height]
-    end
-  end
-
-  def base_width
-    if self[:base_width].blank?
-      if self.sc_canvas
-        self.sc_canvas.width
-      elsif self.ia_leaf
-        self.ia_leaf.page_w
-      else
-        nil
-      end
-    else
-      self[:base_width]
     end
   end
 
@@ -344,27 +321,18 @@ class Page < ApplicationRecord
     self[:base_image] || ''
   end
 
-  def shrink_factor
-    self[:shrink_factor] || 0
-  end
-
-  def scaled_image(factor = 2)
-    if 0 == factor
-      self.base_image
-    else
-      self.base_image.sub(/.jpg/, "_#{factor}.jpg")
-    end
-  end
-
   # Returns the thumbnail filename
-  # creates the image if it's not present
   def thumbnail_image
-    if self.ia_leaf
-      return nil
+    return if self.ia_leaf
+    return if self.base_image.blank? && !self.image.attached?
+
+    if image.attached?
+      return Rails.application.routes.url_helpers.url_for(
+        image.variant(resize_to_limit: [nil, 400]).processed
+      )
     end
-    if self.base_image.blank?
-      return nil
-    end
+
+    # TODO: Deprecate this in favor of image.variant
     if !File.exist?(thumbnail_filename())
       if File.exist?(modernize_absolute(self.base_image))
         generate_thumbnail
@@ -376,9 +344,14 @@ class Page < ApplicationRecord
   def thumbnail_url
     if self.ia_leaf
       self.ia_leaf.thumb_url
-    elsif self.sc_canvas && self[:base_image].blank?
+    elsif self.sc_canvas && !self.image.attached? && self[:base_image].blank?
       self.sc_canvas.thumbnail_url
+    elsif self.image.attached?
+      Rails.application.routes.url_helpers.url_for(
+        image.variant(resize_to_limit: [nil, 400])
+      )
     else
+      # TODO: Deprecate this in favor of image.variant
       file_to_url(self.thumbnail_image)
     end
   end
@@ -565,6 +538,7 @@ class Page < ApplicationRecord
     link.id
   end
 
+  # TODO: Deprecate in favor of active_storage
   def thumbnail_filename
     filename=modernize_absolute(self.base_image)
     ext=File.extname(filename)
@@ -660,12 +634,17 @@ class Page < ApplicationRecord
       self.sc_canvas.sc_resource_id
     elsif self.ia_leaf
       self.ia_leaf.facsimile_url
+    elsif self.image.attached?
+      Rails.application.routes.url_helpers.url_for(image)
     else
       image_url_from_web_path(self.canonical_facsimile_url)
     end
   end
 
   def normalized_image_url_for_download
+    return image_url_for_download if image.attached?
+
+    # TODO: Deprecate once move to active storage is completed
     return unless image_url_for_download.present?
 
     normalized_dir = "#{Rails.root}/public/images/working/upload"
@@ -688,6 +667,7 @@ class Page < ApplicationRecord
     image_url_from_web_path(filename)
   end
 
+  # TODO: Deprecate once move to active storage is completed
   def image_url_from_web_path(raw_path)
     web_path = file_to_url(raw_path)
     uri = URI.parse(web_path)
@@ -705,6 +685,32 @@ class Page < ApplicationRecord
     end
 
     uri.to_s
+  end
+
+  def base_width
+    if self.sc_canvas
+      self.sc_canvas.width
+    elsif self.ia_leaf
+      self.ia_leaf.page_w
+    elsif image.attached?
+      image.analyze unless image.analyzed?
+      image.metadata[:width]
+    else
+      self[:base_width]
+    end
+  end
+
+  def base_height
+    if self.sc_canvas
+      self.sc_canvas.height
+    elsif self.ia_leaf
+      self.ia_leaf.page_h
+    elsif image.attached?
+      image.analyze unless image.analyzed?
+      image.metadata[:height]
+    else
+      self[:base_height]
+    end
   end
 
   def is_public?
@@ -827,6 +833,7 @@ class Page < ApplicationRecord
     end
   end
 
+  # TODO: Deprecate once move to active storage is completed
   def generate_thumbnail
     image = Magick::ImageList.new(modernize_absolute(self[:base_image]))
     factor = 400.to_f / self[:base_height].to_f
