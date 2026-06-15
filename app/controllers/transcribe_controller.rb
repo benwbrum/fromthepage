@@ -40,19 +40,8 @@ class TranscribeController  < ApplicationController
   end
 
   def save_transcription
-    old_link_count = @page.page_article_links.where(text_type: 'transcription').count
-    old_article_ids = @page.articles.pluck(:id)
-
     @quality_sampling = QualitySampling.find(params[:quality_sampling_id]) if params[:quality_sampling_id].present?
-
     @layout_mode = cookies[:transcribe_layout_mode] || @collection.default_orientation
-    @page.attributes = page_params unless page_params.empty?
-    @page.ai_draft_used = params[:ai_draft_used]
-
-    if @page.field_based
-      @field_cells = request.params[:fields]
-      @page = TranscriptionField::Lib::Utils.parse_fields(page: @page, field_cells: @field_cells)
-    end
 
     unless params[:page]['needs_review'] == '1'
       @page = Transcribe::Lib::MarkAsBlankHandler.new(
@@ -78,135 +67,49 @@ class TranscribeController  < ApplicationController
     ).perform
 
     if params['save'] || save_to_incomplete || save_to_needs_review || save_to_transcribed || approve_to_transcribed
-      message = log_transcript_attempt
-      # leave the status alone if it's needs review, but otherwise set it to transcribed
-      if save_to_incomplete && params[:page]['needs_review'] != '1'
-        @page.status = :incomplete
-      elsif save_to_needs_review && @page.work.collection.review_workflow
-        @page.status = :needs_review
-      elsif save_to_needs_review
-        if params[:page]['needs_review'] != '1' && Page::COMPLETED_STATUSES.include?(@page.status)
-          skip_re_review = @collection.owner == current_user ||
-                           @collection.reviewers.ids.include?(current_user.id) ||
-                           Deed.where(deed_type: DeedType::COMPLETED_TYPES, user_id: current_user.id, page_id: @page.id).any?
+      save_handler = Transcribe::Lib::SaveTranscriptionHandler.new(
+        page: @page,
+        collection: @collection,
+        page_params: page_params,
+        extra_page_params: extra_page_params,
+        user: current_user,
+        action_params: action_params,
+        field_cells: params[:fields],
+        quality_sampling: @quality_sampling,
+        ai_draft_used: params[:ai_draft_used]
+      )
 
-          @page.status = skip_re_review ? :transcribed : :needs_review
-        else
-          @page.status = params[:page]['needs_review'] == '1' ? :needs_review : :transcribed
-        end
-      elsif (save_to_transcribed && params[:page]['needs_review'] != '1') || approve_to_transcribed
-        @page.status = :transcribed
-      else
-        # old code; possibly dead
-        @page.status = :transcribed unless @page.status_needs_review?
+      save_handler.perform
+      @page = save_handler.page
+      flash[:notice] = save_handler.notice if save_handler.notice.present?
+      if save_handler.redirect_route.present?
+        redirect_to save_handler.redirect_route
+        return
       end
+    else
+      @page.attributes = page_params unless page_params.empty?
 
-      if @page.save
-        # TODO: Implement in save_transcription refactor PR as well
-        if @page.ai_draft_used
-          record_deed(DeedType::AI_DRAFT)
+      if params['preview']
+        @display_context = 'preview'
+        @preview_xml = @page.wiki_to_xml(@page, Page::TEXT_TYPE::TRANSCRIPTION, true)
 
-          Transcribe::FlagAiUseJob.perform_later(
-            page_id: @page.id,
-            user_id: current_user.id
-          )
+        handle_display_page_data
+      elsif params['edit']
+        handle_display_page_data
+      elsif params['autolink']
+        autolinked_source_text = autolink(@page.source_text)
+        if Page.find(@page.id).source_text != autolinked_source_text
+          @page.source_text = autolinked_source_text
+          @autolinked_changed = true
         end
-
-        log_transcript_success
-        flash[:notice] = t('.saved_notice')
-
-        if @page.work.ocr_correction
-          record_deed(DeedType::OCR_CORRECTED)
-        elsif @page.source_text_previously_changed?
-          record_transcription_deed
-        end
-
-        # don't reset subjects if they're disabled
-        unless @page.collection.subjects_disabled || (@page.source_text.include?('[[') == false)
-          # use the new links to blank the graphs
-          @page.clear_article_graphs
-
-          new_link_count = @page.page_article_links.where(text_type: 'transcription').count
-
-          record_deed(DeedType::PAGE_INDEXED) if old_link_count.zero? && new_link_count.positive?
-
-          if new_link_count.positive? &&
-             !@page.status_needs_review? &&
-             !@page.status_incomplete?
-
-            @page.update_columns(status: Page.statuses[:indexed])
-          end
-        end
-
-        @work.work_statistic&.recalculate({ type: @page.status })
-        @page.submit_background_processes('transcription')
-
-        # if this is a guest user, force them to sign up after three saves
-        if current_user.guest?
-          deeds = Deed.where(user_id: current_user.id).where(deed_type: DeedType.edited_and_transcribed_pages).count
-          if deeds < GUEST_DEED_COUNT
-            flash[:notice] = t('.you_may_save_notice', guest_deed_count: GUEST_DEED_COUNT)
-          else
-            session[:user_return_to] = collection_transcribe_page_path(
-              @collection.owner, @collection, @work, @page.id
-            )
-            redirect_to new_user_registration_path, resource: current_user
-            return
-          end
-        end
-
-        if params[:flow] == 'one-off' && !@page.status_needs_review?
-          redirect_to collection_one_off_list_path(@collection.owner, @collection)
-          return
-        elsif params[:flow] =~ /user-contributions/ && !@page.status_needs_review?
-          user_slug = params[:flow].sub('user-contributions ', '')
-          redirect_to collection_user_contribution_list_path(@collection.owner, @collection, user_slug)
-          return
-        elsif @quality_sampling
-          next_page = @quality_sampling.next_unsampled_page
-          if next_page
-            flash[:notice] = t('.saved_and_next_notice') if next_page.id != @page.id
-            redirect_to collection_sampling_review_page_path(@collection.owner,
-                                                             @collection, @quality_sampling,
-                                                             next_page.id, flow: 'quality-sampling')
-            return
-          else
-            redirect_to collection_quality_sampling_path(@collection.owner, @collection, @quality_sampling)
-            return
-          end
-        else
-          save_button_clicked = params[:save_to_incomplete] || params[:save_to_needs_review] ||
-                                params[:save_to_transcribed]
-
-          next_page_id = @page.last? || save_button_clicked ? @page.id : @page.lower_item.id
-          flash[:notice] = t('.saved_and_next_notice') if next_page_id != @page.id
-          redirect_to action: 'assign_categories', page_id: @page.id,
-                      collection_id: @collection, next_page_id: next_page_id, old_article_ids: old_article_ids
-          return
-        end
-      else
-        log_transcript_error(message)
+        handle_display_page_data
       end
-    elsif params['preview']
-      @display_context = 'preview'
-      @preview_xml = @page.wiki_to_xml(@page, Page::TEXT_TYPE::TRANSCRIPTION, true)
-
-      handle_display_page_data
-    elsif params['edit']
-      handle_display_page_data
-    elsif params['autolink']
-      autolinked_source_text = autolink(@page.source_text)
-      if Page.find(@page.id).source_text != autolinked_source_text
-        @page.source_text = autolinked_source_text
-        @autolinked_changed = true
-      end
-      handle_display_page_data
     end
 
     render action: 'display_page'
   rescue REXML::ParseException, StandardError => e
     if params['save'] || save_to_incomplete || save_to_needs_review || save_to_transcribed || approve_to_transcribed
-      log_transcript_exception(e, message)
+      log_transcript_exception(e, save_handler.message)
     end
 
     if e.is_a?(REXML::ParseException)
@@ -444,7 +347,6 @@ class TranscribeController  < ApplicationController
     logger.info(log_message)
   end
 
-
   def log_transcript_attempt
     # we have access to @page, @user, and params
     if @page.field_based
@@ -669,5 +571,23 @@ class TranscribeController  < ApplicationController
 
   def approve_to_transcribed
     params[:approve_to_transcribed]
+  end
+
+  def extra_page_params
+    params.require(:page).permit(:needs_review, :mark_blank)
+  end
+
+  def action_params
+    params.permit(
+      :save,
+      :save_to_incomplete,
+      :save_to_needs_review,
+      :save_to_transcribed,
+      :done_to_incomplete,
+      :done_to_needs_review,
+      :done_to_transcribed,
+      :approve_to_transcribed,
+      :flow
+    )
   end
 end

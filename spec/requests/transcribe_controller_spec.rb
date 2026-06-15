@@ -178,66 +178,6 @@ describe TranscribeController do
     end
   end
 
-  describe '#save_transcription' do
-    # TODO: Move logic to interactor for better isolation testing
-    # Temporary, do not do this pattern for request tests
-    context 'Article rename race check' do
-      # Scenario:
-      # Article is renamed and rename job is still running.
-      # Another user made update to current page
-      # while rename job is unfinished
-      let!(:page) { create(:page, work: work, source_text: '[[Original]]', source_translation: '[[Original]]') }
-      let!(:category) { create(:category) }
-      let!(:article) do
-        create(:article, title: 'Original', collection: collection, pages: [page], categories: [category])
-      end
-      let!(:source_article) do
-        create(:article, collection: collection.reload)
-      end
-      let!(:article_article_link) do
-        create(:article_article_link, source_article: source_article, target_article: article)
-      end
-
-      let(:action_path) do
-        collection_oneoff_review_page_save_path(
-          user_slug: owner.slug,
-          collection_id: collection.slug,
-          page_id: page.id
-        )
-      end
-
-      let(:params) do
-        {
-          flow: '',
-          quality_sampling_id: '',
-          page: {
-            mark_blank: '0',
-            needs_review: '0',
-            source_text: '[[Original]] some change'
-          },
-          save_to_transcribed: '',
-          'filter-brightness' => '0',
-          'filter-contrast' => '0',
-          'filter-threshold' => '0'
-        }
-      end
-
-      let(:subject) { patch action_path, params: params }
-
-      it 'updates page without losing article links' do
-        source_article.update_column(:source_text, '[[Original]]')
-        article.update!(title: 'Renamed')
-
-        login_as owner
-        subject
-
-        expect(page.reload.source_text).to include('[[Original]] some change')
-        expect(page.articles.reload).to include(article)
-        expect(article.reload.categories).to include(category)
-      end
-    end
-  end
-
   describe '#help' do
     let(:action_path) { collection_help_page_path(owner, collection, work, page) }
 
@@ -416,6 +356,26 @@ describe TranscribeController do
         expect(response).to render_template(:display_page)
       end
 
+      context 'exit to edit' do
+        let(:params) do
+          {
+            page_id: page.id,
+            edit: '1',
+            page: {
+              source_text: source_text
+            }
+          }
+        end
+
+        it 'renders status and template' do
+          login_as owner
+          subject
+
+          expect(response).to have_http_status(:ok)
+          expect(response).to render_template(:display_page)
+        end
+      end
+
       context 'when previewing subjects' do
         let(:source_text) { '[[Hello]] world' }
 
@@ -441,6 +401,457 @@ describe TranscribeController do
           expect(response).to have_http_status(:unprocessable_entity)
           expect(response).to render_template(:display_page)
         end
+      end
+    end
+
+    context 'save to incomplete' do
+      let(:source_text) { 'Hello world' }
+      let(:params) do
+        {
+          page_id: page.id,
+          save_to_incomplete: '1',
+          page: {
+            source_text: source_text
+          }
+        }
+      end
+
+      it 'redirects' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(
+          transcribe_assign_categories_path(
+            page_id: page.id,
+            collection_id: collection,
+            next_page_id: page.id
+          )
+        )
+      end
+
+      context 'guest user' do
+        let!(:guest) { create(:unique_user, guest: true) }
+
+        it 'renders status and template' do
+          login_as guest
+          subject
+
+          expect(response).to have_http_status(:ok)
+          expect(response).to render_template(:display_page)
+        end
+
+        context 'when maxed guest attempts' do
+          let!(:deeds) { create_list(:deed, 3, user_id: guest.id, deed_type: DeedType::PAGE_EDIT) }
+
+          it 'redirects' do
+            login_as guest
+            subject
+
+            expect(response).to have_http_status(:redirect)
+            expect(response).to redirect_to(new_user_registration_path)
+          end
+        end
+      end
+
+      context 'one-off flow' do
+        let(:params) do
+          {
+            page_id: page.id,
+            save_to_incomplete: '1',
+            page: {
+              source_text: source_text
+            },
+            flow: 'one-off'
+          }
+        end
+
+        it 'redirects' do
+          login_as owner
+          subject
+
+          expect(response).to have_http_status(:redirect)
+          expect(response).to redirect_to(collection_one_off_list_path(collection.owner, collection))
+        end
+      end
+
+      context 'user-contributions flow' do
+        let!(:user) { create(:unique_user) }
+        let(:params) do
+          {
+            page_id: page.id,
+            save_to_incomplete: '1',
+            page: {
+              source_text: source_text
+            },
+            flow: "user-contributions #{user.slug}"
+          }
+        end
+
+        it 'redirects' do
+          login_as owner
+          subject
+
+          expect(response).to have_http_status(:redirect)
+          expect(response).to redirect_to(collection_user_contribution_list_path(collection.owner, collection, user.slug))
+        end
+      end
+
+      context 'quality sampling flow' do
+        let!(:quality_sampling) { create(:quality_sampling, collection: collection, user: owner) }
+        let(:params) do
+          {
+            page_id: page.id,
+            save_to_incomplete: '1',
+            page: {
+              source_text: source_text
+            },
+            quality_sampling_id: quality_sampling.id
+          }
+        end
+
+        it 'redirects' do
+          login_as owner
+          subject
+
+          expect(response).to have_http_status(:redirect)
+          expect(response).to redirect_to(collection_quality_sampling_path(collection.owner, collection, quality_sampling))
+        end
+
+        context 'with next unsampled page' do
+          let!(:page_2) { create(:page, work: work, status: :needs_review) }
+          let!(:quality_sampling) { create(:quality_sampling, collection: collection, user: owner, sample_set: [page_2.id]) }
+
+          it 'redirects' do
+            login_as owner
+            subject
+
+            expect(response).to have_http_status(:redirect)
+            expect(response).to redirect_to(collection_sampling_review_page_path(collection.owner, collection, quality_sampling, page_2.id, flow: 'quality-sampling'))
+          end
+        end
+      end
+
+      context 'done to incomplete with next page' do
+        let!(:page_2) { create(:page, work: work) }
+        let(:params) do
+          {
+            page_id: page.id,
+            done_to_incomplete: '1',
+            page: {
+              source_text: source_text
+            }
+          }
+        end
+
+        it 'redirects' do
+          login_as owner
+          subject
+
+          expect(response).to have_http_status(:redirect)
+
+          expect(response).to redirect_to(
+            transcribe_assign_categories_path(
+              page_id: page.id,
+              collection_id: collection,
+              next_page_id: page_2.id
+            )
+          )
+        end
+      end
+
+      context 'with transcription errors' do
+        let(:source_text) { '<hi rend="bold">Unclosed' }
+
+        it 'renders status and template' do
+          login_as owner
+          subject
+
+          expect(response).to have_http_status(:unprocessable_entity)
+          expect(response).to render_template(:display_page)
+        end
+      end
+    end
+
+    context 'save to needs_review' do
+      let(:source_text) { 'Hello world' }
+      let(:params) do
+        {
+          page_id: page.id,
+          save_to_needs_review: '1',
+          page: {
+            source_text: source_text
+          }
+        }
+      end
+
+      it 'redirects' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:redirect)
+
+        expect(response).to redirect_to(
+          transcribe_assign_categories_path(
+            page_id: page.id,
+            collection_id: collection,
+            next_page_id: page.id
+          )
+        )
+      end
+
+      context 'done to needs_review with next page' do
+        let!(:page_2) { create(:page, work: work) }
+        let(:params) do
+          {
+            page_id: page.id,
+            done_to_needs_review: '1',
+            page: {
+              source_text: source_text
+            }
+          }
+        end
+
+        it 'redirects' do
+          login_as owner
+          subject
+
+          expect(response).to have_http_status(:redirect)
+          expect(response).to redirect_to(
+            transcribe_assign_categories_path(
+              page_id: page.id,
+              collection_id: collection,
+              next_page_id: page_2.id
+            )
+          )
+        end
+      end
+
+      context 'when page status is complete' do
+        let!(:page) { create(:page, work: work, status: :transcribed) }
+
+        it 'redirects' do
+          login_as owner
+          subject
+
+          expect(response).to have_http_status(:redirect)
+          expect(response).to redirect_to(
+            transcribe_assign_categories_path(
+              page_id: page.id,
+              collection_id: collection,
+              next_page_id: page.id
+            )
+          )
+        end
+      end
+
+      context 'when review workflow' do
+        let!(:collection) { create(:collection, owner_user_id: owner.id, review_type: :required) }
+
+        it 'redirects' do
+          login_as owner
+          subject
+
+          expect(response).to have_http_status(:redirect)
+
+          expect(response).to redirect_to(
+            transcribe_assign_categories_path(
+              page_id: page.id,
+              collection_id: collection,
+              next_page_id: page.id
+            )
+          )
+        end
+      end
+    end
+
+    context 'save to transcribed' do
+      let(:source_text) { 'Hello world' }
+      let(:params) do
+        {
+          page_id: page.id,
+          save_to_transcribed: '1',
+          page: {
+            source_text: source_text
+          }
+        }
+      end
+
+      it 'redirects' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:redirect)
+
+        expect(response).to redirect_to(
+          transcribe_assign_categories_path(
+            page_id: page.id,
+            collection_id: collection,
+            next_page_id: page.id
+          )
+        )
+      end
+
+      context 'done to transcribed with next page' do
+        let!(:page_2) { create(:page, work: work) }
+        let(:params) do
+          {
+            page_id: page.id,
+            done_to_transcribed: '1',
+            page: {
+              source_text: source_text
+            }
+          }
+        end
+
+        it 'redirects' do
+          login_as owner
+          subject
+
+          expect(response).to have_http_status(:redirect)
+
+          expect(response).to redirect_to(
+            transcribe_assign_categories_path(
+              page_id: page.id,
+              collection_id: collection,
+              next_page_id: page_2.id
+            )
+          )
+        end
+      end
+
+      context 'when needs_review' do
+        let(:params) do
+          {
+            page_id: page.id,
+            save_to_transcribed: '1',
+            page: {
+              source_text: source_text,
+              needs_review: '1'
+            }
+          }
+        end
+
+        it 'redirects' do
+          login_as owner
+          subject
+
+          expect(response).to have_http_status(:redirect)
+
+          expect(response).to redirect_to(
+            transcribe_assign_categories_path(
+              page_id: page.id,
+              collection_id: collection,
+              next_page_id: page.id
+            )
+          )
+        end
+      end
+
+      context 'articles' do
+        let!(:collection) { create(:collection, owner_user_id: owner.id, subjects_disabled: false) }
+        let(:source_text) { '[[Article]]' }
+
+        it 'renders status and template' do
+          login_as owner
+          subject
+
+          expect(response).to have_http_status(:redirect)
+          expect(response).to redirect_to(
+            transcribe_assign_categories_path(
+              page_id: page.id,
+              collection_id: collection,
+              next_page_id: page.id
+            )
+          )
+        end
+      end
+    end
+
+    context 'approve_to_transcribed' do
+      let!(:page) { create(:page, work: work, status: :needs_review) }
+      let(:source_text) { 'Hello world' }
+      let(:params) do
+        {
+          page_id: page.id,
+          approve_to_transcribed: '1',
+          page: {
+            source_text: source_text
+          }
+        }
+      end
+
+      it 'redirects' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:redirect)
+
+        expect(response).to redirect_to(
+          transcribe_assign_categories_path(
+            page_id: page.id,
+            collection_id: collection,
+            next_page_id: page.id
+          )
+        )
+      end
+    end
+
+    # TODO: Move logic to interactor for better isolation testing
+    # Temporary, do not do this pattern for request tests
+    context 'Article rename race check' do
+      # Scenario:
+      # Article is renamed and rename job is still running.
+      # Another user made update to current page
+      # while rename job is unfinished
+      let!(:page) { create(:page, work: work, source_text: '[[Original]]', source_translation: '[[Original]]') }
+      let!(:category) { create(:category) }
+      let!(:article) do
+        create(:article, title: 'Original', collection: collection, pages: [page], categories: [category])
+      end
+      let!(:source_article) do
+        create(:article, collection: collection.reload)
+      end
+      let!(:article_article_link) do
+        create(:article_article_link, source_article: source_article, target_article: article)
+      end
+
+      let(:action_path) do
+        collection_oneoff_review_page_save_path(
+          user_slug: owner.slug,
+          collection_id: collection.slug,
+          page_id: page.id
+        )
+      end
+
+      let(:params) do
+        {
+          flow: '',
+          quality_sampling_id: '',
+          page: {
+            mark_blank: '0',
+            needs_review: '0',
+            source_text: '[[Original]] some change'
+          },
+          save_to_transcribed: '',
+          'filter-brightness' => '0',
+          'filter-contrast' => '0',
+          'filter-threshold' => '0'
+        }
+      end
+
+      let(:subject) { patch action_path, params: params }
+
+      it 'updates page without losing article links' do
+        source_article.update_column(:source_text, '[[Original]]')
+        article.update!(title: 'Renamed')
+
+        login_as owner
+        subject
+
+        expect(page.reload.source_text).to include('[[Original]] some change')
+        expect(page.articles.reload).to include(article)
+        expect(article.reload.categories).to include(category)
       end
     end
   end

@@ -433,6 +433,7 @@ class Page < ApplicationRecord
     end
   end
 
+  # TODO: Move to async job
   def submit_background_processes(type)
     if type == 'transcription'
       latex = self.source_text.scan(LATEX_SNIPPET)
