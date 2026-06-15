@@ -474,5 +474,4 @@ describe 'collection spec (isolated)' do
       expect(page).to have_content("OCR correction has been disabled for all works.")
     end
   end
-
 end
