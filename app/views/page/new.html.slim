@@ -10,10 +10,10 @@
         th =f.label :title, t('.title')
         td.w100 =f.text_field :title
       tr
-        th =f.label :base_image, t('.page_image')
+        th =f.label :image, t('.page_image')
         td
           .input-file [data-controller='file-picker']
-            =f.file_field :base_image, tabindex: '-1', accept: 'image/*'
+            =f.file_field :image, tabindex: '-1', accept: 'image/*'
             input(type="text" tabindex="-1" placeholder=t('.click_to_browse_a_file') readonly)
             button(type="button") #{t('.browse')}
     .toolbar

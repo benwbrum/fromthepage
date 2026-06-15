@@ -3,37 +3,46 @@ module CollectionCopyHelper
   # Copy uploaded page image files to prevent sharing between collections
   def self.copy_page_image_files(source_page, target_page)
     # Only copy files for uploaded images (not IIIF or Internet Archive)
-    return if source_page.base_image.blank?
+    return if !source_page.image.attached? && source_page.base_image.blank?
     return if source_page.sc_canvas.present?
     return if source_page.ia_leaf.present?
 
-    source_base_image = source_page.base_image
-    source_base_path = File.join(Rails.root, 'public', source_base_image.sub(/.*public/, ''))
+    if source_page.image.attached?
+      target_page.image.attach(source_page.image.blob)
+    else
+      source_base_image = source_page.base_image
+      source_base_path = File.join(Rails.root, 'public', source_base_image.sub(/.*public/, ''))
 
-    # Only copy if the source file exists
-    return unless File.exist?(source_base_path)
+      # Only copy if the source file exists
+      return unless File.exist?(source_base_path)
 
-    # Generate target filename with new page id
-    ext = File.extname(source_base_path)
-    target_base_path = File.join(Rails.root, 'public', 'images', 'working', 'upload', "#{target_page.id}#{ext}")
+      # Generate target filename with new page id
+      ext = File.extname(source_base_path)
+      content_type =
+        case ext
+        when '.jpg', '.jpeg'
+          'image/jpeg'
+        when '.png'
+          'image/png'
+        when '.gif'
+          'image/gif'
+        when '.webp'
+          'image/webp'
+        else
+          'application/octet-stream'
+        end
 
-    # Ensure target directory exists
-    target_dir = File.dirname(target_base_path)
-    FileUtils.mkdir_p(target_dir) unless Dir.exist?(target_dir)
+      File.open(source_base_path) do |file|
+        target_page.image.attach(
+          io: file,
+          filename: File.basename(source_base_path),
+          content_type: content_type
+        )
+      end
+    end
 
-    # Copy the base image file
-    FileUtils.cp(source_base_path, target_base_path)
-    FileUtils.chmod('u=wr,go=r', target_base_path)
-
-    # Update the target page's base_image attribute to point to the new file
-    # Note: base_image is stored as absolute path matching the pattern from Page::Lib::Common
-    target_page.base_image = target_base_path
-    target_page.save!
-
-    # Reload to ensure thumbnail_filename uses the updated base_image
+    target_page.thumbnail_image
     target_page.reload
-
-    # thumbnails are generated on demand; no need to copy
     puts "Copied image files for page #{source_page.id} to page #{target_page.id}"
   end
 end
