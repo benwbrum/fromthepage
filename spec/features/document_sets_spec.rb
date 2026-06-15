@@ -34,9 +34,9 @@ describe 'document sets' do
     document_sets
     article.categories << category
     outside_article.categories << category
-    works.first.pages.first.update!(source_text: "[[#{article.title}]]")
-    works.third.pages.first.update!(source_text: "[[#{article.title}]]")
-    works.third.pages.second.update!(source_text: "[[#{outside_article.title}]]")
+    Page.find(works.first.pages.first.id).update!(source_text: "[[#{article.title}]]")
+    Page.find(works.third.pages.first.id).update!(source_text: "[[#{article.title}]]")
+    Page.find(works.third.pages.second.id).update!(source_text: "[[#{outside_article.title}]]")
     user.notification.update!(add_as_collaborator: true)
     rest_user.notification.update!(add_as_collaborator: false)
     ActionMailer::Base.deliveries.clear
