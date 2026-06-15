@@ -1,97 +1,110 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
-describe "export tasks" do
-  include ActiveJob::TestHelper
-
-  before :all do
-    @owner = User.find_by(login: OWNER)
-    @collection = @owner.all_owner_collections.second
-    @work = @collection.works.last
-    @page = @work.pages.first
+describe 'export tasks' do
+  let(:owner) { create(:unique_user, :owner) }
+  let(:admin) { create(:unique_user, :admin) }
+  let(:collection) { create(:collection, owner_user_id: owner.id, works: []) }
+  let(:work) { create(:work, collection: collection, owner: owner) }
+  let(:work_page) do
+    page = create(:page, :transcribed, work: work)
+    page.update!(source_text: 'Isolated export transcript')
+    page
   end
 
-  before :each do
-    login_as(@owner, scope: :user)
+  before do
+    DatabaseCleaner.start
+    work_page
+    login_as(owner, scope: :user)
   end
 
-  it "exports all works in a collection" do
-    # TODO add better export tests for new UI
-    visit dashboard_owner_path
-    page.find('.collection_title', text: @collection.title).click_link(@collection.title)
-    page.find('.tabs').click_link("Export")
-    expect(page).to have_content("Export All Works")
-    expect(page).to have_content(@work.title)
+  after do
+    DatabaseCleaner.clean
+  end
+
+  it 'queues an export of all works in a collection' do
+    allow_any_instance_of(BulkExport).to receive(:submit_export_process)
+    visit collection_export_path(owner, collection)
+
+    expect(page).to have_content('Export All Works')
+    expect(page).to have_content(work.title)
     page.find('#btnExportAll').click
-    expect(page.response_headers['Content-Type']).to eq 'text/html; charset=utf-8'
+    expect(page.response_headers['Content-Type']).to eq('text/html; charset=utf-8')
 
-    page.check('bulk_export_html_page')
-    page.check('bulk_export_html_work')
-    page.check('bulk_export_plaintext_verbatim_page')
-    page.check('bulk_export_plaintext_verbatim_work')
-    page.check('bulk_export_plaintext_emended_work')
-    page.check('bulk_export_plaintext_emended_page')
-    page.check('bulk_export_plaintext_searchable_work')
-    page.check('bulk_export_plaintext_searchable_page')
-    page.check('bulk_export_tei_work')
-    page.check('bulk_export_table_csv_work')
-    page.check('bulk_export_table_csv_collection')
-    page.check('bulk_export_subject_csv_collection')
-    page.check('bulk_export_work_metadata_csv')
-    page.check('bulk_export_static')
+    export_formats.each { |format| page.check("bulk_export_#{format}") }
+    click_button('Start Export')
 
-    page.find('button', text: 'Start Export').click
-    expect(page).to have_content("Queued")
+    expect(page).to have_content('Queued')
+    bulk_export = collection.bulk_exports.find_by!(user: owner)
+    expect(bulk_export).to have_attributes(status: 'queued', html_page: true, tei_work: true, static: true)
 
-    login_as(User.where(admin: true).first, scope: :user)
-
-    1.upto(10) do
-      sleep 5
-      if BulkExport.last.status == 'finished'
-        break
-      end
-    end
-
-    # TODO: Once solid_queue worker contexts are figured out, bring this back
-    # perform_enqueued_jobs
-
+    login_as(admin, scope: :user)
     visit bulk_export_index_path
-    expect(page).to have_content("Administration")
+
+    expect(page).to have_content('Administration')
+    expect(page).to have_content(collection.title)
   end
 
+  it 'exports a work as XHTML' do
+    visit collection_export_path(owner, collection)
 
-  it "exports a work as xhtml" do
-    visit "/export?collection_id=#{@collection.id}"
-    expect(page).to have_content("Export Individual Works")
-    page.find('tr', text: @work.title).click_link("HTML")
-    expect(page.current_path).to eq ("/export/show")
-    expect(page).to have_content(@work.title)
-    expect(page).to have_content("Page Transcripts")
-    expect(page).to have_content(@page.title)
+    expect(page).to have_content('Export Individual Works')
+    page.find('tr', text: work.title).click_link('HTML')
+
+    expect(page.current_path).to eq(export_show_path)
+    expect(page).to have_content(work.title)
+    expect(page).to have_content('Page Transcripts')
+    expect(page).to have_content(work_page.title)
   end
 
-  it "exports a work as plain text" do
-    visit "/export?collection_id=#{@collection.id}"
-    expect(page).to have_content("Export Individual Works")
-    page.find('tr', text: @work.title).click_link("Plain text")
-    expect(page.current_path).to eq ("/export/work_plaintext_verbatim")
-    expect(page.body).to have_content(@work.verbatim_transcription_plaintext)
+  it 'exports a work as plain text' do
+    expect(work.reload.verbatim_transcription_plaintext).to include('Isolated export transcript')
+    visit collection_export_path(owner, collection)
+
+    expect(page).to have_content('Export Individual Works')
+    page.find('tr', text: work.title).click_link('Plain text')
+
+    expect(page.current_path).to eq(export_work_plaintext_verbatim_path)
+    expect(page.body).to include('Isolated export transcript')
   end
 
-  it "exports a work as tei" do
-    visit "/export?collection_id=#{@collection.id}"
-    expect(page).to have_content("Export Individual Works")
-    page.find('tr', text: @work.title).click_link("TEI")
-    expect(page.current_path).to eq ("/export/#{@work.slug}/tei")
-    expect(page).to have_content(@work.title)
-    expect(page).to have_content("TEI export")
+  it 'exports a work as TEI' do
+    visit collection_export_path(owner, collection)
+
+    expect(page).to have_content('Export Individual Works')
+    page.find('tr', text: work.title).click_link('TEI')
+
+    expect(page.current_path).to eq(export_tei_path(work.slug))
+    expect(page).to have_content(work.title)
+    expect(page).to have_content('TEI export')
   end
 
-  it "fails to export a table csv" do
-    # this collection has no table data, so these shouldn't be available
-    visit "/export?collection_id=#{@collection.id}"
-    expect(page).to have_content("Export Individual Works")
-    expect(page.find('tr', text: @work.title)).not_to have_selector('.btnCsvTblExport')
-    expect(page).not_to have_content("Export All Tables")
+  it 'does not offer table CSV exports without table data' do
+    visit collection_export_path(owner, collection)
+
+    expect(page).to have_content('Export Individual Works')
+    expect(page.find('tr', text: work.title)).not_to have_selector('.btnCsvTblExport')
+    expect(page).not_to have_content('Export All Tables')
     expect(page).not_to have_selector('#btnExportTables')
+  end
+
+  def export_formats
+    %w[
+      html_page
+      html_work
+      plaintext_verbatim_page
+      plaintext_verbatim_work
+      plaintext_emended_work
+      plaintext_emended_page
+      plaintext_searchable_work
+      plaintext_searchable_page
+      tei_work
+      table_csv_work
+      table_csv_collection
+      subject_csv_collection
+      work_metadata_csv
+      static
+    ]
   end
 end

@@ -1,93 +1,110 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
-describe "owner actions", order: :defined do
-  before :all do
-    @owner = User.find_by(login: OWNER)
-    @collections = @owner.all_owner_collections
-    @collection = @collections.first
-    @works = @owner.owner_works
-    @title = "This is an empty work"
-    @rtl_collection = Collection.find(3)
+describe 'owner actions' do
+  before do |example|
+    DatabaseCleaner.start unless example.metadata[:js]
+    login_as(owner, scope: :user)
   end
 
-  before :each do
-    login_as(@owner, scope: :user)
-  end
-
-  it "fails to upload a document", js: true do
-    visit dashboard_owner_path
-    page.find('.tabs').click_link("Start A Project")
-    page.find(:css, "#document-upload").click
-    select2_select(id: 'document_upload_collection_id', value: @collections.first.title)
-    click_button('Upload File')
-    expect(page).to have_content("prohibited the form from being saved")
-    expect(page).to have_content("File can't be blank")
-  end
-
-  it "creates a new collection" do
-    @owner.account_type = "Small Organization"
-    collection_count = @owner.all_owner_collections.count
-    visit dashboard_owner_path
-    page.find('a', text: 'Create a Collection').click
-    fill_in 'collection_title', with: 'New Test Collection'
-    click_button('Create Collection')
-    test_collection = Collection.find_by(title: 'New Test Collection')
-    expect(test_collection.subjects_disabled).to be true
-    expect(collection_count + 1).to eq @owner.all_owner_collections.count
-    expect(page).to have_content("#{test_collection.title}")
-    expect(page).to have_content("Upload PDF or ZIP File")
-  end
-
-  it "creates an empty new work in a collection", js: true do
-    VCR.use_cassette('sc_collections/gist', record: :none) do
-      @owner.account_type = "Small Organization"
-      test_collection = Collection.find_by(title: 'New Test Collection')
-      work_title = "New Test Work"
-      visit dashboard_owner_path
-      click_link("#{test_collection.title}")
-      click_link("Add a new work")
-      expect(page).to have_content("#{test_collection.title}")
-      expect(page).to have_content("Create Empty Work")
-      page.find(:css, "#create-empty-work").click
-      fill_in 'work_title', with: work_title
-      fill_in 'work_description', with: "This work contains no pages."
-      click_button('Create Work')
-      expect(page).to have_content("Here you see the list of all pages in the work.")
-      expect(Work.find_by(title: work_title)).not_to be nil
+  after do |example|
+    if example.metadata[:js]
+      owner.all_owner_collections.each(&:destroy!)
+      owner.destroy!
+    else
+      DatabaseCleaner.clean
     end
   end
 
-  it "checks for subject in a new collection" do
-    @owner.account_type = "Small Organization"
-    test_collection = Collection.find_by(title: 'New Test Collection')
-    test_collection.subjects_disabled = false
-    test_collection.save
-    visit dashboard_owner_path
-    page.find('.maincol').click_link("#{test_collection.title}")
-    page.find('.tabs').click_link("Subjects")
-    expect(page).to have_content("Places")
-    expect(page).to have_content("People")
+  let(:owner) { create(:unique_user, :owner, account_type: 'Small Organization') }
+  let(:new_collection_title) { "New Test Collection #{SecureRandom.hex(4)}" }
+  let(:collection) do
+    create(
+      :collection,
+      owner_user_id: owner.id,
+      subjects_disabled: false,
+      works: build_list(:work_with_pages, 2, owner: owner)
+    )
+  end
+  let(:second_collection) do
+    create(
+      :collection,
+      owner_user_id: owner.id,
+      works: build_list(:work_with_pages, 2, owner: owner)
+    )
   end
 
-  it "deletes a collection" do
-    @owner.account_type = "Small Organization"
-    test_collection = Collection.find_by(title: 'New Test Collection')
-    collection_count = @owner.all_owner_collections.count
+  it 'fails to upload a document', js: true do
+    collection
     visit dashboard_owner_path
-    expect(page.find('.maincol')).to have_content("#{test_collection.title}")
-    page.find('.maincol').click_link("#{test_collection.title}")
-    page.find('.tabs').click_link("Settings")
-    page.find('.side-tabs').click_link("Danger Zone")
-    expect(page).to have_content("Please use caution")
+    page.find('.tabs').click_link('Start A Project')
+    page.find(:css, '#document-upload').click
+    select2_select(id: 'document_upload_collection_id', value: collection.title)
+    click_button('Upload File')
+    expect(page).to have_content('prohibited the form from being saved')
+    expect(page).to have_content("File can't be blank")
+  end
+
+  it 'creates a new collection' do
+    collection_count = owner.all_owner_collections.count
+    visit dashboard_owner_path
+    page.find('a', text: 'Create a Collection').click
+    fill_in 'collection_title', with: new_collection_title
+    click_button('Create Collection')
+
+    test_collection = Collection.find_by!(title: new_collection_title)
+    expect(test_collection.subjects_disabled).to be true
+    expect(owner.all_owner_collections.count).to eq(collection_count + 1)
+    expect(page).to have_content(test_collection.title)
+    expect(page).to have_content('Upload PDF or ZIP File')
+  end
+
+  it 'creates an empty new work in a collection', js: true do
+    collection
+    VCR.use_cassette('sc_collections/gist', record: :none) do
+      work_title = "New Test Work #{SecureRandom.hex(4)}"
+      visit dashboard_owner_path
+      click_link(collection.title)
+      click_link('Add a new work')
+      expect(page).to have_content(collection.title)
+      expect(page).to have_content('Create Empty Work')
+      page.find(:css, '#create-empty-work').click
+      fill_in 'work_title', with: work_title
+      fill_in 'work_description', with: 'This work contains no pages.'
+      click_button('Create Work')
+      expect(page).to have_content('Here you see the list of all pages in the work.')
+      expect(collection.works.find_by(title: work_title)).to be_present
+    end
+  end
+
+  it 'checks for subjects in a new collection' do
+    collection
+    visit dashboard_owner_path
+    page.find('.maincol').click_link(collection.title)
+    page.find('.tabs').click_link('Subjects')
+    expect(page).to have_content('Places')
+    expect(page).to have_content('People')
+  end
+
+  it 'deletes a collection' do
+    collection
+    collection_count = owner.all_owner_collections.count
+    visit dashboard_owner_path
+    expect(page.find('.maincol')).to have_content(collection.title)
+    page.find('.maincol').click_link(collection.title)
+    page.find('.tabs').click_link('Settings')
+    page.find('.side-tabs').click_link('Danger Zone')
+    expect(page).to have_content('Please use caution')
     click_link('Delete Collection')
     expect(page.current_path).to eq dashboard_owner_path
-    expect(page).not_to have_content("#{test_collection.title}")
-    expect(collection_count - 1).to eq @owner.all_owner_collections.count
+    expect(page).not_to have_content(collection.title)
+    expect(owner.all_owner_collections.count).to eq(collection_count - 1)
   end
 
   it 'creates a collection from work dropdown', js: true do
-    @owner.account_type = 'Small Organization'
-    col_title = 'New Work Collection'
+    collection
+    collection_title = "New Work Collection #{SecureRandom.random_number(1_000_000)}"
     visit dashboard_owner_path
     page.find('.tabs').click_link('Start A Project')
     page.find(:css, '#document-upload', wait: 5).click
@@ -95,297 +112,311 @@ describe "owner actions", order: :defined do
 
     within(page.find('.litebox-embed', wait: 5)) do
       expect(page).to have_content('Create New Collection', wait: 5)
-      fill_in 'collection_title', with: col_title
+      fill_in 'collection_title', with: collection_title
       page.execute_script("$('#create-collection').click()")
     end
 
     sleep(2)
-
     page.find(:css, '#document-upload', wait: 5).click
 
     select_element = find('#document_upload_collection_id', visible: false, wait: 5)
-    expect(select_element.value.titleize).to eq(col_title)
-
-    sleep(2)
-    expect(Collection.last.title).to eq col_title
-    # need to remove this collection to prevent conflicts in later tests
-    Collection.last.destroy
+    expect(select_element.value.titleize).to eq(collection_title)
+    expect(Collection.find_by(title: collection_title)).to be_present
   end
 
-  it "creates a subject category" do
-    @count = @collection.categories.count
-    cat = @collection.categories.find_by(title: "People")
-    visit collection_path(@collection.owner, @collection)
-    page.find('.tabs').click_link("Subjects")
-    @name = "#category-" + "#{cat.id}"
-    page.find(@name).find('a', text: 'Add Root Category').click
+  it 'creates a subject category' do
+    category_count = collection.categories.count
+    people_category = collection.categories.find_by!(title: 'People')
+    visit collection_path(collection.owner, collection)
+    page.find('.tabs').click_link('Subjects')
+    within "#category-#{people_category.id}" do
+      click_link('Add Root Category')
+    end
     fill_in 'category_title', with: 'New Test Category'
     click_button('Create Category')
-    expect(@count + 1).to eq (@collection.categories.count)
-    visit "/article/list?collection_id=#{@collection.id}"
-    expect(page).to have_content("New Test Category")
+    expect(collection.categories.count).to eq(category_count + 1)
+    visit collection_subjects_path(collection.owner, collection)
+    expect(page).to have_content('New Test Category')
   end
 
-  it "deletes a subject category" do
-    @count = @collection.categories.count
-    cat = @collection.categories.find_by(title: "New Test Category")
-    visit collection_path(@collection.owner, @collection)
-    page.find('.tabs').click_link("Subjects")
-    expect(page).to have_content("New Test Category")
-    @name = "#category-" + "#{cat.id}"
-    page.find(@name).find('a', text: 'Delete Category').click
-    expect(@count - 1).to eq (@collection.categories.count)
-    visit "/article/list?collection_id=#{@collection.id}"
-    expect(page).not_to have_content("New Test Category")
+  it 'deletes a subject category' do
+    category = create(:category, collection: collection, title: 'New Test Category')
+    category_count = collection.categories.count
+    visit collection_path(collection.owner, collection)
+    page.find('.tabs').click_link('Subjects')
+    expect(page).to have_content(category.title)
+    within "#category-#{category.id}" do
+      click_link('Delete Category')
+    end
+    expect(collection.categories.count).to eq(category_count - 1)
+    visit collection_subjects_path(collection.owner, collection)
+    expect(page).not_to have_content(category.title)
   end
 
   it 'enables GIS for subject category', js: true do
-    category = @collection.categories.find_by(title: 'Places')
-    category.gis_enabled = false
-    category.save
+    category = collection.categories.find_by!(title: 'Places')
+    category.update!(gis_enabled: false)
+    category_selector = "#category-#{category.id}"
 
-    visit collection_path(@collection.owner, @collection)
+    visit collection_path(collection.owner, collection)
     page.find('.tabs').click_link('Subjects')
-    @name = "#category-#{category.id}"
     expect(page).to have_content('Places')
     page.find('a.tree-item', text: 'Places').click
 
-    page.find(@name).find('dl.dropdown.right dt.h5', text: 'Actions', match: :first).click
-    page.find(@name).find('a', text: 'Enable GIS').click
-    expect(page.find('.flash_message')).to have_content("GIS enabled for Places")
+    page.find(category_selector).find('dl.dropdown.right dt.h5', text: 'Actions', match: :first).click
+    page.find(category_selector).find('a', text: 'Enable GIS').click
+    expect(page.find('.flash_message')).to have_content('GIS enabled for Places')
 
-    page.find(@name).find('dl.dropdown.right dt.h5', text: 'Actions', match: :first).click
-    page.find(@name).find('a', text: 'Add Child Category').click
+    page.find(category_selector).find('dl.dropdown.right dt.h5', text: 'Actions', match: :first).click
+    page.find(category_selector).find('a', text: 'Add Child Category').click
     fill_in 'category_title', with: 'Child GIS'
     click_button('Create Category')
 
     page.find('a.tree-item', text: 'Places').click
-    page.find(@name).find('dl.dropdown.right dt.h5', text: 'Actions', match: :first).click
-    page.find(@name).find('a', text: 'Disable GIS').click
-    expect(page.find('.flash_message')).to have_content("GIS disabled for Places and 1 child category")
+    page.find(category_selector).find('dl.dropdown.right dt.h5', text: 'Actions', match: :first).click
+    page.find(category_selector).find('a', text: 'Disable GIS').click
+    expect(page.find('.flash_message')).to have_content('GIS disabled for Places and 1 child category')
 
-    page.find(@name).find('dl.dropdown.right dt.h5', text: 'Actions', match: :first).click
-    page.find(@name).find('a', text: 'Add Child Category').click
+    page.find(category_selector).find('dl.dropdown.right dt.h5', text: 'Actions', match: :first).click
+    page.find(category_selector).find('a', text: 'Add Child Category').click
     fill_in 'category_title', with: 'Child GIS-2'
     click_button('Create Category')
 
     page.find('a.tree-item', text: 'Places').click
-    page.find(@name).find('dl.dropdown.right dt.h5', text: 'Actions', match: :first).click
-    page.find(@name).find('a', text: 'Enable GIS').click
-    expect(page.find('.flash_message')).to have_content("GIS enabled for Places and 2 child categories")
+    page.find(category_selector).find('dl.dropdown.right dt.h5', text: 'Actions', match: :first).click
+    page.find(category_selector).find('a', text: 'Enable GIS').click
+    expect(page.find('.flash_message')).to have_content('GIS enabled for Places and 2 child categories')
   end
 
-  it "fails to create an empty work", js: true do
+  it 'fails to create an empty work', js: true do
+    second_collection
     visit dashboard_owner_path
-    page.find('.tabs').click_link("Start A Project")
-    page.find(:css, "#create-empty-work").click
-    select2_select(id: 'work_collection_id', value: @collections.last.title)
-    fill_in 'work_description', with: "This work should fail to create."
+    page.find('.tabs').click_link('Start A Project')
+    page.find(:css, '#create-empty-work').click
+    select2_select(id: 'work_collection_id', value: second_collection.title)
+    fill_in 'work_description', with: 'This work should fail to create.'
     click_button('Create Work')
-    expect(page).to have_content("Create Empty Work")
+    expect(page).to have_content('Create Empty Work')
     expect(page).to have_content("Title can't be blank")
   end
 
-  it "moves a work to another collection", js: true do
-    work = Work.find_by(title: @title)
+  it 'moves a work to another collection', js: true do
+    work = create(:work, :with_pages, title: 'This is an empty work', owner: owner, collection: second_collection)
+    create(:deed, user: owner, collection: second_collection, work: work, page: work.pages.first)
+    collection
 
     visit dashboard_owner_path
-    page.find('.maincol').find('a', text: work.collection.title).click
-    page.find('.collection-works').find('a', text: @title).click
+    page.find('.maincol').find('a', text: second_collection.title).click
+    page.find('.collection-works').find('a', text: work.title).click
     page.find('.tabs').click_link('Settings')
-    expect(page).to have_content(@title)
-    expect(page).to have_content("Work title")
-    expect(page.find('.breadcrumbs')).to have_selector('a', text: @collections.second.title)
-    expect(page.find('#work_collection_id')).to have_content(@collections.second.title)
-    select(@collection.title, from: 'work_collection_id')
-    expect(page).to have_content("Work updated successfully")
-    work = Work.find_by(title: @title)
-    expect(Deed.last.work_id).to eq(work.id)
-    expect(work.deeds.where.not(collection_id: work.collection_id).count).to eq(0)
-    expect(page.find('.breadcrumbs')).to have_selector('a', text: @collection.title)
+    expect(page).to have_content(work.title)
+    expect(page).to have_content('Work title')
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: second_collection.title)
+    expect(page.find('#work_collection_id')).to have_content(second_collection.title)
+    select(collection.title, from: 'work_collection_id')
+    expect(page).to have_content('Work updated successfully')
+
+    work.reload
+    expect(work.collection).to eq collection
+    expect(work.deeds.where.not(collection_id: collection.id)).to be_empty
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: collection.title)
   end
 
-  it "doesn't move a work with articles", js: true do
-    col = Collection.second
-    work = col.works.second
-    test_page = work.pages.first
+  it "doesn't move a work with articles when confirmation is dismissed", js: true do
+    work, test_page = work_with_subject_link
+    collection
 
-    visit collection_transcribe_page_path(col.owner, col, work, test_page)
-    fill_in_editor_field "[[Switzerland]]"
-    find('#save_button_top').click
-    expect(page.find('.flash_message')).to have_content("Saved")
-
-    visit edit_collection_work_path(col.owner, col, work)
-    expect(page).to have_content("Work title")
-    expect(page.find('.breadcrumbs')).to have_selector('a', text: col.title)
-    # reject the modal and get text
+    visit edit_collection_work_path(second_collection.owner, second_collection, work)
+    expect(page).to have_content('Work title')
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: second_collection.title)
     message = page.dismiss_confirm do
-      select(@collection.title, from: 'work_collection_id')
+      select(collection.title, from: 'work_collection_id')
     end
-    expect(message).to have_content("Are you sure you want to move this work")
-    expect(Work.find_by(id: work.id).collection).to eq col
+    expect(message).to have_content('Are you sure you want to move this work')
+    expect(work.reload.collection).to eq second_collection
+    expect(test_page.reload.source_text).to include('[[')
   end
 
-  it "moves a work with articles", js: true do
-    col = Collection.second
-    work = col.works.second
-    test_page = work.pages.first
+  it 'moves a work with articles when confirmation is accepted', js: true do
+    work, test_page = work_with_subject_link
+    collection
 
-    # note: this is probably redundant, but it prevents failure from other tests
-    visit collection_transcribe_page_path(col.owner, col, work, test_page)
-    fill_in_editor_field "[[Switzerland]]"
-    find('#save_button_top').click
-    expect(page.find('.flash_message')).to have_content("Saved")
-
-    visit edit_collection_work_path(col.owner, col, work)
-    expect(page).to have_content("Work title")
-    expect(page.find('.breadcrumbs')).to have_selector('a', text: col.title)
+    visit edit_collection_work_path(second_collection.owner, second_collection, work)
+    expect(page).to have_content('Work title')
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: second_collection.title)
     accept_confirm do
-      select(@collection.title, from: 'work_collection_id')
+      select(collection.title, from: 'work_collection_id')
     end
-    expect(page).to have_content("Work updated successfully")
-    # the modal is silently accepted by default
-    expect(Work.find_by(id: work.id).collection).not_to eq col
-    expect(Work.find_by(id: work.id).collection).to eq @collection
-    # check the links
+    expect(page).to have_content('Work updated successfully')
+    expect(work.reload.collection).to eq collection
     expect(PageArticleLink.where(page_id: work.pages.ids)).to be_empty
-    test_page2 = Page.find_by(id: test_page.id)
-    expect(test_page2.source_text).not_to have_content('[[')
+    expect(test_page.reload.source_text).not_to include('[[')
   end
 
-  it "deletes a work", js: true do
-    collection = Work.find_by(title: @title).collection
+  it 'deletes a work', js: true do
+    work = create(:work, :with_pages, title: 'This is an empty work', owner: owner, collection: collection)
 
-    visit dashboard_owner_path
-    page.find('.maincol').find('a', text: @collection.title).click
-    page.click_link('Show All')
-    page.find('.collection-works').find('a', text: @title).click
-    page.find('.tabs').click_link('Settings')
-    expect(page).to have_content(@title)
-    expect(page).to have_content("Work title")
-    click_link "Danger Zone"
+    visit edit_collection_work_path(collection.owner, collection, work)
+    expect(page).to have_content(work.title)
+    expect(page).to have_content('Work title')
+    click_link('Danger Zone')
     accept_confirm do
-      click_link("Delete Work")
+      click_link('Delete Work')
     end
-    expect(page).to have_content("Work deleted successfully")
+    expect(page).to have_content('Work deleted successfully')
     expect(page.current_path).to eq dashboard_owner_path
     page.find('.maincol').find('a', text: collection.title).click
-    expect(page).not_to have_content(@title)
+    expect(page).not_to have_content(work.title)
   end
 
-  it "checks an owner user profile/homepage" do
+  it 'checks an owner user profile/homepage' do
+    document_set = create(:document_set, :public, collection: collection, owner_user_id: owner.id)
     visit dashboard_path
     page.find('a', text: 'Your Profile').click
-    expect(page).to have_content(@owner.display_name)
+    expect(page).to have_content(owner.display_name)
     expect(page).to have_selector('.columns')
-    expect(page).not_to have_content("Recent Activity by #{@owner.display_name}")
-    @collections.each do |c|
-      expect(page).to have_content(c.title)
-    end
-    @owner.unrestricted_document_sets.each do |d|
-      expect(page).to have_content(d.title)
-    end
+    expect(page).not_to have_content("Recent Activity by #{owner.display_name}")
+    expect(page).to have_content(collection.title)
+    expect(page).to have_content(document_set.title)
   end
 
   it "changes the collection's default language", js: true do
-    visit edit_collection_path(@owner, @rtl_collection)
-    page.find('.side-tabs').click_link("Task Configuration")
+    rtl_collection = create(:collection, owner_user_id: owner.id, text_language: 'eng')
+    visit edit_collection_path(owner, rtl_collection)
+    page.find('.side-tabs').click_link('Task Configuration')
     first('.select2-container', minimum: 1).click
-    find('.select2-dropdown input.select2-search__field').send_keys("Arabic", :enter)
+    find('.select2-dropdown input.select2-search__field').send_keys('Arabic', :enter)
     expect(page).to have_content('Transcription type')
-    expect(@rtl_collection.reload.text_language).to eq 'ara'
+    expect(rtl_collection.reload.text_language).to eq 'ara'
   end
 
-  it "checks rtl transcription page views" do
-    rtl_page = @rtl_collection.works.first.pages.first
-    visit collection_transcribe_page_path(@rtl_collection.owner, @rtl_collection, rtl_page.work, rtl_page)
-    # check transcription page direction
+  it 'checks rtl transcription page views' do
+    rtl_collection = create(
+      :collection,
+      owner_user_id: owner.id,
+      text_language: 'ara',
+      works: build_list(:work_with_pages, 1, owner: owner)
+    )
+    rtl_page = rtl_collection.pages.first
+    visit collection_transcribe_page_path(rtl_collection.owner, rtl_collection, rtl_page.work, rtl_page)
     expect(page.find('.page-editarea')[:dir]).to eq 'rtl'
-    # check overview page direction
     page.find('.tabs').click_link('Overview')
     expect(page.find('.page-preview')[:dir]).to eq 'rtl'
   end
 
-  it "resets the default language" do
-    rtl_collection = Collection.last
-    rtl_collection.text_language = "eng"
-    rtl_collection.save!
+  it 'resets the default language' do
+    rtl_collection = create(:collection, owner_user_id: owner.id, text_language: 'ara')
+    rtl_collection.update!(text_language: 'eng')
     expect(rtl_collection.text_language).to eq 'eng'
   end
 
-  it "warns if account type is Individual Researcher" do
-    @owner.account_type = "Individual Researcher"
+  it 'warns if account type is Individual Researcher' do
+    owner.update!(account_type: 'Individual Researcher')
+    collection
     visit dashboard_owner_path
     page.find('a', text: 'Create a Collection').click
-    expect(@owner.collections.count).to be >= 1
-    expect(page).to have_content("Individual Researcher Accounts are limited to a single collection.")
+    expect(owner.collections.count).to be >= 1
+    expect(page).to have_content('Individual Researcher Accounts are limited to a single collection.')
   end
 
-  it "does not warn with another account type" do
-    @owner.account_type = "Small Organization"
+  it 'does not warn with another account type' do
+    collection
     visit dashboard_owner_path
     page.find('a', text: 'Create a Collection').click
-    expect(page).not_to have_content("Individual Researcher Accounts are limited to a single collection.")
+    expect(page).not_to have_content('Individual Researcher Accounts are limited to a single collection.')
   end
 
-  context "owner/staff related" do
-    before :each do
-      @owner = User.where(login: 'wakanda').first
-      @user = User.where(login: 'shuri').first
+  context 'owner/staff related' do
+    let(:owner) do
+      create(
+        :unique_user,
+        :owner,
+        login: "wakanda_#{SecureRandom.hex(4)}",
+        email: "wakanda_#{SecureRandom.hex(4)}@example.org",
+        display_name: 'Wakanda',
+        account_type: 'Small Organization'
+      )
+    end
+    let(:staff_user) do
+      create(
+        :unique_user,
+        login: "shuri_#{SecureRandom.hex(4)}",
+        email: "shuri_#{SecureRandom.hex(4)}@example.org",
+        display_name: 'Shuri'
+      )
+    end
+    let(:letters_title) { "Letters from America #{SecureRandom.hex(4)}" }
+    let(:science_title) { "Science Archives #{SecureRandom.hex(4)}" }
+    let(:letters_collection) do
+      create(:collection, title: letters_title, owner_user_id: owner.id)
     end
 
-    it "creates a collection as owner" do
-      login_as @owner
+    it 'creates a collection as owner' do
       visit dashboard_owner_path
       page.find('a', text: 'Create a Collection').click
-      fill_in 'collection_title', with: 'Letters from America'
+      fill_in 'collection_title', with: letters_title
       click_button('Create Collection')
-      expect(page).to have_content("Letters from America")
+      expect(page).to have_content(letters_title)
     end
 
-    it "adds a new user as collection owner" do
-      login_as @owner
+    it 'adds a new user as collection owner' do
+      letters_collection
+      staff_user
       visit dashboard_owner_path
-      expect(page).to have_content("Letters from America")
-      click_link "Letters from America", match: :first
-      expect(page).to have_content("Settings")
-      click_link "Settings"
-      click_link "Privacy & Access"
-      page.click_link 'Edit Owners'
-      select("shuri - shuri@example.org", from: "user_id").select_option
-      within(".user-select-form") do
-        click_button "Add"
+      click_link(letters_title, match: :first)
+      click_link('Settings')
+      click_link('Privacy & Access')
+      page.click_link('Edit Owners')
+      select(staff_user.name_with_identifier, from: 'user_id')
+      within('.user-select-form') do
+        click_button('Add')
       end
-      @user.reload
-      expect(@user.owner).to be(true)
-      expect(@user.account_type).to eq "Staff"
+
+      expect(staff_user.reload.owner).to be true
+      expect(staff_user.account_type).to eq 'Staff'
+      expect(letters_collection.owners).to include(staff_user)
     end
 
     it "confirms that Shuri can read Wakanda's collection" do
+      letters_collection.owners << staff_user
+      staff_user.update!(owner: true, account_type: 'Staff')
       logout
-      login_as @user
+      login_as(staff_user, scope: :user)
       visit dashboard_owner_path
-      expect(page).to have_content("Letters from America")
+      expect(page).to have_content(letters_title)
     end
 
-    it "creates a collection as Shuri" do
-      login_as @user
+    it 'creates a collection as Shuri' do
+      letters_collection.owners << staff_user
+      staff_user.update!(owner: true, account_type: 'Staff')
+      logout
+      login_as(staff_user, scope: :user)
       visit dashboard_owner_path
       page.find('a', text: 'Create a Collection').click
-      fill_in 'collection_title', with: 'Science Archives'
+      fill_in 'collection_title', with: science_title
       click_button('Create Collection')
-      expect(page).to have_content("Science Archives")
+      expect(page).to have_content(science_title)
       visit dashboard_owner_path
-      expect(page).to have_content("Letters from America")
-      expect(page).to have_content("Science Archives")
+      expect(page).to have_content(letters_title)
+      expect(page).to have_content(science_title)
     end
 
-    it "confirms that Wakanda can read all collections" do
-      logout
-      login_as @owner
+    it 'confirms that Wakanda can read all collections' do
+      letters_collection.owners << staff_user
+      staff_user.update!(owner: true, account_type: 'Staff')
+      create(:collection, title: science_title, owner_user_id: owner.id, owners: [staff_user])
       visit dashboard_owner_path
-      expect(page).to have_content("Letters from America")
-      expect(page).to have_content("Science Archives")
+      expect(page).to have_content(letters_title)
+      expect(page).to have_content(science_title)
     end
+  end
+
+  def work_with_subject_link
+    work = create(:work, owner: owner, collection: second_collection, pages: [])
+    test_page = create(:page, work: work)
+    test_page.update!(source_text: '[[Switzerland]]')
+    article = create(:article, title: 'Switzerland', collection: second_collection)
+    create(:page_article_link, page: test_page, article: article, display_text: 'Switzerland')
+    [work, test_page]
   end
 end
