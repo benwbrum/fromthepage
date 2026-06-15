@@ -559,6 +559,4 @@ describe 'document sets' do
     # note - the document set title was changed so the slug is slightly different
     expect(docset.slug).to eq docset.title.parameterize
   end
-
-
 end
