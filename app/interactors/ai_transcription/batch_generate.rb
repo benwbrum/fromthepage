@@ -52,7 +52,7 @@ class AiTranscription::BatchGenerate < ApplicationInteractor
     # if we launch through work/ai settings
     ai_batch_generation = AiBatchGeneration.create!(
       collection: @collection,
-      work_id: @scope.dig(:work_ids)&.first,
+      work_id: @scope&.dig(:work_ids)&.first,
       status: :processing
     )
 
