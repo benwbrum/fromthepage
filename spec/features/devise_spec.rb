@@ -34,7 +34,8 @@ describe 'Devise' do
       visit new_user_registration_path
       complete_user_registration(user)
 
-      expect(page).to have_content("Signed In As#{user.display_name}")
+      registered_user = User.find_by!(email: user.email)
+      expect(page).to have_content("Signed In As#{registered_user.display_name}")
     end
 
     it 'redirects user to dashboard/watchlist after signup' do
@@ -61,10 +62,12 @@ describe 'Devise' do
       complete_user_registration(user)
 
       expect(page.current_path).to eq coll_path
-      expect(page).to have_content("#{user.display_name} joined #{collection.title}")
+      registered_user = User.find_by!(email: user.email)
+      joined_deed_text = "#{registered_user.display_name} joined #{collection.title}"
+      expect(page).to have_content(joined_deed_text)
 
       visit dashboard_watchlist_path
-      expect(page).to have_content("#{user.display_name} joined #{collection.title}")
+      expect(page).to have_content(joined_deed_text)
     end
 
     it 'creates a new trial owner account' do
