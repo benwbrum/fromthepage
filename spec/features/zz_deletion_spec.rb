@@ -80,7 +80,8 @@ describe "testing deletions" do
       expect(page_count).to be > 0
       id = work.id
       path = File.join(Rails.root, "public", "images", "uploaded", id.to_s)
-      expect(Dir.exist?(path)).to be true
+      # NOTE: Due to AS migration, this dir will never be present from upload
+      # expect(Dir.exist?(path)).to be true
       visit dashboard_owner_path
       page.find('.maincol').click_link(work.collection.title)
       links = page.all('.collection-works a', text: work.title)

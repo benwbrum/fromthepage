@@ -96,7 +96,7 @@ class PageController < ApplicationController
     params.require(:page).permit(
       :page,
       :title,
-      :base_image,
+      :image,
       :status,
       :translation_status
     )

@@ -982,6 +982,7 @@ DEPENDENCIES
   i18n-tasks
   iiif-image-api!
   iiif-presentation
+  image_processing
   importmap-rails
   interactor-rails (~> 2.0)
   iso-639

@@ -184,7 +184,7 @@ describe Page do
 
   describe '#image_url_for_download' do
     context 'when page has base_image with deployment path' do
-      let(:page) { build_stubbed(:page, :with_image) }
+      let(:page) { build_stubbed(:page, :with_legacy_image) }
 
       before do
         # Ensure no sc_canvas or ia_leaf to test the local image scenario
@@ -216,7 +216,7 @@ describe Page do
     end
 
     context 'when page has base_image with special characters' do
-      let(:page) { build_stubbed(:page, :with_image) }
+      let(:page) { build_stubbed(:page, :with_legacy_image) }
 
       before do
         # Ensure no sc_canvas or ia_leaf to test the local image scenario

@@ -38,6 +38,7 @@ gem 'recaptcha', require: 'recaptcha/rails'
 
 # File handling / Media
 gem 'carrierwave'
+gem 'image_processing'
 gem 'rmagick'
 gem 'rubyzip'
 
