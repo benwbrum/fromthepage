@@ -22,7 +22,7 @@
         td.w100 =link_to page.title, collection_display_page_path(@collection.owner, @collection, @work, page.id)
         -unless @work.ia_work || @work.sc_manifest
           td.nowrap.fgfaded
-            -if page.base_image.empty?
+            -if !page.image.attached? && page.base_image.empty?
               =svg_symbol '#icon-warning-sign', class: 'icon'
               ==t('.upload_page_image', upload: (link_to t('.upload'), collection_edit_page_path(@collection.owner, @collection, @work, page.id)))
             -else

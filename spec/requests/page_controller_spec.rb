@@ -28,7 +28,7 @@ describe PageController do
     let(:page_params) do
       {
         title: 'Page title',
-        base_image: Rack::Test::UploadedFile.new(file_path, file_type)
+        image: Rack::Test::UploadedFile.new(file_path, file_type)
       }
     end
     let(:subaction) { '' }
@@ -133,7 +133,7 @@ describe PageController do
       {
         page: {
           title: 'Page title',
-          base_image: Rack::Test::UploadedFile.new(file_path, file_type)
+          image: Rack::Test::UploadedFile.new(file_path, file_type)
         }
       }
     end

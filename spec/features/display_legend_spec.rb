@@ -1,28 +1,43 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
-describe "collection legend display" do
-  let(:user) { create(:user) }
-  let(:collection) { create(:collection, owner_user_id: user.id, legend: '<p>This is a test legend for the collection.</p>') }
-  let(:work) { create(:work, owner_user_id: user.id, collection_id: collection.id) }
-  let(:test_page) { create(:page, work_id: work.id, title: 'Test Page') }
+describe 'collection legend display' do
+  let(:owner) { create(:unique_user, :owner) }
+  let(:legend) { '<p>This is a test legend for the collection.</p>' }
+  let(:collection) { create(:collection, owner: owner, works: [], legend: legend) }
+  let(:work) { create(:work, owner: owner, collection: collection) }
+  let(:test_page) { create(:page, work: work, title: 'Test Page') }
 
-  it 'displays legend on page view when legend is present' do
-    # Visit the display page
-    visit collection_display_page_path(collection.owner, collection, work, test_page.id)
-
-    expect(page).to have_content('Legend')
-    expect(page).to have_content('This is a test legend for the collection.')
+  before do
+    DatabaseCleaner.start
+    test_page
   end
 
-  it 'does not display legend section when legend is blank' do
-    # Create collection without legend
-    collection_without_legend = create(:collection, owner_user_id: user.id, legend: '')
-    work_without_legend = create(:work, owner_user_id: user.id, collection_id: collection_without_legend.id)
-    test_page_without_legend = create(:page, work_id: work_without_legend.id, title: 'Test Page With No Explanation')
+  after do
+    DatabaseCleaner.clean
+  end
 
-    # Visit the display page
-    visit collection_display_page_path(collection_without_legend.owner, collection_without_legend, work_without_legend, test_page_without_legend.id)
+  subject(:visit_page) do
+    visit collection_display_page_path(collection.owner, collection, work, test_page.id)
+  end
 
-    expect(page).not_to have_content('Legend')
+  context 'when the collection has a legend' do
+    it 'displays the legend on the page view' do
+      visit_page
+
+      expect(page.find('.page-legend')).to have_content('Legend')
+      expect(page.find('.page-legend-content')).to have_content('This is a test legend for the collection.')
+    end
+  end
+
+  context 'when the collection legend is blank' do
+    let(:legend) { '' }
+
+    it 'does not display the legend section' do
+      visit_page
+
+      expect(page).not_to have_selector('.page-legend')
+    end
   end
 end
