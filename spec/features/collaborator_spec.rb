@@ -140,12 +140,14 @@ RSpec.describe 'Collaborator actions' do
         expect(page).to have_content(expected_title)
       end
 
-      it 'can view private document sets, though not explicitly named' do
-        expected_title = docset.title
+      it 'can view the private collection, but not explicitly named private document sets' do
+        expected_collection_title = collection.title
+        hidden_docset_title = docset.title
 
         login_as(collaborator, scope: :user)
         visit user_profile_path(owner)
-        expect(page).to have_content(expected_title)
+        expect(page).to have_content(expected_collection_title)
+        expect(page).not_to have_content(hidden_docset_title)
       end
     end
 
