@@ -1,137 +1,145 @@
 # Note - this test must fall at the very end of the features specs
 require 'spec_helper'
 
-describe "testing deletions" do
-  before :all do
-    @owner = User.find_by(login: 'margaret')
-    @collections = @owner.all_owner_collections
-    @collection = @collections.last
-    @document_sets = DocumentSet.where(owner_user_id: @owner.id)
+RSpec.describe 'testing deletions' do
+  let(:owner) { create(:unique_user, :owner) }
+
+  before do |example|
+    DatabaseCleaner.start unless example.metadata[:js]
+    login_as(owner, scope: :user)
   end
 
-  before :each do
-    login_as(@owner, scope: :user)
+  after do |example|
+    if example.metadata[:js]
+      Collection.where(owner_user_id: owner.id).find_each(&:destroy!) if owner&.persisted?
+      owner.destroy! if owner&.persisted?
+    else
+      DatabaseCleaner.clean
+    end
   end
 
-  it "blanks out the data in a collection" do
-    # note, don't use last collection because it causes problems with later tests
-    col = @collections.first
-    visit collection_path(col.owner, col)
-    page.find('.tabs').click_link("Settings")
-    page.find('.side-tabs').click_link("Danger Zone")
-    expect(page).to have_content("Please use caution")
-    expect(page).to have_content("Blank Collection")
+  it 'blanks out the data in a collection' do
+    collection = create_collection_with_work_pages
+    collection.pages.each do |page_record|
+      create(:page_version, page_id: page_record.id, user_id: owner.id, page_version: 1)
+      create(:deed, page: page_record, work: page_record.work, collection: collection, user: owner)
+    end
+
+    visit collection_path(owner, collection)
+    page.find('.tabs').click_link('Settings')
+    page.find('.side-tabs').click_link('Danger Zone')
+    expect(page).to have_content('Please use caution')
+    expect(page).to have_content('Blank Collection')
     page.find('a', text: 'Blank Collection').click
-    expect(page.current_path).to eq "/#{col.owner.slug}/#{col.slug}"
-    pages = Page.where(work_id: col.works.ids)
-    pages.each do |p|
-      expect(p.status_new?).to be_truthy
-      expect(p.page_versions.first.page_version).to eq 0
+    expect(page.current_path).to eq "/#{owner.slug}/#{collection.slug}"
+    pages = Page.where(work_id: collection.works.ids)
+    pages.each do |collection_page|
+      expect(collection_page.status_new?).to be_truthy
+      expect(collection_page.page_versions.first.page_version).to eq 0
     end
     expect(Deed.where(page_id: pages.ids)).to be_empty
   end
 
-  it "deletes a document set" do
-    # Ensure the collection supports document sets so the Sets tab is visible
-    @collection.update!(supports_document_sets: true)
+  it 'deletes a document set' do
+    collection = create_collection_with_work_pages
+    document_sets = create_list(:document_set, 2,
+                                :public,
+                                collection: collection,
+                                owner: owner,
+                                owner_user_id: owner.id)
+    count = owner.document_sets.count
 
-    count = @document_sets.count
     visit dashboard_owner_path
-    page.find('.maincol').find('a', text: @collection.title).click
-    page.find('.tabs').click_link("Sets")
-    expect(page).to have_content("Document Sets for #{@collection.title}")
+    page.find('.maincol').find('a', text: collection.title).click
+    page.find('.tabs').click_link('Sets')
+    expect(page).to have_content("Document Sets for #{collection.title}")
     within(page.find('#sets')) do
-      within(page.find('tr', text: @document_sets.first.title)) do
+      within(page.find('tr', text: document_sets.first.title)) do
         page.find('a', text: 'Delete').click
       end
     end
-    sets = DocumentSet.all.count
-    expect(sets).to eq (count - 1)
-    expect(page).not_to have_content(@document_sets.first.title)
-    expect(page).to have_content(@document_sets.last.title)
+    expect(owner.document_sets.count).to eq(count - 1)
+    expect(page).not_to have_content(document_sets.first.title)
+    expect(page).to have_content(document_sets.last.title)
   end
 
-  it "deletes a page" do
-    work = @collection.works.first
+  it 'deletes a page' do
+    collection = create_collection_with_work_pages
+    work = collection.works.first
     count = work.pages.count
     test_page = work.pages.first
+    create(:page_version, page_id: test_page.id, user_id: owner.id)
+    create(:deed, page: test_page, work: work, collection: collection, user: owner)
+
     visit dashboard_owner_path
-    page.find('.maincol').click_link(@collection.title)
-    page.find('.tabs').click_link("Works List")
+    page.find('.maincol').click_link(collection.title)
+    page.find('.tabs').click_link('Works List')
     page.find('#works-table').find('a', text: work.title).click
     expect(page).to have_content(work.title)
     expect(page).to have_content(test_page.title)
     page.find('.work-page_title', text: test_page.title).click_link(test_page.title)
-    page.find('.tabs').click_link("Settings")
+    page.find('.tabs').click_link('Settings')
     page.find('a', text: 'Delete Page').click
-    del_count = work.pages.count
-    expect(del_count).to eq (count - 1)
-    deeds = Deed.where(page_id: test_page.id)
-    expect(deeds).to be_empty
-    versions = test_page.page_versions
-    expect(versions).to be_empty
+    expect(work.pages.count).to eq(count - 1)
+    expect(Deed.where(page_id: test_page.id)).to be_empty
+    expect(test_page.page_versions).to be_empty
   end
 
-  it "deletes a work", js: true do
-    work = Work.find_by(title: 'test')
-    work_count = Work.all.count
-    unless @owner.account_type == "Individual Researcher"
-      page_count = work.pages.count
-      expect(page_count).to be > 0
-      id = work.id
-      path = File.join(Rails.root, "public", "images", "uploaded", id.to_s)
-      # NOTE: Due to AS migration, this dir will never be present from upload
-      # expect(Dir.exist?(path)).to be true
-      visit dashboard_owner_path
-      page.find('.maincol').click_link(work.collection.title)
-      links = page.all('.collection-works a', text: work.title)
-      # Click on the first link
-      links.first.click
-      page.find('.tabs').click_link('Settings')
-      expect(page).to have_content(work.title)
-      click_link "Danger Zone"
-      accept_confirm do
-        click_link('Delete Work')
-      end
-      expect(page).to have_content("Work deleted successfully")
-      # check that each child association has deleted
-      del_work_count = Work.all.count
-      expect(del_work_count).to eq (work_count - 1)
-      pages = work.pages
-      expect(pages).to be_empty
-      deeds = Deed.where(work_id: work.id)
-      expect(deeds).to be_empty
-      expect(Dir.exist?(path)).to be false
-    end
-  end
+  it 'deletes a work', js: true do
+    collection = create_collection_with_work_pages
+    work = collection.works.first
+    work_count = Work.count
+    page_count = work.pages.count
+    expect(page_count).to be > 0
+    path = Rails.root.join('public', 'images', 'uploaded', work.id.to_s)
 
-  it "deletes a collection" do
-    count = @collections.count
-    work_count = @collection.works.count
-    expect(work_count).to be > 0
-    article_count = @collection.articles.count
-    expect(article_count).to be > 0
-    doc_sets = @collection.document_sets.count
-    expect(doc_sets).to be >= 0
     visit dashboard_owner_path
-    page.find('.collection_title', text: @collection.title).click_link(@collection.title)
-    page.find('a', text: 'Show All').click
-    @collection.works.each do |w|
-      expect(page).to have_content(w.title)
+    page.find('.maincol').click_link(collection.title)
+    page.all('.collection-works a', text: work.title).first.click
+    page.find('.tabs').click_link('Settings')
+    expect(page).to have_content(work.title)
+    click_link 'Danger Zone'
+    accept_confirm do
+      click_link('Delete Work')
     end
-    page.find('.tabs').click_link("Settings")
-    page.find('.side-tabs').click_link("Danger Zone")
-    expect(page).to have_content("Please use caution")
+    expect(page).to have_content('Work deleted successfully')
+    expect(Work.count).to eq(work_count - 1)
+    expect(work.pages).to be_empty
+    expect(Deed.where(work_id: work.id)).to be_empty
+    expect(Dir.exist?(path)).to be false
+  end
+
+  it 'deletes a collection' do
+    collection = create_collection_with_work_pages
+    create(:article, collection: collection)
+    create(:document_set, :public, collection: collection, owner: owner, owner_user_id: owner.id)
+    count = owner.all_owner_collections.count
+    expect(collection.works.count).to be > 0
+    expect(collection.articles.count).to be > 0
+    expect(collection.document_sets.count).to be > 0
+
+    visit dashboard_owner_path
+    page.find('.collection_title', text: collection.title).click_link(collection.title)
+    page.find('a', text: 'Show All').click
+    collection.works.each do |work|
+      expect(page).to have_content(work.title)
+    end
+    page.find('.tabs').click_link('Settings')
+    page.find('.side-tabs').click_link('Danger Zone')
+    expect(page).to have_content('Please use caution')
     expect(page).to have_selector('a', text: 'Delete Collection')
     page.find('a', text: 'Delete Collection').click
-    del_count = @owner.all_owner_collections.count
-    expect(del_count).to eq (count - 1)
-    # make sure child associations are also deleted
-    works = Work.where(collection_id: @collection.id)
-    expect(works).to be_empty
-    articles = Article.where(collection_id: @collection.id)
-    expect(articles).to be_empty
-    doc_sets = DocumentSet.where(collection_id: @collection.id)
-    expect(doc_sets).to be_empty
+    expect(owner.all_owner_collections.count).to eq(count - 1)
+    expect(Work.where(collection_id: collection.id)).to be_empty
+    expect(Article.where(collection_id: collection.id)).to be_empty
+    expect(DocumentSet.where(collection_id: collection.id)).to be_empty
+  end
+
+  def create_collection_with_work_pages
+    create(:collection, :docset_enabled, owner_user_id: owner.id, works: []).tap do |collection|
+      work = create(:work, owner: owner, owner_user_id: owner.id, collection: collection)
+      create(:page, work: work, position: 1, status: :transcribed, source_text: 'Not blank')
+      create(:page, work: work, position: 2, status: :transcribed, source_text: 'Not blank')
+    end
   end
 end
