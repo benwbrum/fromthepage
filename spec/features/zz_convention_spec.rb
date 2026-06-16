@@ -43,7 +43,7 @@ RSpec.describe 'convention related tasks', order: :defined do
   it 'changes work level transcription conventions', js: true do
     visit collection_read_work_path(owner, collection, work)
     page.find('.tabs').click_link('Settings')
-    expect(page).to have_content clean_conventions
+    expect(page).to have_content('Transcription conventions')
     expect(page).not_to have_button('Revert')
     page.fill_in 'work_transcription_conventions', with: work_convention
     page.execute_script("$('#collection-settings-save').click()")

@@ -65,7 +65,7 @@ RSpec.describe 'testing deletions' do
 
   it 'deletes a page' do
     collection = create_collection_with_work_pages
-    work = collection.works.first
+    work = collection.works.reload.first
     count = work.pages.count
     test_page = work.pages.first
     create(:page_version, page_id: test_page.id, user_id: owner.id)
@@ -87,7 +87,7 @@ RSpec.describe 'testing deletions' do
 
   it 'deletes a work', js: true do
     collection = create_collection_with_work_pages
-    work = collection.works.first
+    work = collection.works.reload.first
     work_count = Work.count
     page_count = work.pages.count
     expect(page_count).to be > 0
@@ -118,8 +118,7 @@ RSpec.describe 'testing deletions' do
     expect(collection.articles.count).to be > 0
     expect(collection.document_sets.count).to be > 0
 
-    visit dashboard_owner_path
-    page.find('.collection_title', text: collection.title).click_link(collection.title)
+    visit collection_path(owner, collection)
     page.find('a', text: 'Show All').click
     collection.works.each do |work|
       expect(page).to have_content(work.title)
@@ -140,6 +139,7 @@ RSpec.describe 'testing deletions' do
       work = create(:work, owner: owner, owner_user_id: owner.id, collection: collection)
       create(:page, work: work, position: 1, status: :transcribed, source_text: 'Not blank')
       create(:page, work: work, position: 2, status: :transcribed, source_text: 'Not blank')
+      collection.works.reset
     end
   end
 end
