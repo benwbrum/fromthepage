@@ -115,6 +115,16 @@ class TranscribeController  < ApplicationController
         log_transcript_success
         flash[:notice] = t('.saved_notice')
 
+        if @page.source_text_previously_changed?
+          @page.ai_transcriptions.update_all(
+            verbatim_cer: nil,
+            verbatim_wer: nil,
+            verbatim_non_stopword_accuracy: nil,
+            text_cer: nil,
+            text_wer: nil
+          )
+        end
+
         if @page.work.ocr_correction
           record_deed(DeedType::OCR_CORRECTED)
         elsif @page.source_text_previously_changed?
