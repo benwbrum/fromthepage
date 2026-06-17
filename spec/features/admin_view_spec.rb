@@ -57,6 +57,8 @@ RSpec.describe 'admin actions' do
   end
 
   it 'makes a user an owner' do
+    new_owner
+
     visit admin_path
     page.find('.tabs').click_link('Users')
     expect(page).to have_content('User Login')
@@ -128,7 +130,7 @@ RSpec.describe 'admin actions' do
   end
 
   it 'downgrades a user' do
-    downgraded_user = create(:unique_user, :owner)
+    downgraded_user = create(:unique_user, :owner, account_type: 'Trial', paid_date: 1.day.ago)
 
     visit admin_path
     page.find('.tabs').click_link('Users')
