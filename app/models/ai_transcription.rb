@@ -1,30 +1,8 @@
-# == Schema Information
-#
-# Table name: ai_transcriptions
-#
-#  id                 :bigint           not null, primary key
-#  metadata           :text(4294967295)
-#  model              :string(255)      not null
-#  prompt             :text(4294967295)
-#  reasoning          :text(4294967295)
-#  source_text        :text(4294967295)
-#  status             :string(255)      default("new"), not null
-#  transcription_json :text(4294967295)
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
-#  page_id            :integer          not null
-#
-# Indexes
-#
-#  index_ai_transcriptions_on_page_id  (page_id)
-#
-# Foreign Keys
-#
-#  fk_rails_...  (page_id => pages.id) ON DELETE => cascade
-#
 class AiTranscription < ApplicationRecord
   DEFAULT_MODEL = 'gemini-3.1-pro-preview'
   ALTO_MODEL = 'Transkribus+OpenAI'
+  TEXTRACT_ALTO_MODEL = 'Textract'
+  ALTO_MODELS = [ALTO_MODEL, TEXTRACT_ALTO_MODEL].freeze
   FE_COLOR_STATUSES = {
     finished: '#6C2',
     in_progress: '#F0E68C',
@@ -38,8 +16,8 @@ class AiTranscription < ApplicationRecord
   has_one :work, through: :page
   has_one :collection, through: :work
 
-  scope :alto, -> { where(model: ALTO_MODEL) }
-  scope :not_alto, -> { where.not(model: ALTO_MODEL) }
+  scope :alto, -> { where(model: ALTO_MODELS) }
+  scope :not_alto, -> { where.not(model: ALTO_MODELS) }
 
   # TODO: We need to upgrade our DB version to utilize native json column field.
   # Right now we are technically using long-text field and serializing to JSON
@@ -63,11 +41,11 @@ class AiTranscription < ApplicationRecord
   }, prefix: :status
 
   def supports_reasoning?
-    model != ALTO_MODEL
+    !ALTO_MODELS.include?(model)
   end
 
   def supports_prompt?
-    model != ALTO_MODEL
+    !ALTO_MODELS.include?(model)
   end
 
   def text_for_comparison

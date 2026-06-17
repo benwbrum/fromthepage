@@ -61,5 +61,6 @@ class ExternalApiRequest < ApplicationRecord
 
   module Engine
     TRANSKRIBUS = 'transkribus'
+    TEXTRACT = 'textract'
   end
 end
