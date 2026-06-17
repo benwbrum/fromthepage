@@ -118,6 +118,25 @@ describe AiTranscription::Generate do
         )
       end
     end
+
+    context 'when source_text and reasoning are blank with a provider finish message' do
+      before do
+        allow_any_instance_of(AiTranscription::Lib::Gemini::TranscribeHandler).to receive(:perform)
+          .and_return(['', '', {}, {
+                        'candidates' => [{
+                          'finishReason' => 'RECITATION',
+                          'finishMessage' => 'The generated content was filtered because it may contain material that resembles existing copyrighted works.'
+                        }]
+                      }])
+      end
+
+      it 'includes provider details in the failure message' do
+        expect(result.success?).to be_falsey
+        expect(result.full_errors.message).to include('AI Transcription has blank text and reasoning.')
+        expect(result.full_errors.message).to include('RECITATION')
+        expect(result.full_errors.message).to include('The generated content was filtered because it may contain material that resembles existing copyrighted works.')
+      end
+    end
   end
 
   context 'when collection is field_based' do
