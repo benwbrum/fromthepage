@@ -42,14 +42,19 @@ class AiTranscription::Generate < ApplicationInteractor
     @image_url
   end
 
-  # TODO: When we support claude, this should handle what transcribe_handler is used
-  # We will refactor this to inherit into one `BaseHandler` so it follows consistent form
-  # for each AI models
   def transcribe_handler
-    @transcribe_handler ||= AiTranscription::Lib::Gemini::TranscribeHandler.new(
+    @transcribe_handler ||= handler_class.new(
       model: @ai_transcription.model,
       prompt: @ai_transcription.prompt,
       image_url: image_url
     )
+  end
+
+  def handler_class
+    if @ai_transcription.model.start_with?('claude')
+      AiTranscription::Lib::Claude::TranscribeHandler
+    else
+      AiTranscription::Lib::Gemini::TranscribeHandler
+    end
   end
 end

@@ -9,7 +9,7 @@ describe AiTranscription::Generate do
   let!(:ai_transcription) { create(:ai_transcription, page_id: page.id, model: model, prompt: prompt, status: :processing, source_text: nil, reasoning: nil) }
 
   let(:model) { AiTranscription::DEFAULT_MODEL }
-  let(:prompt) { File.read(Rails.root.join('lib/gemini/transcription_prompt.txt')) }
+  let(:prompt) { File.read(Rails.root.join('lib/transcription_prompt.txt')) }
 
   let(:expected_response) do
     JSON.parse(
@@ -79,7 +79,7 @@ describe AiTranscription::Generate do
 
     context 'when 503 error' do
       before do
-        stub_const('AiTranscription::Lib::Gemini::TranscribeHandler::MAX_RETRY', 1)
+        stub_const('AiTranscription::Lib::BaseTranscribeHandler::MAX_RETRY', 1)
       end
 
       it 'generates ai_transcription text and reasoning' do
@@ -137,7 +137,7 @@ describe AiTranscription::Generate do
       allow(ai_transcription).to receive(:page).and_return(page)
       allow(page).to receive(:image_url_for_download).and_return('http://example.com/image.jpg')
 
-      stub_const('AiTranscription::Lib::Gemini::TranscribeHandler::IMAGE_FETCH_LIMIT', 1)
+      stub_const('AiTranscription::Lib::BaseTranscribeHandler::IMAGE_FETCH_LIMIT', 1)
     end
 
     it 'fails to generate transcription' do
@@ -155,7 +155,7 @@ describe AiTranscription::Generate do
       allow(ai_transcription).to receive(:page).and_return(page)
       allow(page).to receive(:image_url_for_download).and_return('http://example.com/image.jpg')
 
-      stub_const('AiTranscription::Lib::Gemini::TranscribeHandler::IMAGE_FETCH_LIMIT', 1)
+      stub_const('AiTranscription::Lib::BaseTranscribeHandler::IMAGE_FETCH_LIMIT', 1)
     end
 
     it 'fails to generate transcription' do

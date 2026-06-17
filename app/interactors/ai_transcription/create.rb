@@ -19,7 +19,7 @@ class AiTranscription::Create < ApplicationInteractor
   #   - defaults to `AiTranscription::DEFAULT_MODEL`
   # @params prompt: required
   #   - Prompt `TEXT`, not `FILE` is expected
-  #   - default: reads content of `lib/gemini/transcription_prompt.txt`
+  #   - default: reads content of `lib/transcription_prompt.txt`
   # @params retranscribe
   #   - If ai_transcription exists, checks if we want to regenerate a new one
   #   - default: false
