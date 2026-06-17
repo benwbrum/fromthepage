@@ -12,7 +12,6 @@ RSpec.describe 'uploads data for collections', order: :defined do
   after do |example|
     if example.metadata[:js]
       Collection.where(owner_user_id: owner.id).find_each(&:destroy!) if owner&.persisted?
-      owner.destroy! if owner&.persisted?
     else
       DatabaseCleaner.clean
     end

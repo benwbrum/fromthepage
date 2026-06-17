@@ -20,7 +20,6 @@ RSpec.describe 'collection metadata', order: :defined do
 
     if example.metadata[:js]
       Collection.where(owner_user_id: @owner.id).find_each(&:destroy!) if @owner&.persisted?
-      [@user, @owner].compact.each { |user| user.destroy! if user.persisted? }
     else
       DatabaseCleaner.clean
     end
