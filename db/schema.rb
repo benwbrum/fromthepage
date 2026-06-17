@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_05_26_185917) do
+ActiveRecord::Schema[7.2].define(version: 2026_06_17_201340) do
   create_table "active_storage_attachments", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -72,6 +72,11 @@ ActiveRecord::Schema[7.2].define(version: 2026_05_26_185917) do
     t.datetime "updated_at", null: false
     t.string "status", default: "new", null: false
     t.text "transcription_json", size: :long
+    t.decimal "verbatim_cer", precision: 10
+    t.decimal "verbatim_wer", precision: 10
+    t.decimal "verbatim_non_stopword_accuracy", precision: 10
+    t.decimal "text_cer", precision: 10
+    t.decimal "text_wer", precision: 10
     t.index ["page_id"], name: "index_ai_transcriptions_on_page_id"
   end
 

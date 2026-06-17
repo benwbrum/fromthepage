@@ -131,6 +131,24 @@ describe DisplayController do
     end
   end
 
+  describe '#ai_stats' do
+    let!(:page) { pages.first }
+    let!(:ai_transcription) { create(:ai_transcription, page: page, source_text: 'AI generated text content', status: :finished) }
+
+    let(:action_path) { collection_ai_stats_page_path(owner, collection, work, page, ai_transcription_id: ai_transcription.id) }
+
+    let(:subject) { get action_path }
+
+    it 'renders the AI text page' do
+      login_as owner
+
+      subject
+
+      expect(response).to have_http_status(:ok)
+      expect(response).to render_template(:cer_stats)
+    end
+  end
+
   describe '#read_work' do
     let(:action_path) { collection_read_work_path(owner, collection, work) }
 

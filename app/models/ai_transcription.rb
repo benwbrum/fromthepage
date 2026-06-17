@@ -2,17 +2,22 @@
 #
 # Table name: ai_transcriptions
 #
-#  id                 :bigint           not null, primary key
-#  metadata           :text(4294967295)
-#  model              :string(255)      not null
-#  prompt             :text(4294967295)
-#  reasoning          :text(4294967295)
-#  source_text        :text(4294967295)
-#  status             :string(255)      default("new"), not null
-#  transcription_json :text(4294967295)
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
-#  page_id            :integer          not null
+#  id                             :bigint           not null, primary key
+#  metadata                       :json
+#  model                          :string(255)      not null
+#  prompt                         :text(4294967295)
+#  reasoning                      :text(4294967295)
+#  source_text                    :text(4294967295)
+#  status                         :string(255)      default("new"), not null
+#  text_cer                       :decimal(10, )
+#  text_wer                       :decimal(10, )
+#  transcription_json             :text(4294967295)
+#  verbatim_cer                   :decimal(10, )
+#  verbatim_non_stopword_accuracy :decimal(10, )
+#  verbatim_wer                   :decimal(10, )
+#  created_at                     :datetime         not null
+#  updated_at                     :datetime         not null
+#  page_id                        :integer          not null
 #
 # Indexes
 #
@@ -61,6 +66,10 @@ class AiTranscription < ApplicationRecord
     finished: 'finished',
     error: 'error'
   }, prefix: :status
+
+  def recalculate_stats?
+    text_cer.nil? || text_wer.nil? || verbatim_cer.nil? || verbatim_wer.nil?
+  end
 
   def supports_reasoning?
     model != ALTO_MODEL

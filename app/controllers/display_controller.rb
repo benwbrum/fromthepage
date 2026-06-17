@@ -148,10 +148,6 @@ class DisplayController < ApplicationController
     @finished_transcription_count = ai_transcriptions_scope.count
     @ai_transcription = ai_transcriptions_scope.find_by(id: params[:ai_transcription_id]) || ai_transcriptions_scope.first
 
-    if !current_user.blank?
-      @ai_accuracy_stats = @page.ai_accuracy_statistics(ai_transcription: @ai_transcription)
-    end
-
     respond_to do |format|
       format.html do
         @ai_transcription_options = ai_transcriptions_scope.map do |ai_transcription|
@@ -163,6 +159,27 @@ class DisplayController < ApplicationController
 
       format.turbo_stream
     end
+  end
+
+  def ai_stats
+    ai_transcriptions_scope = @page.ai_transcriptions.where(status: :finished).order(created_at: :desc)
+    @ai_transcription = ai_transcriptions_scope.find_by(id: params[:ai_transcription_id]) || ai_transcriptions_scope.first
+
+    if @ai_transcription.recalculate_stats?
+      ai_accuracy_stats = @page.ai_accuracy_statistics(ai_transcription: @ai_transcription)
+
+      @ai_transcription.update!(
+        verbatim_cer: ai_accuracy_stats[:verbatim][:cer],
+        verbatim_wer: ai_accuracy_stats[:verbatim][:wer],
+        verbatim_non_stopword_accuracy: ai_accuracy_stats[:verbatim][:non_stopword_accuracy],
+        text_cer: ai_accuracy_stats[:text_only][:cer],
+        text_wer: ai_accuracy_stats[:text_only][:wer]
+      )
+    end
+
+    render turbo_stream: turbo_stream.replace(
+      'cer_stats', partial: 'cer_stats'
+    )
   end
 
   def paged_search
