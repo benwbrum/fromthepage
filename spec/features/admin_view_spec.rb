@@ -62,6 +62,8 @@ RSpec.describe 'admin actions' do
     visit admin_path
     page.find('.tabs').click_link('Users')
     expect(page).to have_content('User Login')
+    page.fill_in 'search', with: new_owner.login
+    click_button('Search')
     page.find('tr', text: new_owner.login).click_link('Edit')
     check('user_owner')
     click_button('Save Changes')
@@ -132,10 +134,7 @@ RSpec.describe 'admin actions' do
   it 'downgrades a user' do
     downgraded_user = create(:unique_user, :owner, account_type: 'Trial', paid_date: 1.day.ago)
 
-    visit admin_path
-    page.find('.tabs').click_link('Users')
-    visit admin_edit_user_path(user_id: downgraded_user.id)
-    page.find('.aright').click_link('Downgrade')
+    visit admin_downgrade_path(user_id: downgraded_user.id)
     expect(page).to have_content('User downgraded successfully')
     expect(downgraded_user.reload.owner).to be false
   end
