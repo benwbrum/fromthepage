@@ -31,6 +31,6 @@ module DiffTools
 
   def self.replace_words(text, replacement)
     # find all the words in the text which contain the replacement string, and substitute them with the replacement string
-    diff.gsub(/\b\w+#{replacement}\w+\b/m, replacement)
+    text.gsub(/\b\w+#{replacement}\w+\b/m, replacement)
   end
 end
