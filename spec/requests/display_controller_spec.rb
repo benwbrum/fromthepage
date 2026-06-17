@@ -53,14 +53,6 @@ describe DisplayController do
           ai_transcription.update!(status: :finished)
         end
 
-        it 'calculates and provides accuracy statistics' do
-          subject
-
-          expect(assigns(:ai_accuracy_stats)).not_to be_nil
-          expect(assigns(:ai_accuracy_stats)[:verbatim]).to have_key(:cer)
-          expect(assigns(:ai_accuracy_stats)[:verbatim]).to have_key(:wer)
-        end
-
         context 'when switching ai_transcription' do
           let!(:ai_transcription_2) { create(:ai_transcription, page: page, source_text: 'Other AI generated text content', status: :finished) }
 
@@ -145,7 +137,29 @@ describe DisplayController do
       subject
 
       expect(response).to have_http_status(:ok)
-      expect(response).to render_template(:cer_stats)
+      expect(response).to render_template(:_cer_stats)
+    end
+
+    context 'with completed transcription' do
+      before do
+        page.status = :transcribed
+        page.save!
+        allow_any_instance_of(Page).to receive(:ai_accuracy_statistics).and_return({
+          verbatim: { cer: 5.0, wer: 10.0 },
+          text_only: { cer: 3.0, wer: 8.0 }
+        })
+
+        ai_transcription.update!(status: :finished)
+      end
+
+      it 'renders the AI text page' do
+        login_as owner
+
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:_cer_stats)
+      end
     end
   end
 

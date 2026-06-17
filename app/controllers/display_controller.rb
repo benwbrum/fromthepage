@@ -166,14 +166,14 @@ class DisplayController < ApplicationController
     @ai_transcription = ai_transcriptions_scope.find_by(id: params[:ai_transcription_id]) || ai_transcriptions_scope.first
 
     if @ai_transcription.recalculate_stats?
-      ai_accuracy_stats = @page.ai_accuracy_statistics(ai_transcription: @ai_transcription)
+      @ai_accuracy_stats = @page.ai_accuracy_statistics(ai_transcription: @ai_transcription)
 
       @ai_transcription.update!(
-        verbatim_cer: ai_accuracy_stats[:verbatim][:cer],
-        verbatim_wer: ai_accuracy_stats[:verbatim][:wer],
-        verbatim_non_stopword_accuracy: ai_accuracy_stats[:verbatim][:non_stopword_accuracy],
-        text_cer: ai_accuracy_stats[:text_only][:cer],
-        text_wer: ai_accuracy_stats[:text_only][:wer]
+        verbatim_cer: @ai_accuracy_stats&.dig(:verbatim, :cer),
+        verbatim_wer: @ai_accuracy_stats&.dig(:verbatim, :wer),
+        verbatim_non_stopword_accuracy: @ai_accuracy_stats&.dig(:verbatim, :non_stopword_accuracy),
+        text_cer: @ai_accuracy_stats&.dig(:text_only, :cer),
+        text_wer: @ai_accuracy_stats&.dig(:text_only, :wer)
       )
     end
 
