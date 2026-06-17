@@ -21,6 +21,7 @@ RSpec.describe 'IA import actions', order: :defined do
 
   it 'imports a work from IA' do
     VCR.use_cassette('ia/lettertosamuelma00estl', record: :none) do
+      collection
       ia_work_count = IaWork.count
       ia_link = 'https://archive.org/details/lettertosamuelma00estl'
       visit dashboard_owner_path
@@ -39,6 +40,7 @@ RSpec.describe 'IA import actions', order: :defined do
 
   it 'uses OCR when importing a work from IA' do
     VCR.use_cassette('ia/lettertodeargarr00mays', record: :none) do
+      collection
       ia_work_count = IaWork.count
       ia_link = 'https://archive.org/details/lettertodeargarr00mays'
       visit dashboard_owner_path
@@ -101,6 +103,7 @@ RSpec.describe 'IA import actions', order: :defined do
            collection: collection,
            ocr_correction: true).tap do |work|
       create(:page, work: work, position: 1, source_text: 'OCR text')
+      create(:page, work: work, position: 2, source_text: 'More OCR text')
       work.work_statistic.recalculate
       collection.works.reset
     end
