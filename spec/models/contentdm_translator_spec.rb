@@ -77,6 +77,53 @@ RSpec.describe ContentdmTranslator do
   end
 
 
+  describe '.export_work_to_cdm_with_retry' do
+    let(:work)     { double('work') }
+    let(:username) { 'user' }
+    let(:password) { 'pass' }
+    let(:license)  { 'lic' }
+
+    before { allow(described_class).to receive(:export_work_to_cdm) }
+
+    it 'calls export_work_to_cdm once when no error occurs' do
+      described_class.export_work_to_cdm_with_retry(work, username, password, license)
+      expect(described_class).to have_received(:export_work_to_cdm).once
+    end
+
+    it 'retries on Net::ReadTimeout and succeeds on second attempt' do
+      call_count = 0
+      allow(described_class).to receive(:export_work_to_cdm) do
+        call_count += 1
+        raise Net::ReadTimeout if call_count == 1
+      end
+      allow(described_class).to receive(:sleep)
+
+      described_class.export_work_to_cdm_with_retry(work, username, password, license)
+      expect(described_class).to have_received(:export_work_to_cdm).twice
+    end
+
+    it 'retries on Savon::HTTPError (502) and succeeds on second attempt' do
+      call_count = 0
+      http_response = double('http_response', code: 502, headers: {}, body: 'Bad gateway')
+      allow(described_class).to receive(:export_work_to_cdm) do
+        call_count += 1
+        raise Savon::HTTPError.new(http_response) if call_count == 1
+      end
+      allow(described_class).to receive(:sleep)
+
+      described_class.export_work_to_cdm_with_retry(work, username, password, license)
+      expect(described_class).to have_received(:export_work_to_cdm).twice
+    end
+
+    it 'gives up after max delay is reached for Savon::HTTPError' do
+      http_response = double('http_response', code: 502, headers: {}, body: 'Bad gateway')
+      allow(described_class).to receive(:export_work_to_cdm).and_raise(Savon::HTTPError.new(http_response))
+      allow(described_class).to receive(:sleep)
+
+      expect { described_class.export_work_to_cdm_with_retry(work, username, password, license) }.not_to raise_error
+    end
+  end
+
   describe '#cdm_url_to_iiif' do
     let(:item_url) { 'https://digital.archives.alabama.gov/digital/collection/supreme_court/id/7076' }
     let(:collection_url) { 'https://digital.archives.alabama.gov/digital/collection/supreme_court' }
