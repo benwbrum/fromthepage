@@ -39,7 +39,10 @@ class AiTranscription::Generate < ApplicationInteractor
 
     finish_reason = response.dig('candidates', 0, 'finishReason')
     finish_message = response.dig('candidates', 0, 'finishMessage')
-    provider_error = [finish_reason, finish_message].reject(&:blank?).join(' - ')
+    provider_error_parts = []
+    provider_error_parts << "finishReason=#{finish_reason}" if finish_reason.present?
+    provider_error_parts << "finishMessage=#{finish_message}" if finish_message.present?
+    provider_error = provider_error_parts.join('; ')
     details = provider_error.present? ? "\nProvider details: #{provider_error}" : ''
 
     raise ArgumentError, "AI Transcription has blank text and reasoning.#{details}\nResponse:\n#{response}"
