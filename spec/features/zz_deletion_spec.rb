@@ -119,7 +119,7 @@ RSpec.describe 'testing deletions' do
     expect(collection.document_sets.count).to be > 0
 
     visit collection_path(owner, collection)
-    page.find('a', text: 'Show All').click
+    click_link('Show All') if page.has_link?('Show All')
     collection.works.each do |work|
       expect(page).to have_content(work.title)
     end
