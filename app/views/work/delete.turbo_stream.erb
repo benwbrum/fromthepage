@@ -1,0 +1,8 @@
+<% if @result.success? %>
+  <%= turbo_stream.redirect(
+    dashboard_owner_path,
+    response: turbo_flash(t('.success'), :notice)
+  )%>
+<% else %>
+  <%= turbo_flash(t('errors.error'), :error) %>
+<% end %>

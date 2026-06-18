@@ -91,7 +91,7 @@ describe AiAccuracyCalculator do
 
       it 'includes non-stopword accuracy if language is supported' do
         # modify the collection's text language to be English
-        allow(page).to receive(:collection).and_return(double(text_language: 'eng'))
+        allow(page).to receive(:collection).and_return(double(text_language: 'eng', field_based: false))
         stats = page.ai_accuracy_statistics
 
         expect(stats[:verbatim]).to have_key(:non_stopword_accuracy)
@@ -99,7 +99,7 @@ describe AiAccuracyCalculator do
 
       it 'does not include non-stopword accuracy if language is unsupported' do
         # modify the collection's text language to be Akkadian
-        allow(page).to receive(:collection).and_return(double(text_language: 'akk'))
+        allow(page).to receive(:collection).and_return(double(text_language: 'akk', field_based: false))
         stats = page.ai_accuracy_statistics
 
         expect(stats[:verbatim]).not_to have_key(:non_stopword_accuracy)

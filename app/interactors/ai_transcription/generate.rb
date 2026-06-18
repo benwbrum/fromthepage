@@ -19,6 +19,16 @@ class AiTranscription::Generate < ApplicationInteractor
   def perform
     source_text, reasoning, metadata, response = transcribe_handler.perform
 
+    if @collection.field_based
+      handle_field_based_response(source_text, reasoning, metadata)
+    else
+      handle_standard_response(source_text, reasoning, metadata, response)
+    end
+  end
+
+  private
+
+  def handle_standard_response(source_text, reasoning, metadata, response)
     @ai_transcription.update!(
       source_text: source_text,
       reasoning: reasoning,
@@ -30,7 +40,27 @@ class AiTranscription::Generate < ApplicationInteractor
     raise ArgumentError, "AI Transcription has blank text and reasoning.\nResponse:\n#{response}"
   end
 
-  private
+  def handle_field_based_response(source_text, reasoning, metadata)
+    validator = AiTranscription::Lib::FieldBasedResponseValidator.new(
+      collection: @collection,
+      response_text: source_text
+    )
+
+    if validator.valid?
+      @ai_transcription.update!(
+        transcription_json: validator.parsed_json,
+        reasoning: reasoning,
+        metadata: metadata
+      )
+    else
+      @ai_transcription.update!(
+        source_text: source_text,
+        reasoning: reasoning,
+        metadata: metadata
+      )
+      raise ArgumentError, "Field-based AI transcription JSON validation failed: #{validator.errors.join('; ')}"
+    end
+  end
 
   def image_url
     return @image_url if defined?(@image_url)
