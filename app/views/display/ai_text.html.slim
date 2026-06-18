@@ -36,7 +36,7 @@
         .loading
           .spinner
   -else
-    =render partial: 'cer_stats'
+    =render partial: 'cer_stats', locals: { ai_stats_available: true }
 
 =render partial: 'reasoning'
 

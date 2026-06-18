@@ -178,7 +178,7 @@ class DisplayController < ApplicationController
     end
 
     render turbo_stream: turbo_stream.replace(
-      'cer_stats', partial: 'cer_stats'
+      'cer_stats', partial: 'cer_stats', locals: { ai_stats_available: !@ai_accuracy_stats.blank? }
     )
   end
 

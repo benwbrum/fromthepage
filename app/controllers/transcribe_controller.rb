@@ -123,6 +123,11 @@ class TranscribeController  < ApplicationController
             text_cer: nil,
             text_wer: nil
           )
+
+          Transcribe::CalculateAiStatsJob.perform_later(
+            page_id: @page.id,
+            user_id: current_user.id
+          )
         end
 
         if @page.work.ocr_correction
