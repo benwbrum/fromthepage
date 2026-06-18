@@ -1,0 +1,15 @@
+-unless current_user.blank?
+  -if @ai_transcription.blank?
+    #cer_stats
+      .ai-accuracy-unavailable
+        p.info-message =t('display.cer_stats.statistics_unavailable')
+        p =t('display.cer_stats.statistics_unavailable_reason')
+
+  -elsif @ai_transcription.recalculate_stats?
+    turbo-frame id="cer_stats" src=collection_ai_stats_page_path(@collection.owner, @collection, @work, @page, ai_transcription_id: @ai_transcription.id) loading="lazy"
+      .ai-accuracy-statistics
+        h4 =t('display.cer_stats.accuracy_statistics')
+        .loading
+          .spinner
+  -else
+    =render partial: 'cer_stats', locals: { ai_stats_available: true }
