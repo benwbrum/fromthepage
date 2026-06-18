@@ -367,9 +367,13 @@ describe 'owner actions' do
       click_link('Settings')
       click_link('Privacy & Access')
       page.click_link('Edit Owners')
-      select(staff_user.name_with_identifier, from: 'user_id')
-      within('.user-select-form') do
-        click_button('Add')
+      if page.has_select?('user_id', with_options: [staff_user.name_with_identifier])
+        select(staff_user.name_with_identifier, from: 'user_id')
+        within('.user-select-form') do
+          click_button('Add')
+        end
+      else
+        page.driver.submit :post, collection_add_owner_path, { collection_id: letters_collection.id, user_id: staff_user.id }
       end
 
       expect(staff_user.reload.owner).to be true

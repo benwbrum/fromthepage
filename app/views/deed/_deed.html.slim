@@ -12,18 +12,20 @@
     -if deed.collection && deed.work
       -access_object = deed.work.access_object(current_user)
 
-  -user_name = deed.user.display_name if deed.user
-
-  -user = link_to(user_name, user_profile_url(deed.user, only_path: !mailer))
+  -if deed.user
+    -user_name = deed.user.display_name
+    -user = link_to(user_name, user_profile_url(deed.user, only_path: !mailer))
+  -else
+    -user = t('.deleted_user', default: 'Deleted user')
 
   -if deed.page.nil?
     -page = ''
   -else
     -if access_object
-      -page = link_to(deed.page.title, collection_display_page_url(access_object.owner, access_object, deed.work, deed.page, only_path: !mailer))
+      -page = access_object.owner ? link_to(deed.page.title, collection_display_page_url(access_object.owner, access_object, deed.work, deed.page, only_path: !mailer)) : deed.page.title
     -else
       -page = deed.page.title
-  -article = deed.article.nil? ? '' : link_to(deed.article.title, collection_article_show_url(deed.article.collection.owner, deed.article.collection, deed.article, only_path: !mailer))
+  -article = deed.article.nil? || deed.article.collection.nil? || deed.article.collection.owner.nil? ? '' : link_to(deed.article.title, collection_article_show_url(deed.article.collection.owner, deed.article.collection, deed.article, only_path: !mailer))
 
   -if(!deed.work.nil? && !deed.work.collection.nil? )
     -if access_object
@@ -36,11 +38,11 @@
 
   -unless(deed.collection.nil?)
     -if prerender
-      -collection = link_to(deed.collection.title, collection_url(deed.collection.owner, deed.collection, only_path: !mailer ))
+      -collection = deed.collection.owner ? link_to(deed.collection.title, collection_url(deed.collection.owner, deed.collection, only_path: !mailer )) : deed.collection.title
     -else
-      -if deed.collection.show_to?(current_user)
+      -if deed.collection.owner && deed.collection.show_to?(current_user)
         -collection = link_to(deed.collection.title, collection_url(deed.collection.owner, deed.collection, only_path: !mailer ))
-      -elsif access_object
+      -elsif access_object && access_object.owner
         -collection = link_to(access_object.title, collection_url(access_object.owner, access_object, only_path: !mailer ))
       -else
         -collection = deed.collection.title

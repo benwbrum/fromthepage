@@ -12,11 +12,17 @@ table.admin-grid.datagrid.striped
     -@document_uploads.each do |document|
       tr
         td
-          =link_to(user_profile_path(document.user), class: 'userpic userpic-small')
-            =profile_picture(document.user)
+          -if document.user
+            =link_to(user_profile_path(document.user), class: 'userpic userpic-small')
+              =profile_picture(document.user)
+          -else
+            span.userpic.userpic-small
         td.nowrap.toleft
-          div =link_to document.user.login, user_profile_path(document.user)
-          small =document.user.email
+          -if document.user
+            div =link_to document.user.login, user_profile_path(document.user)
+            small =document.user.email
+          -else
+            div Deleted user
         td
           -if document.collection.present?
             p.fgfaded(data-prefix="Collection: ")
