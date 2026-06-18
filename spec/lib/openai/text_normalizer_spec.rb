@@ -8,6 +8,8 @@ RSpec.describe TextNormalizer do
     allow(File).to receive(:read)
       .with(File.join(Rails.root, 'lib', 'openai', 'normalizer_prompt.txt'))
       .and_return('Normalize this: {{text}}')
+    allow(described_class).to receive(:print)
+    allow(described_class).to receive(:pp)
   end
 
   def stub_openai_response(response)

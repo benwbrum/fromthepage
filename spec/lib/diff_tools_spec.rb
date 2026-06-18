@@ -4,6 +4,8 @@ require 'diff_tools'
 RSpec.describe DiffTools do
   describe '.diff_and_replace' do
     it 'returns identical text unchanged' do
+      expect(Diffy::Diff).not_to receive(:new)
+
       expect(described_class.diff_and_replace('same text', 'same text', '[...]')).to eq('same text')
     end
 

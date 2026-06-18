@@ -8,6 +8,8 @@ RSpec.describe DescriptionTagger do
     allow(File).to receive(:read)
       .with(File.join(Rails.root, 'lib', 'openai', 'subject_prompt.txt'))
       .and_return("Tags: {{tags}}\nDescription: {{description}}")
+    allow(described_class).to receive(:print)
+    allow(described_class).to receive(:pp)
   end
 
   def stub_openai_response(content_or_response)
