@@ -138,7 +138,7 @@ RSpec.describe ExportService do
   describe '#write_artifact' do
     it 'creates parent directories and writes content' do
       Dir.mktmpdir do |dir|
-        exporter.write_artifact(base: dir, relative: 'nested/file.txt', content: 'hello')
+        exporter.send(:write_artifact, base: dir, relative: 'nested/file.txt', content: 'hello')
 
         expect(File.read(File.join(dir, 'nested', 'file.txt'))).to eq('hello')
       end
