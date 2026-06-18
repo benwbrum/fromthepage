@@ -119,6 +119,26 @@ RSpec.describe AdminMailer, type: :mailer do
         mail = AdminMailer.collection_stats_by_owner(activity).deliver
         expect(mail.html_part.body.decoded).not_to match("Suspicious Behaviors")
       end
+
+      %i[de fr].each do |locale|
+        it "renders suspicious behavior mailer copy in #{locale}" do
+          @suspicious_behavior = create(:suspicious_behavior, {
+            collection_id: @collection.id,
+            page_id: @page.id,
+            user_id: @old_collaborator.id,
+            resolved_by_user_id: @owner.id
+          })
+
+          I18n.with_locale(locale) do
+            activity = AdminMailer::OwnerCollectionActivity.build(@owner)
+            mail = AdminMailer.collection_stats_by_owner(activity).deliver
+
+            expect(mail.html_part.body.decoded).to include(I18n.t('admin_mailer.collection_stats_by_owner.suspicious_behaviors'))
+            expect(mail.html_part.body.decoded).to include(I18n.t('admin_mailer.collection_stats_by_owner.view_collection_suspicious_behaviors'))
+            expect(mail.html_part.body.decoded).not_to include('translation missing')
+          end
+        end
+      end
       it "shows new activity collection title" do
         @new_deed = create(:deed, {
           deed_type: DeedType::WORK_ADDED,
