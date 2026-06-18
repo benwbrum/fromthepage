@@ -1,6 +1,8 @@
 module DiffTools
   def self.diff_and_replace(text_a, text_b, replacement)
     # this method compares two strings and produces a third string which contains all identical text, with the differences replaced by the replacement string
+    return text_a if text_a == text_b
+
     # compare the two strings
     diff = Diffy::Diff.new(text_a, text_b, include_diff_info: true)
     # diffly has code which marks up the differences within a line in HTML, using strong tags to identify words
@@ -31,6 +33,6 @@ module DiffTools
 
   def self.replace_words(text, replacement)
     # find all the words in the text which contain the replacement string, and substitute them with the replacement string
-    diff.gsub(/\b\w+#{replacement}\w+\b/m, replacement)
+    text.gsub(/\b\w+#{replacement}\w+\b/m, replacement)
   end
 end
