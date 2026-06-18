@@ -24,11 +24,14 @@ table.datagrid.striped#deeds-list
     -@deeds.each do |d|
       tr
         td
-          =link_to(user_profile_path(d.user), class: 'userpic userpic-small')
-            =profile_picture(d.user)
+          -if d.user
+            =link_to(user_profile_path(d.user), class: 'userpic userpic-small')
+              =profile_picture(d.user)
+          -else
+            span.userpic.userpic-small
         td.w100.toleft
           -if @collection.nil?
-            -if d.collection.show_to?(current_user) || (d.work && d.work.access_object(current_user))
+            -if (d.collection && d.collection.show_to?(current_user)) || (d.work && d.work.access_object(current_user))
               =render(partial: 'deed/deed', locals: { deed: d, long_view: true }, formats: [:html])
             -else
               =raw(strip_tags(render(partial: 'deed/deed', locals: { deed: d, long_view: true }, formats: [:html])))
