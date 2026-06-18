@@ -2,6 +2,8 @@ require 'spec_helper'
 
 RSpec.describe ArticleVersionController do
   let(:owner) { create(:unique_user, :owner) }
+
+  before { login_as owner }
   let(:collection) { create(:collection, owner_user_id: owner.id, works: []) }
   let(:article) { create(:article, collection: collection, title: 'Current Article') }
   let!(:first_version) do
