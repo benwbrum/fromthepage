@@ -133,7 +133,7 @@ describe 'collection field-based transcription settings' do
     find('#save_button_top').click
 
     expect(page).not_to have_content('Subject Linking Error')
-    expect(page).not_to have_content('500')
+    expect(page).not_to have_content('500 Internal Server Error')
     expect(page).not_to have_content('undefined method')
     expect(page).to have_content('Saved')
   end

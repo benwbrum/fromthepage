@@ -11,7 +11,7 @@ describe AiTranscription::Create do
   let(:prompt_file) { nil }
   let(:retranscribe) { false }
 
-  let(:prompt) { File.read(Rails.root.join('lib/gemini/transcription_prompt.txt')) }
+  let(:prompt) { File.read(Rails.root.join('lib/transcription_prompt.txt')) }
 
   let(:result) do
     described_class.new(

@@ -65,21 +65,26 @@ class AiTranscription::Generate < ApplicationInteractor
   def image_url
     return @image_url if defined?(@image_url)
 
-    @image_url = @page.image_url_for_download
+    @image_url = @page.image_url_for_ai
 
     raise ArgumentError, 'Page has no image to transcribe' if @image_url.blank?
 
     @image_url
   end
 
-  # TODO: When we support claude, this should handle what transcribe_handler is used
-  # We will refactor this to inherit into one `BaseHandler` so it follows consistent form
-  # for each AI models
   def transcribe_handler
-    @transcribe_handler ||= AiTranscription::Lib::Gemini::TranscribeHandler.new(
+    @transcribe_handler ||= handler_class.new(
       model: @ai_transcription.model,
       prompt: @ai_transcription.prompt,
       image_url: image_url
     )
+  end
+
+  def handler_class
+    if @ai_transcription.model.start_with?('claude')
+      AiTranscription::Lib::Claude::TranscribeHandler
+    else
+      AiTranscription::Lib::Gemini::TranscribeHandler
+    end
   end
 end

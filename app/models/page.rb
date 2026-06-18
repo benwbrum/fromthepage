@@ -641,6 +641,24 @@ class Page < ApplicationRecord
     end
   end
 
+  def image_url_for_ai(max_dim: 7900)
+    size = "!#{max_dim},#{max_dim}"
+    if sc_canvas
+      if sc_canvas.sc_service_id.present?
+        "#{sc_canvas.sc_service_id.sub(/\/$/, '')}/full/#{size}/0/default.jpg"
+      else
+        sc_canvas.sc_resource_id
+      end
+    elsif ia_leaf
+      "https://iiif.archive.org/iiif/#{work.ia_work.book_id}$#{ia_leaf.leaf_number}/full/#{size}/0/default.jpg"
+    elsif canonical_facsimile_url.present?
+      raw_host = Rails.application.config.action_mailer.default_url_options[:host]
+      host, port = raw_host.split(':', 2)
+      base = port ? "http://#{host}:#{port}" : "https://#{host}"
+      "#{base}/image-service/#{id}/full/#{size}/0/default.jpg"
+    end
+  end
+
   def normalized_image_url_for_download
     return image_url_for_download if image.attached?
 

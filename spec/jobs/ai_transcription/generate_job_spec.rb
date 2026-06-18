@@ -11,7 +11,7 @@ describe AiTranscription::GenerateJob do
   let!(:ai_transcription) { create(:ai_transcription, page_id: page.id, model: model, prompt: prompt, status: :processing, source_text: nil, reasoning: nil) }
 
   let(:model) { AiTranscription::DEFAULT_MODEL }
-  let(:prompt) { File.read(Rails.root.join('lib/gemini/transcription_prompt.txt')) }
+  let(:prompt) { File.read(Rails.root.join('lib/transcription_prompt.txt')) }
 
   let(:expected_response) do
     JSON.parse(
@@ -32,7 +32,7 @@ describe AiTranscription::GenerateJob do
         .and_return(ai_transcription)
 
       allow(ai_transcription).to receive(:page).and_return(page)
-      allow(page).to receive(:image_url_for_download).and_return('http://example.com/image.jpg')
+      allow(page).to receive(:image_url_for_ai).and_return('http://example.com/image.jpg')
     end
 
     it 'performs generate job' do
@@ -84,7 +84,7 @@ describe AiTranscription::GenerateJob do
           .and_return(ai_transcription)
 
         allow(ai_transcription).to receive(:page).and_return(page)
-        allow(page).to receive(:image_url_for_download).and_return('http://example.com/image.jpg')
+        allow(page).to receive(:image_url_for_ai).and_return('http://example.com/image.jpg')
       end
 
       it 'performs generate job' do
@@ -111,7 +111,7 @@ describe AiTranscription::GenerateJob do
           .and_return(ai_transcription)
 
         allow(ai_transcription).to receive(:page).and_return(page)
-        allow(page).to receive(:image_url_for_download).and_return(nil)
+        allow(page).to receive(:image_url_for_ai).and_return(nil)
       end
 
       it 'performs generate job' do
