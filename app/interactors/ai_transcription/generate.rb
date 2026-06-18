@@ -65,7 +65,7 @@ class AiTranscription::Generate < ApplicationInteractor
   def image_url
     return @image_url if defined?(@image_url)
 
-    @image_url = @page.image_url_for_download
+    @image_url = @page.image_url_for_ai
 
     raise ArgumentError, 'Page has no image to transcribe' if @image_url.blank?
 

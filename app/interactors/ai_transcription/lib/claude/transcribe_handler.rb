@@ -18,8 +18,8 @@ class AiTranscription::Lib::Claude::TranscribeHandler < AiTranscription::Lib::Ba
         transcription_text, reasoning_text = extract_texts_from_response(response)
         metadata = extract_usage_metadata(response)
         return [transcription_text, reasoning_text, metadata, response]
-      rescue Anthropic::APIStatusError => e
-        if e.type == :overloaded_error && attempt <= MAX_RETRY
+      rescue Anthropic::Errors::APIStatusError => e
+        if e.status == 529 && attempt <= MAX_RETRY
           delay = 2**attempt
           Rails.logger.warn("Anthropic API overloaded (attempt #{attempt}/#{MAX_RETRY}). Retrying in #{delay} seconds...")
           sleep(delay)
@@ -59,9 +59,8 @@ class AiTranscription::Lib::Claude::TranscribeHandler < AiTranscription::Lib::Ba
           {
             type: 'image',
             source: {
-              type: 'base64',
-              media_type: 'image/jpeg',
-              data: fetch_and_encode_image(url: @image_url)
+              type: 'url',
+              url: @image_url
             }
           },
           { type: 'text', text: @prompt }
