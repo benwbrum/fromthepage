@@ -588,8 +588,10 @@ class Page < ApplicationRecord
   end
 
   # TODO: Remove this on different PR after running migration
-  def has_ai_plaintext?
-    (self.ai_transcription&.status_finished? && ai_plaintext.present?) || File.exist?(self.ai_plaintext_path)
+  def has_ai_plaintext?(ai_transcription_to_use: nil)
+    ai_transcription_to_use ||= self.ai_transcription
+
+    (ai_transcription_to_use&.status_finished? && ai_transcription_to_use&.source_text&.present?) || File.exist?(self.ai_plaintext_path)
   end
 
   # TODO: Remove this on different PR after running migration

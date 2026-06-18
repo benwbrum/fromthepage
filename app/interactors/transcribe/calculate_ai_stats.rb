@@ -1,10 +1,4 @@
 class Transcribe::CalculateAiStats < ApplicationInteractor
-  DISTANCE_FLAG = 0.05
-  CAVEAT_TEXTS = [
-    I18n.t('shared.codemirror.ai_plaintext_caveat'),
-    I18n.t('shared.codemirror.ai_plaintext_caveat_no_emoji')
-  ].freeze
-
   def initialize(page:)
     @page = page
     @ai_transcriptions = @page.ai_transcriptions

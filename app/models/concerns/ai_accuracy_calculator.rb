@@ -8,8 +8,8 @@ module AiAccuracyCalculator
   extend ActiveSupport::Concern
 
   # Check if accuracy statistics can be calculated for this page
-  def can_calculate_ai_accuracy?
-    has_ai_plaintext? && has_human_transcription?
+  def can_calculate_ai_accuracy?(ai_transcription: nil)
+    has_ai_plaintext?(ai_transcription_to_use: ai_transcription) && has_human_transcription?
   end
 
   # Check if non-stopword accuracy can be calculated for this collection's language
@@ -30,7 +30,7 @@ module AiAccuracyCalculator
   # Calculate all accuracy statistics
   # Returns a hash with various accuracy metrics or nil if cannot calculate
   def ai_accuracy_statistics(ai_transcription: self.ai_transcription)
-    return nil unless can_calculate_ai_accuracy?
+    return nil unless can_calculate_ai_accuracy?(ai_transcription: ai_transcription)
 
     ground_truth = ground_truth_for_comparison
     ai_text = ai_transcription&.text_for_comparison
