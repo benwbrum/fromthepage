@@ -5,6 +5,8 @@ RSpec.describe AdminMailer, type: :mailer do
     before :all do
       @owner = create(:user)
       @collection = create(:collection, owner_user_id: @owner.id)
+      @work = create(:work, collection_id: @collection.id, owner_user_id: @owner.id)
+      @page = create(:page, work_id: @work.id)
       @new_collaborator = create(:user)
       @old_collaborator = create(:user)
       @old_deed = create(:deed, {
@@ -16,11 +18,18 @@ RSpec.describe AdminMailer, type: :mailer do
     end
 
     after :all do
+      @page.destroy
+      @work.destroy
       @owner.destroy
       @collection.destroy
       @new_collaborator.destroy
       @old_collaborator.destroy
       @old_deed.destroy
+    end
+
+    after :each do
+      @suspicious_behavior&.destroy
+      @suspicious_behavior = nil
     end
 
     context "email metadata" do
@@ -75,6 +84,40 @@ RSpec.describe AdminMailer, type: :mailer do
         activity = AdminMailer::OwnerCollectionActivity.build(@owner)
         mail = AdminMailer.collection_stats_by_owner(activity).deliver
         expect(mail.html_part.body.decoded).not_to match("Comments from Your Collaborators")
+      end
+      it "shows suspicious behavior details and links" do
+        @suspicious_behavior = create(:suspicious_behavior, {
+          collection_id: @collection.id,
+          page_id: @page.id,
+          user_id: @old_collaborator.id,
+          resolved_by_user_id: @owner.id
+        })
+        activity = AdminMailer::OwnerCollectionActivity.build(@owner)
+        mail = AdminMailer.collection_stats_by_owner(activity).deliver
+
+        expect(mail.html_part.body.decoded).to match("Suspicious Behaviors")
+        expect(mail.html_part.body.decoded).to match("View collection suspicious behaviors")
+        expect(mail.html_part.body.decoded).to match(@page.title)
+        expect(mail.html_part.body.decoded).to match(collection_suspicious_behaviors_url(@owner, @collection, only_path: false))
+        expect(mail.html_part.body.decoded).to match(collection_display_page_url(@owner, @collection, @page.work_id, @page, only_path: false))
+      end
+      it "shows suspicious behaviors when they are the only recent activity" do
+        @suspicious_behavior = create(:suspicious_behavior, {
+          collection_id: @collection.id,
+          page_id: @page.id,
+          user_id: @old_collaborator.id,
+          resolved_by_user_id: @owner.id
+        })
+        activity = AdminMailer::OwnerCollectionActivity.build(@owner)
+        mail = AdminMailer.collection_stats_by_owner(activity).deliver
+
+        expect(mail.html_part.body.decoded).to match("Suspicious Behaviors")
+        expect(mail.html_part.body.decoded).not_to match("Other Recent Activity in Your Collections")
+      end
+      it "doesn't show suspicious behaviors when there aren't any" do
+        activity = AdminMailer::OwnerCollectionActivity.build(@owner)
+        mail = AdminMailer.collection_stats_by_owner(activity).deliver
+        expect(mail.html_part.body.decoded).not_to match("Suspicious Behaviors")
       end
       it "shows new activity collection title" do
         @new_deed = create(:deed, {
