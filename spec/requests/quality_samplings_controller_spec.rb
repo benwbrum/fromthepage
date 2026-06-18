@@ -3,7 +3,7 @@ require 'spec_helper'
 RSpec.describe QualitySamplingsController do
   let(:owner) { create(:unique_user, :owner) }
   let(:user) { create(:unique_user) }
-  let(:collection) { create(:collection, :review_required, owner_user_id: owner.id, works: []) }
+  let(:collection) { create(:collection, owner_user_id: owner.id, works: [], review_type: :restricted) }
   let(:work) { create(:work, collection: collection, owner_user_id: owner.id) }
   let!(:page) { create(:page, work: work, status: :needs_review, last_editor_user_id: user.id) }
 

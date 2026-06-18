@@ -11,15 +11,15 @@ RSpec.describe ContactController do
       expect(response).to have_http_status(:ok)
     end
 
-    it 'raises routing error with an invalid token' do
-      expect do
-        get contact_path(token: 'invalid')
-      end.to raise_error(ActionController::RoutingError)
+    it 'returns not found with an invalid token' do
+      get contact_path(token: 'invalid')
+
+      expect(response).to have_http_status(:not_found)
     end
   end
 
   describe '#send_email' do
-    let(:delivery) { instance_double(ActionMailer::MessageDelivery, deliver!: true) }
+    let(:delivery) { double('message_delivery', deliver!: true) }
 
     it 'sends contact mail when the dynamic email param is present' do
       expect(ContactMailer).to receive(:contact).with(
