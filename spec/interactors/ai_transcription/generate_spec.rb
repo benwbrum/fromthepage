@@ -28,7 +28,7 @@ describe AiTranscription::Generate do
   context 'when page has an image' do
     before do
       allow(ai_transcription).to receive(:page).and_return(page)
-      allow(page).to receive(:image_url_for_download).and_return('http://example.com/image.jpg')
+      allow(page).to receive(:image_url_for_ai).and_return('http://example.com/image.jpg')
     end
 
     it 'generates ai_transcription text and reasoning' do
@@ -146,7 +146,7 @@ describe AiTranscription::Generate do
 
     before do
       allow(ai_transcription).to receive(:page).and_return(page)
-      allow(page).to receive(:image_url_for_download).and_return('http://example.com/image.jpg')
+      allow(page).to receive(:image_url_for_ai).and_return('http://example.com/image.jpg')
       allow_any_instance_of(AiTranscription::Lib::Gemini::TranscribeHandler).to receive(:perform)
         .and_return([valid_json_text, '', { prompt_token_count: 100, total_token_count: 200 }, nil])
     end
@@ -222,7 +222,7 @@ describe AiTranscription::Generate do
   context 'when page has no image' do
     before do
       allow(ai_transcription).to receive(:page).and_return(page)
-      allow(page).to receive(:image_url_for_download).and_return(nil)
+      allow(page).to receive(:image_url_for_ai).and_return(nil)
     end
 
     it 'fails to generate transcription' do
@@ -234,7 +234,7 @@ describe AiTranscription::Generate do
   context 'when image fetch redirect errors' do
     before do
       allow(ai_transcription).to receive(:page).and_return(page)
-      allow(page).to receive(:image_url_for_download).and_return('http://example.com/image.jpg')
+      allow(page).to receive(:image_url_for_ai).and_return('http://example.com/image.jpg')
 
       stub_const('AiTranscription::Lib::BaseTranscribeHandler::IMAGE_FETCH_LIMIT', 1)
     end
@@ -252,7 +252,7 @@ describe AiTranscription::Generate do
   context 'when image fetch unhandled errors' do
     before do
       allow(ai_transcription).to receive(:page).and_return(page)
-      allow(page).to receive(:image_url_for_download).and_return('http://example.com/image.jpg')
+      allow(page).to receive(:image_url_for_ai).and_return('http://example.com/image.jpg')
 
       stub_const('AiTranscription::Lib::BaseTranscribeHandler::IMAGE_FETCH_LIMIT', 1)
     end
