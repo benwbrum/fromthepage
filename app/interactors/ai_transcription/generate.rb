@@ -69,6 +69,8 @@ class AiTranscription::Generate < ApplicationInteractor
 
     raise ArgumentError, 'Page has no image to transcribe' if @image_url.blank?
 
+    Rails.logger.info("AiTranscription::Generate image URL for page #{@page.id}: #{@image_url}")
+
     @image_url
   end
 
