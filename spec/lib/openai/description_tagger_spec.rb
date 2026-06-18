@@ -13,11 +13,12 @@ RSpec.describe DescriptionTagger do
   end
 
   def stub_openai_response(content_or_response)
-    response = if content_or_response.is_a?(Hash)
-                 content_or_response
-    else
-                 { 'choices' => [{ 'message' => { 'content' => content_or_response } }] }
-    end
+    response =
+      if content_or_response.is_a?(Hash)
+        content_or_response
+      else
+        { 'choices' => [{ 'message' => { 'content' => content_or_response } }] }
+      end
     client = double('OpenAI::Client', chat: response)
     stub_const('OpenAI::Client', double('OpenAI::Client class', new: client))
     client
