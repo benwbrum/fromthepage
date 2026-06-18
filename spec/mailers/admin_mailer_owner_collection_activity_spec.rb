@@ -23,6 +23,11 @@ RSpec.describe AdminMailer::OwnerCollectionActivity do
 
       after :each do
         @new_collaborator_deed.destroy if @new_collaborator_deed
+        @suspicious_behavior&.destroy
+        @page&.destroy
+        @work&.destroy
+        @page = nil
+        @work = nil
       end
 
       after :all do
@@ -55,6 +60,37 @@ RSpec.describe AdminMailer::OwnerCollectionActivity do
         # Make sure the old collaborator isn't listed
         expect(activity.collaborators.length).to eq(1)
       end
+
+     it "retrieves recent suspicious behaviors and groups them by collection" do
+       @work = create(:work, collection_id: @collection.id, owner_user_id: @owner.id)
+       @page = create(:page, work_id: @work.id)
+       @suspicious_behavior = create(:suspicious_behavior, {
+         collection_id: @collection.id,
+         page_id: @page.id,
+         user_id: @old_collaborator.id,
+         resolved_by_user_id: @owner.id
+       })
+
+       activity = AdminMailer::OwnerCollectionActivity.build(@owner)
+
+       expect(activity.suspicious_behaviors[@collection]).to eq([@suspicious_behavior])
+     end
+
+     it "does not retrieve old suspicious behaviors" do
+       @work = create(:work, collection_id: @collection.id, owner_user_id: @owner.id)
+       @page = create(:page, work_id: @work.id)
+       @suspicious_behavior = create(:suspicious_behavior, {
+         collection_id: @collection.id,
+         page_id: @page.id,
+         user_id: @old_collaborator.id,
+         resolved_by_user_id: @owner.id,
+         created_at: 2.days.ago
+       })
+
+       activity = AdminMailer::OwnerCollectionActivity.build(@owner)
+
+       expect(activity.suspicious_behaviors).to be_blank
+     end
   end
 
   describe "#has_activity?" do
@@ -68,6 +104,7 @@ RSpec.describe AdminMailer::OwnerCollectionActivity do
 
     after :each do
       @activity_deed&.destroy
+      @activity_suspicious_behavior&.destroy
     end
 
     after :all do
@@ -114,6 +151,21 @@ RSpec.describe AdminMailer::OwnerCollectionActivity do
           user_id: @activity_collaborator.id
         })
         activity = AdminMailer::OwnerCollectionActivity.build(@activity_owner)
+        expect(activity.has_activity?).to be true
+      end
+    end
+
+    context "when there are recent suspicious behaviors" do
+      it "returns true" do
+        @activity_suspicious_behavior = create(:suspicious_behavior, {
+          collection_id: @activity_collection.id,
+          page_id: @activity_page.id,
+          user_id: @activity_collaborator.id,
+          resolved_by_user_id: @activity_owner.id
+        })
+
+        activity = AdminMailer::OwnerCollectionActivity.build(@activity_owner)
+
         expect(activity.has_activity?).to be true
       end
     end
