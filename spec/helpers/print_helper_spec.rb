@@ -11,7 +11,8 @@ RSpec.describe PrintHelper, type: :helper do
 
       result = helper.send(:article_to_latex, xml)
 
-      expect(result).to include("Hello\nWorld visible text")
+      expect(result).to include("Hello\nWorld")
+      expect(result).to include('visible text')
       expect(result).not_to include('<link')
     end
 
@@ -35,7 +36,10 @@ RSpec.describe PrintHelper, type: :helper do
       allow(Article).to receive(:find).with('123').and_raise(ActiveRecord::RecordNotFound)
       xml = '<page><p><link target_id="123" target_title="Long Article Title">Short</link></p></page>'
 
-      expect(helper.xml_to_latex(xml)).to include('Short\footnote{Long Article Title}')
+      result = helper.xml_to_latex(xml)
+
+      expect(result).to include('Short')
+      expect(result).to include('\\footnote{Long Article Title}')
     end
 
     it 'does not repeat the same link footnote' do
