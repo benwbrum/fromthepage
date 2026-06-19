@@ -7,6 +7,11 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shard_index: [0, 1, 2, 3]
+        shard_count: [4]
     container:
       image: ghcr.io/willnigel23/ftp-ci:latest
 
@@ -44,8 +49,10 @@ jobs:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_HOST: mysql
       ELASTIC_HOST_URL: http://elasticsearch:9200
-      ELASTIC_SUFFIX: ci
+      ELASTIC_SUFFIX: ci_${{ matrix.shard_index }}
       GEMINI_API_KEY: redacted
+      SPEC_SHARD_INDEX: ${{ matrix.shard_index }}
+      SPEC_SHARD_COUNT: ${{ matrix.shard_count }}
 
     steps:
       - name: Checkout code
@@ -82,7 +89,20 @@ jobs:
           ELASTIC_ENABLED: true
 
       - name: Run tests
-        run: xvfb-run -a bundle exec rspec spec
+        run: |
+          mapfile -t SPEC_FILES < <(find spec -name '*_spec.rb' | sort)
+          SHARD_FILES=()
+
+          for i in "${!SPEC_FILES[@]}"; do
+            if [ $((i % SPEC_SHARD_COUNT)) -eq "$SPEC_SHARD_INDEX" ]; then
+              SHARD_FILES+=("${SPEC_FILES[$i]}")
+            fi
+          done
+
+          printf 'Running %d of %d spec files on shard %d/%d:\n' "${#SHARD_FILES[@]}" "${#SPEC_FILES[@]}" "$((SPEC_SHARD_INDEX + 1))" "$SPEC_SHARD_COUNT"
+          printf '  %s\n' "${SHARD_FILES[@]}"
+
+          xvfb-run -a bundle exec rspec "${SHARD_FILES[@]}"
         env:
           COVERAGE: true
           CI: true
@@ -94,6 +114,19 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path-to-lcov: "./coverage/lcov.info"
+          parallel: true
+          flag-name: rspec-${{ matrix.shard_index }}
+
+  coveralls_finish:
+    runs-on: ubuntu-latest
+    needs: test
+    if: ${{ (github.event_name == 'pull_request' && github.ref != 'refs/heads/development') || (github.event_name == 'push' && github.ref == 'refs/heads/development') }}
+    steps:
+      - name: Finish Coveralls parallel build
+        uses: coverallsapp/github-action@v2.3.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          parallel-finished: true
 
   rubocop:
     runs-on: ubuntu-latest
