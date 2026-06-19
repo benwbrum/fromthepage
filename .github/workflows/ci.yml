@@ -90,19 +90,24 @@ jobs:
 
       - name: Run tests
         run: |
-          mapfile -t SPEC_FILES < <(find spec -name '*_spec.rb' | sort)
-          SHARD_FILES=()
+          SPEC_FILES=$(mktemp)
+          SHARD_FILES=$(mktemp)
 
-          for i in "${!SPEC_FILES[@]}"; do
-            if [ $((i % SPEC_SHARD_COUNT)) -eq "$SPEC_SHARD_INDEX" ]; then
-              SHARD_FILES+=("${SPEC_FILES[$i]}")
-            fi
-          done
+          find spec -name '*_spec.rb' | sort > "$SPEC_FILES"
+          awk -v shard="$SPEC_SHARD_INDEX" -v count="$SPEC_SHARD_COUNT" '((NR - 1) % count) == shard { print }' "$SPEC_FILES" > "$SHARD_FILES"
 
-          printf 'Running %d of %d spec files on shard %d/%d:\n' "${#SHARD_FILES[@]}" "${#SPEC_FILES[@]}" "$((SPEC_SHARD_INDEX + 1))" "$SPEC_SHARD_COUNT"
-          printf '  %s\n' "${SHARD_FILES[@]}"
+          SPEC_FILE_COUNT=$(wc -l < "$SPEC_FILES" | tr -d ' ')
+          SHARD_FILE_COUNT=$(wc -l < "$SHARD_FILES" | tr -d ' ')
 
-          xvfb-run -a bundle exec rspec "${SHARD_FILES[@]}"
+          printf 'Running %d of %d spec files on shard %d/%d:\n' "$SHARD_FILE_COUNT" "$SPEC_FILE_COUNT" "$((SPEC_SHARD_INDEX + 1))" "$SPEC_SHARD_COUNT"
+          sed 's/^/  /' "$SHARD_FILES"
+
+          if [ "$SHARD_FILE_COUNT" -eq 0 ]; then
+            echo 'No spec files were assigned to this shard.'
+            exit 1
+          fi
+
+          xargs xvfb-run -a bundle exec rspec < "$SHARD_FILES"
         env:
           COVERAGE: true
           CI: true
