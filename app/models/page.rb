@@ -684,9 +684,10 @@ class Page < ApplicationRecord
   end
 
   def local_image_path
-    return nil if ia_leaf || sc_canvas || image.attached?
+    return nil if ia_leaf || sc_canvas
+    return nil if self[:base_image].blank?
     path = modernize_absolute(self[:base_image])
-    path.present? && File.exist?(path) ? path : nil
+    File.exist?(path) ? path : nil
   end
 
   def normalized_image_url_for_download
