@@ -72,7 +72,7 @@ RSpec.describe PageVersion, type: :model do
 
       only.expunge
 
-      expect(page.reload).to have_attributes(title: nil, source_text: nil, xml_text: nil, source_translation: nil, xml_translation: nil, status: 'new')
+      expect(page.reload).to have_attributes(title: "Untitled Page #{page.position}", source_text: nil, xml_text: nil, source_translation: nil, xml_translation: nil, status: 'new')
     end
 
     it 'renumbers later versions when expunging a non-current version' do
