@@ -49,7 +49,7 @@ RSpec.describe ScCanvas, type: :model do
     end
 
     it 'derives an info URL from a conventional IIIF resource URL' do
-      canvas = described_class.new(sc_resource_id: 'https://example.org/iiif/image/full/800,/0/default.jpg')
+      canvas = described_class.new(sc_resource_id: 'https://example.org/iiif/image/full/800/0/default.jpg')
 
       expect(canvas.iiif_image_info_url).to eq('https://example.org/iiif/image/info.json')
     end

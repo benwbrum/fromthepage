@@ -63,8 +63,8 @@ RSpec.describe FacetConfig, type: :model do
   describe '.update_work_facet' do
     it 'stores stripped metadata text in the configured string facet' do
       collection = create(:collection, facets_enabled: true)
-      work = create(:work, collection: collection, original_metadata: [{ 'label' => 'Subject', 'value' => '<b>Botany</b>' }].to_json)
-      coverage = create(:metadata_coverage, collection: collection, key: 'Subject')
+      work = create(:work, collection: collection, original_metadata: [{ 'label' => 'Test Subject Facet', 'value' => '<b>Botany</b>' }].to_json)
+      coverage = collection.metadata_coverages.find_by!(key: 'Test Subject Facet')
       create(:facet_config, metadata_coverage: coverage, input_type: 'text', order: 0)
       work.create_work_facet!
 

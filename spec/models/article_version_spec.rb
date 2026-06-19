@@ -2,11 +2,15 @@ require 'spec_helper'
 
 RSpec.describe ArticleVersion, type: :model do
   let(:user) { create(:user) }
-  let(:article) { create(:article, title: 'Current', source_text: 'current text', xml_text: '<p>current</p>') }
+  let(:collection) { create(:collection, works: []) }
+  let(:article) { create(:article, collection: collection, title: 'Current', source_text: 'current text', xml_text: '<p>current</p>') }
 
   before { allow(Flag).to receive(:check_article) }
 
+
   def create_version(number, attrs = {})
+    article.article_versions.delete_all if number.zero?
+
     described_class.create!({
       article: article,
       user: user,

@@ -11,6 +11,8 @@ RSpec.describe PageVersion, type: :model do
   end
 
   def create_version(number, attrs = {})
+    page.page_versions.delete_all if number.zero?
+
     described_class.create!({
       page: page,
       user: user,
@@ -41,7 +43,7 @@ RSpec.describe PageVersion, type: :model do
     it 'formats the timestamp and user name' do
       version = create_version(0, created_on: Time.zone.local(2024, 1, 2))
 
-      expect(version.display).to eq('Jan 02, 2024 - Editor')
+      expect(version.display).to eq("Jan 02, 2024 - #{user.display_name}")
     end
   end
 

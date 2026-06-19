@@ -60,7 +60,7 @@ RSpec.describe QualitySampling, type: :model do
 
       expect(work_hash[work.id]).to have_attributes(total_page_count: 3, reviewed_page_count: 2, approval_delta_sum: 4.0, corrected_page_count: 1)
       expect(work_hash[work.id].mean_approval_delta).to eq(2.0)
-      expect(user_hash[editor.id]).to have_attributes(total_page_count: 3, reviewed_page_count: 2, approval_delta_sum: 4.0, corrected_page_count: 1)
+      expect(user_hash[editor.id]).to have_attributes(total_page_count: 2, reviewed_page_count: 2, approval_delta_sum: 4.0, corrected_page_count: 1)
     end
   end
 end

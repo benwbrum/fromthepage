@@ -7,7 +7,7 @@ RSpec.describe Flag, type: :model do
   before { allow(Flagger).to receive(:check) }
 
   describe '.check_page' do
-    let(:version) { create(:page_version, user: normal_user, transcription: 'spam text', created_on: Time.current) }
+    let(:version) { build_stubbed(:page_version, user: normal_user, transcription: 'spam text', created_on: Time.current) }
 
     it 'creates a regex flag for matching normal-user content' do
       allow(Flagger).to receive(:check).with('spam text').and_return('spam')
@@ -33,7 +33,7 @@ RSpec.describe Flag, type: :model do
 
   describe '.check_article' do
     it 'creates a regex flag for matching article content' do
-      version = create(:article_version, user: normal_user, source_text: 'spam text', created_on: Time.current)
+      version = build_stubbed(:article_version, user: normal_user, source_text: 'spam text', created_on: Time.current)
       allow(Flagger).to receive(:check).with('spam text').and_return('spam')
 
       expect { described_class.check_article(version) }.to change(described_class, :count).by(1)
