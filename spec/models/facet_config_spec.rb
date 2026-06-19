@@ -68,7 +68,7 @@ RSpec.describe FacetConfig, type: :model do
       create(:facet_config, metadata_coverage: coverage, input_type: 'text', order: 0)
       work.create_work_facet!
 
-      described_class.update_work_facet(work, collection)
+      described_class.update_work_facet(work, collection.reload)
 
       expect(work.reload.work_facet.s0).to eq('Botany')
     end

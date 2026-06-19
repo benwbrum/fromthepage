@@ -13,7 +13,7 @@ RSpec.describe Flag, type: :model do
       allow(Flagger).to receive(:check).with('spam text').and_return('spam')
 
       expect { described_class.check_page(version) }.to change(described_class, :count).by(1)
-      expect(described_class.last).to have_attributes(page_version: version, author_user: normal_user, provenance: described_class::Provenance::REGEX, snippet: 'spam', content_at: version.created_on)
+      expect(described_class.last).to have_attributes(page_version_id: version.id, author_user: normal_user, provenance: described_class::Provenance::REGEX, snippet: 'spam', content_at: version.created_on)
     end
 
     it 'does not create a flag without a match' do
@@ -37,7 +37,7 @@ RSpec.describe Flag, type: :model do
       allow(Flagger).to receive(:check).with('spam text').and_return('spam')
 
       expect { described_class.check_article(version) }.to change(described_class, :count).by(1)
-      expect(described_class.last).to have_attributes(article_version: version, author_user: normal_user, provenance: described_class::Provenance::REGEX, snippet: 'spam')
+      expect(described_class.last).to have_attributes(article_version_id: version.id, author_user: normal_user, provenance: described_class::Provenance::REGEX, snippet: 'spam')
     end
   end
 

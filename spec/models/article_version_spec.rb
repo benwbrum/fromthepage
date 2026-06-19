@@ -9,7 +9,10 @@ RSpec.describe ArticleVersion, type: :model do
 
 
   def create_version(number, attrs = {})
-    article.article_versions.delete_all if number.zero?
+    if number.zero?
+      article.article_versions.delete_all
+      article.association(:article_versions).reset
+    end
 
     described_class.create!({
       article: article,

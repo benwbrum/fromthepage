@@ -11,7 +11,10 @@ RSpec.describe PageVersion, type: :model do
   end
 
   def create_version(number, attrs = {})
-    page.page_versions.delete_all if number.zero?
+    if number.zero?
+      page.page_versions.delete_all
+      page.association(:page_versions).reset
+    end
 
     described_class.create!({
       page: page,
