@@ -47,8 +47,19 @@ class AiTranscription::Lib::Claude::TranscribeHandler < AiTranscription::Lib::Ba
     @client ||= Anthropic::Client.new(api_key: api_key)
   end
 
+  def image_data
+    return @image_data if defined?(@image_data)
+    @image_data = if @image_path
+      read_and_encode_image(@image_path)
+    else
+      fetch_and_encode_image_for_claude(url: @image_url)
+    end
+  end
+
   def payload
     return @payload if defined?(@payload)
+
+    base64_data, media_type = image_data
 
     @payload = {
       model: @model,
@@ -59,8 +70,9 @@ class AiTranscription::Lib::Claude::TranscribeHandler < AiTranscription::Lib::Ba
           {
             type: 'image',
             source: {
-              type: 'url',
-              url: @image_url
+              type: 'base64',
+              media_type: media_type,
+              data: base64_data
             }
           },
           { type: 'text', text: @prompt }
