@@ -78,7 +78,8 @@ class AiTranscription::Generate < ApplicationInteractor
     @transcribe_handler ||= handler_class.new(
       model: @ai_transcription.model,
       prompt: @ai_transcription.prompt,
-      image_url: image_url
+      image_url: image_url,
+      image_path: @page.local_image_path
     )
   end
 
