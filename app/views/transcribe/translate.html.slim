@@ -115,6 +115,8 @@ h2.legend =t('.page_notes')
       }
     }
 
+    window.sendActiveEditing = sendActiveEditing;
+
     var lang = "#{@collection.language}";
     var fromImage = JSON.parse("#{@fromImage}") || false;
     function updateTranscriptionOrImageDisplay(){
