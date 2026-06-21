@@ -3,7 +3,9 @@ module ContributorHelper
     @collection ||= Collection.find_by(id: collection_id)
     condition = 'created_at >= ? AND created_at <= ?'
 
-    deeds_scope = @collection.deeds.includes(:page, :work, :user)
+    deeds_scope = @collection.deeds
+    # Scope with eager-loaded associations for views that iterate individual deeds
+    deeds_scope_with_associations = deeds_scope.includes(:page, :work, :user)
 
     # Check to see if there are any deeds in the collection
     @collection_deeds = deeds_scope.where(condition, start_date, end_date)
@@ -12,22 +14,24 @@ module ContributorHelper
       deed_type: DeedType.transcriptions_or_corrections + DeedType.collection_joins
     )
 
-    @recent_notes = deeds_scope.where(deed_type: DeedType::NOTE_ADDED)
-    @recent_transcriptions = deeds_scope.where(deed_type: DeedType.transcriptions)
-    @recent_articles = deeds_scope.where(deed_type: DeedType::ARTICLE_EDIT)
-    @recent_translations = deeds_scope.where(deed_type: [DeedType::PAGE_TRANSLATED, DeedType::PAGE_TRANSLATION_EDIT])
-    @recent_ocr = deeds_scope.where(deed_type: DeedType::OCR_CORRECTED)
-    @recent_index = deeds_scope.where(deed_type: DeedType::PAGE_INDEXED)
-    @recent_review = deeds_scope.where(deed_type: DeedType::NEEDS_REVIEW)
-    @recent_xlat_index = deeds_scope.where(deed_type: DeedType::TRANSLATION_INDEXED)
-    @recent_xlat_review = deeds_scope.where(deed_type: DeedType::TRANSLATION_REVIEW)
-    @recent_work_add = deeds_scope.where(deed_type: DeedType::WORK_ADDED)
+    @recent_notes = deeds_scope_with_associations.where(deed_type: DeedType::NOTE_ADDED)
+    @recent_transcriptions = deeds_scope_with_associations.where(deed_type: DeedType.transcriptions)
+    @recent_articles = deeds_scope_with_associations.where(deed_type: DeedType::ARTICLE_EDIT)
+    @recent_translations = deeds_scope_with_associations.where(deed_type: [DeedType::PAGE_TRANSLATED, DeedType::PAGE_TRANSLATION_EDIT])
+    @recent_ocr = deeds_scope_with_associations.where(deed_type: DeedType::OCR_CORRECTED)
+    @recent_index = deeds_scope_with_associations.where(deed_type: DeedType::PAGE_INDEXED)
+    @recent_review = deeds_scope_with_associations.where(deed_type: DeedType::NEEDS_REVIEW)
+    @recent_xlat_index = deeds_scope_with_associations.where(deed_type: DeedType::TRANSLATION_INDEXED)
+    @recent_xlat_review = deeds_scope_with_associations.where(deed_type: DeedType::TRANSLATION_REVIEW)
+    @recent_work_add = deeds_scope_with_associations.where(deed_type: DeedType::WORK_ADDED)
 
-    # get distinct user ids per deed and create list of users
-    @active_transcribers = User.joins(:deeds)
-                               .where(deeds: { collection_id: @collection.id })
-                               .where('deeds.created_at >= ? AND deeds.created_at <= ?', start_date, end_date)
-                               .distinct
+    # get distinct user ids per deed and create list of users using a subquery
+    # instead of a JOIN to avoid loading large numbers of deed rows
+    active_deed_user_ids = Deed.where(
+      collection_id: @collection.id,
+      created_at: start_date..end_date
+    ).select(:user_id).distinct
+    @active_transcribers = User.where(id: active_deed_user_ids)
 
     # use ahoy activity summary to calculate ranges
     @user_time_proportional = AhoyActivitySummary.where(
@@ -35,7 +39,8 @@ module ContributorHelper
       date: [start_date..end_date]
     ).group(:user_id).sum(:minutes)
 
-    user_active_mailers = User.active_mailers.joins(:deeds)
+    # Avoid joining all deeds for all active-mailer users; use subqueries instead
+    user_active_mailers = User.active_mailers
 
     # Find recent transcription deeds by user, then older deeds by user
     recent_users_ids = transcription_deeds.where(created_at: [start_date..end_date]).select(:user_id)
