@@ -74,6 +74,8 @@ RSpec.describe Riiif::FromThePageFileResolver do
         expect(::File.exist?(expected_cache_path)).to be true
       ensure
         FileUtils.rm_f(Rails.root.join('tmp', 'riiif_cache', 'xyz987.jpg').to_s)
+        # The implementation uses a random suffix, so clean up any leftover .tmp
+        # files with a glob pattern rather than tracking a specific path.
         FileUtils.rm_f(Dir.glob("#{Rails.root}/tmp/riiif_cache/xyz987.jpg.*.tmp"))
         tmp_file&.close
         tmp_file&.unlink

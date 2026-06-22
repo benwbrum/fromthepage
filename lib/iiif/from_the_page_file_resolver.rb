@@ -49,9 +49,9 @@ module Riiif
         cached_path = cache_dir.join("#{blob.key}#{ext}").to_s
 
         unless ::File.exist?(cached_path)
-          # Use PID + Thread ID so concurrent threads in the same process
-          # each get their own temp file, preventing partial-read races.
-          tmp_write_path = "#{cached_path}.#{Process.pid}.#{Thread.current.object_id}.tmp"
+          # Use a random suffix so concurrent threads/processes each get their
+          # own temp file, preventing partial-read races.
+          tmp_write_path = "#{cached_path}.#{Process.pid}.#{SecureRandom.hex(8)}.tmp"
           begin
             blob.open do |tmp_file|
               FileUtils.cp(tmp_file.path, tmp_write_path)
