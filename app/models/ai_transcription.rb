@@ -70,6 +70,12 @@ class AiTranscription < ApplicationRecord
     model != ALTO_MODEL
   end
 
+  def error_message
+    return if metadata.blank? || !metadata.is_a?(Hash)
+
+    metadata['error_message'] || metadata[:error_message]
+  end
+
   def text_for_comparison
     return source_text unless collection&.field_based && transcription_json.present?
     field_values_for_comparison(transcription_json)

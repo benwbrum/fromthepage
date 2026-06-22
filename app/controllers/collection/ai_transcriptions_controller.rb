@@ -49,8 +49,10 @@ class Collection::AiTranscriptionsController < CollectionController
       .select('MAX(id) AS id')
       .group(:page_id)
 
-    ai_transcriptions_count = AiTranscription
+    latest_ai_transcriptions = AiTranscription
       .joins("INNER JOIN (#{latest_per_page.to_sql}) latest ON latest.id = ai_transcriptions.id")
+
+    ai_transcriptions_count = latest_ai_transcriptions
       .group(:status)
       .count
 
@@ -66,8 +68,12 @@ class Collection::AiTranscriptionsController < CollectionController
     @failed_transcriptions_count = ai_transcriptions_count['error'].to_i
     @not_started_transcriptions_count = @pages_count - @ai_transcriptions_count
 
-    @total_token_count = AiTranscription
-      .joins("INNER JOIN (#{latest_per_page.to_sql}) latest ON latest.id = ai_transcriptions.id")
+    @failed_ai_transcriptions = latest_ai_transcriptions
+      .where(status: :error)
+      .includes(page: :work)
+      .order(updated_at: :desc)
+
+    @total_token_count = latest_ai_transcriptions
       .where(status: :finished)
       .sum("COALESCE(JSON_EXTRACT(metadata, '$.prompt_token_count'), 0) + COALESCE(JSON_EXTRACT(metadata, '$.candidates_token_count'), 0) + COALESCE(JSON_EXTRACT(metadata, '$.thoughts_token_count'), 0)")
   end

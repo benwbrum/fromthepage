@@ -53,6 +53,25 @@ describe Collection::AiTranscriptionsController do
           expect(response).to render_template(:edit)
         end
       end
+
+      context 'with failed transcriptions' do
+        let!(:work_2) { create(:work, owner_user_id: owner.id, collection: collection, title: 'Failed Work') }
+        let!(:failed_page) { create(:page, work: work_2, title: 'Failed Collection Page') }
+        let!(:failed_ai_transcription) do
+          create(:ai_transcription, page_id: failed_page.id, status: :error, source_text: nil, reasoning: nil, metadata: { error_message: 'RECITATION' })
+        end
+
+        it 'renders failed transcription details with work title' do
+          login_as owner
+          subject
+
+          expect(response.body).to include('Failed transcription errors')
+          expect(response.body).to include('RECITATION')
+          expect(response.body).to include('Failed Collection Page')
+          expect(response.body).to include('Failed Work')
+          expect(response.body).to include(collection_display_page_path(owner, collection, work_2, failed_page))
+        end
+      end
     end
 
     context 'when accessed by non-owner user' do

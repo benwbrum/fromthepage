@@ -17,7 +17,9 @@ en:
         pages: Pages
         queued: Queued
         retry: Retry failed jobs
+        failed_transcription_errors: Failed transcription errors
         total_tokens_used: Total tokens used
+        unknown_error: Unknown error
       update:
         success: Retrying AI transcription job.
     configurable_printout:

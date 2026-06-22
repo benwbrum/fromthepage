@@ -77,6 +77,34 @@ describe AiTranscription::GenerateJob do
   end
 
   context 'failure' do
+    context 'when generation fails' do
+      let(:error) { StandardError.new('RECITATION') }
+      let(:result) do
+        instance_double(
+          'Result',
+          success?: false,
+          ai_transcription: ai_transcription,
+          full_errors: error
+        )
+      end
+      let(:service) { instance_double(AiTranscription::Generate, call: result) }
+
+      before do
+        allow(AiTranscription::Generate).to receive(:new).with(ai_transcription: ai_transcription).and_return(service)
+      end
+
+      it 'stores the failure message' do
+        expect {
+          perform_enqueued_jobs do
+            perform_worker
+          end
+        }.to raise_error
+
+        expect(ai_transcription.reload.status).to eq('error')
+        expect(ai_transcription.error_message).to eq('RECITATION')
+      end
+    end
+
     context 'API returns blank source_text and reasoning' do
       before do
         allow(AiTranscription).to receive(:find)
@@ -141,6 +169,7 @@ describe AiTranscription::GenerateJob do
       }.to raise_error
 
       expect(ai_transcription.reload.status).to eq('error')
+      expect(ai_transcription.error_message).to eq('User has no permission to create AiTranscription on this page')
     end
   end
 end
