@@ -275,7 +275,7 @@ const ResizableSplitter = {
     const resetSplitterPos = () => {
       if(mode === 'ttb') {
         if(splitterContext === 'transcribe') {
-          const elementTop = Math.abs(panel1.parentElement.offsetTop - window.scrollY);
+          const elementTop = Math.abs(panel1.parentElement.offsetTop - window.scrollTop);
           const splitterTop = elementTop > 73?elementTop:73 + panel1.clientHeight;
           splitter.style.top = `${splitterTop}px`;
 

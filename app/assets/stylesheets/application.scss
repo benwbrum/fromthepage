@@ -397,7 +397,9 @@ h3, .thredded--post-form--title {
 
     // Override max-height constraint for image container in overview/display page
     // Allow the image to fill the full height of its parent panel while capping at viewport height
-    // to prevent the OSD viewer from expanding beyond the visible screen area
+    // to prevent the OSD viewer from expanding beyond the visible screen area.
+    // 74px = .page-toolbar height; 3rem = body/wrapper vertical padding — matches
+    // the calc() used for .page-imagescan in sections/page.scss.
     .page-imagescan {
       max-height: calc(100vh - 74px - 3rem);
       height: 100%;
