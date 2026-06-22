@@ -1,4 +1,6 @@
 class Work::AiTranscriptionsController < WorkController
+  MAX_FAILED_ERRORS = 100
+
   before_action :authorized?
 
   def edit
@@ -74,6 +76,8 @@ class Work::AiTranscriptionsController < WorkController
       .where(status: :error)
       .includes(:page)
       .order(updated_at: :desc)
+      .limit(MAX_FAILED_ERRORS)
+    @failed_ai_transcriptions_hidden_count = [@failed_transcriptions_count - @failed_ai_transcriptions.size, 0].max
 
     @total_token_count = latest_ai_transcriptions
       .where(status: :finished)

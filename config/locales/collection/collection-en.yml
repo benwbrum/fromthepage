@@ -18,6 +18,7 @@ en:
         queued: Queued
         retry: Retry failed jobs
         failed_transcription_errors: Failed transcription errors
+        failed_transcription_errors_hidden: "%{count} additional failed transcription errors are not shown."
         total_tokens_used: Total tokens used
         unknown_error: Unknown error
       update:
