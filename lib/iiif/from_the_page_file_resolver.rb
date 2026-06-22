@@ -51,11 +51,16 @@ module Riiif
         unless ::File.exist?(cached_path)
           # Write to a PID-specific temp file then rename atomically so that
           # concurrent requests for the same blob don't produce a partial read.
+          # The ensure block removes the temp file if the rename fails.
           tmp_write_path = "#{cached_path}.#{Process.pid}.tmp"
-          blob.open do |tmp_file|
-            FileUtils.cp(tmp_file.path, tmp_write_path)
+          begin
+            blob.open do |tmp_file|
+              FileUtils.cp(tmp_file.path, tmp_write_path)
+            end
+            ::File.rename(tmp_write_path, cached_path)
+          ensure
+            ::File.delete(tmp_write_path) if ::File.exist?(tmp_write_path)
           end
-          ::File.rename(tmp_write_path, cached_path)
         end
 
         cached_path
