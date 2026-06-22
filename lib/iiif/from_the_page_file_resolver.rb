@@ -49,16 +49,17 @@ module Riiif
         cached_path = cache_dir.join("#{blob.key}#{ext}").to_s
 
         unless ::File.exist?(cached_path)
-          # Write to a PID-specific temp file then rename atomically so that
-          # concurrent requests for the same blob don't produce a partial read.
-          # The ensure block removes the temp file if the rename fails.
-          tmp_write_path = "#{cached_path}.#{Process.pid}.tmp"
+          # Use PID + Thread ID so concurrent threads in the same process
+          # each get their own temp file, preventing partial-read races.
+          tmp_write_path = "#{cached_path}.#{Process.pid}.#{Thread.current.object_id}.tmp"
           begin
             blob.open do |tmp_file|
               FileUtils.cp(tmp_file.path, tmp_write_path)
             end
             ::File.rename(tmp_write_path, cached_path)
           ensure
+            # After a successful rename tmp_write_path no longer exists, so
+            # this is a no-op on the happy path but cleans up on failure.
             ::File.delete(tmp_write_path) if ::File.exist?(tmp_write_path)
           end
         end
