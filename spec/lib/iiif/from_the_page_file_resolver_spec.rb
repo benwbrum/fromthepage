@@ -48,13 +48,17 @@ RSpec.describe Riiif::FromThePageFileResolver do
     context 'when page has an Active Storage image on a non-disk service (e.g. S3)' do
       it 'downloads the blob to a temp cache and returns a Riiif::File' do
         resolver = described_class.new
-        s3_service = instance_double(ActiveStorage::Service)
+        s3_service = double('S3Service')  # does not respond to :path_for
         filename = instance_double(ActiveStorage::Filename, extension_with_delimiter: '.jpg')
         blob = instance_double(ActiveStorage::Blob, key: 'xyz987', service: s3_service, filename: filename)
-        tmp_file = Tempfile.new(['blob', '.jpg'])
         image_attachment = double(attached?: true, blob: blob)
         page = instance_double(Page, image: image_attachment)
         riiif_file = instance_double('Riiif::File')
+
+        # Simulate a real Tempfile with content so the copy step has something to read
+        tmp_file = Tempfile.new(['blob', '.jpg'])
+        tmp_file.write('fake image bytes')
+        tmp_file.flush
 
         allow(Page).to receive(:find).with(999).and_return(page)
         allow(blob).to receive(:open).and_yield(tmp_file)
@@ -67,11 +71,11 @@ RSpec.describe Riiif::FromThePageFileResolver do
 
         result = resolver.find('999')
         expect(result).to eq(riiif_file)
-        expect(File.exist?(expected_cache_path)).to be true
+        expect(::File.exist?(expected_cache_path)).to be true
       ensure
         FileUtils.rm_f(Rails.root.join('tmp', 'riiif_cache', 'xyz987.jpg').to_s)
-        tmp_file.close
-        tmp_file.unlink
+        tmp_file&.close
+        tmp_file&.unlink
       end
     end
   end

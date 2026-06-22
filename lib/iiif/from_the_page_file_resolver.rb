@@ -41,15 +41,21 @@ module Riiif
       else
         # For non-disk services (e.g., S3), download to a local cache directory
         # so Riiif can process the image with ImageMagick.
-        ext = blob.filename.extension_with_delimiter.presence || '.bin'
+        # The blob key is unique per upload, so updates automatically produce a
+        # new cache entry. Stale entries can be pruned by clearing tmp/riiif_cache/.
+        ext = blob.filename.extension_with_delimiter.presence || '.jpg'
         cache_dir = Rails.root.join('tmp', 'riiif_cache')
         FileUtils.mkdir_p(cache_dir)
         cached_path = cache_dir.join("#{blob.key}#{ext}").to_s
 
         unless ::File.exist?(cached_path)
+          # Write to a PID-specific temp file then rename atomically so that
+          # concurrent requests for the same blob don't produce a partial read.
+          tmp_write_path = "#{cached_path}.#{Process.pid}.tmp"
           blob.open do |tmp_file|
-            FileUtils.cp(tmp_file.path, cached_path)
+            FileUtils.cp(tmp_file.path, tmp_write_path)
           end
+          ::File.rename(tmp_write_path, cached_path)
         end
 
         cached_path
