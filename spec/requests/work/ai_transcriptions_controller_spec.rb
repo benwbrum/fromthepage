@@ -62,7 +62,7 @@ describe Work::AiTranscriptionsController do
       context 'with failed transcriptions' do
         let!(:failed_page) { create(:page, work: work, title: 'Failed Work Page') }
         let!(:failed_ai_transcription) do
-          create(:ai_transcription, page_id: failed_page.id, status: :error, source_text: nil, reasoning: nil, metadata: { error_message: 'RECITATION' })
+          create(:ai_transcription, page_id: failed_page.id, status: :error, metadata: { error_message: 'RECITATION' })
         end
 
         it 'renders failed transcription details' do

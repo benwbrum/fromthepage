@@ -58,7 +58,7 @@ describe Collection::AiTranscriptionsController do
         let!(:work_2) { create(:work, owner_user_id: owner.id, collection: collection, title: 'Failed Work') }
         let!(:failed_page) { create(:page, work: work_2, title: 'Failed Collection Page') }
         let!(:failed_ai_transcription) do
-          create(:ai_transcription, page_id: failed_page.id, status: :error, source_text: nil, reasoning: nil, metadata: { error_message: 'RECITATION' })
+          create(:ai_transcription, page_id: failed_page.id, status: :error, metadata: { error_message: 'RECITATION' })
         end
 
         it 'renders failed transcription details with work title' do

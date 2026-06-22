@@ -25,6 +25,7 @@
 class AiTranscription < ApplicationRecord
   DEFAULT_MODEL = 'gemini-3.1-pro-preview'
   ALTO_MODEL = 'Transkribus+OpenAI'
+  MAX_FAILED_ERRORS = 100
   FE_COLOR_STATUSES = {
     finished: '#6C2',
     in_progress: '#F0E68C',
