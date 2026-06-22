@@ -25,6 +25,7 @@
 class AiTranscription < ApplicationRecord
   DEFAULT_MODEL = 'gemini-3.1-pro-preview'
   ALTO_MODEL = 'Transkribus+OpenAI'
+  MAX_FAILED_ERRORS = 100
   FE_COLOR_STATUSES = {
     finished: '#6C2',
     in_progress: '#F0E68C',
@@ -68,6 +69,12 @@ class AiTranscription < ApplicationRecord
 
   def supports_prompt?
     model != ALTO_MODEL
+  end
+
+  def error_message
+    return if metadata.blank? || !metadata.is_a?(Hash)
+
+    metadata['error_message']
   end
 
   def text_for_comparison
