@@ -239,9 +239,13 @@ const ResizableSplitter = {
     let startHeightPanel1;
     let startHeightPanel2;
 
-    // Function to calculate initial heights based on initial position
+    // Function to calculate initial heights based on initial position.
+    // Use window.innerHeight as the reference so that percentages are always
+    // viewport-relative.  Using the parent element's offsetHeight can cause
+    // runaway expansion when the element's height is larger than the viewport
+    // (e.g. when a long transcription makes the editor panel very tall).
     const calculateInitialHeights = function(position) {
-      const totalHeight = panel1.parentElement.offsetHeight;
+      const totalHeight = window.innerHeight;
       const initialHeight = typeof position === 'string' && position.includes('%')
         ? parseFloat(position) / 100 * totalHeight
         : parseFloat(position);
@@ -271,7 +275,7 @@ const ResizableSplitter = {
     const resetSplitterPos = () => {
       if(mode === 'ttb') {
         if(splitterContext === 'transcribe') {
-          const elementTop = Math.abs(panel1.parentElement.offsetTop - window.scrollTop);
+          const elementTop = Math.abs(panel1.parentElement.offsetTop - window.scrollY);
           const splitterTop = elementTop > 73?elementTop:73 + panel1.clientHeight;
           splitter.style.top = `${splitterTop}px`;
 
@@ -314,7 +318,7 @@ const ResizableSplitter = {
       }
 
       if (typeof onPositionChange === 'function') {
-        const totalHeight = panel1.parentElement.offsetHeight;
+        const totalHeight = window.innerHeight;
         const currentPosition = (newHeightPanel1 / totalHeight) * 100;
         onPositionChange(currentPosition);
       }

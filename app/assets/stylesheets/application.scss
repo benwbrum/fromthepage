@@ -396,9 +396,10 @@ h3, .thredded--post-form--title {
     }
 
     // Override max-height constraint for image container in overview/display page
-    // Allow the image to fill the full height of its parent panel instead of being capped at 50vh
+    // Allow the image to fill the full height of its parent panel while capping at viewport height
+    // to prevent the OSD viewer from expanding beyond the visible screen area
     .page-imagescan {
-      max-height: 100%;
+      max-height: calc(100vh - 74px - 3rem);
       height: 100%;
     }
   }
