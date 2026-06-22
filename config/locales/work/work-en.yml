@@ -10,6 +10,8 @@ en:
         description: Launch AI transcription job for pages in this work.
         description_complete: All pages in this work have AI transcriptions.
         failed: Failed
+        failed_transcription_errors: Failed transcription errors
+        failed_transcription_errors_hidden: "%{count} additional failed transcription errors are not shown."
         finished: Finished
         generate: Create AI drafts for pages without them.
         in_progress: In progress
@@ -18,6 +20,7 @@ en:
         queued: Queued
         retry: Retry failed jobs
         total_tokens_used: Total tokens used
+        unknown_error: Unknown error
       update:
         success: Retrying AI transcription job.
     configurable_printout:

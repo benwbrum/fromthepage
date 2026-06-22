@@ -10,6 +10,8 @@ es:
         description: Iniciar un trabajo de transcripción de IA para las páginas de esta colección.
         description_complete: Todas las páginas de esta colección tienen transcripciones de IA.
         failed: Fallido
+        failed_transcription_errors: Errores de transcripción fallidos
+        failed_transcription_errors_hidden: No se muestran los errores de transcripción adicionales %{count}.
         finished: Finalizado
         generate: Crea borradores de IA para páginas que no los tengan.
         in_progress: En curso
@@ -18,6 +20,7 @@ es:
         queued: En cola
         retry: Reintentar trabajos fallidos
         total_tokens_used: Total de tokens utilizados
+        unknown_error: Error desconocido
       update:
         success: Reintentando el trabajo de transcripción de IA.
     approve_all:
