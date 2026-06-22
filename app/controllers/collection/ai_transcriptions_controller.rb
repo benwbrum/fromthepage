@@ -73,7 +73,7 @@ class Collection::AiTranscriptionsController < CollectionController
       .includes(page: :work)
       .order(updated_at: :desc)
       .limit(AiTranscription::MAX_FAILED_ERRORS)
-    @failed_ai_transcriptions_hidden_count = [@failed_transcriptions_count - @failed_ai_transcriptions.size, 0].max
+    @failed_ai_transcriptions_hidden_count = [0, @failed_transcriptions_count - @failed_ai_transcriptions.size].max
 
     @total_token_count = latest_ai_transcriptions
       .where(status: :finished)
