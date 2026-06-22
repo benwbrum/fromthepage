@@ -74,7 +74,7 @@ class AiTranscription < ApplicationRecord
   def error_message
     return if metadata.blank? || !metadata.is_a?(Hash)
 
-    metadata['error_message'] || metadata[:error_message]
+    metadata['error_message']
   end
 
   def text_for_comparison

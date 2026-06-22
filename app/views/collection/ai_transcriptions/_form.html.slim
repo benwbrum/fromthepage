@@ -56,10 +56,11 @@
             h4 =t('.failed_transcription_errors')
             ul
               -@failed_ai_transcriptions.each do |ai_transcription|
+                -work = ai_transcription.page.work
                 li
-                  =ai_transcription.page.work.title
+                  =work.title
                   |  —
-                  =link_to ai_transcription.page.title, collection_display_page_path(collection.owner, collection, ai_transcription.page.work, ai_transcription.page)
+                  =link_to ai_transcription.page.title, collection_display_page_path(collection.owner, collection, work, ai_transcription.page)
                   |  —
                   =ai_transcription.error_message.presence || t('.unknown_error')
             -if @failed_ai_transcriptions_hidden_count.positive?

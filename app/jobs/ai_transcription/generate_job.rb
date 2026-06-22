@@ -37,11 +37,8 @@ class AiTranscription::GenerateJob < ApplicationJob
   private
 
   def store_error!(ai_transcription, error_message)
-    ai_transcription.class.transaction do
-      ai_transcription.lock!
-      metadata = ai_transcription.metadata.is_a?(Hash) ? ai_transcription.metadata.dup : {}
-      metadata['error_message'] = error_message
-      ai_transcription.update!(status: :error, metadata: metadata)
-    end
+    metadata = ai_transcription.metadata.is_a?(Hash) ? ai_transcription.metadata.dup : {}
+    metadata['error_message'] = error_message
+    ai_transcription.update!(status: :error, metadata: metadata)
   end
 end
