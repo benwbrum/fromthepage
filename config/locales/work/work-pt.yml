@@ -10,6 +10,8 @@ pt:
         description: Inicie uma transcrição por IA para páginas nesta obra.
         description_complete: Todas as páginas desta obra possuem transcrições feitas por IA.
         failed: Fracassado
+        failed_transcription_errors: Erros de transcrição
+        failed_transcription_errors_hidden: "%{count} erros adicionais de transcrição não são exibidos."
         finished: Finalizado
         generate: Crie rascunhos com IA para páginas que não os possuem.
         in_progress: Em andamento
@@ -18,6 +20,7 @@ pt:
         queued: Em fila
         retry: Tentar novamente trabalhos com falha
         total_tokens_used: Total de fichas utilizadas
+        unknown_error: Erro desconhecido
       update:
         success: Tentando novamente a tarefa de transcrição por IA.
     configurable_printout:
