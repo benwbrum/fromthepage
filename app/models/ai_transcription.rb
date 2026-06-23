@@ -32,7 +32,7 @@ class AiTranscription < ApplicationRecord
     not_started: '#FFFFFF'
   }
 
-  before_save :replace_nbsp
+  before_save :normalize_source_text
 
   belongs_to :page
   has_one :work, through: :page
@@ -75,9 +75,13 @@ class AiTranscription < ApplicationRecord
     field_values_for_comparison(transcription_json)
   end
 
-  # we want to replace the non-breaking space html entities Gemini 3 insists on returning with regular spaces
-  def replace_nbsp
-    self.source_text = source_text.gsub('&nbsp;', ' ') if source_text.present?
+  # we want to replace HTML line break tags and non-breaking space entities with plain text equivalents
+  def normalize_source_text
+    return if source_text.blank?
+
+    self.source_text = source_text
+      .gsub(/<br\s*\/?>/i, '')
+      .gsub('&nbsp;', ' ')
   end
 
   private
