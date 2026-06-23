@@ -80,7 +80,7 @@ class AiTranscription < ApplicationRecord
     return if source_text.blank?
 
     self.source_text = source_text
-      .gsub(/<br\s*\/?>/i, '')
+      .gsub(/<br\s*\/?>/i, "\n")
       .gsub('&nbsp;', ' ')
   end
 

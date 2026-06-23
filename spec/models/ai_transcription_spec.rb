@@ -35,13 +35,13 @@ RSpec.describe AiTranscription, type: :model do
     it 'strips html br tags' do
       ai_transcription.source_text = "Hello<br>World<br/>Again<BR />Done"
       ai_transcription.normalize_source_text
-      expect(ai_transcription.source_text).to eq('HelloWorldAgainDone')
+      expect(ai_transcription.source_text).to eq("Hello\nWorld\nAgain\nDone")
     end
 
     it 'normalizes mixed br tags and non-breaking spaces' do
       ai_transcription.source_text = 'Hello&nbsp;<br />World'
       ai_transcription.normalize_source_text
-      expect(ai_transcription.source_text).to eq('Hello World')
+      expect(ai_transcription.source_text).to eq("Hello \nWorld")
     end
 
     it 'does not change the source_text if it is nil' do
