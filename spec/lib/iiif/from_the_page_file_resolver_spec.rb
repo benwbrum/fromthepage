@@ -7,15 +7,79 @@ RSpec.describe Riiif::FromThePageFileResolver do
       expect { described_class.new.find('../123') }.to raise_error(ArgumentError, /Invalid characters/)
     end
 
-    it 'finds the page and wraps its normalized base image path in a Riiif file' do
-      resolver = described_class.new
-      page = instance_double(Page, base_image: '/var/apps/fromthepage/public/uploads/page.jpg')
-      riiif_file = instance_double('Riiif::File')
+    context 'when page has a legacy base_image path' do
+      it 'finds the page and wraps its normalized base image path in a Riiif file' do
+        resolver = described_class.new
+        page = instance_double(Page, base_image: '/var/apps/fromthepage/public/uploads/page.jpg', image: double(attached?: false))
+        riiif_file = instance_double('Riiif::File')
 
-      allow(Page).to receive(:find).with(123).and_return(page)
-      allow(Riiif::File).to receive(:new).with("#{Rails.root}/public//uploads/page.jpg").and_return(riiif_file)
+        allow(Page).to receive(:find).with(123).and_return(page)
+        allow(Riiif::File).to receive(:new).with("#{Rails.root}/public//uploads/page.jpg").and_return(riiif_file)
 
-      expect(resolver.find('123')).to eq(riiif_file)
+        expect(resolver.find('123')).to eq(riiif_file)
+      end
+
+      it 'raises ImageNotFoundError when base_image is blank and no attachment' do
+        resolver = described_class.new
+        page = instance_double(Page, base_image: '', image: double(attached?: false))
+
+        allow(Page).to receive(:find).with(456).and_return(page)
+
+        expect { resolver.find('456') }.to raise_error(Riiif::ImageNotFoundError)
+      end
+    end
+
+    context 'when page has an Active Storage image on disk service' do
+      it 'returns a Riiif::File using the disk service path' do
+        resolver = described_class.new
+        disk_service = double('DiskService', path_for: '/storage/ab/c1/abc123')
+        blob = instance_double(ActiveStorage::Blob, key: 'abc123', service: disk_service)
+        image_attachment = double(attached?: true, blob: blob)
+        page = instance_double(Page, image: image_attachment)
+        riiif_file = instance_double('Riiif::File')
+
+        allow(Page).to receive(:find).with(789).and_return(page)
+        allow(Riiif::File).to receive(:new).with('/storage/ab/c1/abc123').and_return(riiif_file)
+
+        expect(resolver.find('789')).to eq(riiif_file)
+      end
+    end
+
+    context 'when page has an Active Storage image on a non-disk service (e.g. S3)' do
+      it 'downloads the blob to a temp cache and returns a Riiif::File' do
+        resolver = described_class.new
+        s3_service = double('S3Service')  # does not respond to :path_for
+        filename = instance_double(ActiveStorage::Filename, extension_with_delimiter: '.jpg')
+        blob = instance_double(ActiveStorage::Blob, key: 'xyz987', service: s3_service, filename: filename)
+        image_attachment = double(attached?: true, blob: blob)
+        page = instance_double(Page, image: image_attachment)
+        riiif_file = instance_double('Riiif::File')
+
+        # Simulate a real Tempfile with content so the copy step has something to read
+        tmp_file = Tempfile.new(['blob', '.jpg'])
+        tmp_file.write('fake image bytes')
+        tmp_file.flush
+
+        allow(Page).to receive(:find).with(999).and_return(page)
+        allow(blob).to receive(:open).and_yield(tmp_file)
+
+        expected_cache_path = Rails.root.join('tmp', 'riiif_cache', 'xyz987.jpg').to_s
+        allow(Riiif::File).to receive(:new).with(expected_cache_path).and_return(riiif_file)
+
+        # Ensure cached file doesn't exist before the test
+        FileUtils.rm_f(expected_cache_path)
+
+        result = resolver.find('999')
+        expect(result).to eq(riiif_file)
+        expect(::File.exist?(expected_cache_path)).to be true
+      ensure
+        FileUtils.rm_f(Rails.root.join('tmp', 'riiif_cache', 'xyz987.jpg').to_s)
+        # The implementation uses a random suffix, so clean up any leftover .tmp
+        # files with a glob pattern rather than tracking a specific path.
+        FileUtils.rm_f(Dir.glob("#{Rails.root}/tmp/riiif_cache/xyz987.jpg.*.tmp"))
+        tmp_file&.close
+        tmp_file&.unlink
+      end
     end
   end
 
