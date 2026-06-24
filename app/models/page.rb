@@ -653,7 +653,7 @@ class Page < ApplicationRecord
       "https://iiif.archive.org/iiif/#{work.ia_work.book_id}$#{ia_leaf.leaf_number}/full/#{size}/0/default.jpg"
     elsif image.attached?
       Rails.application.routes.url_helpers.url_for(image)
-    # CarrierWave local files: return nil — callers use local_image_path for disk read
+      # CarrierWave local files: return nil — callers use local_image_path for disk read
     end
   end
 
