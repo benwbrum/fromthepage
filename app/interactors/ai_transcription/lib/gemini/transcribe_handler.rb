@@ -85,7 +85,7 @@ class AiTranscription::Lib::Gemini::TranscribeHandler < AiTranscription::Lib::Ba
           {
             inline_data: {
               mime_type: 'image/jpeg',
-              data: fetch_and_encode_image(url: @image_url)
+              data: encoded_image
             }
           }
         ]
@@ -103,6 +103,15 @@ class AiTranscription::Lib::Gemini::TranscribeHandler < AiTranscription::Lib::Ba
     end
 
     @payload
+  end
+
+  def encoded_image
+    return @encoded_image if defined?(@encoded_image)
+    @encoded_image = if @image_path
+      Base64.strict_encode64(File.binread(@image_path))
+    else
+      fetch_and_encode_image(url: @image_url)
+    end
   end
 
   def extract_texts_from_response(response)
