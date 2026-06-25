@@ -651,11 +651,9 @@ class Page < ApplicationRecord
       end
     elsif ia_leaf
       "https://iiif.archive.org/iiif/#{work.ia_work.book_id}$#{ia_leaf.leaf_number}/full/#{size}/0/default.jpg"
-    elsif canonical_facsimile_url.present?
-      raw_host = Rails.application.config.action_mailer.default_url_options[:host]
-      host, port = raw_host.split(':', 2)
-      base = port ? "http://#{host}:#{port}" : "https://#{host}"
-      "#{base}/image-service/#{id}/full/#{size}/0/default.jpg"
+    elsif image.attached?
+      Rails.application.routes.url_helpers.url_for(image)
+      # CarrierWave local files: return nil — callers use local_image_path for disk read
     end
   end
 

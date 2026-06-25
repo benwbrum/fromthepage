@@ -242,6 +242,7 @@ describe AiTranscription::Generate do
     before do
       allow(ai_transcription).to receive(:page).and_return(page)
       allow(page).to receive(:image_url_for_ai).and_return(nil)
+      allow(page).to receive(:local_image_path).and_return(nil)
     end
 
     it 'fails to generate transcription' do

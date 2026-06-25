@@ -72,22 +72,23 @@ class AiTranscription::Generate < ApplicationInteractor
 
   def image_url
     return @image_url if defined?(@image_url)
-
     @image_url = @page.image_url_for_ai
+  end
 
-    raise ArgumentError, 'Page has no image to transcribe' if @image_url.blank?
-
-    Rails.logger.info("AiTranscription::Generate image URL for page #{@page.id}: #{@image_url}")
-
-    @image_url
+  def local_image_path
+    @local_image_path ||= @page.local_image_path
   end
 
   def transcribe_handler
+    raise ArgumentError, 'Page has no image to transcribe' if image_url.blank? && local_image_path.blank?
+
+    Rails.logger.info("AiTranscription::Generate image URL for page #{@page.id}: #{image_url || local_image_path}")
+
     @transcribe_handler ||= handler_class.new(
       model: @ai_transcription.model,
       prompt: @ai_transcription.prompt,
       image_url: image_url,
-      image_path: @page.local_image_path
+      image_path: local_image_path
     )
   end
 
