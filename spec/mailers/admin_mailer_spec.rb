@@ -1,6 +1,36 @@
 require 'spec_helper'
 
 RSpec.describe AdminMailer, type: :mailer do
+  describe 'email stats' do
+    let!(:trial_owner) { create(:user, :owner, account_type: 'Trial', created_at: 2.hours.ago) }
+    let!(:older_trial_owner) { create(:user, :owner, account_type: 'Trial', created_at: 2.days.ago) }
+    let!(:failed_bulk_export) { create(:bulk_export, :error, collection_id: collection.id, user_id: admin.id, updated_at: 2.hours.ago) }
+    let!(:older_failed_bulk_export) { create(:bulk_export, :error, collection_id: collection.id, user_id: admin.id, updated_at: 2.days.ago) }
+    let!(:failed_ai_transcription) { create(:document_upload, collection: collection, user: admin, ocr: true, status: :error, updated_at: 2.hours.ago) }
+    let!(:non_ocr_failed_upload) { create(:document_upload, collection: collection, user: admin, ocr: false, status: :error, updated_at: 2.hours.ago) }
+    let!(:successful_ocr_upload) { create(:document_upload, collection: collection, user: admin, ocr: true, status: :finished, updated_at: 2.hours.ago) }
+    let!(:admin) { create(:admin) }
+    let!(:collection) { create(:collection, owner_user_id: admin.id) }
+
+    it 'includes recent trial users and recent failure log links' do
+      mail = AdminMailer.email_stats(24).deliver
+      body = mail.html_part ? mail.html_part.body.decoded : mail.body.decoded
+
+      expect(body).to include('New Trial Users')
+      expect(body).to include(trial_owner.email)
+      expect(body).not_to include(older_trial_owner.email)
+
+      expect(body).to include('Failed Bulk Exports')
+      expect(body).to include(admin_view_bulk_export_log_url(id: failed_bulk_export.id))
+      expect(body).not_to include(admin_view_bulk_export_log_url(id: older_failed_bulk_export.id))
+
+      expect(body).to include('Failed AI Transcriptions')
+      expect(body).to include(admin_view_processing_log_url(id: failed_ai_transcription.id))
+      expect(body).not_to include(admin_view_processing_log_url(id: non_ocr_failed_upload.id))
+      expect(body).not_to include(admin_view_processing_log_url(id: successful_ocr_upload.id))
+    end
+  end
+
   describe 'nightly owner email' do
     before :all do
       @owner = create(:user)

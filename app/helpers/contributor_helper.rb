@@ -57,8 +57,13 @@ module ContributorHelper
 
   def show_email_stats(hours)
     @hours = hours
-    @recent_users = User.where('created_at > ?', Time.now - hours.to_i.hours)
-    @recent_collections = Collection.where('created_on > ?', Time.now - hours.to_i.hours)
+    cutoff = Time.current - hours.to_i.hours
+
+    @recent_users = User.where('created_at > ?', cutoff)
+    @recent_trial_users = User.trial_owners.where('created_at > ?', cutoff)
+    @recent_collections = Collection.where('created_on > ?', cutoff)
+    @failed_bulk_exports = BulkExport.where(status: 'error').where('updated_at > ?', cutoff)
+    @failed_ai_transcriptions = DocumentUpload.where(status: :error, ocr: true).where('updated_at > ?', cutoff)
     @collections = Collection.all
   end
 

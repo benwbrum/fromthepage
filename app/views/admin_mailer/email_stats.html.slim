@@ -32,3 +32,30 @@ p This is the activity from the last #{@hours} hours.
     =u.deeds.count
     <br>
 
+-unless @recent_trial_users.empty?
+  h2.nomargin New Trial Users
+  -@recent_trial_users.each do |u|
+    =link_to u.display_name, { :controller => 'user', :action => 'profile', :user_id => u.id, only_path: false}
+    |
+    =u.email + " "
+    |
+    =u.deeds.count
+    <br>
+
+-unless @failed_bulk_exports.empty?
+  h2.nomargin Failed Bulk Exports
+  -@failed_bulk_exports.each do |bulk_export|
+    =link_to "Bulk Export ##{bulk_export.id}", admin_view_bulk_export_log_url(id: bulk_export.id)
+    -if bulk_export.collection.present?
+      |
+      =bulk_export.collection.title
+    <br>
+
+-unless @failed_ai_transcriptions.empty?
+  h2.nomargin Failed AI Transcriptions
+  -@failed_ai_transcriptions.each do |document_upload|
+    =link_to document_upload.name, admin_view_processing_log_url(id: document_upload.id)
+    -if document_upload.collection.present?
+      |
+      =document_upload.collection.title
+    <br>

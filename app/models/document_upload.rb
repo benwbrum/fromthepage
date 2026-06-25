@@ -72,6 +72,14 @@ class DocumentUpload < ApplicationRecord
     File.join(upload_dir, 'process.log')
   end
 
+  def log_contents
+    if File.exist?(log_file)
+      File.read(log_file)
+    else
+      'Log file has been cleaned'
+    end
+  end
+
   def name
     File.basename(self.attachment.filename.to_s)
   end
