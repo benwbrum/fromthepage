@@ -333,7 +333,9 @@
                 <div class="col-lg-3 col-md-6 col-6">
                     <div class="item" data-aos="zoom-in" data-aos-duration="800">
                         <h4>Transcribers</h4>
-                        <p><%= Deed.where(created_at: (1.year.ago)..).select(:user_id).distinct.count %></p>
+                        <% cache('landing_page/transcribers_count', expires_in: 1.day) do %>
+                            <p><%= Deed.where(created_at: (1.year.ago)..).select(:user_id).distinct.count %></p>
+                        <% end %>
                     </div>
                 </div>
 
@@ -347,7 +349,9 @@
                 <div class="col-lg-3 col-md-6 col-6">
                     <div class="item" data-aos="zoom-in" data-aos-duration="1000">
                         <h4>Pages Transcribed</h4>
-                        <p><%= number_with_delimiter Page.where.not(status: :new).count %></p>
+                        <% cache('landing_page/pages_transcribed_count', expires_in: 10.minutes) do %>
+                            <p><%= number_with_delimiter Page.where.not(status: :new).count %></p>
+                        <% end %>
                     </div>
                 </div>
 
