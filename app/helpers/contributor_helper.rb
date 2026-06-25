@@ -58,12 +58,20 @@ module ContributorHelper
   def show_email_stats(hours)
     @hours = hours
     cutoff = Time.current - hours.to_i.hours
+    latest_ai_transcriptions = AiTranscription
+      .select('MAX(id) AS id')
+      .group(:page_id)
 
     @recent_users = User.where('created_at > ?', cutoff)
     @recent_trial_users = User.trial_owners.where('created_at > ?', cutoff)
     @recent_collections = Collection.where('created_on > ?', cutoff)
-    @failed_bulk_exports = BulkExport.where(status: 'error').where('updated_at > ?', cutoff)
-    @failed_ai_transcriptions = DocumentUpload.where(status: :error, ocr: true).where('updated_at > ?', cutoff)
+    @failed_bulk_exports = BulkExport.where(status: 'error').where('updated_at > ?', cutoff).includes(:collection).order(updated_at: :desc)
+    @failed_ai_transcriptions = AiTranscription
+      .joins("INNER JOIN (#{latest_ai_transcriptions.to_sql}) latest_ai_transcriptions ON latest_ai_transcriptions.id = ai_transcriptions.id")
+      .where(status: :error)
+      .where('ai_transcriptions.updated_at > ?', cutoff)
+      .includes(page: { work: :collection })
+      .order(updated_at: :desc)
     @collections = Collection.all
   end
 

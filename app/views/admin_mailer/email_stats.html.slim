@@ -45,7 +45,7 @@ p This is the activity from the last #{@hours} hours.
 -unless @failed_bulk_exports.empty?
   h2.nomargin Failed Bulk Exports
   -@failed_bulk_exports.each do |bulk_export|
-    =link_to "Bulk Export ##{bulk_export.id}", admin_view_bulk_export_log_url(id: bulk_export.id)
+    =link_to "Bulk Export ##{bulk_export.id}", bulk_export_show_url(bulk_export_id: bulk_export.id)
     -if bulk_export.collection.present?
       |
       =bulk_export.collection.title
@@ -53,9 +53,12 @@ p This is the activity from the last #{@hours} hours.
 
 -unless @failed_ai_transcriptions.empty?
   h2.nomargin Failed AI Transcriptions
-  -@failed_ai_transcriptions.each do |document_upload|
-    =link_to document_upload.name, admin_view_processing_log_url(id: document_upload.id)
-    -if document_upload.collection.present?
+  -@failed_ai_transcriptions.each do |ai_transcription|
+    -work = ai_transcription.page.work
+    =link_to ai_transcription.page.title, collection_display_page_url(ai_transcription.collection.owner, ai_transcription.collection, work, ai_transcription.page, only_path: false)
+    |
+    =ai_transcription.error_message.presence || 'Unknown error'
+    -if ai_transcription.collection.present?
       |
-      =document_upload.collection.title
+      =ai_transcription.collection.title
     <br>

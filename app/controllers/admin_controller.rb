@@ -204,11 +204,6 @@ class AdminController < ApplicationController
     render content_type: 'text/plain', plain: @document_upload.log_contents, layout: false
   end
 
-  def view_bulk_export_log
-    @bulk_export = BulkExport.find(params[:id])
-    render content_type: 'text/plain', plain: @bulk_export.log_contents, layout: false
-  end
-
   def collection_list
     @collections = Collection.order(:title)
   end

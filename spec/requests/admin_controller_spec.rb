@@ -4,7 +4,6 @@ describe AdminController do
   let!(:admin) { create(:unique_user, :admin) }
   let!(:collection) { create(:collection, owner_user_id: admin.id) }
   let!(:document_upload) { create(:document_upload, collection: collection, user: admin) }
-  let!(:bulk_export) { create(:bulk_export, :error, collection_id: collection.id, user_id: admin.id) }
   let!(:flag) { create(:flag) }
 
   describe '#index' do
@@ -92,24 +91,6 @@ describe AdminController do
       expect(response).to have_http_status(:ok)
       expect(response.media_type).to eq('text/plain')
       expect(response.body).to eq('upload log')
-    end
-  end
-
-  describe '#view_bulk_export_log' do
-    let(:action_path) { admin_view_bulk_export_log_path(id: bulk_export.id) }
-    let(:subject) { get action_path }
-
-    before do
-      allow_any_instance_of(BulkExport).to receive(:log_contents).and_return('bulk export log')
-    end
-
-    it 'renders the bulk export log as plain text' do
-      login_as admin
-      subject
-
-      expect(response).to have_http_status(:ok)
-      expect(response.media_type).to eq('text/plain')
-      expect(response.body).to eq('bulk export log')
     end
   end
 

@@ -6,11 +6,26 @@ RSpec.describe AdminMailer, type: :mailer do
     let!(:older_trial_owner) { create(:user, :owner, account_type: 'Trial', created_at: 2.days.ago) }
     let!(:failed_bulk_export) { create(:bulk_export, :error, collection_id: collection.id, user_id: admin.id, updated_at: 2.hours.ago) }
     let!(:older_failed_bulk_export) { create(:bulk_export, :error, collection_id: collection.id, user_id: admin.id, updated_at: 2.days.ago) }
-    let!(:failed_ai_transcription) { create(:document_upload, collection: collection, user: admin, ocr: true, status: :error, updated_at: 2.hours.ago) }
-    let!(:non_ocr_failed_upload) { create(:document_upload, collection: collection, user: admin, ocr: false, status: :error, updated_at: 2.hours.ago) }
-    let!(:successful_ocr_upload) { create(:document_upload, collection: collection, user: admin, ocr: true, status: :finished, updated_at: 2.hours.ago) }
     let!(:admin) { create(:admin) }
     let!(:collection) { create(:collection, owner_user_id: admin.id) }
+    let!(:failed_work) { create(:work, collection_id: collection.id, owner_user_id: admin.id) }
+    let!(:failed_page) { create(:page, work_id: failed_work.id) }
+    let!(:failed_ai_transcription) do
+      create(:ai_transcription, page_id: failed_page.id, status: :error, updated_at: 2.hours.ago, metadata: { 'error_message' => 'Recent AI failure' })
+    end
+    let!(:older_failed_work) { create(:work, collection_id: collection.id, owner_user_id: admin.id) }
+    let!(:older_failed_page) { create(:page, work_id: older_failed_work.id) }
+    let!(:older_failed_ai_transcription) do
+      create(:ai_transcription, page_id: older_failed_page.id, status: :error, updated_at: 2.days.ago, metadata: { 'error_message' => 'Older AI failure' })
+    end
+    let!(:retried_work) { create(:work, collection_id: collection.id, owner_user_id: admin.id) }
+    let!(:retried_page) { create(:page, work_id: retried_work.id) }
+    let!(:retried_failed_ai_transcription) do
+      create(:ai_transcription, page_id: retried_page.id, status: :error, updated_at: 2.hours.ago, metadata: { 'error_message' => 'Recovered AI failure' })
+    end
+    let!(:retried_successful_ai_transcription) do
+      create(:ai_transcription, page_id: retried_page.id, status: :finished, updated_at: 1.hour.ago)
+    end
 
     it 'includes recent trial users and recent failure log links' do
       mail = AdminMailer.email_stats(24).deliver
@@ -21,13 +36,14 @@ RSpec.describe AdminMailer, type: :mailer do
       expect(body).not_to include(older_trial_owner.email)
 
       expect(body).to include('Failed Bulk Exports')
-      expect(body).to include(admin_view_bulk_export_log_url(id: failed_bulk_export.id))
-      expect(body).not_to include(admin_view_bulk_export_log_url(id: older_failed_bulk_export.id))
+      expect(body).to include(bulk_export_show_url(bulk_export_id: failed_bulk_export.id))
+      expect(body).not_to include(bulk_export_show_url(bulk_export_id: older_failed_bulk_export.id))
 
       expect(body).to include('Failed AI Transcriptions')
-      expect(body).to include(admin_view_processing_log_url(id: failed_ai_transcription.id))
-      expect(body).not_to include(admin_view_processing_log_url(id: non_ocr_failed_upload.id))
-      expect(body).not_to include(admin_view_processing_log_url(id: successful_ocr_upload.id))
+      expect(body).to include(collection_display_page_url(collection.owner, collection, failed_work, failed_page, only_path: false))
+      expect(body).to include('Recent AI failure')
+      expect(body).not_to include(collection_display_page_url(collection.owner, collection, older_failed_work, older_failed_page, only_path: false))
+      expect(body).not_to include(collection_display_page_url(collection.owner, collection, retried_work, retried_page, only_path: false))
     end
   end
 
