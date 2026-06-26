@@ -114,10 +114,10 @@ module AiAccuracyCalculator
 
     # Calculate Levenshtein distance at word level
     distance = word_levenshtein_distance(ground_truth_words, predicted_words).to_f
-    max_length = [ground_truth_words.length, predicted_words.length].max
-    return 0.0 if max_length.zero?
+    ground_truth_length = ground_truth_words.length
+    return 0.0 if ground_truth_length.zero?
 
-    (distance / max_length * 100.0).round(2)
+    (distance / ground_truth_length * 100.0).round(2)
   end
 
   # Calculate Levenshtein distance for arrays of words
