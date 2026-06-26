@@ -223,6 +223,10 @@ describe DisplayController do
       let(:action_path) { collection_read_work_with_range_path(owner, collection, work, '3-7') }
       let(:params) { { needs_review: 'review' } }
 
+      before do
+        login_as owner
+      end
+
       it 'applies both filters' do
         get action_path, params: params
 
