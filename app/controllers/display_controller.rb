@@ -272,5 +272,4 @@ class DisplayController < ApplicationController
   def work_queue_filter?(filter)
     %w[review incomplete transcription index translation translation_review translation_index].include?(filter)
   end
-
 end
