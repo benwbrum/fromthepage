@@ -71,6 +71,14 @@ class AiTranscription < ApplicationRecord
     model != ALTO_MODEL
   end
 
+  def engine
+    self.class.engine_for_model(model)
+  end
+
+  def self.engine_for_model(model)
+    model.to_s.start_with?('claude') ? 'claude' : 'gemini'
+  end
+
   def error_message
     return if metadata.blank? || !metadata.is_a?(Hash)
 
