@@ -146,6 +146,15 @@ describe DisplayController do
       end
     end
 
+    context 'when logged out and requesting a work queue filter' do
+      it 'returns not found and discourages indexing' do
+        get action_path, params: { needs_review: 'transcription' }
+
+        expect(response).to have_http_status(:not_found)
+        expect(response.headers['X-Robots-Tag']).to eq('noindex, nofollow, noarchive')
+      end
+    end
+
     context 'with valid page range' do
       let(:action_path) { collection_read_work_with_range_path(owner, collection, work, '3-7') }
 

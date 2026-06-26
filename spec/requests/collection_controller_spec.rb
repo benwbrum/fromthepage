@@ -79,6 +79,17 @@ describe CollectionController do
     end
   end
 
+  describe '#needs_transcription_pages' do
+    let(:action_path) { collection_needs_transcription_path(owner, collection) }
+
+    it 'returns not found and discourages indexing when logged out' do
+      get action_path
+
+      expect(response).to have_http_status(:not_found)
+      expect(response.headers['X-Robots-Tag']).to eq('noindex, nofollow, noarchive')
+    end
+  end
+
   describe '#edit' do
     let(:action_path) { edit_collection_path(owner, collection) }
 
