@@ -137,7 +137,7 @@
         =search_field_tag :search_by_title, @search_attemp&.query, placeholder: t('.search_by_title')
         =button_tag t('.search')
 
-    -if notes_visible?(@collection, current_user) && (@collection.is_a?(Collection) || current_user&.can_transcribe?(nil, @collection))
+    -if user_signed_in? && notes_visible?(@collection, current_user) && (@collection.is_a?(Collection) || current_user&.can_transcribe?(nil, @collection))
       -if @collection.active? && @collection.text_entry?
         ruby:
           pages_need_correction_count = Page.where(work_id: @collection.work_ids, status: [:new, :incomplete]).count
