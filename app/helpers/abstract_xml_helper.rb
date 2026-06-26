@@ -523,4 +523,26 @@ module AbstractXmlHelper
           .gsub('&amp;amp;', '&amp;')
           .gsub('&amp;apos;', '&apos;')
   end
+
+  def cached_page_xml_to_html(page, attribute, preserve_lb: true, collection: nil, highlight_article_id: nil)
+    xml_text = page.public_send(attribute)
+    return '' if xml_text.blank?
+
+    collection ||= @collection
+
+    if highlight_article_id.present?
+      return xml_to_html(xml_text.to_s.dup, preserve_lb, false, collection, highlight_article_id)
+    end
+
+    Rails.cache.fetch([
+      'xml_to_html',
+      page.cache_key_with_version,
+      attribute,
+      preserve_lb,
+      collection&.class&.name,
+      collection&.cache_key_with_version
+    ]) do
+      xml_to_html(xml_text.to_s.dup, preserve_lb, false, collection)
+    end
+  end
 end
