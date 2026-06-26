@@ -179,6 +179,41 @@ describe AiTranscription::Create do
         end
       end
     end
+
+    context 'when latest finished ai_transcription is from another engine' do
+      let(:model) { 'claude-sonnet-4-6' }
+      let!(:ai_transcription) do
+        create(:ai_transcription, page_id: page.id, model: 'gemini-3-pro-preview', source_text: nil, status: :finished)
+      end
+
+      it 'creates a new processing ai_transcription record without retranscribe mode' do
+        expect(result.success?).to be_truthy
+        expect(result.ai_transcription).to have_attributes(
+          page_id: page.id,
+          model: model,
+          prompt: prompt,
+          status: 'processing'
+        )
+        expect(result.ai_transcription.id).not_to eq(ai_transcription.id)
+      end
+    end
+
+    context 'when an older finished ai_transcription is from the same engine' do
+      let(:model) { 'claude-sonnet-4-6' }
+      let!(:same_engine_ai_transcription) do
+        create(:ai_transcription, page_id: page.id, model: 'claude-opus-4-6',
+                                  source_text: nil, status: :finished, created_at: 2.days.ago)
+      end
+      let!(:different_engine_ai_transcription) do
+        create(:ai_transcription, page_id: page.id, model: 'gemini-3-pro-preview',
+                                  source_text: nil, status: :finished, created_at: 1.day.ago)
+      end
+
+      it 'blocks user from creating a duplicate transcription for that engine' do
+        expect(result.success?).to be_falsey
+        expect(result.full_errors.message).to eq('AI Transcription generation is either in progress or completed!')
+      end
+    end
   end
 
   context 'when collection is field_based' do
