@@ -156,11 +156,22 @@ RSpec.describe AbstractXmlHelper, type: :helper do
         cache_key_with_version: 'pages/1-20260101000000000000'
       )
     end
+    let(:article) do
+      double(
+        'Article',
+        xml_text: "<?xml version='1.0' encoding='UTF-8'?><page><p>Cached article</p></page>",
+        cache_key_with_version: 'pages/1-20260101000000000000'
+      )
+    end
     let(:collection) { double('Collection', cache_key_with_version: 'collections/1-20260101000000000000') }
     let(:document_set) { double('DocumentSet', cache_key_with_version: 'document_sets/1-20260101000000000000') }
 
     before do
       allow(Rails).to receive(:cache).and_return(cache)
+      allow(page).to receive(:class).and_return(double(name: 'Page'))
+      allow(article).to receive(:class).and_return(double(name: 'Article'))
+      allow(collection).to receive(:class).and_return(double(name: 'Collection'))
+      allow(document_set).to receive(:class).and_return(double(name: 'DocumentSet'))
     end
 
     it 'reuses cached page XML HTML for the same access object and line-break setting' do
@@ -207,6 +218,18 @@ RSpec.describe AbstractXmlHelper, type: :helper do
 
       expect(helper.cached_page_xml_to_html(page, :xml_text, preserve_lb: false, collection: collection)).to eq('<p>Cached text</p>')
       expect(helper.cached_page_xml_to_html(page, :xml_translation, preserve_lb: false, collection: collection)).to eq('<p>Cached translation</p>')
+    end
+
+    it 'keeps separate cache entries for record classes' do
+      expect(helper).to receive(:xml_to_html)
+        .with(page.xml_text, true, false, collection)
+        .and_return('<p>Cached page</p>')
+      expect(helper).to receive(:xml_to_html)
+        .with(article.xml_text, true, false, collection)
+        .and_return('<p>Cached article</p>')
+
+      expect(helper.cached_page_xml_to_html(page, :xml_text, collection: collection)).to eq('<p>Cached page</p>')
+      expect(helper.cached_article_xml_to_html(article, collection: collection)).to eq('<p>Cached article</p>')
     end
 
     it 'does not cache highlighted article variants' do
