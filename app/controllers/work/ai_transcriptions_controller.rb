@@ -47,27 +47,36 @@ class Work::AiTranscriptionsController < WorkController
   private
 
   def calculate_counts
+    work_pages = @work.pages.reorder(nil)
+
     latest_per_page = AiTranscription
-      .where(page_id: @work.pages.select(:id))
+      .where(page_id: work_pages.select(:id))
       .select('MAX(id) AS id')
       .group(:page_id)
 
     latest_ai_transcriptions = AiTranscription
       .joins("INNER JOIN (#{latest_per_page.to_sql}) latest ON latest.id = ai_transcriptions.id")
 
-    ai_transcriptions_count = latest_ai_transcriptions
-      .group(:status)
-      .count
+    ai_transcriptions_count, new_transcriptions_count, queued_transcriptions_count,
+      processing_transcriptions_count, finished_transcriptions_count, failed_transcriptions_count =
+      latest_ai_transcriptions.pick(
+        Arel.sql('COUNT(*)'),
+        Arel.sql("SUM(CASE WHEN ai_transcriptions.status = 'new' THEN 1 ELSE 0 END)"),
+        Arel.sql("SUM(CASE WHEN ai_transcriptions.status = 'queued' THEN 1 ELSE 0 END)"),
+        Arel.sql("SUM(CASE WHEN ai_transcriptions.status = 'processing' THEN 1 ELSE 0 END)"),
+        Arel.sql("SUM(CASE WHEN ai_transcriptions.status = 'finished' THEN 1 ELSE 0 END)"),
+        Arel.sql("SUM(CASE WHEN ai_transcriptions.status = 'error' THEN 1 ELSE 0 END)")
+      )
 
-    @pages_count = @work.pages.count
-    @ai_transcriptions_count = latest_per_page.to_a.size
+    @pages_count = work_pages.count
+    @ai_transcriptions_count = ai_transcriptions_count.to_i
     @queued_transcriptions_count =
-      ai_transcriptions_count['new'].to_i +
-      ai_transcriptions_count['queued'].to_i +
-      ai_transcriptions_count['processing'].to_i
+      new_transcriptions_count.to_i +
+      queued_transcriptions_count.to_i +
+      processing_transcriptions_count.to_i
 
-    @finished_transcriptions_count = ai_transcriptions_count['finished'].to_i
-    @failed_transcriptions_count = ai_transcriptions_count['error'].to_i
+    @finished_transcriptions_count = finished_transcriptions_count.to_i
+    @failed_transcriptions_count = failed_transcriptions_count.to_i
     @not_started_transcriptions_count = @pages_count - @ai_transcriptions_count
 
     @failed_ai_transcriptions = latest_ai_transcriptions
