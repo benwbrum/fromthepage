@@ -15,10 +15,13 @@ class AiTranscription::Lib::Claude::TranscribeHandler < AiTranscription::Lib::Ba
 
       begin
         response = client.messages.create(**payload)
+        clear_image_payload_references
+
         transcription_text, reasoning_text = extract_texts_from_response(response)
         metadata = extract_usage_metadata(response)
         return [transcription_text, reasoning_text, metadata, response]
       rescue Anthropic::Errors::APIStatusError => e
+        clear_image_payload_references
         if e.status == 529 && attempt <= MAX_RETRY
           delay = 2**attempt
           Rails.logger.warn("Anthropic API overloaded (attempt #{attempt}/#{MAX_RETRY}). Retrying in #{delay} seconds...")
@@ -28,6 +31,7 @@ class AiTranscription::Lib::Claude::TranscribeHandler < AiTranscription::Lib::Ba
         Rails.logger.error("Anthropic API error: #{e.message}")
         raise
       rescue => e
+        clear_image_payload_references
         Rails.logger.error("Anthropic API error: #{e.message}")
         raise
       end
@@ -85,6 +89,11 @@ class AiTranscription::Lib::Claude::TranscribeHandler < AiTranscription::Lib::Ba
     end
 
     @payload
+  end
+
+  def clear_image_payload_references
+    remove_instance_variable(:@payload) if defined?(@payload)
+    remove_instance_variable(:@image_data) if defined?(@image_data)
   end
 
   def extract_texts_from_response(response)
