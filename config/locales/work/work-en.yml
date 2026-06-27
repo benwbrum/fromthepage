@@ -20,7 +20,6 @@ en:
         queued: Queued
         retry: Retry failed jobs
         total_tokens_used: Total tokens used
-        unknown_error: Unknown error
       update:
         success: Retrying AI transcription job.
     configurable_printout:
