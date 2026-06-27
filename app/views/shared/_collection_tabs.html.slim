@@ -4,7 +4,7 @@
   :path => "#{main_app.collection_path(@collection.owner, @collection)}",
 }]
 
--if notes_visible?(@collection, current_user)
+-if user_signed_in? && notes_visible?(@collection, current_user)
   -tabs += [{\
     :name => t('.statistics'),
     :selected => 2,

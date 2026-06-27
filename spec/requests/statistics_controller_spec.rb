@@ -10,11 +10,11 @@ describe StatisticsController do
     let(:make_request) { get action_path }
 
     context 'when user is not logged in' do
-      it 'renders the statistics page' do
+      it 'returns not found and discourages indexing' do
         make_request
 
-        expect(response).to have_http_status(:ok)
-        expect(response).to render_template(:collection)
+        expect(response).to have_http_status(:not_found)
+        expect(response.headers['X-Robots-Tag']).to eq('noindex, nofollow, noarchive')
       end
     end
 

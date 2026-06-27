@@ -434,11 +434,15 @@ def update_search_attempt_user(user, session_var)
 end
 
 
-def require_login_for_work_queue
+def require_login_for_hidden_page
   return false if user_signed_in?
 
   response.headers['X-Robots-Tag'] = 'noindex, nofollow, noarchive'
   head :not_found
+end
+
+def require_login_for_work_queue
+  require_login_for_hidden_page
 end
 
 private
