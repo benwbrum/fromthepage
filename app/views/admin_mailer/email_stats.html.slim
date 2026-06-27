@@ -57,18 +57,14 @@ p This is the activity from the last #{@hours} hours.
     -work = ai_transcription.page.work
     -collection = ai_transcription.collection
     -owner = collection.owner
-    p
-      | Owner: 
-      =link_to owner.display_name, { controller: 'user', action: 'profile', user_id: owner.id, only_path: false }
-      br
-      | Collection: 
-      =link_to collection.title, { controller: 'collection', action: 'show', collection_id: collection.id, only_path: false }
-      br
-      | Work: 
-      =work.title
-      br
-      | Page: 
-      =link_to ai_transcription.page.title, collection_display_page_url(owner, collection, work, ai_transcription.page, only_path: false)
-      br
-      | Error: 
-      =ai_transcription.error_message.presence&.truncate(200) || 'Error details not provided'
+    .deed-short
+      span.deed-short_content
+        =link_to owner.display_name, { controller: 'user', action: 'profile', user_id: owner.id, only_path: false }
+        |  
+        =link_to collection.title, { controller: 'collection', action: 'show', collection_id: collection.id, only_path: false }
+        |  
+        =work.title
+        |  
+        =link_to ai_transcription.page.title, collection_display_page_url(owner, collection, work, ai_transcription.page, only_path: false)
+        |  
+        =ai_transcription.error_message.presence&.truncate(200) || 'Error details not provided'
