@@ -5,6 +5,12 @@ class Collection::AiTranscriptionsController < CollectionController
     calculate_counts
   end
 
+  def show
+    @ai_transcription = AiTranscription.joins(page: :work).where(works: { collection_id: @collection.id }).find(params[:id])
+    @page = @ai_transcription.page
+    @work = @page.work
+  end
+
   def create
     @result = AiTranscription::BulkCreate.new(
       collection: @collection,
