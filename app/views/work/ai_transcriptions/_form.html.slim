@@ -61,7 +61,7 @@
                   |  —
                   =ai_transcription.short_error_message
                   |  (
-                  =link_to 'details', collection_work_ai_transcription_path(collection.owner, collection, work, ai_transcription)
+                  =link_to 'details', collection_work_ai_transcription_path(user_slug: collection.owner.to_param, collection_id: collection.to_param, work_id: work.to_param, id: ai_transcription.id)
                   | )
             -if @failed_ai_transcriptions_hidden_count.positive?
               p =t('.failed_transcription_errors_hidden', count: @failed_ai_transcriptions_hidden_count)

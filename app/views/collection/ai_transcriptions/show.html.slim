@@ -1,1 +1,1 @@
-=render 'ai_transcriptions/show', ai_transcription: @ai_transcription, dashboard_path: edit_collection_ai_transcriptions_path(@collection.owner, @collection), dashboard_label: 'Collection Settings → AI'
+=render 'ai_transcriptions/show', ai_transcription: @ai_transcription, dashboard_path: edit_collection_ai_transcriptions_path(user_slug: @collection.owner.to_param, collection_id: @collection.to_param), dashboard_label: 'Collection Settings → AI'
