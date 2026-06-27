@@ -145,4 +145,110 @@ RSpec.describe AbstractXmlHelper, type: :helper do
       expect(result.scan(/padding-left:2\.0em;/).length).to eq(2)
     end
   end
+
+  describe '#cached_page_xml_to_html' do
+    let(:cache) { ActiveSupport::Cache::MemoryStore.new }
+    let(:page) do
+      double(
+        'Page',
+        xml_text: "<?xml version='1.0' encoding='UTF-8'?><page><p>Cached text</p></page>",
+        xml_translation: "<?xml version='1.0' encoding='UTF-8'?><page><p>Cached translation</p></page>",
+        cache_key_with_version: 'pages/1-20260101000000000000'
+      )
+    end
+    let(:article) do
+      double(
+        'Article',
+        xml_text: "<?xml version='1.0' encoding='UTF-8'?><page><p>Cached article</p></page>",
+        cache_key_with_version: 'pages/1-20260101000000000000'
+      )
+    end
+    let(:collection) { double('Collection', cache_key_with_version: 'collections/1-20260101000000000000') }
+    let(:document_set) { double('DocumentSet', cache_key_with_version: 'document_sets/1-20260101000000000000') }
+
+    before do
+      allow(Rails).to receive(:cache).and_return(cache)
+      allow(page).to receive(:class).and_return(double(name: 'Page'))
+      allow(article).to receive(:class).and_return(double(name: 'Article'))
+      allow(collection).to receive(:class).and_return(double(name: 'Collection'))
+      allow(document_set).to receive(:class).and_return(double(name: 'DocumentSet'))
+    end
+
+    it 'reuses cached page XML HTML for the same access object and line-break setting' do
+      expect(helper).to receive(:xml_to_html)
+        .once
+        .with(page.xml_text, true, false, collection)
+        .and_return('<p>Cached text</p>')
+
+      expect(helper.cached_page_xml_to_html(page, :xml_text, collection: collection)).to eq('<p>Cached text</p>')
+      expect(helper.cached_page_xml_to_html(page, :xml_text, collection: collection)).to eq('<p>Cached text</p>')
+    end
+
+    it 'keeps separate cache entries for separate access objects' do
+      expect(helper).to receive(:xml_to_html)
+        .with(page.xml_text, true, false, collection)
+        .and_return('<p>Collection text</p>')
+      expect(helper).to receive(:xml_to_html)
+        .with(page.xml_text, true, false, document_set)
+        .and_return('<p>Document set text</p>')
+
+      expect(helper.cached_page_xml_to_html(page, :xml_text, collection: collection)).to eq('<p>Collection text</p>')
+      expect(helper.cached_page_xml_to_html(page, :xml_text, collection: document_set)).to eq('<p>Document set text</p>')
+    end
+
+    it 'keeps separate cache entries for line-break variants' do
+      expect(helper).to receive(:xml_to_html)
+        .with(page.xml_text, true, false, collection)
+        .and_return('<p>Preserved line breaks</p>')
+      expect(helper).to receive(:xml_to_html)
+        .with(page.xml_text, false, false, collection)
+        .and_return('<p>Collapsed line breaks</p>')
+
+      expect(helper.cached_page_xml_to_html(page, :xml_text, preserve_lb: true, collection: collection)).to eq('<p>Preserved line breaks</p>')
+      expect(helper.cached_page_xml_to_html(page, :xml_text, preserve_lb: false, collection: collection)).to eq('<p>Collapsed line breaks</p>')
+    end
+
+    it 'keeps separate cache entries for XML attributes' do
+      expect(helper).to receive(:xml_to_html)
+        .with(page.xml_text, false, false, collection)
+        .and_return('<p>Cached text</p>')
+      expect(helper).to receive(:xml_to_html)
+        .with(page.xml_translation, false, false, collection)
+        .and_return('<p>Cached translation</p>')
+
+      expect(helper.cached_page_xml_to_html(page, :xml_text, preserve_lb: false, collection: collection)).to eq('<p>Cached text</p>')
+      expect(helper.cached_page_xml_to_html(page, :xml_translation, preserve_lb: false, collection: collection)).to eq('<p>Cached translation</p>')
+    end
+
+    it 'keeps separate cache entries for record classes' do
+      expect(helper).to receive(:xml_to_html)
+        .with(page.xml_text, true, false, collection)
+        .and_return('<p>Cached page</p>')
+      expect(helper).to receive(:xml_to_html)
+        .with(article.xml_text, true, false, collection)
+        .and_return('<p>Cached article</p>')
+
+      expect(helper.cached_page_xml_to_html(page, :xml_text, collection: collection)).to eq('<p>Cached page</p>')
+      expect(helper.cached_article_xml_to_html(article, collection: collection)).to eq('<p>Cached article</p>')
+    end
+
+    it 'does not cache highlighted article variants' do
+      expect(helper).to receive(:xml_to_html)
+        .twice
+        .with(page.xml_text, false, false, collection, '123')
+        .and_return('<p>Highlighted text</p>')
+
+      2.times do
+        expect(
+          helper.cached_page_xml_to_html(
+            page,
+            :xml_text,
+            preserve_lb: false,
+            collection: collection,
+            highlight_article_id: '123'
+          )
+        ).to eq('<p>Highlighted text</p>')
+      end
+    end
+  end
 end
