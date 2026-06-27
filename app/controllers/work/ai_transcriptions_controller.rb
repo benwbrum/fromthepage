@@ -25,6 +25,10 @@ class Work::AiTranscriptionsController < WorkController
     respond_to(&:turbo_stream)
   end
 
+  def error
+    load_ai_transcription
+  end
+
   def update
     @result = AiTranscription::BulkRetry.new(
       collection: @collection,
@@ -45,6 +49,26 @@ class Work::AiTranscriptionsController < WorkController
   end
 
   private
+
+  def authorized?
+    unless user_signed_in?
+      ajax_redirect_to dashboard_path
+      return
+    end
+
+    ajax_redirect_to dashboard_path unless current_user.admin ||
+      current_user.like_owner?(@work)
+  end
+
+  def load_ai_transcription
+    @ai_transcription = AiTranscription
+      .includes(page: { work: :collection })
+      .find(params[:ai_transcription_id])
+    raise ActiveRecord::RecordNotFound unless @ai_transcription.work == @work
+
+    @page = @ai_transcription.page
+    @collection = @work.collection
+  end
 
   def calculate_counts
     work_pages = @work.pages.reorder(nil)

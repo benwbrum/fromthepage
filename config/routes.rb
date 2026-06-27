@@ -520,6 +520,7 @@ Fromthepage::Application.routes.draw do
       get 'edit/quality_control', on: :member, to: 'collection#edit_quality_control'
 
       scope module: :collection do
+        get 'ai_transcriptions/:ai_transcription_id/error', to: 'ai_transcriptions#error', as: :ai_transcription_error
         resource :ai_transcriptions, only: [:edit, :create, :update]
       end
 
@@ -567,6 +568,7 @@ Fromthepage::Application.routes.draw do
       end
 
       resources :work, path: '', only: [] do
+        get 'ai_transcriptions/:ai_transcription_id/error', to: 'work/ai_transcriptions#error', as: :ai_transcription_error
         resource :ai_transcriptions, only: [:edit, :create, :update], controller: 'work/ai_transcriptions'
       end
 

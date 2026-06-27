@@ -60,7 +60,7 @@
                 li
                   =work.title
                   |  —
-                  =link_to ai_transcription.page.title, collection_display_page_path(collection.owner, collection, work, ai_transcription.page)
+                  =link_to ai_transcription.page.title, collection_ai_transcription_error_path(collection.owner, collection, ai_transcription)
                   |  —
                   =ai_transcription.error_message.presence || t('.unknown_error')
             -if @failed_ai_transcriptions_hidden_count.positive?

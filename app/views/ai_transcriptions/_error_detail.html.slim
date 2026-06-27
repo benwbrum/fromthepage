@@ -1,0 +1,44 @@
+.ai-transcription-error-detail
+  h1 AI Transcription Error Details
+
+  table.form
+    tr
+      th Page Title
+      td =link_to @page.title, collection_display_page_path(@collection.owner, @collection, @work, @page)
+    tr
+      th Work Title
+      td =link_to @work.title, collection_read_work_path(@collection.owner, @collection, @work)
+    tr
+      th Collection Title
+      td =link_to @collection.title, collection_path(@collection.owner, @collection)
+    tr
+      th Status
+      td =@ai_transcription.status
+    tr
+      th Model
+      td =@ai_transcription.model
+    tr
+      th Created At
+      td =l(@ai_transcription.created_at, format: :long)
+    tr
+      th Updated At
+      td =l(@ai_transcription.updated_at, format: :long)
+    -if @ai_transcription.supports_prompt?
+      tr
+        th Prompt
+        td
+          pre =@ai_transcription.prompt.presence || 'No prompt stored'
+    -if @ai_transcription.reasoning.present?
+      tr
+        th Reasoning
+        td
+          pre =@ai_transcription.reasoning
+    -if @ai_transcription.source_text.present?
+      tr
+        th Source Text
+        td
+          pre =@ai_transcription.source_text
+    tr
+      th Error Message
+      td
+        pre =@ai_transcription.error_message.presence || 'Error details not provided'
