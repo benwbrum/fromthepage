@@ -42,6 +42,9 @@ RSpec.describe AdminMailer, type: :mailer do
       expect(body).to include('Failed AI Transcriptions')
       expect(body).to include(collection_display_page_url(collection.owner, collection, failed_work, failed_page, only_path: false))
       expect(body).to include('Recent AI failure')
+      expect(body).to include(admin.display_name)
+      expect(body).to include(collection.title)
+      expect(body).to include(failed_work.title)
       expect(body).not_to include(collection_display_page_url(collection.owner, collection, older_failed_work, older_failed_page, only_path: false))
       expect(body).not_to include(collection_display_page_url(collection.owner, collection, retried_work, retried_page, only_path: false))
     end

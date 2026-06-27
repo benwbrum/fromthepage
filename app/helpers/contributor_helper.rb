@@ -70,7 +70,7 @@ module ContributorHelper
       .joins("INNER JOIN (#{latest_ai_transcription_ids_subquery.to_sql}) latest_ai_transcriptions ON latest_ai_transcriptions.id = ai_transcriptions.id")
       .where(status: :error)
       .where('ai_transcriptions.updated_at > ?', cutoff)
-      .includes(page: { work: :collection })
+      .includes(page: { work: { collection: :owner } })
       .order(updated_at: :desc)
     @collections = Collection.all
   end
