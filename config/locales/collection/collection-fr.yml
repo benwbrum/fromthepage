@@ -20,7 +20,6 @@ fr:
         queued: File d'attente
         retry: Réessayer les tâches ayant échoué
         total_tokens_used: Total de tokens utilisés
-        unknown_error: Erreur inconnue
       update:
         success: Nouvelle tentative de transcription par IA.
     approve_all:

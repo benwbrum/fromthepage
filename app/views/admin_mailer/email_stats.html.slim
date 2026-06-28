@@ -57,7 +57,7 @@ p This is the activity from the last #{@hours} hours.
     -work = ai_transcription.page.work
     =link_to ai_transcription.page.title, collection_display_page_url(ai_transcription.collection.owner, ai_transcription.collection, work, ai_transcription.page, only_path: false)
     |
-    =ai_transcription.error_message.presence || 'Error details not provided'
+    =link_to ai_transcription.short_error_message, collection_ai_transcription_url(user_slug: ai_transcription.collection.owner.to_param, collection_id: ai_transcription.collection.to_param, id: ai_transcription.id, only_path: false)
     -if ai_transcription.collection.present?
       |
       =ai_transcription.collection.title

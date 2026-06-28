@@ -20,7 +20,6 @@ pt:
         queued: Em fila
         retry: Tentar novamente trabalhos com falha
         total_tokens_used: Total de tokens utilizados
-        unknown_error: Erro desconhecido
       update:
         success: Tentando novamente a tarefa de transcrição por IA.
     approve_all:

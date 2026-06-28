@@ -136,6 +136,15 @@ describe AiTranscription::Generate do
         expect(result.full_errors.message).to include('RECITATION')
         expect(result.full_errors.message).to include('The generated content was filtered because it may contain material that resembles existing copyrighted works.')
       end
+
+      it 'stores structured provider error details' do
+        result
+
+        details = ai_transcription.reload.provider_error_details
+        expect(details['finish_reason']).to eq('RECITATION')
+        expect(details['finish_message']).to eq('The generated content was filtered because it may contain material that resembles existing copyrighted works.')
+        expect(details['raw_response']['candidates'].first['finishReason']).to eq('RECITATION')
+      end
     end
   end
 
