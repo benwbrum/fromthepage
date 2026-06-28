@@ -2,4 +2,5 @@
 .collection-meta-wrapper
   =render partial: 'collection/edit_tabs', locals: { selected: 7 }
   #collection-settings
-    =render 'ai_transcriptions/show', ai_transcription: @ai_transcription, dashboard_path: edit_collection_ai_transcriptions_path(user_slug: @collection.owner.to_param, collection_id: @collection.to_param), dashboard_label: 'Collection Settings → AI'
+    .collection-settings-wrapper
+      =render 'ai_transcriptions/show', ai_transcription: @ai_transcription, dashboard_path: edit_collection_ai_transcriptions_path(user_slug: @collection.owner.to_param, collection_id: @collection.to_param), dashboard_label: 'Collection Settings → AI'
