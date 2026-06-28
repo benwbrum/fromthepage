@@ -439,6 +439,7 @@ def require_login_for_hidden_page
 
   response.headers['X-Robots-Tag'] = 'noindex, nofollow, noarchive'
   head :not_found
+  true
 end
 
 def require_login_for_work_queue
