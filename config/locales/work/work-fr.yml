@@ -20,7 +20,6 @@ fr:
         queued: File d'attente
         retry: Réessayer les tâches ayant échoué
         total_tokens_used: Nombre total de jetons utilisés
-        unknown_error: Erreur inconnue
       update:
         success: Nouvelle tentative de transcription par IA.
     configurable_printout:

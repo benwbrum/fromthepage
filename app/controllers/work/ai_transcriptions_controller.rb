@@ -5,6 +5,11 @@ class Work::AiTranscriptionsController < WorkController
     calculate_counts
   end
 
+  def show
+    @ai_transcription = AiTranscription.joins(:page).where(pages: { work_id: @work.id }).find(params[:id])
+    @page = @ai_transcription.page
+  end
+
   def create
     @result = AiTranscription::BulkCreate.new(
       collection: @collection,

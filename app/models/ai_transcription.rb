@@ -85,6 +85,26 @@ class AiTranscription < ApplicationRecord
     metadata['error_message']
   end
 
+  def provider_error_details
+    return {} if metadata.blank? || !metadata.is_a?(Hash)
+
+    metadata['provider_error_details'].presence || legacy_provider_error_details
+  end
+
+  def provider_citation_sources
+    provider_error_details['citation_sources'].presence || []
+  end
+
+  def display_error_message
+    message = error_message.presence || 'Error details not provided'
+    message.sub(/\nResponse:\s*\{.*\}\s*\z/m, '')
+  end
+
+  def short_error_message
+    message = display_error_message
+    message.truncate(220)
+  end
+
   def text_for_comparison
     return source_text unless collection&.field_based && transcription_json.present?
     field_values_for_comparison(transcription_json)
@@ -96,6 +116,32 @@ class AiTranscription < ApplicationRecord
   end
 
   private
+
+  def legacy_provider_error_details
+    response = legacy_provider_response
+    return {} if response.blank?
+
+    candidate = response.dig('candidates', 0) || {}
+
+    {
+      'finish_reason' => candidate['finishReason'],
+      'finish_message' => candidate['finishMessage'],
+      'citation_sources' => candidate.dig('citationMetadata', 'citationSources') || [],
+      'model_version' => response['modelVersion'],
+      'response_id' => response['responseId'],
+      'usage_metadata' => response['usageMetadata'],
+      'raw_response' => response
+    }.compact
+  end
+
+  def legacy_provider_response
+    response_text = error_message.to_s.match(/\nResponse:\s*(\{.*\})\s*\z/m)&.[](1)
+    return if response_text.blank?
+
+    JSON.parse(response_text.gsub('=>', ':'))
+  rescue JSON::ParserError
+    nil
+  end
 
   def field_values_for_comparison(json)
     fields = collection.transcription_fields
