@@ -85,6 +85,21 @@ class AiTranscription < ApplicationRecord
     metadata['error_message']
   end
 
+  def provider_error_details
+    return {} if metadata.blank? || !metadata.is_a?(Hash)
+
+    metadata['provider_error_details'].presence || {}
+  end
+
+  def provider_citation_sources
+    provider_error_details['citation_sources'].presence || []
+  end
+
+  def short_error_message
+    message = error_message.presence || 'Error details not provided'
+    message.truncate(220)
+  end
+
   def text_for_comparison
     return source_text unless collection&.field_based && transcription_json.present?
     field_values_for_comparison(transcription_json)

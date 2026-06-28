@@ -104,6 +104,7 @@ namespace :fromthepage do
         error_count += 1
       ensure
         sleep(0.5)
+        GC.start
       end
 
       puts '=' * 80
@@ -186,6 +187,7 @@ namespace :fromthepage do
           overall_error += 1
         ensure
           sleep(0.5)
+          GC.start
         end
       end
 
