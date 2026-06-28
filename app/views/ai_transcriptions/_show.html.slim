@@ -2,8 +2,6 @@
 -dashboard_path = local_assigns.fetch(:dashboard_path)
 -dashboard_label = local_assigns.fetch(:dashboard_label)
 
-=render partial: '/shared/page_tabs', locals: { selected: 5, page_id: @page.id }
-
 ul.breadcrumbs
   li =link_to dashboard_label, dashboard_path
   li AI Transcription Error
