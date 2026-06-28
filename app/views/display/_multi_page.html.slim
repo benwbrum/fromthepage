@@ -65,7 +65,7 @@
       -if @article
         h4 =@article.title
         -if @article.xml_text != nil && !@article.xml_text.empty?
-          =raw(xml_to_html(@article.xml_text))
+          =raw(cached_article_xml_to_html(@article, collection: @collection))
         =render :partial => 'article/article_links'
 
       -if @collection.categories.present?

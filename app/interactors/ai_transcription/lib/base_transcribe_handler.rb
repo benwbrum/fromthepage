@@ -61,18 +61,27 @@ class AiTranscription::Lib::BaseTranscribeHandler
 
   def encode_image_bytes(bytes)
     image_list = Magick::ImageList.new
-    image_list.from_blob(bytes)
-    image = image_list.first
+    image = nil
+    resized_image = nil
 
-    if image.columns > MAX_IMAGE_DIM || image.rows > MAX_IMAGE_DIM
-      scale = [MAX_IMAGE_DIM.to_f / image.columns, MAX_IMAGE_DIM.to_f / image.rows].min
-      image = image.thumbnail(scale)
+    begin
+      image_list.from_blob(bytes)
+      image = image_list.first
+
+      if image.columns > MAX_IMAGE_DIM || image.rows > MAX_IMAGE_DIM
+        scale = [MAX_IMAGE_DIM.to_f / image.columns, MAX_IMAGE_DIM.to_f / image.rows].min
+        resized_image = image.thumbnail(scale)
+        image = resized_image
+      end
+
+      image.format = 'JPEG' unless CLAUDE_SUPPORTED_FORMATS.include?(image.format.upcase)
+
+      media_type = claude_media_type(image.format)
+      [Base64.strict_encode64(image.to_blob), media_type]
+    ensure
+      resized_image&.destroy!
+      image_list&.destroy!
     end
-
-    image.format = 'JPEG' unless CLAUDE_SUPPORTED_FORMATS.include?(image.format.upcase)
-
-    media_type = claude_media_type(image.format)
-    [Base64.strict_encode64(image.to_blob), media_type]
   end
 
   def claude_media_type(format)
