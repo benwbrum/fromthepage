@@ -10,11 +10,19 @@
 #  source_text                    :text(4294967295)
 #  status                         :string(255)      default("new"), not null
 #  text_cer                       :decimal(10, )
+#  text_cer_distance              :decimal(10, )
+#  text_cer_length                :decimal(10, )
 #  text_wer                       :decimal(10, )
+#  text_wer_distance              :decimal(10, )
+#  text_wer_length                :decimal(10, )
 #  transcription_json             :text(4294967295)
 #  verbatim_cer                   :decimal(10, )
+#  verbatim_cer_distance          :decimal(10, )
+#  verbatim_cer_length            :decimal(10, )
 #  verbatim_non_stopword_accuracy :decimal(10, )
 #  verbatim_wer                   :decimal(10, )
+#  verbatim_wer_distance          :decimal(10, )
+#  verbatim_wer_length            :decimal(10, )
 #  created_at                     :datetime         not null
 #  updated_at                     :datetime         not null
 #  page_id                        :integer          not null

@@ -29,7 +29,7 @@ module AiAccuracyCalculator
 
   # Calculate all accuracy statistics
   # Returns a hash with various accuracy metrics or nil if cannot calculate
-  def ai_accuracy_statistics(ai_transcription: self.ai_transcription)
+  def ai_accuracy_statistics(ai_transcription: self.ai_transcription, extract_raw_values: false)
     return nil unless can_calculate_ai_accuracy?(ai_transcription: ai_transcription)
 
     ground_truth = ground_truth_for_comparison
@@ -38,8 +38,8 @@ module AiAccuracyCalculator
     return nil if ground_truth.blank? && ai_text.blank?
 
     stats = {
-      verbatim: calculate_verbatim_statistics(ground_truth, ai_text),
-      text_only: calculate_text_only_statistics(ground_truth, ai_text)
+      verbatim: calculate_verbatim_statistics(ground_truth, ai_text, extract_raw_values),
+      text_only: calculate_text_only_statistics(ground_truth, ai_text, extract_raw_values)
     }
 
     # Add non-stopword accuracy only if language is supported
@@ -58,22 +58,48 @@ module AiAccuracyCalculator
   end
 
   # Calculate statistics for verbatim text (with punctuation and formatting)
-  def calculate_verbatim_statistics(ground_truth, ai_text)
-    {
-      cer: character_error_rate(ground_truth, ai_text),
-      wer: word_error_rate(ground_truth, ai_text)
-    }
+  def calculate_verbatim_statistics(ground_truth, ai_text, extract_raw_values = false)
+    if extract_raw_values
+      cer_distance, cer_length, cer = character_error_rate(ground_truth, ai_text, extract_raw_values)
+      wer_distance, wer_length, wer = word_error_rate(ground_truth, ai_text, extract_raw_values)
+      {
+        cer_distance: cer_distance,
+        cer_length: cer_length,
+        cer: cer,
+        wer_distance: wer_distance,
+        wer_length: wer_length,
+        wer: wer
+      }
+    else
+      {
+        cer: character_error_rate(ground_truth, ai_text),
+        wer: word_error_rate(ground_truth, ai_text)
+      }
+    end
   end
 
   # Calculate statistics for text-only versions (normalized text)
-  def calculate_text_only_statistics(ground_truth, ai_text)
+  def calculate_text_only_statistics(ground_truth, ai_text, extract_raw_values = false)
     normalized_truth = normalize_text(ground_truth)
     normalized_ai = normalize_text(ai_text)
 
-    {
-      cer: character_error_rate(normalized_truth, normalized_ai),
-      wer: word_error_rate(normalized_truth, normalized_ai)
-    }
+    if extract_raw_values
+      cer_distance, cer_length, cer = character_error_rate(normalized_truth, normalized_ai, extract_raw_values)
+      wer_distance, wer_length, wer = word_error_rate(normalized_truth, normalized_ai, extract_raw_values)
+      {
+        cer_distance: cer_distance,
+        cer_length: cer_length,
+        cer: cer,
+        wer_distance: wer_distance,
+        wer_length: wer_length,
+        wer: wer
+      }
+    else
+      {
+        cer: character_error_rate(normalized_truth, normalized_ai),
+        wer: word_error_rate(normalized_truth, normalized_ai)
+      }
+    end
   end
 
   # Normalize text by removing punctuation, extra whitespace, and converting to lowercase
@@ -92,32 +118,53 @@ module AiAccuracyCalculator
 
   # Calculate Character Error Rate (CER)
   # CER = Levenshtein distance / length of human transcription
-  def character_error_rate(ground_truth, predicted)
-    return 0.0 if ground_truth == predicted
-    return 100.0 if ground_truth.blank? || predicted.blank?
+  # extract_raw_values will return [distance, length, cer]
+  def character_error_rate(ground_truth, predicted, extract_raw_values = false)
+    max_length = ground_truth.length
+
+    if ground_truth == predicted
+      return extract_raw_values ? [0.0, max_length, 0.0] : 0.0
+    end
+
+    if ground_truth.blank? || predicted.blank?
+      return extract_raw_values ? [max_length, max_length, 100.0] : 100.0
+    end
 
     distance = Text::Levenshtein.distance(ground_truth, predicted).to_f
-    max_length = ground_truth.length
-    return 0.0 if max_length.zero?
+    if max_length.zero?
+      return extract_raw_values ? [distance, max_length, 0.0] : 0.0
+    end
 
-    (distance / max_length * 100.0).round(2)
+    cer = (distance / max_length * 100.0).round(2)
+
+    extract_raw_values ? [distance, max_length, cer] : cer
   end
 
   # Calculate Word Error Rate (WER)
   # WER = Levenshtein distance on words / number of words in human transcription
-  def word_error_rate(ground_truth, predicted)
+  # extract_raw_values will return [distance, length, wer]
+  def word_error_rate(ground_truth, predicted, extract_raw_values = false)
     ground_truth_words = ground_truth.split(/\s+/).reject(&:blank?)
     predicted_words = predicted.split(/\s+/).reject(&:blank?)
 
-    return 0.0 if ground_truth_words == predicted_words
-    return 100.0 if ground_truth_words.empty? || predicted_words.empty?
+    max_length = [ground_truth_words.length, predicted_words.length].max
+
+    if ground_truth_words == predicted_words
+      return extract_raw_values ? [0.0, max_length, 0.0] : 0.0
+    end
+
+    if ground_truth_words.empty? || predicted_words.empty?
+      return extract_raw_values ? [max_length, max_length, 100.0] : 100.0
+    end
 
     # Calculate Levenshtein distance at word level
     distance = word_levenshtein_distance(ground_truth_words, predicted_words).to_f
-    max_length = [ground_truth_words.length, predicted_words.length].max
-    return 0.0 if max_length.zero?
+    if max_length.zero?
+      return extract_raw_values ? [distance, max_length, 0.0] : 0.0
+    end
 
-    (distance / max_length * 100.0).round(2)
+    wer = (distance / max_length * 100.0).round(2)
+    extract_raw_values ? [distance, max_length, wer] : wer
   end
 
   # Calculate Levenshtein distance for arrays of words

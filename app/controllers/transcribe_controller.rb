@@ -118,10 +118,18 @@ class TranscribeController  < ApplicationController
         if @page.source_text_previously_changed?
           @page.ai_transcriptions.update_all(
             verbatim_cer: nil,
+            verbatim_cer_distance: nil,
+            verbatim_cer_length: nil,
             verbatim_wer: nil,
+            verbatim_wer_distance: nil,
+            verbatim_wer_length: nil,
             verbatim_non_stopword_accuracy: nil,
             text_cer: nil,
-            text_wer: nil
+            text_cer_distance: nil,
+            text_cer_length: nil,
+            text_wer: nil,
+            text_wer_distance: nil,
+            text_wer_length: nil
           )
 
           Transcribe::CalculateAiStatsJob.perform_later(
