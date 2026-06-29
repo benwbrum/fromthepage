@@ -48,11 +48,13 @@ class Work::Export::Printable < ApplicationInteractor
 
     raise "Pandoc conversion failed! See log: #{log_file}" unless success
 
-    if !File.exist?(@file)
+    if File.exist?(@file)
+      if File.size(@file) == 0
+        Rails.logger.error("Pandoc produced empty output file: #{@file}. See log: #{log_file}")
+        raise "Pandoc produced no output! See log: #{log_file}"
+      end
+    else
       Rails.logger.error("Pandoc did not create output file: #{@file}. See log: #{log_file}")
-      raise "Pandoc produced no output! See log: #{log_file}"
-    elsif File.size(@file) == 0
-      Rails.logger.error("Pandoc produced empty output file: #{@file}. See log: #{log_file}")
       raise "Pandoc produced no output! See log: #{log_file}"
     end
   end
