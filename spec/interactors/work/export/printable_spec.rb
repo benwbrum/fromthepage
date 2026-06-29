@@ -112,6 +112,11 @@ describe Work::Export::Printable do
         expect(result.full_errors).not_to be_nil
         expect(result.full_errors.message).to include('no output')
       end
+
+      it 'logs the error' do
+        expect(Rails.logger).to receive(:error).with(/empty or missing output file/)
+        exporter.call
+      end
     end
 
     context 'when pandoc exits 0 but produces an empty output file' do
@@ -127,6 +132,18 @@ describe Work::Export::Printable do
         result = exporter.call
 
         expect(result.success?).to be_falsey
+      end
+
+      it 'sets an error indicating no output was produced' do
+        result = exporter.call
+
+        expect(result.full_errors).not_to be_nil
+        expect(result.full_errors.message).to include('no output')
+      end
+
+      it 'logs the error' do
+        expect(Rails.logger).to receive(:error).with(/empty or missing output file/)
+        exporter.call
       end
     end
   end
