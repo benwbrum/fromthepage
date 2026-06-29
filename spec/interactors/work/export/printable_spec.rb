@@ -123,7 +123,7 @@ describe Work::Export::Printable do
       before do
         allow(exporter).to receive(:system) do
           # Simulate pandoc creating an empty output file
-          FileUtils.touch(exporter.instance_variable_get(:@file))
+          FileUtils.touch(exporter.file)
           true
         end
       end
