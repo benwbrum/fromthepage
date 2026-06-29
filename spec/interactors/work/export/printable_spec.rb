@@ -114,7 +114,7 @@ describe Work::Export::Printable do
       end
 
       it 'logs the error' do
-        expect(Rails.logger).to receive(:error).with(/empty or missing output file/)
+        expect(Rails.logger).to receive(:error).with(/did not create output file/)
         exporter.call
       end
     end
@@ -142,7 +142,7 @@ describe Work::Export::Printable do
       end
 
       it 'logs the error' do
-        expect(Rails.logger).to receive(:error).with(/empty or missing output file/)
+        expect(Rails.logger).to receive(:error).with(/empty output file/)
         exporter.call
       end
     end
