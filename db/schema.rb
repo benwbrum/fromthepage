@@ -73,10 +73,18 @@ ActiveRecord::Schema[7.2].define(version: 2026_06_17_201340) do
     t.string "status", default: "new", null: false
     t.text "transcription_json", size: :long
     t.decimal "verbatim_cer", precision: 10
+    t.decimal "verbatim_cer_distance", precision: 10
+    t.decimal "verbatim_cer_length", precision: 10
     t.decimal "verbatim_wer", precision: 10
-    t.decimal "verbatim_non_stopword_accuracy", precision: 10
+    t.decimal "verbatim_wer_distance", precision: 10
+    t.decimal "verbatim_wer_length", precision: 10
     t.decimal "text_cer", precision: 10
+    t.decimal "text_cer_distance", precision: 10
+    t.decimal "text_cer_length", precision: 10
     t.decimal "text_wer", precision: 10
+    t.decimal "text_wer_distance", precision: 10
+    t.decimal "text_wer_length", precision: 10
+    t.decimal "verbatim_non_stopword_accuracy", precision: 10
     t.index ["page_id"], name: "index_ai_transcriptions_on_page_id"
   end
 

@@ -591,17 +591,19 @@ class Page < ApplicationRecord
   def has_ai_plaintext?(ai_transcription_to_use: nil)
     ai_transcription_to_use ||= self.ai_transcription
 
-    (ai_transcription_to_use&.status_finished? && ai_transcription_to_use&.source_text&.present?) || File.exist?(self.ai_plaintext_path)
+    (ai_transcription_to_use&.status_finished? && ai_plaintext(ai_transcription_to_use: ai_transcription_to_use).present?) || File.exist?(self.ai_plaintext_path)
   end
 
   # TODO: Remove this on different PR after running migration
-  def ai_plaintext
+  def ai_plaintext(ai_transcription_to_use: nil)
+    ai_transcription_to_use ||= self.ai_transcription
+
     if self.alto_transcription.present?
       self.alto_transcription.source_text
-    elsif self.ai_transcription.present?
-      text = self.ai_transcription.source_text
-      if text.blank? && self.ai_transcription.transcription_json.present?
-        text = field_transcription_json_to_plaintext(self.ai_transcription.transcription_json)
+    elsif ai_transcription_to_use.present?
+      text = ai_transcription_to_use.source_text
+      if text.blank? && ai_transcription_to_use.transcription_json.present?
+        text = field_transcription_json_to_plaintext(ai_transcription_to_use.transcription_json)
       end
       text
     elsif File.exist?(self.ai_plaintext_path)
