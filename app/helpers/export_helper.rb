@@ -1057,7 +1057,61 @@ module ExportHelper
   end
 
   def field_data_to_hash(page)
-    collection=page.collection
+    if page.transcription_json.present?
+      field_data_from_transcription_json(page)
+    else
+      field_data_from_table_cells(page)
+    end
+  end
+
+  def field_data_from_transcription_json(page)
+    collection = page.collection
+    response_array = []
+
+    fields = collection.transcription_fields
+                       .includes(:spreadsheet_columns)
+                       .where.not(input_type: 'instruction')
+                       .order(:line_number, :position)
+
+    transcription_json = page.transcription_json
+
+    fields.each do |field|
+      value = transcription_json[field.id.to_s]
+      next if value.blank?
+
+      if field.input_type == 'spreadsheet'
+        spreadsheet_array = []
+
+        value.each do |row|
+          row_data = []
+          field.spreadsheet_columns.order(:position).each do |column|
+            cell_value = row[column.id.to_s]
+            next if cell_value.blank?
+
+            element = { label: column.label, value: cell_value }
+            element[:config] = iiif_strucured_data_column_config_url(column.id)
+            row_data << element
+          end
+          spreadsheet_array << row_data unless row_data.empty?
+        end
+
+        unless spreadsheet_array.empty?
+          element = { data: spreadsheet_array }
+          element[:config] = iiif_strucured_data_field_config_url(field.id)
+          response_array << element
+        end
+      else
+        element = { label: field.label, value: value }
+        element[:config] = iiif_strucured_data_field_config_url(field.id)
+        response_array << element
+      end
+    end
+
+    response_array
+  end
+
+  def field_data_from_table_cells(page)
+    collection = page.collection
     fields = {}
     collection.transcription_fields.each { |field| fields[field.label] = field }
     spreadsheet = collection.transcription_fields.detect { |field| field.input_type == 'spreadsheet' }

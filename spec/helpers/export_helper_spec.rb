@@ -8,6 +8,131 @@ RSpec.describe ExportHelper, type: :helper do
     @context = double("context", translation_mode: false)
   end
 
+  describe '#field_data_to_hash' do
+    let(:owner) { create(:unique_user, :owner) }
+    let(:collection) { create(:collection, owner_user_id: owner.id, field_based: true) }
+    let(:work) { create(:work, collection: collection, owner_user_id: owner.id) }
+    let(:text_field) do
+      create(:transcription_field, :text_field, label: 'Name', collection: collection,
+                                                line_number: 1, position: 1)
+    end
+
+    before do
+      allow(helper).to receive(:iiif_strucured_data_field_config_url).and_return('field_config_url')
+      allow(helper).to receive(:iiif_strucured_data_column_config_url).and_return('column_config_url')
+    end
+
+    context 'when page has transcription_json (modern field-based transcription)' do
+      it 'returns field data from transcription_json for text fields' do
+        text_field
+        page = create(:page, work: work, transcription_json: { text_field.id.to_s => 'John Smith' })
+
+        result = helper.field_data_to_hash(page)
+
+        expect(result).to be_an(Array)
+        expect(result.length).to eq(1)
+        expect(result.first[:label]).to eq('Name')
+        expect(result.first[:value]).to eq('John Smith')
+        expect(result.first[:config]).to eq('field_config_url')
+      end
+
+      it 'skips fields with blank values in transcription_json' do
+        text_field
+        page = create(:page, work: work, transcription_json: { text_field.id.to_s => '' })
+
+        result = helper.field_data_to_hash(page)
+
+        expect(result).to be_empty
+      end
+
+      it 'returns spreadsheet data from transcription_json' do
+        spreadsheet_field = create(:transcription_field, :spreadsheet_field, label: 'Ledger', collection: collection,
+                                                                               line_number: 2, position: 1)
+        col_a = create(:spreadsheet_column, label: 'Amount', transcription_field_id: spreadsheet_field.id, position: 1)
+        col_b = create(:spreadsheet_column, label: 'Date', transcription_field_id: spreadsheet_field.id, position: 2)
+
+        row_data = [{ col_a.id.to_s => '100', col_b.id.to_s => '1920-01-01' }]
+        page = create(:page, work: work, transcription_json: { spreadsheet_field.id.to_s => row_data })
+
+        result = helper.field_data_to_hash(page)
+
+        expect(result).to be_an(Array)
+        expect(result.length).to eq(1)
+        spreadsheet_entry = result.first
+        expect(spreadsheet_entry[:data]).to be_an(Array)
+        expect(spreadsheet_entry[:data].length).to eq(1)
+        row = spreadsheet_entry[:data].first
+        expect(row.map { |e| e[:label] }).to contain_exactly('Amount', 'Date')
+        expect(row.map { |e| e[:value] }).to contain_exactly('100', '1920-01-01')
+        expect(spreadsheet_entry[:config]).to eq('field_config_url')
+      end
+
+      it 'skips spreadsheet rows where all cell values are blank' do
+        spreadsheet_field = create(:transcription_field, :spreadsheet_field, label: 'Ledger', collection: collection,
+                                                                               line_number: 2, position: 1)
+        col_a = create(:spreadsheet_column, label: 'Amount', transcription_field_id: spreadsheet_field.id, position: 1)
+
+        row_data = [{ col_a.id.to_s => '' }]
+        page = create(:page, work: work, transcription_json: { spreadsheet_field.id.to_s => row_data })
+
+        result = helper.field_data_to_hash(page)
+
+        expect(result).to be_empty
+      end
+
+      it 'skips instruction fields' do
+        create(:transcription_field, :instruction_field, label: 'Instructions', collection: collection,
+                                                         line_number: 0, position: 1)
+        text_field
+        page = create(:page, work: work, transcription_json: { text_field.id.to_s => 'Smith' })
+
+        result = helper.field_data_to_hash(page)
+
+        expect(result.length).to eq(1)
+        expect(result.first[:label]).to eq('Name')
+      end
+
+      it 'returns empty array when transcription_json has no matching fields' do
+        text_field
+        page = create(:page, work: work, transcription_json: { '99999' => 'orphan value' })
+
+        result = helper.field_data_to_hash(page)
+
+        expect(result).to be_empty
+      end
+    end
+
+    context 'when page has no transcription_json (legacy table_cells path)' do
+      it 'falls back to table_cells when transcription_json is empty' do
+        text_field
+        page = create(:page, work: work, transcription_json: {})
+        create(:table_cell, page: page, work: work, header: 'Name', content: 'Legacy Value', row: 0,
+                             transcription_field_id: text_field.id)
+
+        result = helper.field_data_to_hash(page)
+
+        expect(result).to be_an(Array)
+        expect(result.length).to eq(1)
+        expect(result.first[:label]).to eq('Name')
+        expect(result.first[:value]).to eq('Legacy Value')
+      end
+
+      it 'falls back to table_cells when transcription_json is nil' do
+        text_field
+        page = create(:page, work: work)
+        page.update_column(:transcription_json, nil)
+        create(:table_cell, page: page, work: work, header: 'Name', content: 'Legacy Value', row: 0,
+                             transcription_field_id: text_field.id)
+
+        result = helper.field_data_to_hash(page.reload)
+
+        expect(result).to be_an(Array)
+        expect(result.first[:label]).to eq('Name')
+        expect(result.first[:value]).to eq('Legacy Value')
+      end
+    end
+  end
+
 
 
   describe '#expand_subject' do
