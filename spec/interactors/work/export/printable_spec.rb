@@ -80,6 +80,57 @@ describe Work::Export::Printable do
     end
   end
 
+  describe 'output file validation' do
+    subject(:exporter) do
+      described_class.new(
+        work: work,
+        format: 'pdf',
+        edition: 'text',
+        include_metadata: true,
+        include_contributors: true,
+        include_notes: true,
+        preserve_lb: false,
+        time: time
+      )
+    end
+
+    context 'when pandoc exits 0 but produces no output file' do
+      before do
+        # Stub system() so pandoc "succeeds" without running, leaving no output file
+        allow(exporter).to receive(:system).and_return(true)
+      end
+
+      it 'returns failure' do
+        result = exporter.call
+
+        expect(result.success?).to be_falsey
+      end
+
+      it 'sets an error indicating no output was produced' do
+        result = exporter.call
+
+        expect(result.full_errors).not_to be_nil
+        expect(result.full_errors.message).to include('no output')
+      end
+    end
+
+    context 'when pandoc exits 0 but produces an empty output file' do
+      before do
+        allow(exporter).to receive(:system) do
+          # Simulate pandoc creating an empty output file
+          FileUtils.touch(exporter.instance_variable_get(:@file))
+          true
+        end
+      end
+
+      it 'returns failure' do
+        result = exporter.call
+
+        expect(result.success?).to be_falsey
+      end
+    end
+  end
+
   describe '#tex_string_for_conversion' do
     subject(:exporter) do
       described_class.new(

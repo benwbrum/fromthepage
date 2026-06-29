@@ -230,6 +230,28 @@ describe ExportController do
         expect(response).to have_http_status(:internal_server_error)
       end
     end
+
+    context 'when pdf generation fails (e.g. pandoc produces no output)' do
+      let(:params) { { edition: 'text', format: 'pdf' } }
+      let(:failed_result) do
+        instance_double(
+          Work::Export::Printable,
+          success?: false,
+          full_errors: StandardError.new('Pandoc produced no output')
+        )
+      end
+
+      before do
+        allow_any_instance_of(Work::Export::Printable).to receive(:call).and_return(failed_result)
+      end
+
+      it 'returns internal server error' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:internal_server_error)
+      end
+    end
   end
 
   describe '#tei' do

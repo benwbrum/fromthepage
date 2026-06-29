@@ -39,13 +39,14 @@ class ExportController < ApplicationController
 
     if result.success?
       send_data(
-        File.read(result.file),
+        File.binread(result.file),
         filename: result.filename,
         content_type: result.content_type
       )
 
       cookies['download_finished'] = 'true'
     else
+      Rails.logger.error("Printable export failed for work #{@work.id}: #{result.full_errors&.message}")
       head :internal_server_error
     end
   end
