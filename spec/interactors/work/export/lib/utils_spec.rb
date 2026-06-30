@@ -78,6 +78,15 @@ describe Work::Export::Lib::Utils do
         result = described_class.xml_to_latex(page: page, xml_text: xml)
         expect(result).to match(/\\\\\s*\n\\midrule/)
       end
+
+      it 'places header content between \\toprule and \\midrule' do
+        result = described_class.xml_to_latex(page: page, xml_text: xml)
+        toprule_pos = result.index('\\toprule')
+        header_pos  = result.index('Street No.')
+        midrule_pos = result.index('\\midrule')
+        expect(header_pos).to be > toprule_pos
+        expect(header_pos).to be < midrule_pos
+      end
     end
 
     context 'with a table whose thead contains th elements directly (no tr wrapper)' do
@@ -111,6 +120,14 @@ describe Work::Export::Lib::Utils do
       it 'does not concatenate header cells without separators' do
         result = described_class.xml_to_latex(page: page, xml_text: xml)
         expect(result).not_to include('Street No.NameSexAge')
+      end
+
+      it 'preserves cell content and ordering after normalization' do
+        result = described_class.xml_to_latex(page: page, xml_text: xml)
+        # Header cells must appear in original order with correct separators
+        expect(result).to match(/Street No\. & Name & Sex & Age/)
+        # Body cell content must also be intact
+        expect(result).to match(/Beach & 54 & Smith John & male/)
       end
     end
   end
