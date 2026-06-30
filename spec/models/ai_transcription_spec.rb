@@ -32,10 +32,16 @@ RSpec.describe AiTranscription, type: :model do
       expect(ai_transcription.source_text).to eq('Hello World')
     end
 
-    it 'strips html br tags' do
-      ai_transcription.source_text = "Hello<br>World<br/>Again<BR />Done"
+    it 'strips plain html br tags' do
+      ai_transcription.source_text = 'Hello<br>World<br>Again'
       ai_transcription.normalize_source_text
-      expect(ai_transcription.source_text).to eq("Hello\nWorld\nAgain\nDone")
+      expect(ai_transcription.source_text).to eq("Hello\nWorld\nAgain")
+    end
+
+    it 'strips self-closing html br tags' do
+      ai_transcription.source_text = 'Hello<br/>World<BR />Again'
+      ai_transcription.normalize_source_text
+      expect(ai_transcription.source_text).to eq("Hello\nWorld\nAgain")
     end
 
     it 'normalizes mixed br tags and non-breaking spaces' do
