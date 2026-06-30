@@ -68,7 +68,7 @@ module OwnerExporter
       row << user.activity_email
 
       collection_ids.each do |collection_id|
-        row << deed_map[[user.id, collection_id]] || 0
+        row << (deed_map[[user.id, collection_id]] || 0)
       end
 
       rows << row

@@ -58,19 +58,19 @@
             small.headline_aside =link_to t('.show_translation'), collection_display_page_path(@collection.owner, @collection, @work, @page.id, translation: true), class: 'button outline'
     .page-preview[*language_attrs(@collection)]
       -if translation_mode?
-        -text = xml_to_html(@page.xml_translation)
+        -text = cached_page_xml_to_html(@page, :xml_translation, collection: @collection)
         -action = 'translate'
         -help_word = t('.help_translate')
         -text_type = t('.translated')
 
       -elsif correction_mode?
-        -text = xml_to_html(@page.xml_text)
+        -text = cached_page_xml_to_html(@page, :xml_text, collection: @collection)
         -action = 'display_page'
         -help_word = t('.help_correct')
         -text_type = t('.corrected')
 
       -else
-        -text = xml_to_html(@page.xml_text)
+        -text = cached_page_xml_to_html(@page, :xml_text, collection: @collection)
         -action = 'display_page'
         -help_word = t('.help_transcribe')
         -text_type = t('.transcribed')

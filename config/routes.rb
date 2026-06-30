@@ -1,7 +1,6 @@
 Fromthepage::Application.routes.draw do
   mount MissionControl::Jobs::Engine, at: '/solid_queue'
 
-  resources :external_api_requests
   # TODO make the URL fall under user and collection profile
   scope ':user_slug' do
     scope ':collection_id' do
@@ -522,6 +521,7 @@ Fromthepage::Application.routes.draw do
 
       scope module: :collection do
         resource :ai_transcriptions, only: [:edit, :create, :update]
+        resources :ai_transcriptions, only: [:show], controller: 'ai_transcriptions'
       end
 
       get 'edit/danger', on: :member, to: 'collection#edit_danger'
@@ -569,6 +569,7 @@ Fromthepage::Application.routes.draw do
 
       resources :work, path: '', only: [] do
         resource :ai_transcriptions, only: [:edit, :create, :update], controller: 'work/ai_transcriptions'
+        resources :ai_transcriptions, only: [:show], controller: 'work/ai_transcriptions'
       end
 
       get ':work_id/about', param: :work_id, as: :work_about, to: 'work#show'

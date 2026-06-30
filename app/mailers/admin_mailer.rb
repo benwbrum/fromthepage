@@ -67,17 +67,25 @@ class AdminMailer < ActionMailer::Base
   end
 
   class OwnerCollectionActivity
-    attr_accessor :owner, :collections, :collaborators, :since, :comments, :activity
+    attr_accessor :owner, :collections, :collaborators, :since, :comments, :activity, :suspicious_behaviors
 
     def initialize(owner, activity_since)
       @owner = owner
       @since = activity_since
-      @collections = owner.all_owner_collections_updated_since(activity_since)
+      suspicious_behavior_collections = owner.all_owner_collections.joins(:suspicious_behaviors)
+        .where('suspicious_behaviors.created_at > ?', activity_since)
+        .distinct
+      @collections = (owner.all_owner_collections_updated_since(activity_since) + suspicious_behavior_collections).uniq
       @collaborators = owner.new_collaborators_since(activity_since)
       @comments = Deed
         .where(collection: @collections)
         .where('created_at > ?', activity_since)
         .where(deed_type: DeedType::NOTE_ADDED)
+      @suspicious_behaviors = SuspiciousBehavior
+        .includes(:collection, :page, :user)
+        .where(collection: @collections)
+        .where('created_at > ?', activity_since)
+        .group_by(&:collection)
       @activity = Deed.includes(:collection)
         .where(collection: @collections)
         .where('created_at > ?', activity_since)
@@ -86,7 +94,7 @@ class AdminMailer < ActionMailer::Base
     end
 
     def has_activity?
-      !@collaborators.blank? || !@comments.blank? || !@activity.blank?
+      !@collaborators.blank? || !@comments.blank? || !@suspicious_behaviors.blank? || !@activity.blank?
     end
 
     class << self

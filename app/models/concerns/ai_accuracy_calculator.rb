@@ -147,24 +147,24 @@ module AiAccuracyCalculator
     ground_truth_words = ground_truth.split(/\s+/).reject(&:blank?)
     predicted_words = predicted.split(/\s+/).reject(&:blank?)
 
-    max_length = [ground_truth_words.length, predicted_words.length].max
+    ground_truth_length = ground_truth_words.length
 
     if ground_truth_words == predicted_words
-      return extract_raw_values ? [0.0, max_length, 0.0] : 0.0
+      return extract_raw_values ? [0.0, ground_truth_length, 0.0] : 0.0
     end
 
     if ground_truth_words.empty? || predicted_words.empty?
-      return extract_raw_values ? [max_length, max_length, 100.0] : 100.0
+      return extract_raw_values ? [ground_truth_length, ground_truth_length, 100.0] : 100.0
     end
 
     # Calculate Levenshtein distance at word level
     distance = word_levenshtein_distance(ground_truth_words, predicted_words).to_f
-    if max_length.zero?
-      return extract_raw_values ? [distance, max_length, 0.0] : 0.0
+    if ground_truth_length.zero?
+      return extract_raw_values ? [distance, ground_truth_length, 0.0] : 0.0
     end
 
     wer = (distance / max_length * 100.0).round(2)
-    extract_raw_values ? [distance, max_length, wer] : wer
+    extract_raw_values ? [distance, ground_truth_length, wer] : wer
   end
 
   # Calculate Levenshtein distance for arrays of words

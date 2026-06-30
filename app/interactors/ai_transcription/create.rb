@@ -19,7 +19,7 @@ class AiTranscription::Create < ApplicationInteractor
   #   - defaults to `AiTranscription::DEFAULT_MODEL`
   # @params prompt: required
   #   - Prompt `TEXT`, not `FILE` is expected
-  #   - default: reads content of `lib/gemini/transcription_prompt.txt`
+  #   - default: reads content of `lib/transcription_prompt.txt`
   # @params retranscribe
   #   - If ai_transcription exists, checks if we want to regenerate a new one
   #   - default: false
@@ -54,7 +54,7 @@ class AiTranscription::Create < ApplicationInteractor
   end
 
   def find_or_generate_ai_transcription
-    ai_transcription = @page.ai_transcription
+    ai_transcription = latest_ai_transcription_for_model_engine
 
     if ai_transcription.nil? || ((ai_transcription.status_finished? || ai_transcription.status_processing?) && @retranscribe)
       return AiTranscription.create!(
@@ -74,5 +74,13 @@ class AiTranscription::Create < ApplicationInteractor
     end
 
     raise StandardError, 'AI Transcription generation is either in progress or completed!'
+  end
+
+  def latest_ai_transcription_for_model_engine
+    engine = AiTranscription.engine_for_model(@sanitized_model)
+
+    @page.ai_transcriptions
+         .order(created_at: :desc)
+         .detect { |ai_transcription| ai_transcription.engine == engine }
   end
 end

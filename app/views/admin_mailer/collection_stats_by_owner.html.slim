@@ -20,6 +20,21 @@ h2.nomargin =t('.recent_activity')
         =render(partial: 'deed/deed', locals: { deed: comment, long_view: true, mailer: true }, formats: [:html])
       | <br>
 
+/ Suspicious Behaviors
+- unless @activity.suspicious_behaviors.blank?
+  h3 =t('.suspicious_behaviors')
+  - @activity.suspicious_behaviors.each do |collection, suspicious_behaviors|
+    h4 = collection.title
+    p
+      = link_to t('.view_collection_suspicious_behaviors'), collection_suspicious_behaviors_url(collection.owner, collection, only_path: false)
+    ul
+      - suspicious_behaviors.each do |suspicious_behavior|
+        li
+          = t("suspicious_behaviors.filters.behavior_type.#{suspicious_behavior.behavior_type}")
+          - if suspicious_behavior.page.present?
+            | :
+            = link_to suspicious_behavior.page.title, collection_display_page_url(collection.owner, collection, suspicious_behavior.page.work_id, suspicious_behavior.page, only_path: false)
+
 / Raw Activity stream (without notes)
 - unless @activity.activity.blank?
   h3 =t('.other_recent_activity')

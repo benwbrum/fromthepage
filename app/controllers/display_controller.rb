@@ -17,6 +17,7 @@ class DisplayController < ApplicationController
     end
     if params.has_key?(:needs_review)
       @review = params[:needs_review]
+      return if work_queue_filter?(@review) && require_login_for_work_queue
     end
 
     # Handle page range parameter
@@ -281,5 +282,11 @@ class DisplayController < ApplicationController
     else
       nil
     end
+  end
+
+  private
+
+  def work_queue_filter?(filter)
+    %w[review incomplete transcription index translation translation_review translation_index].include?(filter)
   end
 end

@@ -34,9 +34,18 @@ RSpec.describe AhoyActivityUtils do
         expect(duration_c).to eq(10.minutes)
     end
 
-    it "skips times greater than 90 minutes apart by default" do
+    it "counts times less than 11 minutes apart by default" do
         after   = 10.minutes.ago
-        before  = 100.minutes.ago
+        before  = 20.minutes.ago
+
+        duration = AhoyActivityUtils.total_contiguous_seconds([[before, 'dummy'], [after, 'dummy']])
+
+        expect(duration).to eq(10.minutes)
+    end
+
+    it "skips times greater than 11 minutes apart by default" do
+        after   = 10.minutes.ago
+        before  = 22.minutes.ago
 
         duration = AhoyActivityUtils.total_contiguous_seconds([[before, 'dummy'], [after, 'dummy']])
 
@@ -53,18 +62,30 @@ RSpec.describe AhoyActivityUtils do
     end
 
     it "sums contiguous elements, skips non-contiguous gaps" do
-        times = [[1.day.ago, 'dummy'], [(1.day.ago + 30.minutes), 'dummy'], [60.minutes.ago, 'dummy'], [30.minutes.ago, 'dummy']]
+        times = [[1.day.ago, 'dummy'], [(1.day.ago + 10.minutes), 'dummy'], [60.minutes.ago, 'dummy'], [50.minutes.ago, 'dummy']]
 
         duration = AhoyActivityUtils.total_contiguous_seconds(times)
 
-        expect(duration).to eq(60.minutes)
+        expect(duration).to eq(20.minutes)
     end
     it "sums shuffled timestamps correctly" do
-        times = [[1.day.ago, 'dummy'], [(1.day.ago + 30.minutes), 'dummy'], [60.minutes.ago, 'dummy'], [30.minutes.ago, 'dummy']].shuffle
+        times = [[1.day.ago, 'dummy'], [(1.day.ago + 10.minutes), 'dummy'], [60.minutes.ago, 'dummy'], [50.minutes.ago, 'dummy']].shuffle
 
         duration = AhoyActivityUtils.total_contiguous_seconds(times)
 
-        expect(duration).to eq(60.minutes)
+        expect(duration).to eq(20.minutes)
+    end
+
+    it "does not pad isolated save events" do
+        duration = AhoyActivityUtils.total_contiguous_seconds([[10.minutes.ago, 'transcribe#save_transcription']])
+
+        expect(duration).to eq(0)
+    end
+
+    it "does not pad isolated category assignment events" do
+        duration = AhoyActivityUtils.total_contiguous_seconds([[10.minutes.ago, 'transcribe#assign_categories']])
+
+        expect(duration).to eq(0)
     end
   end
 end

@@ -76,6 +76,24 @@ describe AdminController do
     end
   end
 
+  describe '#view_processing_log' do
+    let(:action_path) { admin_view_processing_log_path(id: document_upload.id) }
+    let(:subject) { get action_path }
+
+    before do
+      allow_any_instance_of(DocumentUpload).to receive(:log_contents).and_return('upload log')
+    end
+
+    it 'renders the upload log as plain text' do
+      login_as admin
+      subject
+
+      expect(response).to have_http_status(:ok)
+      expect(response.media_type).to eq('text/plain')
+      expect(response.body).to eq('upload log')
+    end
+  end
+
   describe '#solid_queue' do
     # Test for MissionControl UI
     let!(:owner) { create(:unique_user, :owner) }

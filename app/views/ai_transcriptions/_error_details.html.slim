@@ -1,0 +1,68 @@
+-ai_transcription = local_assigns.fetch(:ai_transcription)
+-provider_details = ai_transcription.provider_error_details
+-citation_sources = ai_transcription.provider_citation_sources
+
+h3 AI Transcription Error
+p
+  strong Page:
+  |  #{ai_transcription.page.title}
+p
+  strong Work:
+  |  #{ai_transcription.page.work.title}
+p
+  strong Model:
+  |  #{ai_transcription.model}
+p
+  strong Status:
+  |  #{ai_transcription.status}
+p
+  strong Error:
+pre =ai_transcription.error_message.presence || 'Error details not provided'
+
+-if provider_details.present?
+  h4 Provider details
+  table.collection-settings
+    tbody
+      -if provider_details['finish_reason'].present?
+        tr
+          th Finish reason
+          td =provider_details['finish_reason']
+      -if provider_details['finish_message'].present?
+        tr
+          th Finish message
+          td =provider_details['finish_message']
+      -if provider_details['model_version'].present?
+        tr
+          th Model version
+          td =provider_details['model_version']
+      -if provider_details['response_id'].present?
+        tr
+          th Response ID
+          td =provider_details['response_id']
+
+-if citation_sources.present?
+  h4 Citation sources
+  table.collection-settings
+    thead
+      tr
+        th Start index
+        th End index
+        th URI
+        th License
+    tbody
+      -citation_sources.each do |source|
+        tr
+          td =source['startIndex'] || source['start_index']
+          td =source['endIndex'] || source['end_index']
+          td
+            -if source['uri'].present?
+              =link_to source['uri'], source['uri']
+          td =source['license']
+
+-if provider_details['usage_metadata'].present?
+  h4 Usage metadata
+  pre =JSON.pretty_generate(provider_details['usage_metadata'])
+
+-if provider_details['raw_response'].present?
+  h4 Raw provider response
+  pre =JSON.pretty_generate(provider_details['raw_response'])

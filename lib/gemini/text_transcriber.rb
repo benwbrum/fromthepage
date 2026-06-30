@@ -181,7 +181,7 @@ module Gemini
     # @return [String] The default transcription prompt
     def self.default_prompt
       @default_prompt ||= File.read(
-        File.join(Rails.root, 'lib', 'gemini', 'transcription_prompt.txt')
+        File.join(Rails.root, 'lib', 'transcription_prompt.txt')
       )
     rescue Errno::ENOENT
       # Fallback prompt if file doesn't exist

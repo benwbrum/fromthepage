@@ -201,7 +201,7 @@ class AdminController < ApplicationController
 
   def view_processing_log
     @document_upload = DocumentUpload.find(params[:id])
-    render content_type: 'text/plain', plain: `cat #{@document_upload.log_file}`, layout: false
+    render content_type: 'text/plain', plain: @document_upload.log_contents, layout: false
   end
 
   def collection_list

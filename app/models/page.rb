@@ -645,6 +645,29 @@ class Page < ApplicationRecord
     end
   end
 
+  def image_url_for_ai(max_dim: 7900)
+    size = "!#{max_dim},#{max_dim}"
+    if sc_canvas
+      if sc_canvas.sc_service_id.present?
+        "#{sc_canvas.sc_service_id.sub(/\/$/, '')}/full/#{size}/0/default.jpg"
+      else
+        sc_canvas.sc_resource_id
+      end
+    elsif ia_leaf
+      "https://iiif.archive.org/iiif/#{work.ia_work.book_id}$#{ia_leaf.leaf_number}/full/#{size}/0/default.jpg"
+    elsif image.attached?
+      Rails.application.routes.url_helpers.url_for(image)
+      # CarrierWave local files: return nil — callers use local_image_path for disk read
+    end
+  end
+
+  def local_image_path
+    return nil if ia_leaf || sc_canvas
+    return nil if self[:base_image].blank?
+    path = modernize_absolute(self[:base_image])
+    File.exist?(path) ? path : nil
+  end
+
   def normalized_image_url_for_download
     return image_url_for_download if image.attached?
 
