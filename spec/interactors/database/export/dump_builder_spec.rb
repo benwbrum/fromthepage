@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Database::Export::DumpBuilder do
-  let(:dump_key) { 'dump_tester' }
+  let(:dump_key) { 'dump_builder_tester' }
   let!(:user) do
     create(
       :unique_user,

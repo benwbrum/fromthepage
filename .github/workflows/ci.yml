@@ -6,10 +6,14 @@ on:
 
 jobs:
   test:
+    strategy:
+      fail-fast: false
+      matrix:
+        ci_node_total: [4]
+        ci_node_index: [0, 1, 2, 3]
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/willnigel23/ftp-ci:latest
-
     services:
       mysql:
         image: mariadb:10.11
@@ -82,17 +86,21 @@ jobs:
           ELASTIC_ENABLED: true
 
       - name: Run tests
-        run: xvfb-run -a bundle exec rspec spec
+        run: xvfb-run -a bin/ci
         env:
           COVERAGE: true
           CI: true
           ELASTIC_ENABLED: false
+          CI_NODE_INDEX: ${{ matrix.ci_node_index }}
+          CI_NODE_TOTAL: ${{ matrix.ci_node_total }}
 
       - name: Run Coveralls
         if: ${{ (github.event_name == 'pull_request' && github.ref != 'refs/heads/development') || (github.event_name == 'push' && github.ref == 'refs/heads/development') }}
         uses: coverallsapp/github-action@v2.3.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          parallel: true
+          flag-name: rspec-${{ matrix.ci_node_index }}
           path-to-lcov: "./coverage/lcov.info"
 
   rubocop:
@@ -211,3 +219,14 @@ jobs:
           else
             echo "✅ No linked files changed."
           fi
+
+  coveralls_finish:
+    needs: test
+    runs-on: ubuntu-latest
+    if: ${{ (github.event_name == 'pull_request' && github.ref != 'refs/heads/development') || (github.event_name == 'push' && github.ref == 'refs/heads/development') }}
+    steps:
+      - name: Finalize Coveralls
+        uses: coverallsapp/github-action@v2.3.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          parallel-finished: true
