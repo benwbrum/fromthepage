@@ -240,8 +240,13 @@ const ResizableSplitter = {
     let startHeightPanel2;
 
     // Function to calculate initial heights based on initial position
+    // Use window.innerHeight (viewport height) as the reference, mirroring how
+    // initVertical uses window.innerWidth.  panel1.parentElement.offsetHeight
+    // returns the full scrollable height of .page-columns which can be 3-5×
+    // the viewport when the editor holds a long document, causing the image
+    // panel to receive a multi-thousand-pixel flex-basis on page load.
     const calculateInitialHeights = function(position) {
-      const totalHeight = panel1.parentElement.offsetHeight;
+      const totalHeight = window.innerHeight;
       const initialHeight = typeof position === 'string' && position.includes('%')
         ? parseFloat(position) / 100 * totalHeight
         : parseFloat(position);
@@ -314,7 +319,7 @@ const ResizableSplitter = {
       }
 
       if (typeof onPositionChange === 'function') {
-        const totalHeight = panel1.parentElement.offsetHeight;
+        const totalHeight = window.innerHeight;
         const currentPosition = (newHeightPanel1 / totalHeight) * 100;
         onPositionChange(currentPosition);
       }

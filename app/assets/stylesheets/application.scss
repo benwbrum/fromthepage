@@ -395,10 +395,12 @@ h3, .thredded--post-form--title {
       z-index: 101;
     }
 
-    // Override max-height constraint for image container in overview/display page
-    // Allow the image to fill the full height of its parent panel instead of being capped at 50vh
+    // Cap the image panel to the viewport so it can never push the transcription
+    // editor off-screen in ttb/btt layout.  100% resolves to auto (no constraint)
+    // because .page-columns has no explicit height, so we use a viewport-relative
+    // value that matches the base .page-imagescan height rule in sections/page.scss.
     .page-imagescan {
-      max-height: 100%;
+      max-height: calc(100vh - 74px - 3rem);
       height: 100%;
     }
   }
