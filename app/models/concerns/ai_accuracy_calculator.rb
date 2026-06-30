@@ -163,7 +163,7 @@ module AiAccuracyCalculator
       return extract_raw_values ? [distance, ground_truth_length, 0.0] : 0.0
     end
 
-    wer = (distance / max_length * 100.0).round(2)
+    wer = (distance / ground_truth_length * 100.0).round(2)
     extract_raw_values ? [distance, ground_truth_length, wer] : wer
   end
 
