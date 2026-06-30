@@ -101,36 +101,6 @@ RSpec.describe ExportHelper, type: :helper do
         expect(result).to be_empty
       end
     end
-
-    context 'when page has no transcription_json (legacy table_cells path)' do
-      it 'falls back to table_cells when transcription_json is empty' do
-        text_field
-        page = create(:page, work: work, transcription_json: {})
-        create(:table_cell, page: page, work: work, header: 'Name', content: 'Legacy Value', row: 0,
-                             transcription_field_id: text_field.id)
-
-        result = helper.field_data_to_hash(page)
-
-        expect(result).to be_an(Array)
-        expect(result.length).to eq(1)
-        expect(result.first[:label]).to eq('Name')
-        expect(result.first[:value]).to eq('Legacy Value')
-      end
-
-      it 'falls back to table_cells when transcription_json is nil' do
-        text_field
-        page = create(:page, work: work)
-        page.update_column(:transcription_json, nil)
-        create(:table_cell, page: page, work: work, header: 'Name', content: 'Legacy Value', row: 0,
-                             transcription_field_id: text_field.id)
-
-        result = helper.field_data_to_hash(page.reload)
-
-        expect(result).to be_an(Array)
-        expect(result.first[:label]).to eq('Name')
-        expect(result.first[:value]).to eq('Legacy Value')
-      end
-    end
   end
 
 

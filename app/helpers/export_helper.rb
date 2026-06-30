@@ -1057,11 +1057,7 @@ module ExportHelper
   end
 
   def field_data_to_hash(page)
-    if page.transcription_json.present?
-      field_data_from_transcription_json(page)
-    else
-      field_data_from_table_cells(page)
-    end
+    field_data_from_transcription_json(page)
   end
 
   def field_data_from_transcription_json(page)
@@ -1109,68 +1105,6 @@ module ExportHelper
 
     response_array
   end
-
-  def field_data_from_table_cells(page)
-    collection = page.collection
-    fields = {}
-    collection.transcription_fields.each { |field| fields[field.label] = field }
-    spreadsheet = collection.transcription_fields.detect { |field| field.input_type == 'spreadsheet' }
-    columns = {}
-    if spreadsheet
-      spreadsheet.spreadsheet_columns.each { |column| columns[column.label] = column }
-    end
-
-    response_array = []
-    page.table_cells.each do |cell|
-      unless columns[cell.header]
-
-        field = fields[cell.header]
-        element = { label: cell.header, value: cell.content }
-        if field # field-based project
-          element[:config] = iiif_strucured_data_field_config_url(field.id)
-        else
-          element[:row] = cell.row
-          element[:config] = 'N/A'
-        end
-
-        response_array << element
-      end
-    end
-
-    spreadsheet_array = []
-    page.table_cells.includes(:transcription_field).group_by(&:row).each do |row, cell_array|
-      row = []
-      cell_array.each do |cell|
-        # eliminate header cells
-        unless fields[cell.header]
-          unless cell.content.blank?
-            element = { label: cell.header, value: cell.content }
-            column = columns[cell.header]
-            unless column.blank?
-              element[:config] = iiif_strucured_data_column_config_url(column.id)
-            end
-            row << element
-          end
-        end
-      end
-      spreadsheet_array << row
-    end
-
-    unless spreadsheet_array.flatten.empty?
-      spreadsheet_field = collection.transcription_fields.where(input_type: 'spreadsheet').first
-      element = {
-        data: spreadsheet_array
-      }
-      if spreadsheet_field
-        element[:config] = iiif_strucured_data_field_config_url(spreadsheet_field.id)
-      end
-
-      response_array << element
-    end
-
-    response_array
-  end
-
 
   def spreadsheet_column_config(column, include_within)
     column_config = {
