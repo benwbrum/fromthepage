@@ -87,11 +87,11 @@ class TranscriptionField::Lib::Utils
     rows = []
 
     source_text = String.new
-    source_text << '<table class="tabular"><thead>'
+    source_text << '<table class="tabular"><thead><tr>'
     spreadsheet_columns.each do |column|
       source_text << "<th>#{column.label}</th>"
     end
-    source_text << '</thead><tbody>'
+    source_text << '</tr></thead><tbody>'
 
     parsed_cell_data.each do |row|
       next unless row.detect(&:present?)

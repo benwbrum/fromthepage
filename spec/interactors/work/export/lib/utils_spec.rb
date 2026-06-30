@@ -41,4 +41,77 @@ describe Work::Export::Lib::Utils do
       expect(described_class.latex_escape(nil)).to eq('')
     end
   end
+
+  describe '.xml_to_latex' do
+    let(:page) { nil }
+
+    context 'with a table whose thead contains th elements wrapped in a tr' do
+      let(:xml) do
+        <<~XML
+          <page><table class="tabular"><thead><tr>
+            <th>Street No.</th><th>Name</th><th>Sex</th><th>Age</th>
+          </tr></thead><tbody>
+            <tr><td>Beach</td><td>54</td><td>Smith John</td><td>male</td></tr>
+          </tbody></table></page>
+        XML
+      end
+
+      it 'generates a valid xltabular environment' do
+        result = described_class.xml_to_latex(page: page, xml_text: xml)
+        expect(result).to include('\\begin{xltabular}')
+        expect(result).to include('\\end{xltabular}')
+      end
+
+      it 'includes toprule, midrule, and bottomrule' do
+        result = described_class.xml_to_latex(page: page, xml_text: xml)
+        expect(result).to include('\\toprule')
+        expect(result).to include('\\midrule')
+        expect(result).to include('\\bottomrule')
+      end
+
+      it 'separates header columns with & and terminates the row with \\\\' do
+        result = described_class.xml_to_latex(page: page, xml_text: xml)
+        expect(result).to match(/Street No\. & Name & Sex & Age \\\\\s*\n/)
+      end
+
+      it 'places \\midrule after the header row terminator' do
+        result = described_class.xml_to_latex(page: page, xml_text: xml)
+        expect(result).to match(/\\\\\s*\n\\midrule/)
+      end
+    end
+
+    context 'with a table whose thead contains th elements directly (no tr wrapper)' do
+      let(:xml) do
+        <<~XML
+          <page><table class="tabular"><thead>
+            <th>Street No.</th><th>Name</th><th>Sex</th><th>Age</th>
+          </thead><tbody>
+            <tr><td>Beach</td><td>54</td><td>Smith John</td><td>male</td></tr>
+          </tbody></table></page>
+        XML
+      end
+
+      it 'generates a valid xltabular environment' do
+        result = described_class.xml_to_latex(page: page, xml_text: xml)
+        expect(result).to include('\\begin{xltabular}')
+        expect(result).to include('\\end{xltabular}')
+      end
+
+      it 'separates header columns with & and terminates the row with \\\\' do
+        result = described_class.xml_to_latex(page: page, xml_text: xml)
+        expect(result).to match(/Street No\. & Name & Sex & Age \\\\\s*\n/)
+      end
+
+      it 'places \\midrule after the header row terminator, not before it' do
+        result = described_class.xml_to_latex(page: page, xml_text: xml)
+        expect(result).to match(/\\\\\s*\n\\midrule/)
+        expect(result).not_to match(/Street No\..*\\\midrule/)
+      end
+
+      it 'does not concatenate header cells without separators' do
+        result = described_class.xml_to_latex(page: page, xml_text: xml)
+        expect(result).not_to include('Street No.NameSexAge')
+      end
+    end
+  end
 end
