@@ -208,6 +208,16 @@ class Work::Export::Lib::Utils
       end
     end
 
+    if (thead = table_element.elements['thead']) && !thead.elements['tr']
+      th_elements = thead.elements.to_a('th')
+      if th_elements.any?
+        tr = REXML::Element.new('tr')
+        th_elements.each { |th| thead.delete_element(th) }
+        th_elements.each { |th| tr.add(th) }
+        thead.add(tr)
+      end
+    end
+
     all_rows = []
     all_rows += table_element.elements['thead'].elements.to_a('tr') if table_element.elements['thead']
     all_rows += table_element.elements['tbody'].elements.to_a('tr') if table_element.elements['tbody']
