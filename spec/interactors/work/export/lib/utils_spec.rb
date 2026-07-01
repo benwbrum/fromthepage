@@ -59,5 +59,20 @@ describe Work::Export::Lib::Utils do
       expect(result).to include('\\begin{xltabular}{\\textwidth}{XXXX}')
       expect(result).to match(/Street No\. & Name & Sex & Age \\\\\s*\n\\midrule/)
     end
+
+    it 'keeps malformed direct th headers separate from existing header rows' do
+      xml = <<~XML
+        <page><table class="tabular"><thead>
+          <th>A</th><th>B</th>
+          <tr><th>C</th><th>D</th></tr>
+        </thead><tbody>
+          <tr><td>1</td><td>2</td></tr>
+        </tbody></table></page>
+      XML
+
+      result = described_class.xml_to_latex(page: page, xml_text: xml)
+
+      expect(result).to match(/A & B \\\\\s*\nC & D \\\\\s*\n\\midrule/)
+    end
   end
 end

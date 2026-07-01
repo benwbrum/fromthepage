@@ -212,14 +212,16 @@ class Work::Export::Lib::Utils
     if thead
       th_elements = thead.elements.to_a('th')
       if th_elements.any?
-        tr = thead.elements['tr']
-        unless tr
-          tr = REXML::Element.new('tr')
-          thead.add(tr)
-        end
+        tr = REXML::Element.new('tr')
         th_elements.each do |th|
           thead.delete_element(th)
           tr.add(th)
+        end
+        existing_tr = thead.elements['tr']
+        if existing_tr
+          thead.insert_before(existing_tr, tr)
+        else
+          thead.add(tr)
         end
       end
     end
