@@ -129,6 +129,26 @@ describe DisplayController do
         expect(response).to redirect_to(collection_display_page_path(owner, collection, work, page_without_transcription))
       end
     end
+
+    context 'when the most recent AI transcription has an error but an older one is finished' do
+      let!(:page_with_error) { create(:page, work: work) }
+      let!(:finished_transcription) { create(:ai_transcription, page: page_with_error, source_text: 'Older successful AI text', status: :finished, created_at: 2.days.ago) }
+      let!(:error_transcription) { create(:ai_transcription, page: page_with_error, source_text: nil, status: :error, created_at: 1.minute.ago) }
+      let(:action_path) { collection_ai_text_page_path(owner, collection, work, page_with_error) }
+
+      it 'renders the AI text page instead of redirecting' do
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:ai_text)
+      end
+
+      it 'loads the finished transcription' do
+        subject
+
+        expect(assigns(:ai_transcription)).to eq(finished_transcription)
+      end
+    end
   end
 
   describe '#read_work' do
