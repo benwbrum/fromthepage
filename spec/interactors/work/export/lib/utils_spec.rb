@@ -50,7 +50,7 @@ describe Work::Export::Lib::Utils do
         <page><table class="tabular"><thead>
           <th>Street No.</th><th>Name</th><th>Sex</th><th>Age</th>
         </thead><tbody>
-          <tr><td>Beach</td><td>54</td><td>Smith John</td><td>male</td></tr>
+          <tr><td>458</td><td>John Smith</td><td>Male</td><td>54</td></tr>
         </tbody></table></page>
       XML
 
