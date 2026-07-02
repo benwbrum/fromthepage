@@ -67,7 +67,7 @@ class Page < ApplicationRecord
   has_many :page_versions, -> { order(page_version: :desc) }, dependent: :destroy
 
   has_many :ai_transcriptions, class_name: 'AiTranscription'
-  has_one :ai_transcription, -> { order(created_at: :desc) }, class_name: 'AiTranscription'
+  has_one :ai_transcription, -> { status_finished.order(created_at: :desc) }, class_name: 'AiTranscription'
 
   has_many :alto_transcriptions, -> { alto }, class_name: 'AiTranscription'
   has_one :alto_transcription, -> { alto.order(created_at: :desc) }, class_name: 'AiTranscription'
