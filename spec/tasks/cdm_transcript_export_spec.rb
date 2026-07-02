@@ -41,7 +41,7 @@ describe 'fromthepage:cdm_transcript_export' do
 
   def run_task
     Rake::Task['fromthepage:cdm_transcript_export'].reenable
-    capture_stdout { Rake::Task['fromthepage:cdm_transcript_export'].invoke(collection.id) }
+    capture_stdout { Rake::Task['fromthepage:cdm_transcript_export'].invoke(collection.slug) }
   end
 
   context 'with human_only setting (default)' do
@@ -69,6 +69,33 @@ describe 'fromthepage:cdm_transcript_export' do
     it 'also exports incomplete works' do
       run_task
       expect(ContentdmTranslator).to have_received(:export_work_to_cdm_with_retry).with(incomplete_work, any_args)
+    end
+  end
+
+  context 'with a document set argument' do
+    let(:document_set) { create(:document_set, collection: collection, owner_user_id: owner.id) }
+    let(:outside_work) do
+      create(:work, collection: collection).tap do |w|
+        create(:sc_manifest, work: w)
+        w.work_statistic.update!(complete: 100)
+      end
+    end
+
+    before do
+      create(:cdm_export_setting, collection: collection)
+      document_set.works << complete_work
+      outside_work
+    end
+
+    def run_document_set_task
+      Rake::Task['fromthepage:cdm_transcript_export'].reenable
+      capture_stdout { Rake::Task['fromthepage:cdm_transcript_export'].invoke(document_set.slug) }
+    end
+
+    it 'exports only works in the document set' do
+      run_document_set_task
+      expect(ContentdmTranslator).to have_received(:export_work_to_cdm_with_retry).with(complete_work, any_args)
+      expect(ContentdmTranslator).not_to have_received(:export_work_to_cdm_with_retry).with(outside_work, any_args)
     end
   end
 
