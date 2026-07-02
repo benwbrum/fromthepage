@@ -139,7 +139,7 @@ class DisplayController < ApplicationController
   end
 
   def ai_text
-    unless @page.ai_transcription
+    unless @page.finished_ai_transcription
       redirect_to collection_display_page_path(@collection.owner, @collection, @work, @page.id)
 
       return

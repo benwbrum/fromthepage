@@ -67,6 +67,25 @@ describe Page, 'field-based AI plaintext' do
         expect(page.reload.has_ai_plaintext?).to be false
       end
     end
+
+    context 'when the most recent AI transcription errored but an older one finished' do
+      let!(:finished_transcription) do
+        create(:ai_transcription, page_id: page.id, source_text: 'Older successful AI text',
+               status: :finished, created_at: 2.days.ago)
+      end
+      let!(:error_transcription) do
+        create(:ai_transcription, page_id: page.id, source_text: nil,
+               status: :error, created_at: 1.minute.ago)
+      end
+
+      it 'returns true based on the most recent finished transcription' do
+        expect(page.reload.has_ai_plaintext?).to be true
+      end
+
+      it 'returns the finished transcription text' do
+        expect(page.reload.ai_plaintext).to eq('Older successful AI text')
+      end
+    end
   end
 
   describe '#field_transcription_json_to_plaintext' do
