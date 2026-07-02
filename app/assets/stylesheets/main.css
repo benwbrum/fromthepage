@@ -1334,7 +1334,7 @@ form:invalid button[type=submit] {
   content: "";
   width: 100%;
   height: 100%;
-  background: url("../assets/materials/services-bg.png") no-repeat;
+  background: url("../assets/materials/video-bg.png") no-repeat;
   display: block;
   position: absolute;
   top: 0;
@@ -1402,7 +1402,7 @@ form:invalid button[type=submit] {
 }
 
 .home-count {
-  padding: 130px 0 100px 0;
+  padding: 70px 0 100px 0;
   position: relative;
 }
 @media (max-width: 992px) {
@@ -1414,10 +1414,12 @@ form:invalid button[type=submit] {
   width: 100%;
   height: 120px;
   object-fit: cover;
+  object-position: top;
   position: absolute;
   top: 0;
   left: 0;
   pointer-events: none;
+  transform: scaleY(-1);
 }
 @media (max-width: 992px) {
   .home-count .bg {
@@ -2864,6 +2866,521 @@ footer .copy {
 @media (max-width: 992px) {
   footer .copy {
     margin-top: 50px;
+  }
+}
+
+/* ============================================================
+   Landing page – July 2026 redesign
+   ============================================================ */
+
+/* ----- Hero: CTA buttons ----------------------------------- */
+.home-main .text .hero-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 40px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+.home-main .text .hero-cta .button {
+  padding: 12px 30px;
+  background-color: #141414;
+  border: 2px solid #141414;
+  color: #fff;
+  border-radius: 10px;
+  min-width: 200px;
+  text-align: center;
+  transition: all ease-in-out 300ms;
+  display: inline-block;
+  font-size: 16px;
+}
+.home-main .text .hero-cta .button:hover {
+  background-color: #313131;
+  text-decoration: none;
+  color: #fff;
+}
+.home-main .text .hero-cta .button.second {
+  background-color: transparent;
+  color: #141414;
+}
+.home-main .text .hero-cta .button.second:hover {
+  background-color: #fff;
+  border-color: #FAF5EB;
+  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
+}
+@media (max-width: 992px) {
+  .home-main .text .hero-cta {
+    flex-direction: column;
+    align-items: center;
+  }
+  .home-main .text .hero-cta .button {
+    min-width: 220px;
+  }
+}
+
+/* ----- Hero & bottom: volunteer link ----------------------- */
+.home-main .text .volunteer-cta {
+  font-size: 15px;
+  margin-top: 5px;
+  padding-bottom: 60px;
+  color: #49413E;
+}
+.home-main .text .volunteer-cta a {
+  color: #49413E;
+  text-decoration: underline;
+  transition: color ease-in-out 300ms;
+}
+.home-main .text .volunteer-cta a:hover {
+  color: #E1B167;
+}
+
+/* ----- Shared: section titles and subtitles for new sections */
+.home-ai .title,
+.home-accessibility .title,
+.home-community .title,
+.home-structured .title,
+.home-built .title {
+  font-size: 36px;
+  font-weight: 400;
+  text-align: center;
+  color: #49413E;
+  margin-bottom: 20px;
+  padding-top: 25px;
+}
+@media (max-width: 992px) {
+  .home-ai .title,
+  .home-accessibility .title,
+  .home-community .title,
+  .home-structured .title,
+  .home-built .title {
+    font-size: 26px;
+  }
+}
+.home-ai .subtitle,
+.home-accessibility .subtitle,
+.home-community .subtitle,
+.home-structured .subtitle,
+.home-built .subtitle {
+  font-size: 20px;
+  line-height: 32px;
+  color: #49413E;
+  font-family: "Lora", sans-serif;
+  text-align: center;
+  max-width: 820px;
+  margin: 0 auto 50px;
+}
+@media (max-width: 992px) {
+  .home-ai .subtitle,
+  .home-accessibility .subtitle,
+  .home-community .subtitle,
+  .home-structured .subtitle,
+  .home-built .subtitle {
+    font-size: 17px;
+    line-height: 27px;
+  }
+}
+
+/* ----- Shared: 3-column cards for new sections ------------- */
+.home-accessibility .item,
+.home-community .item,
+.home-structured .item,
+.home-built .item {
+  padding: 30px;
+  margin-bottom: 30px;
+  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+/* cream sections → white cards */
+.home-accessibility .item,
+.home-structured .item {
+  background-color: #fff;
+}
+/* white sections → cream-tinted cards */
+.home-community .item,
+.home-built .item {
+  background-color: #FAF5EB;
+}
+.home-accessibility .item h4,
+.home-community .item h4,
+.home-structured .item h4,
+.home-built .item h4 {
+  font-size: 22px;
+  font-weight: 500;
+  color: #2a2220;
+  margin-bottom: 12px;
+}
+.home-accessibility .item p,
+.home-community .item p,
+.home-structured .item p,
+.home-built .item p {
+  font-size: 16px;
+  line-height: 26px;
+  color: #1a1210;
+  font-family: "Lora", sans-serif;
+  margin: 0;
+}
+
+/* ----- Humans in Charge. AI as a Draft. -------------------- */
+.home-ai {
+  padding: 70px 0 70px;
+  position: relative;
+  background-color: #fff;
+}
+.home-ai .bg {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  object-position: top;
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  transform: scaleY(-1);
+}
+@media (max-width: 992px) {
+  .home-ai .bg {
+    display: none;
+  }
+  .home-ai {
+    padding-top: 70px;
+  }
+}
+.home-ai .ai-steps {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 30px;
+  counter-reset: ai-step;
+}
+.home-ai .ai-steps li {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 25px;
+  counter-increment: ai-step;
+}
+.home-ai .ai-steps li::before {
+  content: counter(ai-step, decimal-leading-zero);
+  font-size: 26px;
+  font-weight: 700;
+  color: #E1B167;
+  min-width: 55px;
+  line-height: 1.2;
+  flex-shrink: 0;
+}
+.home-ai .ai-steps li h4 {
+  font-size: 18px;
+  font-weight: 500;
+  color: #2a2220;
+  margin-bottom: 4px;
+}
+.home-ai .ai-steps li p {
+  font-size: 15px;
+  color: #1a1210;
+  font-family: "Lora", sans-serif;
+  line-height: 24px;
+  margin: 0;
+}
+.home-ai .ai-principles {
+  background-color: #FAF5EB;
+  border-left: 4px solid #E1B167;
+  border-radius: 0 10px 10px 0;
+  padding: 25px 30px;
+  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.08);
+}
+.home-ai .ai-principles h4 {
+  font-size: 18px;
+  font-weight: 500;
+  color: #49413E;
+  margin-bottom: 15px;
+}
+.home-ai .ai-principles ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.home-ai .ai-principles ul li {
+  font-size: 15px;
+  font-family: "Lora", sans-serif;
+  color: #141414;
+  padding: 7px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+}
+.home-ai .ai-principles ul li:last-child {
+  border-bottom: none;
+}
+@media (max-width: 992px) {
+  .home-ai .col-lg-6:first-child {
+    margin-bottom: 40px;
+  }
+}
+
+/* ----- Every collection deserves to be accessible. --------- */
+.home-accessibility {
+  padding: 70px 0;
+  position: relative;
+  z-index: 1;
+}
+.home-accessibility::before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  background: url("../assets/materials/video-bg.png") no-repeat;
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-size: cover;
+  z-index: -1;
+}
+
+/* ----- Bring people into the process. ---------------------- */
+.home-community {
+  padding: 70px 0;
+  position: relative;
+  background-color: #fff;
+}
+.home-community .bg {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  object-position: top;
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  transform: scaleY(-1);
+}
+@media (max-width: 992px) {
+  .home-community .bg {
+    display: none;
+  }
+  .home-community {
+    padding-top: 70px;
+  }
+}
+.home-community .community-image {
+  margin-bottom: 50px;
+  border-radius: 10px;
+  overflow: hidden;
+  text-align: center;
+}
+.home-community .community-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+.home-community .item {
+  background-color: #FEFDFA;
+}
+
+/* ----- Extract structured data. ---------------------------- */
+.home-structured {
+  padding: 70px 0;
+  position: relative;
+  z-index: 1;
+}
+.home-structured::before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  background: url("../assets/materials/video-bg.png") no-repeat;
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-size: cover;
+  z-index: -1;
+}
+.home-structured .structured-visual {
+  margin-bottom: 50px;
+  text-align: center;
+}
+.home-structured .structured-visual img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+/* ----- Built for libraries and archives. ------------------- */
+.home-built {
+  padding: 70px 0;
+  position: relative;
+  background-color: #fff;
+}
+.home-built .bg {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  object-position: top;
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  transform: scaleY(-1);
+}
+@media (max-width: 992px) {
+  .home-built .bg {
+    display: none;
+  }
+  .home-built {
+    padding-top: 70px;
+  }
+}
+.home-built .workflow-diagram {
+  margin-bottom: 50px;
+  text-align: center;
+}
+.home-built .workflow-diagram img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+.home-built .item {
+  background-color: #FEFDFA;
+}
+
+/* ----- Case studies carousel ------------------------------- */
+.home-testimonials {
+  padding: 80px 0 70px;
+  background-color: #fff;
+}
+
+/* ----- Bottom CTA: 2-column boxes -------------------------- */
+.home-start .text > p {
+  font-size: 18px;
+  color: #49413E;
+  font-family: "Lora", sans-serif;
+  max-width: 620px;
+  margin: 0 auto 40px;
+  line-height: 30px;
+}
+.home-start .cta-boxes {
+  margin-bottom: 20px;
+}
+.home-start .cta-box {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 35px;
+  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+.home-start .cta-box h5 {
+  font-size: 22px;
+  font-weight: 500;
+  color: #49413E;
+  margin-bottom: 10px;
+}
+.home-start .cta-box > p {
+  font-size: 16px;
+  color: #49413E;
+  font-family: "Lora", sans-serif;
+  margin-bottom: 15px;
+}
+.home-start .cta-box ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 25px;
+  flex-grow: 1;
+}
+.home-start .cta-box ul li {
+  font-size: 15px;
+  font-family: "Lora", sans-serif;
+  color: #141414;
+  padding: 5px 0;
+}
+.home-start .cta-box ul li::before {
+  content: "✓ ";
+  color: #E1B167;
+  font-weight: 700;
+}
+.home-start .cta-box .button {
+  display: block;
+  padding: 10px 26px;
+  background-color: #141414;
+  border: 2px solid #141414;
+  color: #fff;
+  border-radius: 10px;
+  text-align: center;
+  transition: all ease-in-out 300ms;
+  margin-top: auto;
+}
+.home-start .cta-box .button:hover {
+  background-color: #313131;
+  text-decoration: none;
+  color: #fff;
+}
+.home-start .cta-box .button.second {
+  background-color: transparent;
+  color: #141414;
+}
+.home-start .cta-box .button.second:hover {
+  background-color: rgba(255, 255, 255, 0.6);
+}
+.home-start .volunteer-cta {
+  font-size: 15px;
+  padding-bottom: 40px;
+  color: #49413E;
+  font-family: "Lora", sans-serif;
+}
+.home-start .volunteer-cta a {
+  color: #49413E;
+  text-decoration: underline;
+  transition: color ease-in-out 300ms;
+}
+.home-start .volunteer-cta a:hover {
+  color: #E1B167;
+}
+@media (max-width: 992px) {
+  .home-start .cta-box {
+    padding: 25px;
+  }
+}
+
+/* ----- Header: fully opaque on scroll ---------------------- */
+header.header-bg {
+  background-color: rgba(252, 248, 240, 0.98);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* ----- Text on tan/cream sections: enforce dark colours ----- */
+.home-accessibility .title,
+.home-structured .title {
+  color: #2a2220;
+}
+.home-accessibility .subtitle,
+.home-structured .subtitle {
+  color: #3a3230;
+}
+
+/* ----- Stat cards: centre in column, reset h4 margin -------- */
+.home-count .item {
+  margin: 0 auto;
+}
+.home-count .item h4 {
+  margin: 0;
+}
+
+/* ----- Testimonials carousel: bring arrows inside container -- */
+.home-testimonials .loop {
+  position: relative;
+}
+.home-testimonials .loop .slick-arrow.slick-prev {
+  left: -40px;
+}
+.home-testimonials .loop .slick-arrow.slick-next {
+  right: -40px;
+}
+@media (max-width: 1100px) {
+  .home-testimonials .loop .slick-arrow.slick-prev {
+    left: 0;
+  }
+  .home-testimonials .loop .slick-arrow.slick-next {
+    right: 0;
   }
 }
 
