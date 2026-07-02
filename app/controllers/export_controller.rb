@@ -191,9 +191,12 @@ class ExportController < ApplicationController
   end
 
   def edit_contentdm_credentials
-    if ContentdmTranslator.collection_is_cdm?(@collection)
+    @sync_target = @collection
+    @cdm_collection = cdm_collection_for(@sync_target)
+
+    if ContentdmTranslator.collection_is_cdm?(@sync_target)
       begin
-        field_config = ContentdmTranslator.fetch_cdm_field_config(@collection)
+        field_config = ContentdmTranslator.fetch_cdm_field_config(@sync_target)
         @cdm_fulltext_fields = field_config.select { |e| e['type'] == 'FTS' }.map { |e| [e['name'], e['nick']] }
         @cdm_metadata_fields = field_config.map { |e| [e['name'], e['nick']] }
       rescue => e
@@ -212,10 +215,11 @@ class ExportController < ApplicationController
 
     # persist license key and export settings so the user doesn't have to retype them
     if error_message.blank? || !error_message.match(/license.*invalid/)
-      @collection.license_key = license_key
-      @collection.save!
+      cdm_collection = cdm_collection_for(@collection)
+      cdm_collection.license_key = license_key
+      cdm_collection.save!
 
-      cdm_setting = @collection.cdm_export_setting || @collection.build_cdm_export_setting
+      cdm_setting = cdm_collection.cdm_export_setting || cdm_collection.build_cdm_export_setting
       cdm_setting.transcript_source    = params[:transcript_source].presence || CdmExportSetting::HUMAN_ONLY
       cdm_setting.fulltext_field       = params[:cdm_fulltext_field].presence
       cdm_setting.include_ai_provenance = params[:include_ai_provenance] == '1'
@@ -227,23 +231,29 @@ class ExportController < ApplicationController
     # redirect to or render edit screen with error
     if error_message
       flash[:error] = error_message
-      render action: :edit_contentdm_credentials, collection_id: @collection.id
+      @sync_target = @collection
+      @cdm_collection = cdm_collection_for(@sync_target)
+      render action: :edit_contentdm_credentials, collection_id: @collection.slug
       return
     end
 
     # pass credentials, FTS field, and search to background job
     log_file = ContentdmTranslator.log_file(@collection)
     FileUtils.mkdir_p(File.dirname(log_file)) unless Dir.exist? File.dirname(log_file)
-    cmd = "rake fromthepage:cdm_transcript_export[#{@collection.id}] > #{log_file} 2>&1 &"
+    cmd = "rake fromthepage:cdm_transcript_export[#{@collection.slug}] > #{log_file} 2>&1 &"
     logger.info(cmd)
     system({ 'contentdm_username' => contentdm_user_name, 'contentdm_password' => contentdm_password, 'contentdm_license' => license_key }, cmd)
 
     # display results somehow
     flash[:notice] = t('.updating_contentdm_message')
-    ajax_redirect_to action: :index, collection_id: @collection.id
+    ajax_redirect_to action: :index, collection_id: @collection.slug
   end
 
   private
+
+  def cdm_collection_for(collection_or_set)
+    collection_or_set.is_a?(DocumentSet) ? collection_or_set.collection : collection_or_set
+  end
 
   def require_owner
     unless user_signed_in? && current_user.like_owner?(@collection)

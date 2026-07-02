@@ -232,6 +232,26 @@ RSpec.describe AbstractXmlHelper, type: :helper do
       expect(helper.cached_article_xml_to_html(article, collection: collection)).to eq('<p>Cached article</p>')
     end
 
+    it 'refreshes cached article HTML when the XML changes without a cache key version change' do
+      updated_article = double(
+        'Article',
+        xml_text: "<?xml version='1.0' encoding='UTF-8'?><page><p>Updated article</p></page>",
+        cache_key_with_version: article.cache_key_with_version
+      )
+
+      allow(updated_article).to receive(:class).and_return(double(name: 'Article'))
+
+      expect(helper).to receive(:xml_to_html)
+        .with(article.xml_text, true, false, collection)
+        .and_return('<p>Cached article</p>')
+      expect(helper).to receive(:xml_to_html)
+        .with(updated_article.xml_text, true, false, collection)
+        .and_return('<p>Updated article</p>')
+
+      expect(helper.cached_article_xml_to_html(article, collection: collection)).to eq('<p>Cached article</p>')
+      expect(helper.cached_article_xml_to_html(updated_article, collection: collection)).to eq('<p>Updated article</p>')
+    end
+
     it 'does not cache highlighted article variants' do
       expect(helper).to receive(:xml_to_html)
         .twice

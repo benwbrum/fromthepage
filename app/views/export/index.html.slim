@@ -10,16 +10,17 @@ p.big
   span =t('.export_all_works_description')
 
 
--if ContentdmTranslator.collection_is_cdm?(@collection) && @collection.text_entry? && @collection.is_a?(Collection)
+-cdm_collection = @collection.is_a?(DocumentSet) ? @collection.collection : @collection
+-if ContentdmTranslator.collection_is_cdm?(@collection) && cdm_collection.text_entry?
   h2 =t('.export_to_contentdm')
   p.big
     span.fright(style="margin-left: 30px")
-      =link_to(export_edit_contentdm_credentials_path(collection_id: @collection.id), { class: 'button btnExport', id: 'btnExportContentdm', data: { controller: 'litebox', litebox: { hash: '', collection_id: @collection.id }, collection_id: @collection.id } })
+      =link_to(export_edit_contentdm_credentials_path(collection_id: @collection.slug), { class: 'button btnExport', id: 'btnExportContentdm', data: { controller: 'litebox', litebox: { hash: '', collection_id: @collection.slug }, collection_id: @collection.slug } })
         =svg_symbol '#icon-export', class: 'icon'
         span =t('.export_to_contentdm')
     span =t('.export_to_contentdm_description')
 
--if @collection.text_entry?
+-if cdm_collection.text_entry?
   h2 =t('.export_individual_works')
   p.big =t('.export_individual_works_description')
 

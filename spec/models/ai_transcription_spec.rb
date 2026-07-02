@@ -25,17 +25,41 @@ RSpec.describe AiTranscription, type: :model do
     end
   end
 
-  describe '#replace_nbsp' do
+  describe '#normalize_source_text' do
     it 'replaces non-breaking spaces with regular spaces' do
       ai_transcription.source_text = 'Hello&nbsp;World'
-      ai_transcription.replace_nbsp
+      ai_transcription.normalize_source_text
       expect(ai_transcription.source_text).to eq('Hello World')
+    end
+
+    it 'strips plain html br tags' do
+      ai_transcription.source_text = 'Hello<br>World<br>Again'
+      ai_transcription.normalize_source_text
+      expect(ai_transcription.source_text).to eq("Hello\nWorld\nAgain")
+    end
+
+    it 'strips self-closing html br tags' do
+      ai_transcription.source_text = 'Hello<br/>World<BR />Again'
+      ai_transcription.normalize_source_text
+      expect(ai_transcription.source_text).to eq("Hello\nWorld\nAgain")
+    end
+
+    it 'normalizes mixed br tags and non-breaking spaces' do
+      ai_transcription.source_text = 'Hello&nbsp;<br />World'
+      ai_transcription.normalize_source_text
+      expect(ai_transcription.source_text).to eq("Hello \nWorld")
     end
 
     it 'does not change the source_text if it is nil' do
       ai_transcription.source_text = nil
-      ai_transcription.replace_nbsp
+      ai_transcription.normalize_source_text
       expect(ai_transcription.source_text).to be_nil
+    end
+
+    it 'does not change already clean text' do
+      ai_transcription.source_text = 'Hello World'
+      ai_transcription.normalize_source_text
+      expect(ai_transcription.source_text).to eq('Hello World')
     end
   end
 end
