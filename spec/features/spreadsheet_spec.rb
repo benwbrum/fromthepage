@@ -29,6 +29,10 @@ def set_up_columns(owner, collection)
   click_button 'Save'
 end
 
+def handsontable_expression(method_call)
+  "window.Stimulus.getControllerForElementAndIdentifier(document.querySelector('[data-controller=\"handsontable\"]'), 'handsontable')._handsontable.#{method_call}"
+end
+
 describe 'spreadsheet' do
   before :all do
     DatabaseCleaner.start
@@ -111,23 +115,12 @@ describe 'spreadsheet' do
 
       visit collection_transcribe_page_path(collection.owner, collection, work, field_page)
 
-      page.execute_script(<<~JS)
-        const element = document.querySelector('[data-controller="handsontable"]');
-        const controller = window.Stimulus.getControllerForElementAndIdentifier(element, 'handsontable');
-
-        controller._handsontable.selectCell(0, 0);
-        controller._handsontable.listen();
-      JS
+      page.execute_script("#{handsontable_expression('selectCell(0, 0)')}; #{handsontable_expression('listen()')};")
       page.driver.browser.action.send_keys('Row 1', :tab).perform
 
       Timeout.timeout(Capybara.default_max_wait_time) do
         loop do
-          row_count = page.evaluate_script(<<~JS)
-            const element = document.querySelector('[data-controller="handsontable"]');
-            const controller = window.Stimulus.getControllerForElementAndIdentifier(element, 'handsontable');
-
-            controller._handsontable.countRows();
-          JS
+          row_count = page.evaluate_script(handsontable_expression('countRows()'))
 
           break if row_count == 2
 
@@ -135,12 +128,7 @@ describe 'spreadsheet' do
         end
       end
 
-      row_data = page.evaluate_script(<<~JS)
-        const element = document.querySelector('[data-controller="handsontable"]');
-        const controller = window.Stimulus.getControllerForElementAndIdentifier(element, 'handsontable');
-
-        controller._handsontable.getData();
-      JS
+      row_data = page.evaluate_script(handsontable_expression('getData()'))
 
       expect(row_data.length).to eq 2
       expect(row_data.first.first).to eq 'Row 1'
