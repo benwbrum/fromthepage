@@ -92,11 +92,11 @@ See https://github.com/arnab/jQuery.prettyHTMLDiff/
     };
 
     $.fn.prettyHTMLDiff.createHTML = function(diff) {
-      var data, html, operation, text;
+      var data, html, operation, tagRegex, text, words;
       html = [];
       operation = diff[0];
       text = diff[1];
-      var tagRegex = /^<\/?[\w-]+(\s+[^>]*?)?>$/;
+      tagRegex = /^<\/?[\w-]+(\s+[^>]*?)?>$/;
 
       switch (operation) {
         case $.DIFF_INSERT:
@@ -118,7 +118,7 @@ See https://github.com/arnab/jQuery.prettyHTMLDiff/
 
           return words.join('')
           case $.DIFF_EQUAL:
-            var words = $.fn.prettyHTMLDiff.splitByTags(text).map(function(word){
+            words = $.fn.prettyHTMLDiff.splitByTags(text).map(function(word){
 
             if(!tagRegex.test(word)) {
               return '<span>' + word + '</span>';
@@ -183,7 +183,7 @@ See https://github.com/arnab/jQuery.prettyXMLDiff/
   };
 
   $.fn.prettyXMLDiff.createHTML = function(diff) {
-    var data, html, operation, text;
+    var data, html, operation, pattern_amp, pattern_gt, pattern_lt, pattern_para, text;
     html = [];
     operation = diff[0];
     data = diff[1];
