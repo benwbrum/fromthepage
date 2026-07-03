@@ -1522,6 +1522,7 @@ form:invalid button[type=submit] {
 .home-testimonials .loop .box .item {
   box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
   padding: 60px 80px;
+  background-color: #fff;
 }
 @media (max-width: 992px) {
   .home-testimonials .loop .box .item {
@@ -3242,7 +3243,20 @@ footer .copy {
 /* ----- Case studies carousel ------------------------------- */
 .home-testimonials {
   padding: 80px 0 70px;
-  background-color: #fff;
+  position: relative;
+  z-index: 1;
+}
+.home-testimonials::before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  background: url("../assets/materials/video-bg.png") no-repeat;
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-size: cover;
+  z-index: -1;
 }
 
 /* ----- Bottom CTA: 2-column boxes -------------------------- */
@@ -3382,6 +3396,78 @@ header.header-bg {
   .home-testimonials .loop .slick-arrow.slick-next {
     right: 0;
   }
+}
+
+/* ----- Case study card redesign ----------------------------- */
+.home-testimonials .loop .box .item {
+  display: flex;
+  flex-direction: column;
+}
+.home-testimonials .case-study-header {
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e8ddd5;
+}
+.home-testimonials .case-study-institution {
+  font-size: 20px;
+  font-weight: 600;
+  color: #49413E;
+  margin-bottom: 4px;
+}
+.home-testimonials .case-study-subtitle {
+  font-size: 14px;
+  color: #E1B167;
+  font-family: "Lora", sans-serif;
+  font-style: italic;
+  display: block;
+  margin: 0;
+}
+.home-testimonials .loop .box .item blockquote {
+  border-left: 3px solid #E1B167;
+  padding: 2px 0 2px 18px;
+  margin: 0 0 18px 0;
+  font-size: 18px;
+  font-style: italic;
+  color: #49413E;
+  font-family: "Lora", sans-serif;
+  line-height: 30px;
+}
+.home-testimonials .loop .box .item p {
+  display: block;
+  position: static;
+  font-size: 16px;
+  line-height: 26px;
+  color: #5a4e4a;
+  font-family: "Lora", sans-serif;
+  font-weight: 400;
+  margin-bottom: 24px;
+}
+.home-testimonials .case-study-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 20px;
+  border-top: 1px solid #e8ddd5;
+}
+.home-testimonials .case-study-logo {
+  max-height: 48px;
+  max-width: 150px;
+  object-fit: contain;
+  object-position: left center;
+}
+.home-testimonials .case-study-link {
+  font-size: 15px;
+  font-family: "Lora", sans-serif;
+  color: #49413E;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.home-testimonials .case-study-link:hover {
+  color: #E1B167;
+}
+.home-testimonials .case-study-link i {
+  margin-left: 4px;
 }
 
 /*# sourceMappingURL=main.css.map */
