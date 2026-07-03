@@ -4,7 +4,7 @@ class Work::Export::Printable < ApplicationInteractor
   PDF_ENGINE = 'lualatex'
   PRINTABLE_PATH = Rails.root.join('tmp', 'printable')
   DOCUMENT_METADATA_BLOCK = /^\s*\\ifdefined\\DocumentMetadata\b.*?^\s*\\fi\s*$\n?/m
-  SOUT_FALLBACK_COMMAND = '\providecommand{\sout}[1]{#1}'
+  SOUT_FALLBACK_COMMAND = '\\providecommand{\\sout}[1]{#1}'
 
   def initialize(work:, format:, edition:, include_metadata:, include_contributors:, include_notes:, preserve_lb:, page_ids: :all, time: Time.now)
     @work = work
@@ -90,9 +90,14 @@ class Work::Export::Printable < ApplicationInteractor
   def tex_string_for_conversion
     return tex_string unless @format.to_s == 'pdf'
 
-    tex_string
-      .sub(DOCUMENT_METADATA_BLOCK, '')
-      .sub('\\begin{document}', "\\begin{document}\n#{SOUT_FALLBACK_COMMAND}")
+    sanitized_tex = tex_string.sub(DOCUMENT_METADATA_BLOCK, '')
+    return sanitized_tex if sanitized_tex.include?(SOUT_FALLBACK_COMMAND)
+
+    if sanitized_tex.include?('\\begin{document}')
+      sanitized_tex.sub('\\begin{document}', "\\begin{document}\n#{SOUT_FALLBACK_COMMAND}")
+    else
+      "#{SOUT_FALLBACK_COMMAND}\n#{sanitized_tex}"
+    end
   end
 
   private

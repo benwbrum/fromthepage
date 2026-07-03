@@ -114,7 +114,7 @@ describe Work::Export::Printable do
         expect(sanitized_tex).to include("\\documentclass{article}")
       end
 
-      it 'returns tex with sout fallback when no metadata wrapper exists' do
+      it 'injects sout fallback when no metadata wrapper exists' do
         allow(exporter).to receive(:tex_string).and_return(tex_without_metadata)
 
         expect(exporter.tex_string_for_conversion).to eq(<<~TEX)
@@ -135,6 +135,19 @@ describe Work::Export::Printable do
           \\documentclass{article}
           \\begin{document}
           \\providecommand{\\sout}[1]{#1}
+          \\sout{Notice to claimant}
+        TEX
+      end
+
+      it 'prepends fallback sout command when begin document is missing' do
+        allow(exporter).to receive(:tex_string).and_return(<<~TEX)
+          \\documentclass{article}
+          \\sout{Notice to claimant}
+        TEX
+
+        expect(exporter.tex_string_for_conversion).to eq(<<~TEX)
+          \\providecommand{\\sout}[1]{#1}
+          \\documentclass{article}
           \\sout{Notice to claimant}
         TEX
       end
