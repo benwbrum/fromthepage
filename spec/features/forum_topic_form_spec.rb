@@ -18,12 +18,13 @@ describe 'forum topic form' do
     login_as(owner, scope: :user)
   end
 
-  it 'shows a visible submit button for starting a topic' do
+  it 'renders create topic controls in a collapsed section' do
     visit collection_path(owner, collection)
     click_link 'Forum'
     click_link 'General'
 
-    expect(page).to have_field('topic_title')
-    expect(page).to have_button(I18n.t('thredded.topics.form.create_btn'))
+    expect(page).to have_css('details.thredded--new-topic-accordion')
+    expect(page).not_to have_button(I18n.t('thredded.topics.form.create_btn'))
+    expect(page).to have_button(I18n.t('thredded.topics.form.create_btn'), visible: :hidden)
   end
 end

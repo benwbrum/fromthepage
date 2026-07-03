@@ -9,15 +9,21 @@
                   class: 'thredded--main-section thredded--topics',
                   'data-thredded-topics' => true,
                   'data-thredded-topic-posts-per-page' => Thredded.posts_per_page do %>
-    <%= render 'thredded/topics/form',
-               topic: @new_topic,
-               placeholder: t('thredded.topics.form.title_placeholder_start') if @new_topic %>
     <%= render partial: 'thredded/topics/topic',
                collection: @topics,
                locals: {
-                   sticky_topics_divider: true,
-                   topics: @topics
+                  sticky_topics_divider: true,
+                  topics: @topics
                } %>
+
+    <% if @new_topic %>
+      <details class="thredded--new-topic-accordion">
+        <summary><%= t('thredded.topics.form.create_btn') %></summary>
+        <%= render 'thredded/topics/form',
+                  topic: @new_topic,
+                  placeholder: t('thredded.topics.form.title_placeholder_start') %>
+      </details>
+    <% end %>
   <% end %>
 
   <footer class="thredded--pagination-bottom">
