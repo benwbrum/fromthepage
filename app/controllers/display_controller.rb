@@ -79,8 +79,13 @@ class DisplayController < ApplicationController
   def read_all_works
     if @article
       # restrict to pages that include that subject
-      @pages = Page.order('work_id, position').joins('INNER JOIN page_article_links pal ON pages.id = pal.page_id').where(['pal.article_id = ?', @article.id]).where(work_id: @collection.works.ids).paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
-      @pages.distinct!
+      @pages = Page.joins(:page_article_links)
+                   .where(page_article_links: { article_id: @article.id })
+                   .where(work_id: @collection.works.reorder(nil).select(:id))
+                   .includes(:ia_leaf, :work, current_version: :user)
+                   .distinct
+                   .order('pages.work_id, pages.position')
+                   .paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
       @heading = t('.pages_that_mention', article: @article.title)
     else
       @pages = Page.paginate :all, page: params[:page],

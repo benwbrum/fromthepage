@@ -153,7 +153,11 @@ class Article < ApplicationRecord
 
   # Needed for document sets to correctly display articles
   def show_links(collection)
-    self.page_article_links.includes(:page).where(pages: { work_id: collection.works.ids })
+    self.page_article_links
+        .joins(page: :work)
+        .includes(page: :work)
+        .where(pages: { work_id: collection.works.reorder(nil).select(:id) })
+        .order(Arel.sql('LOWER(works.title), pages.position, page_article_links.text_type'))
   end
 
   def page_list

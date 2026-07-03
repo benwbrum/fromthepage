@@ -49,7 +49,7 @@
         h4.work-page_title =link_to page.title, page_params(page), onclick: "resultClicked();"
 
       .work-page_text[*language_attrs(@collection)]
-        -transcription = xml_to_html(page.xml_text, false, false, nil, params[:article_id])
+        -transcription = cached_page_xml_to_html(page, :xml_text, preserve_lb: false, collection: @collection, highlight_article_id: params[:article_id])
         -if @search_string
           -transcription = SearchAttempt::Lib::Utils.highlight_terms(transcription, @search_string)
         -if current_user
@@ -87,7 +87,7 @@
       -if page.work.supports_translation
         button.outline.work-page_toggle-view= t('.translation')
         .work-page_text(style="display:none")
-          -translation = xml_to_html(page.xml_translation, false)
+          -translation = cached_page_xml_to_html(page, :xml_translation, preserve_lb: false, collection: @collection)
           -if page.translation_status == 'blank'
             p.nodata_text == t('.this_page_is_blank')
           -elsif translation.present?
@@ -96,7 +96,7 @@
             -help_translate = link_to(t('.help_translate'), collection_translate_page_path(@collection.owner, @collection, page.work, page), onclick: "resultClicked();")
             p.nodata_text == t('.page_not_translated', help_translate: help_translate)
 
-      -current_version = page.page_versions[0]
+      -current_version = page.current_version || page.page_versions[0]
       -if current_version && current_version.page_version > 0
         small.work-page_edited
           -user_link = link_to(current_version.user.display_name, user_profile_path(current_version.user), onclick: "resultClicked();")
