@@ -41,4 +41,38 @@ describe Work::Export::Lib::Utils do
       expect(described_class.latex_escape(nil)).to eq('')
     end
   end
+
+  describe '.xml_to_latex' do
+    let(:page) { nil }
+
+    it 'renders table headers in a tr when thead contains direct th children' do
+      xml = <<~XML
+        <page><table class="tabular"><thead>
+          <th>Street No.</th><th>Name</th><th>Sex</th><th>Age</th>
+        </thead><tbody>
+          <tr><td>458</td><td>John Smith</td><td>Male</td><td>54</td></tr>
+        </tbody></table></page>
+      XML
+
+      result = described_class.xml_to_latex(page: page, xml_text: xml)
+
+      expect(result).to include('\\begin{xltabular}{\\textwidth}{XXXX}')
+      expect(result).to match(/Street No\. & Name & Sex & Age \\\\\s*\n\\midrule/)
+    end
+
+    it 'keeps malformed direct th headers separate from existing header rows' do
+      xml = <<~XML
+        <page><table class="tabular"><thead>
+          <th>A</th><th>B</th>
+          <tr><th>C</th><th>D</th></tr>
+        </thead><tbody>
+          <tr><td>1</td><td>2</td></tr>
+        </tbody></table></page>
+      XML
+
+      result = described_class.xml_to_latex(page: page, xml_text: xml)
+
+      expect(result).to match(/A & B \\\\\s*\nC & D \\\\\s*\n\\midrule/)
+    end
+  end
 end
