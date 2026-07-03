@@ -41,4 +41,65 @@ describe Work::Export::Lib::Utils do
       expect(described_class.latex_escape(nil)).to eq('')
     end
   end
+
+  describe '.xml_to_latex table rendering' do
+    let(:page) { nil }
+
+    it 'terminates each table row with \\\\{} to prevent [ from being parsed as optional spacing' do
+      xml = <<~XML
+        <page><table><tbody>
+          <tr><td>Jan 1</td><td>amount</td></tr>
+          <tr><td>[illegible]</td><td>30</td></tr>
+        </tbody></table></page>
+      XML
+
+      result = described_class.xml_to_latex(page: page, xml_text: xml)
+
+      # Each row must end with \\{} so that a following [ is not parsed as
+      # the optional vertical-spacing argument to \\, which would cause
+      # "Missing number, treated as zero" in lualatex.
+      row_terminators = result.scan(/\\\\(\{\})?/).map { |m| m[0] }
+      expect(row_terminators).to all(eq('{}'))
+    end
+
+    it 'includes xltabular environment with correct column count' do
+      xml = <<~XML
+        <page><table><tbody>
+          <tr><td>A</td><td>B</td><td>C</td></tr>
+        </tbody></table></page>
+      XML
+
+      result = described_class.xml_to_latex(page: page, xml_text: xml)
+
+      expect(result).to include('\\begin{xltabular}{\\textwidth}{XXX}')
+      expect(result).to include('\\end{xltabular}')
+    end
+
+    it 'renders cell content with & column separators' do
+      xml = <<~XML
+        <page><table><tbody>
+          <tr><td>foo</td><td>bar</td></tr>
+        </tbody></table></page>
+      XML
+
+      result = described_class.xml_to_latex(page: page, xml_text: xml)
+
+      expect(result).to include('foo & bar')
+    end
+
+    it 'uses \\toprule and \\midrule for thead rows' do
+      xml = <<~XML
+        <page><table>
+          <thead><tr><th>Header</th><th>Col2</th></tr></thead>
+          <tbody><tr><td>Data</td><td>Value</td></tr></tbody>
+        </table></page>
+      XML
+
+      result = described_class.xml_to_latex(page: page, xml_text: xml)
+
+      expect(result).to include('\\toprule')
+      expect(result).to include('\\midrule')
+      expect(result).to include('\\bottomrule')
+    end
+  end
 end
