@@ -172,6 +172,11 @@ describe AiAccuracyCalculator do
         expect(wer).to be > 0
       end
 
+      it 'uses ground truth word count as denominator when prediction is longer' do
+        wer = page.send(:word_error_rate, 'hello world', 'hello world extra words')
+        expect(wer).to eq(100.0)
+      end
+
       it 'handles empty ground truth' do
         wer = page.send(:word_error_rate, '', 'hello world')
         expect(wer).to eq(100.0)

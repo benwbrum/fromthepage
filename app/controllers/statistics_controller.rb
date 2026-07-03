@@ -4,6 +4,8 @@ class StatisticsController < ApplicationController
   include CollectionHelper
 
   def collection
+    return if require_login_for_hidden_page
+
     unless notes_visible?(@collection, current_user)
       flash[:error] = t('unauthorized_collection', project: @collection.title)
       redirect_to collection_path(@collection.owner, @collection)

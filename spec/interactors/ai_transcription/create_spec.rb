@@ -11,7 +11,7 @@ describe AiTranscription::Create do
   let(:prompt_file) { nil }
   let(:retranscribe) { false }
 
-  let(:prompt) { File.read(Rails.root.join('lib/gemini/transcription_prompt.txt')) }
+  let(:prompt) { File.read(Rails.root.join('lib/transcription_prompt.txt')) }
 
   let(:result) do
     described_class.new(
@@ -179,6 +179,41 @@ describe AiTranscription::Create do
         end
       end
     end
+
+    context 'when latest finished ai_transcription is from another engine' do
+      let(:model) { 'claude-sonnet-4-6' }
+      let!(:ai_transcription) do
+        create(:ai_transcription, page_id: page.id, model: 'gemini-3-pro-preview', source_text: nil, status: :finished)
+      end
+
+      it 'creates a new processing ai_transcription record without retranscribe mode' do
+        expect(result.success?).to be_truthy
+        expect(result.ai_transcription).to have_attributes(
+          page_id: page.id,
+          model: model,
+          prompt: prompt,
+          status: 'processing'
+        )
+        expect(result.ai_transcription.id).not_to eq(ai_transcription.id)
+      end
+    end
+
+    context 'when an older finished ai_transcription is from the same engine' do
+      let(:model) { 'claude-sonnet-4-6' }
+      let!(:same_engine_ai_transcription) do
+        create(:ai_transcription, page_id: page.id, model: 'claude-opus-4-6',
+                                  source_text: nil, status: :finished, created_at: 2.days.ago)
+      end
+      let!(:different_engine_ai_transcription) do
+        create(:ai_transcription, page_id: page.id, model: 'gemini-3-pro-preview',
+                                  source_text: nil, status: :finished, created_at: 1.day.ago)
+      end
+
+      it 'blocks user from creating a duplicate transcription for that engine' do
+        expect(result.success?).to be_falsey
+        expect(result.full_errors.message).to eq('AI Transcription generation is either in progress or completed!')
+      end
+    end
   end
 
   context 'when collection is field_based' do
@@ -211,6 +246,16 @@ describe AiTranscription::Create do
 
     it 'sets status to processing' do
       expect(result.ai_transcription.status).to eq('processing')
+    end
+
+    context 'when a custom prompt_file is supplied' do
+      let(:prompt_file) { 'test_data/ai_transcriptions/custom_prompt.txt' }
+
+      it 'uses the custom file prompt instead of the field-based prompt' do
+        expect(result.success?).to be_truthy
+        expect(result.ai_transcription.prompt).to eq("This is a custom prompt\n")
+        expect(result.ai_transcription.prompt).not_to include(text_field.id.to_s)
+      end
     end
   end
 

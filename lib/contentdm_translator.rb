@@ -141,15 +141,15 @@ module ContentdmTranslator
 
     begin
       ContentdmTranslator.export_work_to_cdm(work, username, password, license)
-    rescue Net::ReadTimeout => e
+    rescue Net::ReadTimeout, Savon::HTTPError => e
       delay_to_use = [delay, max_delay].min
-      print "Net::ReadTimeout: Retrying in #{delay_to_use} seconds... (#{e.message})"
+      print "#{e.class}: Retrying in #{delay_to_use} seconds... (#{e.message})"
 
       sleep(delay_to_use)
 
       delay = (delay * 1.5).round
       if delay > max_delay
-        print "Net::ReadTimeout: Max retry delay reached, giving up. (#{e.message})"
+        print "#{e.class}: Max retry delay reached, giving up. (#{e.message})"
       else
         retry
       end

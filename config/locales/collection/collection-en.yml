@@ -10,6 +10,8 @@ en:
         description: Launch AI transcription job for pages in this collection.
         description_complete: All pages in this collection have AI transcriptions.
         failed: Failed
+        failed_transcription_errors: Failed transcription errors
+        failed_transcription_errors_hidden: "%{count} additional failed transcription errors are not shown."
         finished: Finished
         generate: Create AI drafts for pages without them.
         in_progress: In progress

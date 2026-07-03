@@ -1,32 +1,56 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
-describe "collection settings js tasks", order: :defined do
-  before :all do
-    @owner = User.find_by(login: OWNER)
-    @user = User.find_by(login: USER)
-    @collections = @owner.all_owner_collections
-    @collection = @collections.second || @collections.first
-    @work = @collection.works.second || @collection.works.first
-    @rest_user = User.find_by(login: REST_USER)
-    # add a user to be emailed
-    @notify_user = User.find_by(login: ADMIN)
-    # set up the restricted user not to be emailed
-    notification = Notification.find_by(user_id: @rest_user.id)
-    notification.add_as_collaborator = false
-    notification.add_as_owner = false
-    notification.save!
-    @page = @work.pages.first
-    @wording = "Click microphone to dictate"
-    @article = @collection.articles.first
+describe 'collection settings tasks' do
+  let(:owner) { create(:unique_user, :owner) }
+  let(:user) { create(:unique_user) }
+  let(:rest_user) { create(:unique_user) }
+  let(:notify_user) { create(:unique_user, :admin) }
+  let(:collection) { create(:collection, owner_user_id: owner.id, works: [], hide_completed: true) }
+  let(:works) do
+    created_works = 3.times.map do
+      created_work = create(:work, owner: owner, collection: collection)
+      2.times { |index| create(:page, work: created_work, position: index + 1) }
+      created_work.reload
+    end
+
+    collection.works.reset
+    created_works
+  end
+  let(:work) { works.second }
+  let(:work_page) { work.pages.first }
+
+  before do |example|
+    DatabaseCleaner.start unless example.metadata[:js]
+    works
+    rest_user.notification.update!(add_as_collaborator: false, add_as_owner: false)
+    notify_user.notification.update!(add_as_collaborator: true, add_as_owner: true)
+    ActionMailer::Base.deliveries.clear
+  end
+
+  after do |example|
+    ActionMailer::Base.deliveries.clear
+    Current.user = nil
+
+    if example.metadata[:js]
+      owner.all_owner_collections.each do |owned_collection|
+        owned_collection.categories.destroy_all
+        owned_collection.destroy!
+      end
+      [notify_user, rest_user, user, owner].each(&:destroy!)
+    else
+      DatabaseCleaner.clean
+    end
   end
 
   it "sets collection to private", js: true do
-    login_as(@owner, scope: :user)
-    visit collection_path(@collection.owner, @collection)
+    login_as(owner, scope: :user)
+    visit collection_path(collection.owner, collection)
     page.find('.tabs').click_link("Settings")
     page.find('.side-tabs').click_link("Privacy & Access")
 
-    expect(@collection.is_public).to eq true
+    expect(collection.is_public).to eq true
     expect(page).to have_content("Collection privacy: Public")
     # check to see if Collaborators & API access are disabled
     expect(page.find('#users-list-collaborators')).to match_css('.disabled')
@@ -38,8 +62,8 @@ describe "collection settings js tasks", order: :defined do
 
     page.click_button('Make Collection Private')
     expect(page).to have_content("Collection privacy: Private")
-    @collection.reload
-    expect(@collection.is_public).to eq false
+    collection.reload
+    expect(collection.is_public).to eq false
     # check to see if Collaborators & API access are enabled
     expect(page.find('#users-list-collaborators')).not_to match_css('.disabled')
     expect(page.find_link('Edit Collaborators')).not_to match_css('[disabled]')
@@ -50,45 +74,48 @@ describe "collection settings js tasks", order: :defined do
   end
 
   it "checks that a restricted user can't view the collection" do
-    login_as(@rest_user, scope: :user)
+    collection.update!(restricted: true)
+    login_as(rest_user, scope: :user)
     visit dashboard_path
-    expect(page.find('.maincol')).not_to have_content(@collection.title)
+    expect(page.find('.maincol')).not_to have_content(collection.title)
   end
 
   it 'adds collaborators to a private collection' do
-    ActionMailer::Base.deliveries.clear
-    login_as(@owner, scope: :user)
-    visit collection_path(@collection.owner, @collection)
+    collection.update!(restricted: true)
+    login_as(owner, scope: :user)
+    visit collection_path(collection.owner, collection)
     page.find('.tabs').click_link('Settings')
     page.find('.side-tabs').click_link('Privacy & Access')
     # this user should not get an email (notifications turned off)
     page.click_link 'Edit Collaborators'
-    select(@rest_user.name_with_identifier, from: 'collaborator_id')
+    select(rest_user.name_with_identifier, from: 'collaborator_id')
     page.find('#collaborator_id+button').click
     expect(ActionMailer::Base.deliveries).to be_empty
     # this user should get an email
-    select(@notify_user.name_with_identifier, from: 'collaborator_id')
+    select(notify_user.name_with_identifier, from: 'collaborator_id')
     page.find('#collaborator_id+button').click
     expect(ActionMailer::Base.deliveries).not_to be_empty
-    expect(ActionMailer::Base.deliveries.first.to).to include @notify_user.email
-    expect(ActionMailer::Base.deliveries.first.subject).to eq "You've been added to #{@collection.title}"
+    expect(ActionMailer::Base.deliveries.first.to).to include notify_user.email
+    expect(ActionMailer::Base.deliveries.first.subject).to eq "You've been added to #{collection.title}"
     expect(ActionMailer::Base.deliveries.first.body.encoded).to match('added you as a collaborator')
   end
 
   it 'checks that an added user can edit a work in the collection' do
-    login_as(@rest_user, scope: :user)
+    collection.update!(restricted: true)
+    collection.collaborators << rest_user
+    login_as(rest_user, scope: :user)
     visit dashboard_path
     expect(page).to have_content('Collections')
-    expect(page).to have_content(@collection.title)
-    page.find('.maincol').find('a', text: @collection.title).click
+    expect(page).to have_content(collection.title)
+    page.find('.maincol').find('a', text: collection.title).click
     expect(page.find('.tabs')).to have_selector('a', text: 'Overview')
     expect(page.find('.tabs')).to have_selector('a', text: 'Statistics')
     expect(page.find('.tabs')).to have_selector('a', text: 'Subjects')
     expect(page.find('.tabs')).not_to have_selector('a', text: 'Settings')
-    page.find('.maincol').find('a', text: @work.title).click
-    expect(page.find('h1')).to have_content(@work.title)
-    page.find('.maincol').find('a', text: @work.pages.first.title).click
-    expect(page.find('h1')).to have_content(@work.pages.first.title)
+    page.find('.maincol').find('a', text: work.title).click
+    expect(page.find('h1')).to have_content(work.title)
+    page.find('.maincol').find('a', text: work.pages.first.title).click
+    expect(page.find('h1')).to have_content(work.pages.first.title)
     fill_in_editor_field('Collaborator test')
     find('#save_button_top').click
     page.click_link('Overview')
@@ -96,51 +123,54 @@ describe "collection settings js tasks", order: :defined do
   end
 
   it 'removes collaborators from a private collection' do
-    login_as(@owner, scope: :user)
-    visit collection_path(@collection.owner, @collection)
+    collection.update!(restricted: true)
+    collection.collaborators << [rest_user, notify_user]
+    login_as(owner, scope: :user)
+    visit collection_path(collection.owner, collection)
     page.find('.tabs').click_link('Settings')
     page.find('.side-tabs').click_link('Privacy & Access')
     page.click_link 'Edit Collaborators'
-    page.find('.user-label', text: @rest_user.display_name).find('button').click
-    page.find('.user-label', text: @notify_user.display_name).find('button').click
-    expect(page).not_to have_selector('.user-label', text: @rest_user.name_with_identifier)
+    page.find('.user-label', text: rest_user.display_name).find('button').click
+    page.find('.user-label', text: notify_user.display_name).find('button').click
+    expect(page).not_to have_selector('.user-label', text: rest_user.name_with_identifier)
   end
 
   it "checks that the removed user can't view the collection" do
-    login_as(@rest_user, scope: :user)
+    collection.update!(restricted: true)
+    login_as(rest_user, scope: :user)
     visit dashboard_path
-    expect(page.find('.maincol')).not_to have_content(@collection.title)
+    expect(page.find('.maincol')).not_to have_content(collection.title)
   end
 
   it 'adds owners to a private collection' do
-    ActionMailer::Base.deliveries.clear
-    login_as(@owner, scope: :user)
-    visit collection_path(@collection.owner, @collection)
+    collection.update!(restricted: true)
+    login_as(owner, scope: :user)
+    visit collection_path(collection.owner, collection)
     page.find('.tabs').click_link('Settings')
     page.find('.side-tabs').click_link('Privacy & Access')
     # this user should not get an email (notifications turned off)
     page.click_link 'Edit Owners'
-    select(@rest_user.name_with_identifier, from: 'user_id')
+    select(rest_user.name_with_identifier, from: 'user_id')
     page.find('#user_id+button').click
     expect(ActionMailer::Base.deliveries).to be_empty
     # this user should get an email
-    select(@notify_user.name_with_identifier, from: 'user_id')
+    select(notify_user.name_with_identifier, from: 'user_id')
     page.find('#user_id+button').click
     expect(ActionMailer::Base.deliveries).not_to be_empty
-    expect(ActionMailer::Base.deliveries.first.to).to include @notify_user.email
-    expect(ActionMailer::Base.deliveries.first.subject).to eq "You've been added to #{@collection.title}"
+    expect(ActionMailer::Base.deliveries.first.to).to include notify_user.email
+    expect(ActionMailer::Base.deliveries.first.subject).to eq "You've been added to #{collection.title}"
     expect(ActionMailer::Base.deliveries.first.body.encoded).to match('added you as a collaborator')
   end
 
   it "checks added owner permissions" do
-    @rest_user.reload
-    @rest_user.account_type = nil
-    @rest_user.save
-    login_as(@rest_user, scope: :user)
+    collection.update!(restricted: true)
+    rest_user.update!(owner: true, account_type: nil)
+    collection.owners << rest_user
+    login_as(rest_user, scope: :user)
     visit dashboard_path
     expect(page).to have_content("Collections")
-    expect(page).to have_content(@collection.title)
-    page.find('.maincol').find('a', text: @collection.title).click
+    expect(page).to have_content(collection.title)
+    page.find('.maincol').find('a', text: collection.title).click
     expect(page.find('.tabs')).to have_selector('a', text: 'Settings')
     expect(page.find('.tabs')).to have_selector('a', text: 'Export')
     expect(page.find('.tabs')).to have_selector('a', text: 'Collaborators')
@@ -153,83 +183,80 @@ describe "collection settings js tasks", order: :defined do
   end
 
   it 'removes owner from a private collection' do
-    login_as(@owner, scope: :user)
-    visit collection_path(@collection.owner, @collection)
+    collection.update!(restricted: true)
+    [rest_user, notify_user].each do |added_owner|
+      added_owner.update!(owner: true)
+      collection.owners << added_owner
+    end
+    login_as(owner, scope: :user)
+    visit collection_path(collection.owner, collection)
     page.find('.tabs').click_link('Settings')
     page.find('.side-tabs').click_link('Privacy & Access')
     page.click_link 'Edit Owners'
-    page.find('.user-label', text: @rest_user.display_name).find('button').click
-    page.find('.user-label', text: @notify_user.display_name).find('button').click
-    expect(page).not_to have_selector('.user-label', text: @rest_user.name_with_identifier)
+    page.find('.user-label', text: rest_user.display_name).find('button').click
+    page.find('.user-label', text: notify_user.display_name).find('button').click
+    expect(page).not_to have_selector('.user-label', text: rest_user.name_with_identifier)
   end
 
   it 'checks removed owner permissions' do
-    login_as(@rest_user, scope: :user)
+    collection.update!(restricted: true)
+    login_as(rest_user, scope: :user)
     visit dashboard_path
-    expect(page.find('.maincol')).not_to have_content(@collection.title)
+    expect(page.find('.maincol')).not_to have_content(collection.title)
   end
 
   it "sets collection to public", js: true do
-    login_as(@owner, scope: :user)
-    visit collection_path(@collection.owner, @collection)
+    collection.update!(restricted: true)
+    login_as(owner, scope: :user)
+    visit collection_path(collection.owner, collection)
     page.find('.tabs').click_link("Settings")
     page.find('.side-tabs').click_link("Privacy & Access")
     page.click_button("Make Collection Public")
   end
 
   context "inactive collection" do
-    # Current Deed Counts for comparison
-    active_count    = Deed.where(deed_type: DeedType::COLLECTION_ACTIVE).count
-    inactive_count  = Deed.where(deed_type: DeedType::COLLECTION_INACTIVE).count
-
     it "transcribing works for active collections" do
-      visit collection_display_page_path(@collection.owner, @collection, @page.work, @page.id)
+      visit collection_display_page_path(collection.owner, collection, work_page.work, work_page.id)
       expect(page).to have_link('Transcribe')
     end
 
     it "toggles collection inactive", js: true do
-      login_as(@owner, scope: :user)
-      visit collection_path(@collection.owner, @collection)
+      inactive_count = Deed.where(deed_type: DeedType::COLLECTION_INACTIVE).count
+      login_as(owner, scope: :user)
+      visit collection_path(collection.owner, collection)
       page.find('.tabs').click_link("Settings")
       page.find('.side-tabs').click_link("Danger Zone")
       expect(page).to have_content("Collection status: Active")
       page.choose("collection_is_active_false")
-      sleep 0.5
       expect(page).to have_content("Collection status: Inactive")
-    end
-
-    it "logs a deed when marked inactive" do
-      deeds = Deed.where(deed_type: DeedType::COLLECTION_INACTIVE).count
-      expect(deeds).to eq inactive_count + 1
+      expect(Deed.where(deed_type: DeedType::COLLECTION_INACTIVE).count).to eq(inactive_count + 1)
     end
 
     it "transcribing doesn't work for inactive collections" do
-      unstarted_page = @page.work.pages.where(status: :new).first
-      visit collection_display_page_path(@collection.owner, @collection, @page.work, unstarted_page)
+      collection.update!(is_active: false)
+      unstarted_page = work_page.work.pages.where(status: :new).first
+      visit collection_display_page_path(collection.owner, collection, work_page.work, unstarted_page)
       expect(page).to have_content('not active')
     end
 
     it "toggles collection active", js: true do
-      login_as(@owner, scope: :user)
-      visit collection_path(@collection.owner, @collection)
+      collection.update!(is_active: false)
+      active_count = Deed.where(deed_type: DeedType::COLLECTION_ACTIVE).count
+      login_as(owner, scope: :user)
+      visit collection_path(collection.owner, collection)
       page.find('.tabs').click_link("Settings")
       page.find('.side-tabs').click_link("Danger Zone")
       page.choose("collection_is_active_true")
-      sleep 0.5
       expect(page).to have_content("Collection status: Active")
-    end
-
-    it "logs a deed when marked active" do
-      deeds = Deed.where(deed_type: DeedType::COLLECTION_ACTIVE).count
-      expect(deeds).to eq active_count + 1
+      expect(Deed.where(deed_type: DeedType::COLLECTION_ACTIVE).count).to eq(active_count + 1)
     end
   end
 
   it "views completed works" do
-    Current.user = @owner
+    Current.user = owner
 
     # first need to set a work as complete
-    hidden_work = @collection.works.last
+    hidden_work = collection.works.last
     hidden_work.pages.each do |p|
       p.status = "transcribed"
       p.source_text = "Transcription"
@@ -237,8 +264,8 @@ describe "collection settings js tasks", order: :defined do
     end
     hidden_work.work_statistic.recalculate
     # check to see if the work is visible
-    login_as(@owner, scope: :user)
-    visit collection_path(@collection.owner, @collection)
+    login_as(owner, scope: :user)
+    visit collection_path(collection.owner, collection)
     # completed work shouldn't be visible at first
     expect(page.find('.maincol')).not_to have_content(hidden_work.title)
     # click button to show all works
@@ -250,33 +277,29 @@ describe "collection settings js tasks", order: :defined do
   end
 
   it 'sorts works in works list', js: true do
-    login_as(@owner, scope: :user)
-    visit collection_path(@collection.owner, @collection)
+    login_as(owner, scope: :user)
+    visit collection_path(collection.owner, collection)
     page.find('.tabs').click_link('Works List')
     expect(page).to have_content('Works')
-    @collection.works.each do |w|
+    collection.works.each do |w|
       expect(page).to have_content(w.title)
     end
-    expect(page.find('#works-table').find('tbody:nth-child(2)')).to have_content @collection.works.pluck(:title).first
-    expect(page.find('#works-table').find('tbody:last-child')).to have_content @collection.works.pluck(:title).last
-    # Deprecated sorting by percent complete
-    #  #sort by percent complete
-    #  page.find('#works-table').find('thead').find('th', text: 'Progress').click
-    #  expect(page.find('#works-table').find('tbody:nth-child(2)')).to have_content @collection.works.order_by_completed.pluck(:title).first
-    #  expect(page.find('#works-table').find('tbody:last-child')).to have_content @collection.works.order_by_completed.pluck(:title).last
+    expect(page.find('#works-table').find('tbody:nth-child(2)')).to have_content collection.works.pluck(:title).first
+    expect(page.find('#works-table').find('tbody:last-child')).to have_content collection.works.pluck(:title).last
     # sort by recent activity
     page.find('#works-table').find('thead').find('th', text: 'Most recent activity').click
     page.find('#works-table').find('thead').find('th', text: 'Most recent activity').click
-    expect(page.find('#works-table').find('tbody:nth-child(2)')).to have_content @collection.works.order_by_recent_activity.pluck(:title).first
-    expect(page.find('#works-table').find('tbody:last-child')).to have_content @collection.works.order_by_recent_activity.pluck(:title).last
+    recent_titles = collection.works.order_by_recent_activity.pluck(:title)
+    expect(page.find('#works-table').find('tbody:nth-child(2)')).to have_content(recent_titles.first)
+    expect(page.find('#works-table').find('tbody:last-child')).to have_content(recent_titles.last)
   end
 
   it "views pages that need transcription" do
-    login_as(@user, scope: :user)
-    visit collection_path(@collection.owner, @collection)
+    login_as(user, scope: :user)
+    visit collection_path(collection.owner, collection)
     expect(page).to have_content("About")
     expect(page).to have_content("Works")
-    page.click_link(I18n.t('collection.show.pages_need_correction_or_transcription'))
+    page.click_link(I18n.t('collection.show.pages_need_transcription'))
     expect(page).to have_selector('h3', text: "Pages That Need Transcription")
     # make sure a page exists; don't specify which one
     expect(page).to have_selector('.work-page')
@@ -287,11 +310,11 @@ describe "collection settings js tasks", order: :defined do
 
   it "does not show 'Collaboration is restricted' for unrestricted works when not logged in" do
     # Ensure the collection is public
-    @collection.restricted = false
-    @collection.save!
+    collection.restricted = false
+    collection.save!
 
     # Ensure we have a work with untranscribed pages that is not restricted
-    work = @collection.works.first
+    work = collection.works.first
     work.restrict_scribes = false
     work.save!
 
@@ -303,7 +326,7 @@ describe "collection settings js tasks", order: :defined do
 
     # Visit the collection page without being logged in
     logout(:user)
-    visit collection_path(@collection.owner, @collection)
+    visit collection_path(collection.owner, collection)
 
     # Should not show "Collaboration is restricted" for unrestricted works
     expect(page).not_to have_content(I18n.t('collection.show.restricted_collaboratoration'))
@@ -311,11 +334,11 @@ describe "collection settings js tasks", order: :defined do
 
   it "shows 'Collaboration is restricted' for restricted works when not logged in" do
     # Ensure the collection is public
-    @collection.restricted = false
-    @collection.save!
+    collection.restricted = false
+    collection.save!
 
     # Create a restricted work with untranscribed pages
-    restricted_work = @collection.works.first
+    restricted_work = collection.works.first
     restricted_work.restrict_scribes = true
     restricted_work.save!
 
@@ -327,27 +350,35 @@ describe "collection settings js tasks", order: :defined do
 
     # Visit the collection page without being logged in
     logout(:user)
-    visit collection_path(@collection.owner, @collection)
+    visit collection_path(collection.owner, collection)
 
     # Should show "Collaboration is restricted" for restricted works
     expect(page).to have_content(I18n.t('collection.show.restricted_collaboratoration'))
 
     # unrestrict the work
-    restricted_work = @collection.works.first
+    restricted_work = collection.works.first
     restricted_work.restrict_scribes = false
     restricted_work.save!
   end
 end
 
-describe "collection spec (isolated)" do
-  before :all do
-    @factory_owner = create(:owner)
+describe 'collection spec (isolated)' do
+  let(:factory_owner) { create(:unique_user, :owner) }
+
+  after do |example|
+    next unless example.metadata[:js]
+
+    factory_owner.all_owner_collections.each do |owned_collection|
+      owned_collection.categories.destroy_all
+      owned_collection.destroy!
+    end
+    factory_owner.destroy!
   end
 
   it 'updates collection statistics', js: true do
-    login_as(@factory_owner, scope: :user)
+    login_as(factory_owner, scope: :user)
 
-    visit dashboard_owner_path(@factory_owner)
+    visit dashboard_owner_path(factory_owner)
     expect(page).to have_content('Start A Project')
     page.find('.tabs').click_link('Start A Project')
 
@@ -382,72 +413,65 @@ describe "collection spec (isolated)" do
   end
 
   context 'Collection Settings' do
-    before :all do
-      @owner = User.find_by(login: OWNER)
-    end
-    before :each do
-      login_as(@owner, scope: :user)
+    let(:owner) { create(:unique_user, :owner) }
+
+    before do
+      login_as(owner, scope: :user)
       DatabaseCleaner.start
     end
-    after :each do
+
+    after do
       DatabaseCleaner.clean
     end
 
-    let(:work_ocr) { create(:work, ocr_correction: true) }
-    let(:work_no_ocr) { create(:work, ocr_correction: false) }
-    let(:work_ocr_true) { create(:work, ocr_correction: true) }
-    let(:work_ocr_false) { create(:work, ocr_correction: false) }
-    let(:collection_ocr_mixed) { create(:collection, owner: @owner, works: [work_ocr, work_no_ocr]) }
-    let(:collection_ocr_true) { create(:collection, owner: @owner, works: [work_ocr_true]) }
-    let(:collection_ocr_false) { create(:collection, owner: @owner, works: [work_ocr_false]) }
+    let(:work_ocr) { create(:work, owner: owner, ocr_correction: true) }
+    let(:work_no_ocr) { create(:work, owner: owner, ocr_correction: false) }
+    let(:work_ocr_true) { create(:work, owner: owner, ocr_correction: true) }
+    let(:work_ocr_false) { create(:work, owner: owner, ocr_correction: false) }
+    let(:collection_ocr_mixed) { create(:collection, owner: owner, works: [work_ocr, work_no_ocr]) }
+    let(:collection_ocr_true) { create(:collection, owner: owner, works: [work_ocr_true]) }
+    let(:collection_ocr_false) { create(:collection, owner: owner, works: [work_ocr_false]) }
 
     it 'shows OCR section' do
-      visit edit_collection_path(@owner, collection_ocr_mixed)
+      visit edit_collection_path(owner, collection_ocr_mixed)
       page.find('.side-tabs').click_link('Task Configuration')
       expect(page).to have_content(collection_ocr_mixed.title)
       expect(page).to have_content("OCR Correction")
     end
     it 'shows mixed OCR section buttons' do
-      visit edit_collection_path(@owner, collection_ocr_mixed)
+      visit edit_collection_path(owner, collection_ocr_mixed)
       page.find('.side-tabs').click_link('Task Configuration')
       expect(page).to have_content(collection_ocr_mixed.title)
       expect(page).to have_content("Enable OCR")
       expect(page).to have_content("Disable OCR")
     end
     it 'only shows enable OCR section buttons when all disabled' do
-      visit edit_collection_path(@owner, collection_ocr_false)
+      visit edit_collection_path(owner, collection_ocr_false)
       page.find('.side-tabs').click_link('Task Configuration')
       expect(page).to have_content(collection_ocr_false.title)
       expect(page).to have_content("Enable OCR")
       expect(page).not_to have_content("Disable OCR")
     end
     it 'only shows disable OCR section buttons when all disabled' do
-      visit edit_collection_path(@owner, collection_ocr_true)
+      visit edit_collection_path(owner, collection_ocr_true)
       page.find('.side-tabs').click_link('Task Configuration')
       expect(page).to have_content(collection_ocr_true.title)
       expect(page).to have_content("Disable OCR")
       expect(page).not_to have_content("Enable OCR")
     end
     it 'enables ocr' do
-      visit edit_collection_path(@owner, collection_ocr_mixed)
+      visit edit_collection_path(owner, collection_ocr_mixed)
       page.find('.side-tabs').click_link('Task Configuration')
       expect(page).to have_content(collection_ocr_mixed.title)
       click_link('Enable OCR')
       expect(page).to have_content("OCR correction has been enabled for all works.")
     end
     it 'disables ocr' do
-      visit edit_collection_path(@owner, collection_ocr_mixed)
+      visit edit_collection_path(owner, collection_ocr_mixed)
       page.find('.side-tabs').click_link('Task Configuration')
       expect(page).to have_content(collection_ocr_mixed.title)
       click_link('Disable OCR')
       expect(page).to have_content("OCR correction has been disabled for all works.")
     end
-  end
-
-  after :all do
-    @factory_owner.collections.each do |c|
-      c.destroy
-    end
-    @factory_owner.destroy
   end
 end

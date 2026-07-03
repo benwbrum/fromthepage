@@ -68,6 +68,7 @@ class Page < ApplicationRecord
 
   has_many :ai_transcriptions, class_name: 'AiTranscription'
   has_one :ai_transcription, -> { order(created_at: :desc) }, class_name: 'AiTranscription'
+  has_one :finished_ai_transcription, -> { status_finished.order(created_at: :desc) }, class_name: 'AiTranscription'
 
   has_many :alto_transcriptions, -> { alto }, class_name: 'AiTranscription'
   has_one :alto_transcription, -> { alto.order(created_at: :desc) }, class_name: 'AiTranscription'
@@ -116,6 +117,9 @@ class Page < ApplicationRecord
     'image/bmp',
     'image/tiff'
   ].freeze
+
+  validates :image, content_type: ACCEPTED_FILE_TYPES
+  has_one_attached :image
 
   enum :status, {
     new: 'new',
@@ -307,36 +311,10 @@ class Page < ApplicationRecord
       self.ia_leaf.facsimile_url
     elsif self.sc_canvas
       self.sc_canvas.facsimile_url
+    elsif self.image.attached?
+      Rails.application.routes.url_helpers.url_for(image)
     else
       base_image
-    end
-  end
-
-  def base_height
-    if self[:base_height].blank?
-      if self.sc_canvas
-        self.sc_canvas.height
-      elsif self.ia_leaf
-        self.ia_leaf.page_h
-      else
-        nil
-      end
-    else
-      self[:base_height]
-    end
-  end
-
-  def base_width
-    if self[:base_width].blank?
-      if self.sc_canvas
-        self.sc_canvas.width
-      elsif self.ia_leaf
-        self.ia_leaf.page_w
-      else
-        nil
-      end
-    else
-      self[:base_width]
     end
   end
 
@@ -344,27 +322,18 @@ class Page < ApplicationRecord
     self[:base_image] || ''
   end
 
-  def shrink_factor
-    self[:shrink_factor] || 0
-  end
-
-  def scaled_image(factor = 2)
-    if 0 == factor
-      self.base_image
-    else
-      self.base_image.sub(/.jpg/, "_#{factor}.jpg")
-    end
-  end
-
   # Returns the thumbnail filename
-  # creates the image if it's not present
   def thumbnail_image
-    if self.ia_leaf
-      return nil
+    return if self.ia_leaf
+    return if self.base_image.blank? && !self.image.attached?
+
+    if image.attached?
+      return Rails.application.routes.url_helpers.url_for(
+        image.variant(resize_to_limit: [nil, 400]).processed
+      )
     end
-    if self.base_image.blank?
-      return nil
-    end
+
+    # TODO: Deprecate this in favor of image.variant
     if !File.exist?(thumbnail_filename())
       if File.exist?(modernize_absolute(self.base_image))
         generate_thumbnail
@@ -376,9 +345,14 @@ class Page < ApplicationRecord
   def thumbnail_url
     if self.ia_leaf
       self.ia_leaf.thumb_url
-    elsif self.sc_canvas && self[:base_image].blank?
+    elsif self.sc_canvas && !self.image.attached? && self[:base_image].blank?
       self.sc_canvas.thumbnail_url
+    elsif self.image.attached?
+      Rails.application.routes.url_helpers.url_for(
+        image.variant(resize_to_limit: [nil, 400])
+      )
     else
+      # TODO: Deprecate this in favor of image.variant
       file_to_url(self.thumbnail_image)
     end
   end
@@ -565,6 +539,7 @@ class Page < ApplicationRecord
     link.id
   end
 
+  # TODO: Deprecate in favor of active_storage
   def thumbnail_filename
     filename=modernize_absolute(self.base_image)
     ext=File.extname(filename)
@@ -615,17 +590,17 @@ class Page < ApplicationRecord
 
   # TODO: Remove this on different PR after running migration
   def has_ai_plaintext?
-    (self.ai_transcription&.status_finished? && ai_plaintext.present?) || File.exist?(self.ai_plaintext_path)
+    (self.finished_ai_transcription.present? && ai_plaintext.present?) || File.exist?(self.ai_plaintext_path)
   end
 
   # TODO: Remove this on different PR after running migration
   def ai_plaintext
     if self.alto_transcription.present?
       self.alto_transcription.source_text
-    elsif self.ai_transcription.present?
-      text = self.ai_transcription.source_text
-      if text.blank? && self.ai_transcription.transcription_json.present?
-        text = field_transcription_json_to_plaintext(self.ai_transcription.transcription_json)
+    elsif self.finished_ai_transcription.present?
+      text = self.finished_ai_transcription.source_text
+      if text.blank? && self.finished_ai_transcription.transcription_json.present?
+        text = field_transcription_json_to_plaintext(self.finished_ai_transcription.transcription_json)
       end
       text
     elsif File.exist?(self.ai_plaintext_path)
@@ -660,12 +635,40 @@ class Page < ApplicationRecord
       self.sc_canvas.sc_resource_id
     elsif self.ia_leaf
       self.ia_leaf.facsimile_url
+    elsif self.image.attached?
+      Rails.application.routes.url_helpers.url_for(image)
     else
       image_url_from_web_path(self.canonical_facsimile_url)
     end
   end
 
+  def image_url_for_ai(max_dim: 7900)
+    size = "!#{max_dim},#{max_dim}"
+    if sc_canvas
+      if sc_canvas.sc_service_id.present?
+        "#{sc_canvas.sc_service_id.sub(/\/$/, '')}/full/#{size}/0/default.jpg"
+      else
+        sc_canvas.sc_resource_id
+      end
+    elsif ia_leaf
+      "https://iiif.archive.org/iiif/#{work.ia_work.book_id}$#{ia_leaf.leaf_number}/full/#{size}/0/default.jpg"
+    elsif image.attached?
+      Rails.application.routes.url_helpers.url_for(image)
+      # CarrierWave local files: return nil — callers use local_image_path for disk read
+    end
+  end
+
+  def local_image_path
+    return nil if ia_leaf || sc_canvas
+    return nil if self[:base_image].blank?
+    path = modernize_absolute(self[:base_image])
+    File.exist?(path) ? path : nil
+  end
+
   def normalized_image_url_for_download
+    return image_url_for_download if image.attached?
+
+    # TODO: Deprecate once move to active storage is completed
     return unless image_url_for_download.present?
 
     normalized_dir = "#{Rails.root}/public/images/working/upload"
@@ -688,6 +691,7 @@ class Page < ApplicationRecord
     image_url_from_web_path(filename)
   end
 
+  # TODO: Deprecate once move to active storage is completed
   def image_url_from_web_path(raw_path)
     web_path = file_to_url(raw_path)
     uri = URI.parse(web_path)
@@ -705,6 +709,32 @@ class Page < ApplicationRecord
     end
 
     uri.to_s
+  end
+
+  def base_width
+    if self.sc_canvas
+      self.sc_canvas.width
+    elsif self.ia_leaf
+      self.ia_leaf.page_w
+    elsif image.attached?
+      image.analyze unless image.analyzed?
+      image.metadata[:width]
+    else
+      self[:base_width]
+    end
+  end
+
+  def base_height
+    if self.sc_canvas
+      self.sc_canvas.height
+    elsif self.ia_leaf
+      self.ia_leaf.page_h
+    elsif image.attached?
+      image.analyze unless image.analyzed?
+      image.metadata[:height]
+    else
+      self[:base_height]
+    end
   end
 
   def is_public?
@@ -827,6 +857,7 @@ class Page < ApplicationRecord
     end
   end
 
+  # TODO: Deprecate once move to active storage is completed
   def generate_thumbnail
     image = Magick::ImageList.new(modernize_absolute(self[:base_image]))
     factor = 400.to_f / self[:base_height].to_f

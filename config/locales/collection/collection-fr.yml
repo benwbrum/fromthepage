@@ -10,6 +10,8 @@ fr:
         description: Lancer une tâche de transcription IA pour les pages de cette collection.
         description_complete: Toutes les pages de cette collection comportent des transcriptions IA.
         failed: Échoué
+        failed_transcription_errors: Erreurs de transcription échouées
+        failed_transcription_errors_hidden: Les erreurs de transcription supplémentaires %{count} ne sont pas affichées.
         finished: Fini
         generate: Créer des brouillons IA pour les pages qui en sont dépourvues.
         in_progress: En cours

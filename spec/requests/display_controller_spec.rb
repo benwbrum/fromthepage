@@ -129,6 +129,26 @@ describe DisplayController do
         expect(response).to redirect_to(collection_display_page_path(owner, collection, work, page_without_transcription))
       end
     end
+
+    context 'when the most recent AI transcription has an error but an older one is finished' do
+      let!(:page_with_error) { create(:page, work: work) }
+      let!(:finished_transcription) { create(:ai_transcription, page: page_with_error, source_text: 'Older successful AI text', status: :finished, created_at: 2.days.ago) }
+      let!(:error_transcription) { create(:ai_transcription, page: page_with_error, source_text: nil, status: :error, created_at: 1.minute.ago) }
+      let(:action_path) { collection_ai_text_page_path(owner, collection, work, page_with_error) }
+
+      it 'renders the AI text page instead of redirecting' do
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:ai_text)
+      end
+
+      it 'loads the finished transcription' do
+        subject
+
+        expect(assigns(:ai_transcription)).to eq(finished_transcription)
+      end
+    end
   end
 
   describe '#read_work' do
@@ -143,6 +163,15 @@ describe DisplayController do
         expect(assigns(:pages)).to be_present
         expect(assigns(:page_range_filter)).to be_falsy
         expect(assigns(:heading)).to eq('Pages')
+      end
+    end
+
+    context 'when logged out and requesting a work queue filter' do
+      it 'returns not found and discourages indexing' do
+        get action_path, params: { needs_review: 'transcription' }
+
+        expect(response).to have_http_status(:not_found)
+        expect(response.headers['X-Robots-Tag']).to eq('noindex, nofollow, noarchive')
       end
     end
 
@@ -213,6 +242,10 @@ describe DisplayController do
     context 'with page range and review filter' do
       let(:action_path) { collection_read_work_with_range_path(owner, collection, work, '3-7') }
       let(:params) { { needs_review: 'review' } }
+
+      before do
+        login_as owner
+      end
 
       it 'applies both filters' do
         get action_path, params: params

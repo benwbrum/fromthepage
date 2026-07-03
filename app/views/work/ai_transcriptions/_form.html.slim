@@ -49,3 +49,16 @@
             .collection-stats_counters
               .counter [data-prefix=@total_token_count]
                 =t('.total_tokens_used')
+
+      -if @failed_ai_transcriptions.present?
+        tr
+          td(colspan="2")
+            h4 =t('.failed_transcription_errors')
+            ul
+              -@failed_ai_transcriptions.each do |ai_transcription|
+                li
+                  =link_to ai_transcription.page.title, collection_display_page_path(collection.owner, collection, work, ai_transcription.page)
+                  |  —
+                  =link_to ai_transcription.short_error_message, collection_work_ai_transcription_path(user_slug: collection.owner.to_param, collection_id: collection.to_param, work_id: work.to_param, id: ai_transcription.id)
+            -if @failed_ai_transcriptions_hidden_count.positive?
+              p =t('.failed_transcription_errors_hidden', count: @failed_ai_transcriptions_hidden_count)

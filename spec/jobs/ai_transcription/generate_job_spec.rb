@@ -11,7 +11,7 @@ describe AiTranscription::GenerateJob do
   let!(:ai_transcription) { create(:ai_transcription, page_id: page.id, model: model, prompt: prompt, status: :processing, source_text: nil, reasoning: nil) }
 
   let(:model) { AiTranscription::DEFAULT_MODEL }
-  let(:prompt) { File.read(Rails.root.join('lib/gemini/transcription_prompt.txt')) }
+  let(:prompt) { File.read(Rails.root.join('lib/transcription_prompt.txt')) }
 
   let(:expected_response) do
     JSON.parse(
@@ -32,7 +32,7 @@ describe AiTranscription::GenerateJob do
         .and_return(ai_transcription)
 
       allow(ai_transcription).to receive(:page).and_return(page)
-      allow(page).to receive(:image_url_for_download).and_return('http://example.com/image.jpg')
+      allow(page).to receive(:image_url_for_ai).and_return('http://example.com/image.jpg')
     end
 
     it 'performs generate job' do
@@ -77,6 +77,34 @@ describe AiTranscription::GenerateJob do
   end
 
   context 'failure' do
+    context 'when generation fails' do
+      let(:error) { StandardError.new('RECITATION') }
+      let(:result) do
+        instance_double(
+          'Result',
+          success?: false,
+          ai_transcription: ai_transcription,
+          full_errors: error
+        )
+      end
+      let(:service) { instance_double(AiTranscription::Generate, call: result) }
+
+      before do
+        allow(AiTranscription::Generate).to receive(:new).with(ai_transcription: ai_transcription).and_return(service)
+      end
+
+      it 'stores the failure message' do
+        expect {
+          perform_enqueued_jobs do
+            perform_worker
+          end
+        }.to raise_error
+
+        expect(ai_transcription.reload.status).to eq('error')
+        expect(ai_transcription.error_message).to eq('RECITATION')
+      end
+    end
+
     context 'API returns blank source_text and reasoning' do
       before do
         allow(AiTranscription).to receive(:find)
@@ -84,7 +112,7 @@ describe AiTranscription::GenerateJob do
           .and_return(ai_transcription)
 
         allow(ai_transcription).to receive(:page).and_return(page)
-        allow(page).to receive(:image_url_for_download).and_return('http://example.com/image.jpg')
+        allow(page).to receive(:image_url_for_ai).and_return('http://example.com/image.jpg')
       end
 
       it 'performs generate job' do
@@ -111,7 +139,7 @@ describe AiTranscription::GenerateJob do
           .and_return(ai_transcription)
 
         allow(ai_transcription).to receive(:page).and_return(page)
-        allow(page).to receive(:image_url_for_download).and_return(nil)
+        allow(page).to receive(:image_url_for_ai).and_return(nil)
       end
 
       it 'performs generate job' do
@@ -141,6 +169,7 @@ describe AiTranscription::GenerateJob do
       }.to raise_error
 
       expect(ai_transcription.reload.status).to eq('error')
+      expect(ai_transcription.error_message).to eq('User has no permission to create AiTranscription on this page')
     end
   end
 end

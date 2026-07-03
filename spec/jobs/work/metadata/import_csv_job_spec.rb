@@ -29,7 +29,7 @@ describe Work::Metadata::ImportCsvJob do
       [work.title, work.collection.title, '', work.id, work.description, work.identifier]
     ]
   end
-  let(:metadata_file_path) do
+  let(:metadata_temp_file) do
     csv_data = CSV.generate(headers: true) do |csv|
       csv << headers
       rows.each do |row|
@@ -39,9 +39,10 @@ describe Work::Metadata::ImportCsvJob do
     temp_file = Tempfile.new(['metadata', '.csv'])
     temp_file.write(csv_data)
     temp_file.rewind
-
-    temp_file.path
+    temp_file
   end
+
+  let(:metadata_file_path) { metadata_temp_file.path }
 
   let(:perform_worker) do
     worker.perform(

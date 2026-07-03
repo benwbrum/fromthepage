@@ -680,6 +680,8 @@ class CollectionController < ApplicationController
   end
 
   def needs_transcription_pages
+    return if require_login_for_work_queue
+
     work_ids = @collection.works.pluck(:id)
     @review='transcription'
     @pages = Page.where(work_id: work_ids).joins(:work).merge(Work.unrestricted).needs_transcription.order(work_id: :asc, position: :asc).paginate(page: params[:page], per_page: 10)
@@ -690,6 +692,8 @@ class CollectionController < ApplicationController
   end
 
   def needs_review_pages
+    return if require_login_for_work_queue
+
     work_ids = @collection.works.pluck(:id)
     @review='review'
     @pages = Page.where(work_id: work_ids).joins(:work).merge(Work.unrestricted).review.paginate(page: params[:page], per_page: 10)
@@ -697,6 +701,8 @@ class CollectionController < ApplicationController
   end
 
   def needs_metadata_works
+    return if require_login_for_work_queue
+
     if params['need_review']
       @works = @collection.works.where(description_status: 'needsreview')
     else

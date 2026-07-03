@@ -79,4 +79,97 @@ describe Work::Export::Printable do
       expect(File.exist?(result.file)).to be_truthy
     end
   end
+
+  describe '#tex_string_for_conversion' do
+    subject(:exporter) do
+      described_class.new(
+        work: work,
+        format: format,
+        edition: 'text',
+        include_metadata: true,
+        include_contributors: true,
+        include_notes: true,
+        preserve_lb: false,
+        time: time
+      )
+    end
+
+    context 'when format is not pdf' do
+      let(:format) { 'doc' }
+
+      it 'returns the original tex string' do
+        expect(exporter.tex_string_for_conversion).to eq(exporter.tex_string)
+      end
+    end
+
+    context 'when format is pdf' do
+      let(:format) { 'pdf' }
+      let(:tex_without_metadata) { "\\documentclass{article}\n\\begin{document}\n" }
+
+      it 'removes the document metadata wrapper before conversion' do
+        sanitized_tex = exporter.tex_string_for_conversion
+
+        expect(sanitized_tex).not_to include("\\ifdefined\\DocumentMetadata")
+        expect(sanitized_tex).not_to include("\\DocumentMetadata{")
+        expect(sanitized_tex).to include("\\documentclass{article}")
+      end
+
+      it 'injects sout fallback when no metadata wrapper exists' do
+        allow(exporter).to receive(:tex_string).and_return(tex_without_metadata)
+
+        expect(exporter.tex_string_for_conversion).to eq(<<~TEX)
+          \\documentclass{article}
+          \\begin{document}
+          \\providecommand{\\sout}[1]{#1}
+        TEX
+      end
+
+      it 'adds a fallback sout command for pdf conversion' do
+        allow(exporter).to receive(:tex_string).and_return(<<~TEX)
+          \\documentclass{article}
+          \\begin{document}
+          \\sout{Notice to claimant}
+        TEX
+
+        expect(exporter.tex_string_for_conversion).to eq(<<~TEX)
+          \\documentclass{article}
+          \\begin{document}
+          \\providecommand{\\sout}[1]{#1}
+          \\sout{Notice to claimant}
+        TEX
+      end
+
+      it 'prepends fallback sout command when begin document is missing' do
+        allow(exporter).to receive(:tex_string).and_return(<<~TEX)
+          \\documentclass{article}
+          \\sout{Notice to claimant}
+        TEX
+
+        expect(exporter.tex_string_for_conversion).to eq(<<~TEX)
+          \\providecommand{\\sout}[1]{#1}
+          \\documentclass{article}
+          \\sout{Notice to claimant}
+        TEX
+      end
+
+      it 'removes metadata wrapper with varying whitespace and multiline content' do
+        allow(exporter).to receive(:tex_string).and_return(<<~TEX)
+            \\ifdefined\\DocumentMetadata
+            \\DocumentMetadata{
+              lang=en,
+              pdftitle={A title with {nested} braces}
+            }
+            \\fi
+          \\documentclass{article}
+          \\begin{document}
+        TEX
+
+        expect(exporter.tex_string_for_conversion).to eq(<<~TEX)
+          \\documentclass{article}
+          \\begin{document}
+          \\providecommand{\\sout}[1]{#1}
+        TEX
+      end
+    end
+  end
 end

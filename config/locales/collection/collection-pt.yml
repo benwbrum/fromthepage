@@ -10,6 +10,8 @@ pt:
         description: Inicie um trabalho de transcrição por IA para páginas desta coleção.
         description_complete: Todas as páginas desta coleção possuem transcrições por IA.
         failed: Fracassado
+        failed_transcription_errors: Erros de transcrição
+        failed_transcription_errors_hidden: "%{count} erros adicionais de transcrição não são exibidos."
         finished: Finalizado
         generate: Crie rascunhos com IA para páginas que não os possuem.
         in_progress: Em andamento

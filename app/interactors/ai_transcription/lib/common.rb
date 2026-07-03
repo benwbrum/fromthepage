@@ -6,7 +6,7 @@ module AiTranscription::Lib::Common
   end
 
   def sanitize_prompt
-    @prompt_file ||= 'lib/gemini/transcription_prompt.txt'
+    @prompt_file ||= 'lib/transcription_prompt.txt'
 
     File.read(File.join(Rails.root.join(@prompt_file)))
   rescue Errno::ENOENT

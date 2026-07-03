@@ -10,6 +10,8 @@ de:
         description: Starte einen KI-Transkriptionsauftrag für Seiten in dieser Sammlung.
         description_complete: Alle Seiten dieser Sammlung enthalten KI-Transkriptionen.
         failed: Fehlgeschlagen
+        failed_transcription_errors: Fehlgeschlagene Transkriptionsfehler
+        failed_transcription_errors_hidden: "%{count} zusätzliche Transkriptionsfehler werden nicht angezeigt."
         finished: Fertig
         generate: Erstellen Sie KI-Entwürfe für Seiten ohne diese.
         in_progress: Im Gange

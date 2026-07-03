@@ -2,7 +2,7 @@
 
 .article-columns.columns
   article.maincol
-    -description = xml_to_html(@article.xml_text)
+    -description = cached_article_xml_to_html(@article, collection: @collection)
     h3= t('.description')
     -if description.present?
       .big[*language_attrs(@collection)] ==description

@@ -25,6 +25,7 @@
 class AiTranscription < ApplicationRecord
   DEFAULT_MODEL = 'gemini-3.1-pro-preview'
   ALTO_MODEL = 'Transkribus+OpenAI'
+  MAX_FAILED_ERRORS = 100
   FE_COLOR_STATUSES = {
     finished: '#6C2',
     in_progress: '#F0E68C',
@@ -32,7 +33,7 @@ class AiTranscription < ApplicationRecord
     not_started: '#FFFFFF'
   }
 
-  before_save :replace_nbsp
+  before_save :normalize_source_text
 
   belongs_to :page
   has_one :work, through: :page
@@ -70,14 +71,47 @@ class AiTranscription < ApplicationRecord
     model != ALTO_MODEL
   end
 
+  def engine
+    self.class.engine_for_model(model)
+  end
+
+  def self.engine_for_model(model)
+    model.to_s.start_with?('claude') ? 'claude' : 'gemini'
+  end
+
+  def error_message
+    return if metadata.blank? || !metadata.is_a?(Hash)
+
+    metadata['error_message']
+  end
+
+  def provider_error_details
+    return {} if metadata.blank? || !metadata.is_a?(Hash)
+
+    metadata['provider_error_details'].presence || {}
+  end
+
+  def provider_citation_sources
+    provider_error_details['citation_sources'].presence || []
+  end
+
+  def short_error_message
+    message = error_message.presence || 'Error details not provided'
+    message.truncate(220)
+  end
+
   def text_for_comparison
     return source_text unless collection&.field_based && transcription_json.present?
     field_values_for_comparison(transcription_json)
   end
 
-  # we want to replace the non-breaking space html entities Gemini 3 insists on returning with regular spaces
-  def replace_nbsp
-    self.source_text = source_text.gsub('&nbsp;', ' ') if source_text.present?
+  # we want to replace HTML line break tags and non-breaking space entities with plain text equivalents
+  def normalize_source_text
+    return if source_text.blank?
+
+    self.source_text = source_text
+      .gsub(/<br\s*\/?>/i, "\n")
+      .gsub('&nbsp;', ' ')
   end
 
   private

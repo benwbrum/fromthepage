@@ -57,7 +57,7 @@ class ArticleVersion < ApplicationRecord
       #   renumber subsequent versions
       this_version = self
       while next_version = this_version.next do
-        next_version.article_version -= 1
+        next_version.version -= 1
         next_version.save!
         this_version = next_version
       end
