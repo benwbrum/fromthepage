@@ -255,6 +255,14 @@ $thredded-topic-header-font-size-tablet-and-up: $fontSize;
   color: $fgLink;
 }
 
+.thredded--navigation-breadcrumbs.breadcrumbs li + li::before {
+  content: ' → ';
+}
+
+.thredded--navigation-breadcrumbs.breadcrumbs li::after {
+  content: none;
+}
+
 
 // our h3 are h1 in Thredded
 h1, .thredded--topic-header--title {
