@@ -243,6 +243,17 @@ $thredded-topic-header-font-size-tablet-and-up: $fontSize;
 //  display: none;
 }
 
+.thredded--navigation-breadcrumbs a,
+.thredded--new-topic-accordion > summary {
+  color: darken($fgLink, 10%);
+  text-decoration: underline;
+  text-underline-offset: 0.1em;
+}
+
+.thredded--navigation-breadcrumbs a:hover,
+.thredded--new-topic-accordion > summary:hover {
+  color: $fgLink;
+}
 
 
 // our h3 are h1 in Thredded

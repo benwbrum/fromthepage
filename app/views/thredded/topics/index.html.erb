@@ -18,7 +18,7 @@
 
     <% if @new_topic %>
       <details class="thredded--new-topic-accordion">
-        <summary><%= t('thredded.topics.form.create_btn') %></summary>
+        <summary class="thredded--navigation-link"><%= t('thredded.topics.form.create_btn') %></summary>
         <%= render 'thredded/topics/form',
                   topic: @new_topic,
                   placeholder: t('thredded.topics.form.title_placeholder_start') %>

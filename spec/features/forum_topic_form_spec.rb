@@ -23,7 +23,10 @@ describe 'forum topic form' do
     click_link 'Forum'
     click_link 'General'
 
+    expect(page).to have_css('.thredded--navigation-breadcrumbs a', text: I18n.t('thredded.nav.all_messageboards'))
+    expect(page).to have_css('.thredded--navigation-breadcrumbs a', text: 'General')
     expect(page).to have_css('details.thredded--new-topic-accordion')
+    expect(page).to have_css('details.thredded--new-topic-accordion summary.thredded--navigation-link', text: I18n.t('thredded.topics.form.create_btn'))
     expect(page).not_to have_button(I18n.t('thredded.topics.form.create_btn'))
     expect(page).to have_button(I18n.t('thredded.topics.form.create_btn'), visible: :hidden)
   end
