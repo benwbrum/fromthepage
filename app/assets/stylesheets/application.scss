@@ -244,14 +244,14 @@ $thredded-topic-header-font-size-tablet-and-up: $fontSize;
 }
 
 .thredded--navigation-breadcrumbs a,
-.thredded--new-topic-accordion > summary {
+.thredded--new-topic-accordion > summary.thredded--navigation-link {
   color: darken($fgLink, 10%);
   text-decoration: underline;
   text-underline-offset: 0.1em;
 }
 
 .thredded--navigation-breadcrumbs a:hover,
-.thredded--new-topic-accordion > summary:hover {
+.thredded--new-topic-accordion > summary.thredded--navigation-link:hover {
   color: $fgLink;
 }
 
