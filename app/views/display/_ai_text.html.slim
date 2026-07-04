@@ -20,13 +20,13 @@
             div.versions-wrapper
               div.version-col(style="display: none;")
                 div.version-content
-                  h5 =t('.human_transcription')
                   div.table-responsive(data-diff-transcription="changed")
                     div.html-code
                       == @page.verbatim_transcription_plaintext.gsub("\n", '<br/>').html_safe
               div.version-col.right
                 div.version-content
-                  h5 =t('.ai_draft')
+                  h5(data-diff-label="ai_draft") =t('.ai_draft')
+                  h5(data-diff-label="human_transcription") =t('.human_transcription')
                   div.table-responsive(data-diff-transcription="original")
                     div.html-code
                       = @ai_transcription.source_text.gsub("\n", '<br/>').html_safe

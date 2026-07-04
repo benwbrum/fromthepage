@@ -65,14 +65,14 @@ describe DisplayController do
           document = Nokogiri::HTML(response.body)
           changed_container = document.at_css('#ai-diff-content [data-diff-transcription="changed"]')
           original_container = document.at_css('#ai-diff-content [data-diff-transcription="original"]')
+          ai_draft_label = document.at_css('#ai-diff-content [data-diff-label="ai_draft"]')
+          human_transcription_label = document.at_css('#ai-diff-content [data-diff-label="human_transcription"]')
 
           expect(changed_container.at_css('h5')).to be_nil
-          expect(changed_container.previous_element.name).to eq('h5')
-          expect(changed_container.previous_element.text.strip).to eq('Human Transcription')
-
           expect(original_container.at_css('h5')).to be_nil
-          expect(original_container.previous_element.name).to eq('h5')
-          expect(original_container.previous_element.text.strip).to eq('AI Draft')
+          expect(ai_draft_label.text.strip).to eq('AI Draft')
+          expect(human_transcription_label.text.strip).to eq('Human Transcription')
+          expect(original_container.previous_element).to eq(human_transcription_label)
         end
 
         context 'when switching ai_transcription' do
