@@ -251,7 +251,7 @@ class Work::Export::Lib::Utils
       end
     end
 
-    latex += "\\bottomrule\\noalign{}\n"
+    latex += "\\bottomrule\n"
     latex += "\\end{xltabular}\n"
 
     latex

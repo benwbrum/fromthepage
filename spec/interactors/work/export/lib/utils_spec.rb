@@ -74,5 +74,18 @@ describe Work::Export::Lib::Utils do
 
       expect(result).to match(/A & B \\\\\s*\nC & D \\\\\s*\n\\midrule/)
     end
+
+    it 'does not append an empty noalign after the bottom rule' do
+      xml = <<~XML
+        <page><table class="tabular"><tbody>
+          <tr><td>[illegible]</td><td>cash for flour</td><td>72</td><td>-</td></tr>
+        </tbody></table></page>
+      XML
+
+      result = described_class.xml_to_latex(page: page, xml_text: xml)
+
+      expect(result).to include("\\bottomrule\n\\end{xltabular}")
+      expect(result).not_to include('\\bottomrule\\noalign{}')
+    end
   end
 end
