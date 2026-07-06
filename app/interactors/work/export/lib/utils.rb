@@ -231,6 +231,8 @@ class Work::Export::Lib::Utils
     all_rows += table_element.elements['tbody'].elements.to_a('tr') if table_element.elements['tbody']
 
     column_count = all_rows.map { |tr| tr.elements.count }.max
+    return '' if column_count.nil? || column_count.zero?
+
     column_format = ('X' * column_count).strip
 
     latex = "#{LINEBREAK_ELEMENT}\n"

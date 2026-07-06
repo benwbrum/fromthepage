@@ -74,5 +74,25 @@ describe Work::Export::Lib::Utils do
 
       expect(result).to match(/A & B \\\\\s*\nC & D \\\\\s*\n\\midrule/)
     end
+
+    it 'returns empty string for a table with no rows' do
+      xml = <<~XML
+        <page><table class="tabular"></table></page>
+      XML
+
+      result = described_class.xml_to_latex(page: page, xml_text: xml)
+
+      expect(result).not_to include('xltabular')
+    end
+
+    it 'returns empty string for a table with empty thead and tbody elements' do
+      xml = <<~XML
+        <page><table class="tabular"><thead></thead><tbody></tbody></table></page>
+      XML
+
+      result = described_class.xml_to_latex(page: page, xml_text: xml)
+
+      expect(result).not_to include('xltabular')
+    end
   end
 end
