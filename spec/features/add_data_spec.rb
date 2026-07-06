@@ -88,7 +88,7 @@ RSpec.describe 'uploads data for collections', order: :defined do
       visit dashboard_owner_path
       page.find('.tabs').click_link('Start A Project')
       find('#at_id', visible: false)
-        .set('https://data.ucd.ie/api/img/manifests/ivrla:2638')
+        .set('https://iiif.io/api/cookbook/recipe/0001-mvm-image/manifest.json')
       find('#iiif_import', visible: false).click
       expect(page).to have_content('Metadata')
       expect(page).to have_content('Manifest')
@@ -99,7 +99,7 @@ RSpec.describe 'uploads data for collections', order: :defined do
       works_count = collection.works.reload.count
       page.find('.tabs').click_link('Start A Project')
       find('#at_id', visible: false)
-        .set('https://data.ucd.ie/api/img/manifests/ivrla:2654')
+        .set('https://iiif.io/api/cookbook/recipe/0009-book-1/manifest.json')
       find('#iiif_import', visible: false).click
       expect(page).to have_content('Metadata')
       expect(page).to have_content('Manifest')

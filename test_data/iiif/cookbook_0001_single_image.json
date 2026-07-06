@@ -1,0 +1,94 @@
+{
+  "@context": "http://iiif.io/api/presentation/3/context.json",
+  "id": "https://iiif.io/api/cookbook/recipe/0001-mvm-image/manifest.json",
+  "type": "Manifest",
+  "label": {
+    "en": [
+      "Single Image Example"
+    ]
+  },
+  "metadata": [
+    {
+      "label": {
+        "en": [
+          "Author"
+        ]
+      },
+      "value": {
+        "none": [
+          "Anne Author"
+        ]
+      }
+    },
+    {
+      "label": {
+        "en": [
+          "Published"
+        ]
+      },
+      "value": {
+        "en": [
+          "Paris, circa 1900"
+        ]
+      }
+    }
+  ],
+  "summary": {
+    "en": [
+      "A simple example showing a single image as a IIIF manifest."
+    ]
+  },
+  "requiredStatement": {
+    "label": {
+      "en": [
+        "Attribution"
+      ]
+    },
+    "value": {
+      "en": [
+        "Provided by Example Organization"
+      ]
+    }
+  },
+  "items": [
+    {
+      "id": "https://iiif.io/api/cookbook/recipe/0001-mvm-image/canvas/p1",
+      "type": "Canvas",
+      "height": 1800,
+      "width": 1200,
+      "label": {
+        "none": [
+          "p. 1"
+        ]
+      },
+      "items": [
+        {
+          "id": "https://iiif.io/api/cookbook/recipe/0001-mvm-image/page/p1/1",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "https://iiif.io/api/cookbook/recipe/0001-mvm-image/annotation/p0001-image",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "https://iiif.io/api/image/3.0/example/reference/59d09e6773341f28ea166e9f3c1e674f-gallica_ark_12148_btv1b7200563s_f18/full/max/0/default.jpg",
+                "type": "Image",
+                "format": "image/jpeg",
+                "service": [
+                  {
+                    "@id": "https://iiif.io/api/image/3.0/example/reference/59d09e6773341f28ea166e9f3c1e674f-gallica_ark_12148_btv1b7200563s_f18",
+                    "@type": "ImageService3",
+                    "profile": "level1"
+                  }
+                ],
+                "height": 1800,
+                "width": 1200
+              },
+              "target": "https://iiif.io/api/cookbook/recipe/0001-mvm-image/canvas/p1"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
