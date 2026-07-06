@@ -153,12 +153,11 @@
   // give codeMirror with class of respective text direction
   myCodeMirror.getWrapperElement().classList.add("<%= text_direction %>");
 
-  if("<%= height %>") {
+  if("<%= height.present? %>") {
     myCodeMirror.getWrapperElement().style.maxHeight = "<%= height %>px";
     myCodeMirror.getWrapperElement().style.minHeight = "<%= height %>px";
     document.querySelector('.CodeMirror-buttonsPanel').style.top = 0;
   }
-
 
   // open the modal
   function openTableModal() {
