@@ -40,6 +40,15 @@ describe Work::Export::Lib::Utils do
       expect(described_class.latex_escape('')).to eq('')
       expect(described_class.latex_escape(nil)).to eq('')
     end
+
+    it 'escapes a backslash in plain text that looks like a LaTeX command' do
+      expect(described_class.latex_escape('Nel\\podere')).to eq('Nel\\textbackslash{}podere')
+    end
+
+    it 'preserves real LaTeX commands with braces' do
+      expect(described_class.latex_escape('\\textbf{hello}')).to eq('\\textbf{hello}')
+      expect(described_class.latex_escape('\\textbackslash{}')).to eq('\\textbackslash{}')
+    end
   end
 
   describe '.xml_to_latex' do

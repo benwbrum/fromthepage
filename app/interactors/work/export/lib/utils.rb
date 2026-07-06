@@ -45,7 +45,7 @@ class Work::Export::Lib::Utils
       '^'  => '\\textasciicircum{}'
     }
 
-    command_regex = /\\[a-zA-Z]+(?:\{[^}]*\})?/
+    command_regex = /\\[a-zA-Z]+\{[^}]*\}/
 
     text.gsub(/#{command_regex}|./m) do |chunk|
       if chunk.match?(command_regex)
