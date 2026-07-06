@@ -114,10 +114,42 @@ describe Work::Export::Printable do
         expect(sanitized_tex).to include("\\documentclass{article}")
       end
 
-      it 'returns the original tex when no metadata wrapper exists' do
+      it 'injects sout fallback when no metadata wrapper exists' do
         allow(exporter).to receive(:tex_string).and_return(tex_without_metadata)
 
-        expect(exporter.tex_string_for_conversion).to eq(tex_without_metadata)
+        expect(exporter.tex_string_for_conversion).to eq(<<~TEX)
+          \\documentclass{article}
+          \\begin{document}
+          \\providecommand{\\sout}[1]{#1}
+        TEX
+      end
+
+      it 'adds a fallback sout command for pdf conversion' do
+        allow(exporter).to receive(:tex_string).and_return(<<~TEX)
+          \\documentclass{article}
+          \\begin{document}
+          \\sout{Notice to claimant}
+        TEX
+
+        expect(exporter.tex_string_for_conversion).to eq(<<~TEX)
+          \\documentclass{article}
+          \\begin{document}
+          \\providecommand{\\sout}[1]{#1}
+          \\sout{Notice to claimant}
+        TEX
+      end
+
+      it 'prepends fallback sout command when begin document is missing' do
+        allow(exporter).to receive(:tex_string).and_return(<<~TEX)
+          \\documentclass{article}
+          \\sout{Notice to claimant}
+        TEX
+
+        expect(exporter.tex_string_for_conversion).to eq(<<~TEX)
+          \\providecommand{\\sout}[1]{#1}
+          \\documentclass{article}
+          \\sout{Notice to claimant}
+        TEX
       end
 
       it 'removes metadata wrapper with varying whitespace and multiline content' do
@@ -135,6 +167,7 @@ describe Work::Export::Printable do
         expect(exporter.tex_string_for_conversion).to eq(<<~TEX)
           \\documentclass{article}
           \\begin{document}
+          \\providecommand{\\sout}[1]{#1}
         TEX
       end
     end

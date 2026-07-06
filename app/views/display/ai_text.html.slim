@@ -12,7 +12,7 @@
             =fe_filter_select(key: :ai_transcription_id, value: params[:ai_transcription_id], options: @ai_transcription_options)
     -else
       .page_info
-        =t('.ai_text_generated_with', model: @page.ai_transcription.model, date: @page.ai_transcription.created_at.strftime("%B %e, %Y"))
+        =t('.ai_text_generated_with', model: @ai_transcription.model, date: @ai_transcription.created_at.strftime("%B %e, %Y"))
 
 #ai-text.page-columns(data-layout-mode="ltr")
   .page-column(id="leftColumn")
