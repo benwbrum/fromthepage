@@ -299,9 +299,25 @@
             <h2 class="title" data-aos="zoom-in" data-aos-duration="800">Extract structured data.</h2>
             <p class="subtitle" data-aos="zoom-in" data-aos-duration="900">Some collections are more than documents—they're datasets. FromThePage helps transform handwritten ledgers, registers, forms, and other structured records into searchable metadata, indexes and spreadsheets that support discovery, digital collections, and new research.</p>
 
-            <!-- PLACEHOLDER: Three-panel visual: Left – handwritten ledger page; Center – FromThePage field interface; Right – resulting spreadsheet with arrows highlighting matched fields. -->
-            <div class="structured-visual" data-aos="zoom-in" data-aos-duration="1000">
-                <img src="https://placehold.co/900x380/e8e8e8/999999?text=Ledger+→+FromThePage+Fields+→+Spreadsheet" alt="Structured data workflow" class="img-fluid">
+            <div class="structured-workflow" data-aos="zoom-in" data-aos-duration="1000">
+                <figure class="structured-figure">
+                    <%= image_tag("materials/structured-baptism.png", alt: "Handwritten register") %>
+                    <figcaption><span>Ledger</span></figcaption>
+                </figure>
+
+                <div class="structured-arrow">→</div>
+
+                <figure class="structured-figure structured-figure-register">
+                    <%= image_tag("materials/structured-register.jpg", alt: "FromThePage transcription interface") %>
+                    <figcaption><span>FromThePage transcription</span></figcaption>
+                </figure>
+
+                <div class="structured-arrow">→</div>
+
+                <figure class="structured-figure">
+                    <%= image_tag("materials/structured-export.png", alt: "Spreadsheet export") %>
+                    <figcaption><span>Spreadsheet</span></figcaption>
+                </figure>
             </div>
 
             <div class="row">

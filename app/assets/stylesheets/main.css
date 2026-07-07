@@ -3244,14 +3244,58 @@ footer .copy {
   background-size: cover;
   z-index: -1;
 }
-.home-structured .structured-visual {
-  margin-bottom: 50px;
-  text-align: center;
+.home-structured .structured-workflow {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 40px;
 }
-.home-structured .structured-visual img {
+.home-structured .structured-arrow {
+  font-size: 40px;
+  color: #8a7a54;
+  line-height: 1;
+}
+.home-structured .structured-figure {
+  position: relative;
+  margin: 0;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 8px 28px rgba(58,51,44,0.18);
+  background: #d9cba0;
+  aspect-ratio: 4/3;
+}
+.home-structured .structured-figure img {
   width: 100%;
-  height: auto;
-  border-radius: 10px;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.home-structured .structured-figure-register img {
+  object-position: center 30%;
+}
+.home-structured .structured-figure figcaption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 20px 18px 14px;
+  background: linear-gradient(to top, rgba(30,24,18,0.75), rgba(30,24,18,0));
+}
+.home-structured .structured-figure figcaption span {
+  color: #fdfbf7;
+  font-family: "Lora", Georgia, serif;
+  font-size: 16px;
+  font-weight: 600;
+}
+@media (max-width: 768px) {
+  .home-structured .structured-workflow {
+    grid-template-columns: 1fr;
+  }
+  .home-structured .structured-arrow {
+    text-align: center;
+    font-size: 28px;
+  }
 }
 
 /* ----- Built for libraries and archives. ------------------- */
