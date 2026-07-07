@@ -248,9 +248,23 @@
             <h2 class="title" data-aos="zoom-in" data-aos-duration="800">Bring people into the process.</h2>
             <p class="subtitle" data-aos="zoom-in" data-aos-duration="900">Every collection has people who care about it. FromThePage helps cultural heritage institutions involve volunteers, students, researchers, and community experts in creating, reviewing, and enriching handwritten collections.</p>
 
-            <!-- PLACEHOLDER: Large photo showing multiple contributors working together—volunteers transcribing, students reviewing, discussion interface. Consider UVA transcribathon photo. -->
-            <div class="community-image" data-aos="zoom-in" data-aos-duration="1000">
-                <img src="https://placehold.co/900x450/e8e8e8/999999?text=Community+Photo+(UVA+transcribathon%3F)" alt="Community transcribing together" class="img-fluid">
+            <div class="community-photo-grid" data-aos="zoom-in" data-aos-duration="1000">
+                <figure class="community-photo-figure community-photo-main">
+                    <%= image_tag("materials/community-lva.jpg", alt: "Library of Virginia transcribathon") %>
+                    <figcaption><span>Library of Virginia</span></figcaption>
+                </figure>
+
+                <div class="community-photo-stack">
+                    <figure class="community-photo-figure">
+                        <%= image_tag("materials/community-parker.png", alt: "Parker Library, Cambridge") %>
+                        <figcaption><span>Parker Library, Cambridge</span></figcaption>
+                    </figure>
+
+                    <figure class="community-photo-figure community-photo-uva">
+                        <%= image_tag("materials/community-uva.png", alt: "University of Virginia") %>
+                        <figcaption><span>University of Virginia</span></figcaption>
+                    </figure>
+                </div>
             </div>
 
             <div class="row">

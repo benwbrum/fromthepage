@@ -3159,16 +3159,68 @@ footer .copy {
     padding-top: 70px;
   }
 }
-.home-community .community-image {
-  margin-bottom: 50px;
-  border-radius: 10px;
-  overflow: hidden;
-  text-align: center;
+.home-community .community-photo-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 20px;
+  margin-bottom: 40px;
 }
-.home-community .community-image img {
+.home-community .community-photo-stack {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: 20px;
+}
+.home-community .community-photo-figure {
+  position: relative;
+  margin: 0;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 8px 28px rgba(58,51,44,0.12);
+  background: #e8e4dc;
+}
+.home-community .community-photo-figure img {
   width: 100%;
-  height: auto;
-  border-radius: 10px;
+  height: 100%;
+  min-height: 220px;
+  object-fit: cover;
+  display: block;
+  filter: sepia(0.12) saturate(1.08) brightness(1.02) contrast(0.98);
+}
+.home-community .community-photo-main img {
+  min-height: 480px;
+}
+.home-community .community-photo-uva img {
+  object-position: center 35%;
+}
+.home-community .community-photo-figure figcaption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 20px 20px 16px;
+  background: linear-gradient(to top, rgba(30,24,18,0.72), rgba(30,24,18,0));
+}
+.home-community .community-photo-main figcaption {
+  padding: 28px 24px 20px;
+}
+.home-community .community-photo-figure figcaption span {
+  color: #fdfbf7;
+  font-family: "Lora", Georgia, serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+.home-community .community-photo-main figcaption span {
+  font-size: 18px;
+}
+@media (max-width: 768px) {
+  .home-community .community-photo-grid {
+    grid-template-columns: 1fr;
+  }
+  .home-community .community-photo-stack {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+  }
 }
 .home-community .item {
   background-color: #FEFDFA;
