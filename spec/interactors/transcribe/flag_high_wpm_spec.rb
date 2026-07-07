@@ -11,6 +11,7 @@ describe Transcribe::FlagHighWpm do
   let(:source_text) do
     'word ' * 100
   end
+  let(:current_time) { Time.zone.parse('2026-01-01 12:00:00') }
 
   let(:result) do
     page.update!(source_text: source_text)
@@ -22,6 +23,8 @@ describe Transcribe::FlagHighWpm do
   end
 
   before do
+    allow(Time).to receive(:current).and_return(current_time)
+
     Ahoy::Event.create!(
       user_id: user.id,
       name: 'transcribe#display_page',
@@ -34,7 +37,7 @@ describe Transcribe::FlagHighWpm do
   end
 
   context 'when wpm is above threshold for a new transcription' do
-    let(:display_time) { 10.seconds.ago }
+    let(:display_time) { current_time - 10.seconds }
 
     it 'creates high_wpm suspicious behavior with metadata' do
       expect { result }.to change { SuspiciousBehavior.count }.by(1)
@@ -43,7 +46,7 @@ describe Transcribe::FlagHighWpm do
         behavior_type: 'high_wpm',
         metadata: include(
           'words' => 100,
-          'duration_seconds' => be_between(9, 12),
+          'duration_seconds' => 10,
           'wpm' => be > 300
         )
       )
@@ -52,7 +55,7 @@ describe Transcribe::FlagHighWpm do
 
   context 'when page already had a transcription' do
     let(:initial_source_text) { 'existing transcription' }
-    let(:display_time) { 10.seconds.ago }
+    let(:display_time) { current_time - 10.seconds }
 
     it 'does not create suspicious behavior' do
       expect { result }.not_to change { SuspiciousBehavior.count }
@@ -60,7 +63,7 @@ describe Transcribe::FlagHighWpm do
   end
 
   context 'when wpm is below threshold' do
-    let(:display_time) { 30.minutes.ago }
+    let(:display_time) { current_time - 30.minutes }
 
     it 'does not create suspicious behavior' do
       expect { result }.not_to change { SuspiciousBehavior.count }

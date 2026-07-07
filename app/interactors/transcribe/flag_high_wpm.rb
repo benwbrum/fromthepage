@@ -49,14 +49,23 @@ class Transcribe::FlagHighWpm < ApplicationInteractor
   end
 
   def transcription_duration_seconds
-    display_event = Ahoy::Event
-                    .where(user_id: @user.id, name: 'transcribe#display_page')
-                    .where("JSON_EXTRACT(properties, '$.page_id') = ?", @page.id)
-                    .order(time: :desc)
-                    .first
+    events_scope = Ahoy::Event
+                   .where(user_id: @user.id, name: 'transcribe#display_page')
+                   .where('time > ?', 1.day.ago)
+                   .order(time: :desc)
+
+    display_event = if mysql_adapter?
+                      events_scope.where("JSON_EXTRACT(properties, '$.page_id') = ?", @page.id).first
+    else
+                      events_scope.limit(25).detect { |event| event.properties['page_id'] == @page.id }
+    end
 
     return if display_event.nil?
 
     (Time.current - display_event.time).to_i
+  end
+
+  def mysql_adapter?
+    ActiveRecord::Base.connection.adapter_name.downcase.include?('mysql')
   end
 end
