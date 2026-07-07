@@ -37,6 +37,7 @@ export default class extends Controller {
       afterCreateRow: this.updateHotHeight.bind(this),
       afterRemoveRow: this.updateHotHeight.bind(this),
       afterChange: this.afterChangeCallback.bind(this),
+      beforeKeyDown: this.beforeKeyDownCallback.bind(this),
       afterSelection: this.afterSelectionCallback.bind(this),
       modifyColWidth: function(width, col) {
         if (width > 300) {
@@ -136,6 +137,28 @@ export default class extends Controller {
     return rows * 23 + 40;
   };
 
+  rowHasContent(rowData) {
+    return rowData.some(cellValue => cellValue !== null && cellValue !== '' && cellValue !== false && cellValue !== 'false');
+  }
+
+  ensureTrailingRow(rowIndex) {
+    if (rowIndex !== this._handsontable.countRows() - 1) {
+      return;
+    }
+
+    if (!this.rowHasContent(this._handsontable.getDataAtRow(rowIndex))) {
+      return;
+    }
+
+    this._handsontable.alter('insert_row', this._handsontable.countRows());
+  }
+
+  scheduleTrailingRow(rowIndex) {
+    setTimeout(() => {
+      this.ensureTrailingRow(rowIndex);
+    }, 0);
+  }
+
   updateHotHeight() {
     document.getElementById(`fields-${this.transcriptionFieldValue.id}`).value = JSON.stringify(this._handsontable.getData());
 
@@ -151,14 +174,25 @@ export default class extends Controller {
 
     document.getElementById(`fields-${this.transcriptionFieldValue.id}`).value = JSON.stringify(this._handsontable.getData());
 
-    if (changes) {
-      let rowsCount = this._handsontable.countRows();
-      changes.forEach(([row, prop, oldValue, newValue]) => {
-        if (row + 1 === rowsCount && newValue !== '' ) {
-          this._handsontable.alter('insert_row', rowsCount);
-        }
+    if (changes && source !== 'loadData') {
+      [...new Set(changes.map(change => change[0]))].forEach(row => {
+        this.scheduleTrailingRow(row);
       });
     }
+  }
+
+  beforeKeyDownCallback(event) {
+    if (event.key !== 'Tab' && event.key !== 'Enter') {
+      return;
+    }
+
+    const selectedCell = this._handsontable.getSelectedLast();
+
+    if (!selectedCell) {
+      return;
+    }
+
+    this.scheduleTrailingRow(selectedCell[0]);
   }
 
   afterSelectionCallback(row, column, row2, column2, preventScrolling, selectionLayerLevel) {

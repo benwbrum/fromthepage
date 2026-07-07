@@ -68,6 +68,7 @@ class Page < ApplicationRecord
 
   has_many :ai_transcriptions, class_name: 'AiTranscription'
   has_one :ai_transcription, -> { order(created_at: :desc) }, class_name: 'AiTranscription'
+  has_one :finished_ai_transcription, -> { status_finished.order(created_at: :desc) }, class_name: 'AiTranscription'
 
   has_many :alto_transcriptions, -> { alto }, class_name: 'AiTranscription'
   has_one :alto_transcription, -> { alto.order(created_at: :desc) }, class_name: 'AiTranscription'
@@ -589,14 +590,14 @@ class Page < ApplicationRecord
 
   # TODO: Remove this on different PR after running migration
   def has_ai_plaintext?(ai_transcription_to_use: nil)
-    ai_transcription_to_use ||= self.ai_transcription
+    ai_transcription_to_use ||= self.finished_ai_transcription
 
-    (ai_transcription_to_use&.status_finished? && ai_plaintext(ai_transcription_to_use: ai_transcription_to_use).present?) || File.exist?(self.ai_plaintext_path)
+    (ai_transcription_to_use.present? && ai_plaintext(ai_transcription_to_use: ai_transcription_to_use).present?) || File.exist?(self.ai_plaintext_path)
   end
 
   # TODO: Remove this on different PR after running migration
   def ai_plaintext(ai_transcription_to_use: nil)
-    ai_transcription_to_use ||= self.ai_transcription
+    ai_transcription_to_use ||= self.finished_ai_transcription
 
     if self.alto_transcription.present?
       self.alto_transcription.source_text

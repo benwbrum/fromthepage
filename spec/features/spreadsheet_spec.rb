@@ -30,6 +30,10 @@ describe 'spreadsheet' do
     click_button 'Save'
   end
 
+  def handsontable_expression(method_call)
+    "window.Stimulus.getControllerForElementAndIdentifier(document.querySelector('[data-controller=\"handsontable\"]'), 'handsontable')._handsontable.#{method_call}"
+  end
+
   before :each do
     login_as(owner, scope: :user)
   end
@@ -71,6 +75,49 @@ describe 'spreadsheet' do
         page.validate_source
         expect(page.errors).to be_empty
       end
+    end
+  end
+
+  describe 'transcription' do
+    let!(:spreadsheet_field) do
+      create(:transcription_field, :spreadsheet_field,
+             collection: collection,
+             label: 'Spreadsheet field',
+             position: 1,
+             starting_rows: 1)
+    end
+    let!(:spreadsheet_column) do
+      create(:spreadsheet_column,
+             transcription_field: spreadsheet_field,
+             label: 'Text field',
+             input_type: 'text',
+             position: 1)
+    end
+
+    it 'adds a new row when tabbing out of the last populated spreadsheet row', js: true do
+      work = create(:work, :with_pages, collection: collection, owner_user_id: owner.id)
+      field_page = work.pages.first
+
+      visit collection_transcribe_page_path(collection.owner, collection, work, field_page)
+
+      page.execute_script("#{handsontable_expression('selectCell(0, 0)')}; #{handsontable_expression('listen()')};")
+      page.driver.browser.action.send_keys('Row 1', :tab).perform
+
+      Timeout.timeout(Capybara.default_max_wait_time) do
+        loop do
+          row_count = page.evaluate_script(handsontable_expression('countRows()'))
+
+          break if row_count == 2
+
+          sleep 0.1
+        end
+      end
+
+      row_data = page.evaluate_script(handsontable_expression('getData()'))
+
+      expect(row_data.length).to eq 2
+      expect(row_data.first.first).to eq 'Row 1'
+      expect(row_data.last.first).to be_nil
     end
   end
 end

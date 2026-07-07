@@ -1,16 +1,16 @@
 require 'contentdm_translator'
 namespace :fromthepage do
   desc 'Export transcripts for completed works to CONTENTdm'
-  task :cdm_transcript_export, [:collection_id] => :environment do |t, args|
-    collection_id = args.collection_id.to_i
-    collection = Collection.find(collection_id)
+  task :cdm_transcript_export, [:target_slug] => :environment do |t, args|
+    sync_target = Collection.friendly.find(args.target_slug, allow_nil: true) || DocumentSet.friendly.find(args.target_slug)
+    collection = sync_target.is_a?(DocumentSet) ? sync_target.collection : sync_target
     username = ENV['contentdm_username']
     password = ENV['contentdm_password']
     license = ENV['contentdm_license']
 
     include_ai_drafts = collection.cdm_export_setting&.transcript_source == CdmExportSetting::HUMAN_AND_AI
 
-    collection.works.joins(:sc_manifest, :work_statistic).each do |work|
+    sync_target.works.joins(:sc_manifest, :work_statistic).each do |work|
       if include_ai_drafts || work.work_statistic.complete >= 99
         print "\tBeginning export of work #{work.id}, '#{work.title}' \n"
         ContentdmTranslator.export_work_to_cdm_with_retry(work, username, password, license)

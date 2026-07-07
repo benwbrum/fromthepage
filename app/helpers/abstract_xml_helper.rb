@@ -529,6 +529,7 @@ module AbstractXmlHelper
     return '' if xml_text.blank?
 
     collection ||= @collection
+    xml_text_digest = Digest::MD5.hexdigest(xml_text)
 
     if highlight_article_id.present?
       return xml_to_html(xml_text.to_s.dup, preserve_lb, false, collection, highlight_article_id)
@@ -538,6 +539,7 @@ module AbstractXmlHelper
       'xml_to_html',
       record.class.name,
       record.cache_key_with_version,
+      xml_text_digest,
       attribute,
       preserve_lb,
       collection&.class&.name,
