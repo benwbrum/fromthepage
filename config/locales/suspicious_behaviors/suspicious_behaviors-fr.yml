@@ -12,6 +12,7 @@ fr:
       behavior_type:
         ai_warning_left: Texte d'avertissement IA à gauche
         all: Tous
+        high_wpm: Transcription à WPM élevé
         large_paste: Grande pâte
         minimal_ai_changes: Modifications mineures du brouillon de l'IA
       status:

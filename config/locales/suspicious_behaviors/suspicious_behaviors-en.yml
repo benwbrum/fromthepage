@@ -12,6 +12,7 @@ en:
       behavior_type:
         ai_warning_left: AI warning text left
         all: All
+        high_wpm: High WPM transcription
         large_paste: Large Paste
         minimal_ai_changes: Minimal changes to AI draft
       status:

@@ -227,6 +227,10 @@ describe TranscribeController do
       it 'updates page without losing article links' do
         source_article.update_column(:source_text, '[[Original]]')
         article.update!(title: 'Renamed')
+        expect(Transcribe::FlagHighWpm).to receive(:new).with(
+          page: an_object_having_attributes(id: page.id),
+          user: owner
+        ).and_call_original
 
         login_as owner
         subject

@@ -63,6 +63,7 @@ class SuspiciousBehavior < ApplicationRecord
   BEHAVIOR_TYPE_FILTERS = [
     :all,
     :large_paste,
+    :high_wpm,
     :ai_warning_left,
     :minimal_ai_changes
   ].freeze

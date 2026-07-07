@@ -102,6 +102,11 @@ class TranscribeController  < ApplicationController
       end
 
       if @page.save
+        Transcribe::FlagHighWpm.new(
+          page: @page,
+          user: current_user
+        ).call
+
         # TODO: Implement in save_transcription refactor PR as well
         if @page.ai_draft_used
           record_deed(DeedType::AI_DRAFT)

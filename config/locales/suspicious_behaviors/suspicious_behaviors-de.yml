@@ -12,6 +12,7 @@ de:
       behavior_type:
         ai_warning_left: KI-Warntext links
         all: Alle
+        high_wpm: Transkription mit hoher WPM
         large_paste: Große Paste
         minimal_ai_changes: Minimale Änderungen am KI-Entwurf
       status:

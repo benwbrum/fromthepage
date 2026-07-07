@@ -12,6 +12,7 @@ es:
       behavior_type:
         ai_warning_left: Texto de advertencia de IA a la izquierda
         all: Todo
+        high_wpm: Transcripción con WPM alto
         large_paste: Pasta grande
         minimal_ai_changes: Cambios mínimos en el borrador de IA
       status:
