@@ -27,6 +27,12 @@ class Work::Export::Lib::Utils
     'unclear'
   ]
 
+  def self.latex_escape_notes(text)
+    return '' if text.blank?
+
+    latex_escape(text).gsub(/\n/, LINEBREAK_ELEMENT)
+  end
+
   def self.latex_escape(text)
     return '' if text.blank?
 

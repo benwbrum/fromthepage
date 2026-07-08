@@ -6,7 +6,7 @@
 
 \begin{small}
 <% notes.each do |note| %>
-  <%= "\\hspace*{0.5em}\\textit{#{Work::Export::Lib::Utils.latex_escape(note.user.display_name + ': ' + note.body)}} \\\\" %>
+  <%= "\\hspace*{0.5em}\\textit{#{Work::Export::Lib::Utils.latex_escape_notes(note.user.display_name + ': ' + note.body)}} \\\\" %>
 
 <% end %>
 \end{small}

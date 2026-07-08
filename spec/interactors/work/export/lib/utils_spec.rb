@@ -42,6 +42,35 @@ describe Work::Export::Lib::Utils do
     end
   end
 
+  describe '.latex_escape_notes' do
+    it 'returns empty string for blank input' do
+      expect(described_class.latex_escape_notes('')).to eq('')
+      expect(described_class.latex_escape_notes(nil)).to eq('')
+    end
+
+    it 'escapes standard LaTeX special characters' do
+      expect(described_class.latex_escape_notes('100% & more')).to eq('100\\% \\& more')
+    end
+
+    it 'replaces single newlines with LaTeX line breaks' do
+      expect(described_class.latex_escape_notes("line1\nline2")).to eq("line1\\\\{}\nline2")
+    end
+
+    it 'replaces blank lines (double newlines) with LaTeX line breaks to prevent \\par inside \\textit{}' do
+      note_body = "Title:\n\n* Item one\n* Item two"
+      result = described_class.latex_escape_notes(note_body)
+      expect(result).not_to include("\n\n")
+      expect(result).to eq("Title:\\\\{}\n\\\\{}\n* Item one\\\\{}\n* Item two")
+    end
+
+    it 'escapes special characters and replaces newlines together' do
+      note_body = "100% done\n\nnext paragraph"
+      result = described_class.latex_escape_notes(note_body)
+      expect(result).to eq("100\\% done\\\\{}\n\\\\{}\nnext paragraph")
+      expect(result).not_to include("\n\n")
+    end
+  end
+
   describe '.xml_to_latex' do
     let(:page) { nil }
 
