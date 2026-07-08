@@ -3252,7 +3252,7 @@ footer .copy {
   margin-bottom: 40px;
 }
 .home-structured .structured-arrow {
-  font-size: 40px;
+  font-size: 64px;
   color: #8a7a54;
   line-height: 1;
 }
@@ -3323,14 +3323,114 @@ footer .copy {
     padding-top: 70px;
   }
 }
-.home-built .workflow-diagram {
-  margin-bottom: 50px;
-  text-align: center;
+.home-built .interop-diagram {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(12px, 3vw, 24px);
+  margin-bottom: 56px;
 }
-.home-built .workflow-diagram img {
-  width: 100%;
-  height: auto;
+.home-built .interop-dashed-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 2px;
+  background-image: linear-gradient(to right, transparent 0, transparent 6px, #d8d3c6 6px, #d8d3c6 14px);
+  background-size: 20px 2px;
+  background-repeat: repeat-x;
+  transform: translateY(-1px);
+  z-index: 0;
+}
+.home-built .interop-panel {
+  position: relative;
+  z-index: 1;
+  flex: 1 1 380px;
+  min-width: 260px;
+  max-width: 440px;
+  background: #e9e6dd;
+  border-radius: 16px;
+  padding: 36px;
+  box-shadow: 0 6px 20px rgba(58,51,44,0.06);
+}
+.home-built .interop-label {
+  display: block;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #a5793a;
+  margin-bottom: 20px;
+}
+.home-built .interop-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.home-built .interop-chip {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #fefdfa;
   border-radius: 10px;
+  padding: 14px 16px;
+}
+.home-built .interop-chip span:last-child {
+  font-size: 16px;
+  color: #3a332c;
+  font-weight: 500;
+}
+.home-built .interop-badge {
+  flex: none;
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  background: #c9a86a;
+  color: #fefdfa;
+  font-size: 10px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.02em;
+}
+.home-built .interop-center {
+  position: relative;
+  z-index: 1;
+  flex: 0 0 auto;
+  width: clamp(130px, 16vw, 190px);
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  background: #3a332c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  box-shadow: 0 0 0 10px rgba(58,51,44,0.06), 0 0 0 20px rgba(58,51,44,0.03), 0 14px 34px rgba(58,51,44,0.16);
+  font-family: "Lora", Georgia, serif;
+  font-weight: 700;
+  font-size: 20px;
+  color: #fefdfa;
+  letter-spacing: -0.01em;
+  padding: 0 14px;
+}
+@media (max-width: 768px) {
+  .home-built .interop-diagram {
+    flex-direction: column;
+    gap: 16px;
+  }
+  .home-built .interop-dashed-line {
+    display: none;
+  }
+  .home-built .interop-panel {
+    width: 100%;
+    max-width: 100%;
+  }
+  .home-built .interop-center {
+    width: 120px;
+    font-size: 16px;
+  }
 }
 .home-built .item {
   background-color: #FEFDFA;
