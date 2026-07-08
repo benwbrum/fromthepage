@@ -22,6 +22,27 @@ class Work::Export::Lib::Utils
   # Zero-width and invisible Unicode characters that LaTeX cannot handle
   LATEX_INVISIBLE_CHARS = /[\u{2060}\u{200B}\u{200C}\u{200D}\u{FEFF}]/
 
+  VULGAR_FRACTION_REPLACEMENTS = {
+    '¼' => '\\textonequarter{}',
+    '½' => '\\textonehalf{}',
+    '¾' => '\\textthreequarters{}',
+    '⅐' => '\\ensuremath{\\frac{1}{7}}',
+    '⅑' => '\\ensuremath{\\frac{1}{9}}',
+    '⅒' => '\\ensuremath{\\frac{1}{10}}',
+    '⅓' => '\\ensuremath{\\frac{1}{3}}',
+    '⅔' => '\\ensuremath{\\frac{2}{3}}',
+    '⅕' => '\\ensuremath{\\frac{1}{5}}',
+    '⅖' => '\\ensuremath{\\frac{2}{5}}',
+    '⅗' => '\\ensuremath{\\frac{3}{5}}',
+    '⅘' => '\\ensuremath{\\frac{4}{5}}',
+    '⅙' => '\\ensuremath{\\frac{1}{6}}',
+    '⅚' => '\\ensuremath{\\frac{5}{6}}',
+    '⅛' => '\\ensuremath{\\frac{1}{8}}',
+    '⅜' => '\\ensuremath{\\frac{3}{8}}',
+    '⅝' => '\\ensuremath{\\frac{5}{8}}',
+    '⅞' => '\\ensuremath{\\frac{7}{8}}'
+  }.freeze
+
   # Manually catch unsupported control_sequence that got through our parser
   UNSUPPORTED_LATEX_COMMANDS = [
     'unclear'
@@ -43,7 +64,7 @@ class Work::Export::Lib::Utils
       '_'  => '\\_',
       '~'  => '\\textasciitilde{}',
       '^'  => '\\textasciicircum{}'
-    }
+    }.merge(VULGAR_FRACTION_REPLACEMENTS)
 
     command_regex = /\\[a-zA-Z]+(?:\{[^}]*\})?/
 

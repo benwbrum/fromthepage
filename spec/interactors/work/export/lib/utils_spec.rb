@@ -36,6 +36,11 @@ describe Work::Export::Lib::Utils do
       expect(described_class.latex_escape(rights_statement)).to eq('NO COPYRIGHT - UNITED STATES')
     end
 
+    it 'escapes Unicode vulgar fractions to LaTeX-safe equivalents' do
+      expect(described_class.latex_escape('1⅛ cups')).to eq('1\ensuremath{\frac{1}{8}} cups')
+      expect(described_class.latex_escape('¼ ½ ¾')).to eq('\textonequarter{} \textonehalf{} \textthreequarters{}')
+    end
+
     it 'returns empty string for blank input' do
       expect(described_class.latex_escape('')).to eq('')
       expect(described_class.latex_escape(nil)).to eq('')
@@ -73,6 +78,15 @@ describe Work::Export::Lib::Utils do
       result = described_class.xml_to_latex(page: page, xml_text: xml)
 
       expect(result).to match(/A & B \\\\\s*\nC & D \\\\\s*\n\\midrule/)
+    end
+
+    it 'escapes Unicode vulgar fractions in generated LaTeX' do
+      xml = '<page><p>Use ⅛ cup sugar.</p></page>'
+
+      result = described_class.xml_to_latex(page: page, xml_text: xml)
+
+      expect(result).not_to include('⅛')
+      expect(result).to include('\ensuremath{\frac{1}{8}}')
     end
   end
 end
