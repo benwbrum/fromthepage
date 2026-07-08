@@ -115,6 +115,7 @@ class TranscribeController  < ApplicationController
         log_transcript_success
         flash[:notice] = t('.saved_notice')
 
+        # TODO: Implement in save_transcription refactor PR as well
         if @page.source_text_previously_changed?
           @page.ai_transcriptions.update_all(
             verbatim_cer: nil,
