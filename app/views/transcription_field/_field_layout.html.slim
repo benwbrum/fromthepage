@@ -4,6 +4,24 @@
       .field-wrapper[style="width: #{formatted_field[:width]}%"]
         =@field_presenter.generate_field_input(field_id: formatted_field[:field].id, content: formatted_field[:values])
 
+-if @page&.field_ai_draft_available?
+  -content_for :javascript
+    javascript:
+      var aiTranscriptionFields = #{{@page.finished_ai_transcription.transcription_json.to_json}};
+
+      document.getElementById('ai-draft-fields').addEventListener('click', function() {
+        $('.field-wrapper .field-input').each(function() {
+          var match = /^fields\[(\d+)\]/.exec($(this).attr('name'));
+          if (!match) return;
+          var fieldId = match[1];
+          if (Object.prototype.hasOwnProperty.call(aiTranscriptionFields, fieldId) && aiTranscriptionFields[fieldId] !== null) {
+            $(this).val(aiTranscriptionFields[fieldId]).trigger('input').trigger('change');
+          }
+        });
+        $('#ai-draft-fields').prop('disabled', true);
+        $('#ai_draft_used').val('true');
+      });
+
 -content_for :javascript
   javascript:
     function countChars() {
