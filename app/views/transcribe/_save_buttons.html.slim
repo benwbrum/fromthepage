@@ -3,7 +3,7 @@
     -if @preview_xml.present?
       =button_tag t('.edit'), :name => 'edit', type: 'submit', title: "#{t('.edit_tooltip')}"
     -else
-      -if @page && !@page.ai_plaintext.blank? && @collection.text_entry?
+      -if @page && !@collection.field_based && !@page.ai_plaintext.blank? && @collection.text_entry?
         =button_tag t('.copy_ai_plaintext'), type: 'button', id: 'copy-ai-plaintext', title: "#{t('.copy_ai_plaintext_tooltip')}"
       -if @page && @page.field_ai_draft_available?
         =button_tag t('.ai_draft_fields'), type: 'button', id: 'ai-draft-fields', title: "#{t('.ai_draft_fields_tooltip')}"
