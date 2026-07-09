@@ -169,41 +169,47 @@
             <h2 class="title" data-aos="zoom-in" data-aos-duration="800">Humans in Charge. AI as a Draft.</h2>
             <p class="subtitle" data-aos="zoom-in" data-aos-duration="900">AI can help cultural heritage institutions move faster, but handwritten collections still need human judgment. FromThePage uses AI to create editable drafts—not final transcripts—so volunteers, staff, students, and reviewers remain in control.</p>
 
-            <div class="row align-items-center">
-                <div class="col-lg-6" data-aos="zoom-in" data-aos-duration="800">
-                    <!-- PLACEHOLDER: Screenshots showing the AI draft workflow—draft generation, volunteer review/edit interface, and published result. -->
-                    <img src="https://placehold.co/600x420/e8e8e8/999999?text=AI+Workflow+Screenshots" alt="AI workflow" class="img-fluid">
+            <div class="ai-screenshot-wrap" data-aos="zoom-in" data-aos-duration="800">
+                <%= image_tag("materials/ai-draft-screenshot.png", alt: "AI draft workflow in FromThePage") %>
+                <svg viewBox="0 0 100 100" preserveAspectRatio="none" class="ai-annotations" aria-hidden="true">
+                    <line x1="73.37" y1="13.63" x2="74" y2="18.5" stroke="#c9372c" stroke-width="0.4"/>
+                    <ellipse cx="73.37" cy="11.33" rx="3.2" ry="2.3" fill="none" stroke="#c9372c" stroke-width="0.35"/>
+                    <line x1="18.74" y1="5.56" x2="14" y2="16.5" stroke="#c9372c" stroke-width="0.4"/>
+                    <ellipse cx="18.74" cy="3.86" rx="1.4" ry="1.7" fill="none" stroke="#c9372c" stroke-width="0.35"/>
+                    <line x1="70.8" y1="24.3" x2="71" y2="30.5" stroke="#c9372c" stroke-width="0.4"/>
+                    <rect x="45.0" y="19.4" width="50.9" height="4.9" rx="0.8" fill="none" stroke="#c9372c" stroke-width="0.35"/>
+                </svg>
+                <div class="ai-callout" style="top:18.5%; left:58%;">AI Draft button — transcribers choose when or if to use an AI draft</div>
+                <div class="ai-callout" style="top:16.5%; left:1%;">AI tab — see the draft, compare to human edited transcription, view the model, prompt, reasoning and tokens</div>
+                <div class="ai-callout" style="top:30.5%; left:56%;">Warning banner flags AI-generated text for review</div>
+            </div>
+
+            <div class="ai-steps-grid" data-aos="zoom-in" data-aos-duration="900">
+                <div class="ai-step">
+                    <div class="ai-step-num">01 &nbsp;Generate AI drafts</div>
+                    <p>Create draft transcriptions or metadata for handwritten materials.</p>
                 </div>
+                <div class="ai-step">
+                    <div class="ai-step-num">02 &nbsp;Review and edit</div>
+                    <p>Volunteers, staff, students, or project reviewers correct the draft before publication.</p>
+                </div>
+                <div class="ai-step">
+                    <div class="ai-step-num">03 &nbsp;Keep uncertainty visible</div>
+                    <p>FromThePage uses models that are willing to be tentative rather than confidently inventing text.</p>
+                </div>
+                <div class="ai-step">
+                    <div class="ai-step-num">04 &nbsp;Publish human-reviewed work</div>
+                    <p>Final transcripts and metadata reflect your institution's standards, not an unchecked AI output.</p>
+                </div>
+            </div>
 
-                <div class="col-lg-6">
-                    <ol class="ai-steps">
-                        <li data-aos="zoom-in" data-aos-duration="600">
-                            <h4>Generate AI drafts</h4>
-                            <p>Create draft transcriptions or metadata for handwritten materials.</p>
-                        </li>
-                        <li data-aos="zoom-in" data-aos-duration="700">
-                            <h4>Review and edit</h4>
-                            <p>Volunteers, staff, students, or project reviewers correct the draft before publication.</p>
-                        </li>
-                        <li data-aos="zoom-in" data-aos-duration="800">
-                            <h4>Keep uncertainty visible</h4>
-                            <p>FromThePage uses models that are willing to be tentative rather than confidently inventing text.</p>
-                        </li>
-                        <li data-aos="zoom-in" data-aos-duration="900">
-                            <h4>Publish human-reviewed work</h4>
-                            <p>Final transcripts and metadata reflect your institution's standards, not an unchecked AI output.</p>
-                        </li>
-                    </ol>
-
-                    <div class="ai-principles" data-aos="zoom-in" data-aos-duration="1000">
-                        <h4>Designed for responsible AI</h4>
-                        <ul>
-                            <li><strong>Optional</strong> — use AI when it fits your project</li>
-                            <li><strong>Transparent</strong> — distinguish AI drafts from human work</li>
-                            <li><strong>Editable</strong> — every draft can be reviewed and corrected</li>
-                            <li><strong>Human-reviewed</strong> — people make the final decision</li>
-                        </ul>
-                    </div>
+            <div class="ai-principles" data-aos="zoom-in" data-aos-duration="1000">
+                <div class="ai-principles-label">Designed for responsible AI</div>
+                <div class="ai-principles-items">
+                    <div><strong>Optional</strong> — use when it fits</div>
+                    <div><strong>Transparent</strong> — AI vs. human work</div>
+                    <div><strong>Editable</strong> — every draft correctable</div>
+                    <div><strong>Human-reviewed</strong> — people decide</div>
                 </div>
             </div>
         </div>
