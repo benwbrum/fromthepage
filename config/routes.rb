@@ -587,6 +587,7 @@ Fromthepage::Application.routes.draw do
       get ':work_id/transcribe_monitor/:page_id', as: 'monitor_view', to: 'transcribe#monitor_view'
       get ':work_id/guest/:page_id', as: 'guest_page', to: 'transcribe#guest'
       get ':work_id/ai_text/:page_id', as: 'ai_text_page', to: 'display#ai_text'
+      get ':work_id/ai_stats/:page_id', as: 'ai_stats_page', to: 'display#ai_stats'
       post ':work_id/generate_ai_text/:page_id', as: 'generate_ai_text_page', to: 'display#generate_ai_text'
       get ':work_id/translate/:page_id', as: 'translate_page', to: 'transcribe#translate'
       get ':work_id/help/:page_id', as: 'help_page', to: 'transcribe#help'
