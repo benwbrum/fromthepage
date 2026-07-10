@@ -12,21 +12,47 @@ RSpec.describe PageVersionController do
     create(:page_version, page: page, user: owner, title: 'Version 2', transcription: 'second', created_on: 1.day.ago)
   end
 
-  it 'lists page versions for a page' do
-    get collection_page_version_path(owner, collection, work, page)
+  context 'when logged in' do
+    before do
+      login_as(owner, scope: :user)
+    end
 
-    expect(response).to have_http_status(:ok)
+    it 'lists page versions for a page' do
+      get collection_page_version_path(owner, collection, work, page)
+
+      expect(response).to have_http_status(:ok)
+    end
+
+    it 'uses the requested comparison version' do
+      get collection_page_version_path(owner, collection, work, page), params: { compare_version_id: first_version.id }
+
+      expect(response).to have_http_status(:ok)
+    end
+
+    it 'uses the selected page version from params' do
+      get page_version_list_path, params: { page_version_id: second_version.id }
+
+      expect(response).to have_http_status(:ok)
+    end
   end
 
-  it 'uses the requested comparison version' do
-    get collection_page_version_path(owner, collection, work, page), params: { compare_version_id: first_version.id }
+  context 'when logged out' do
+    it 'redirects the collection page versions tab to sign in' do
+      get collection_page_version_path(owner, collection, work, page)
 
-    expect(response).to have_http_status(:ok)
-  end
+      expect(response).to redirect_to(new_user_session_path)
+    end
 
-  it 'uses the selected page version from params' do
-    get page_version_list_path, params: { page_version_id: second_version.id }
+    it 'redirects the direct page version list route to sign in' do
+      get page_version_list_path, params: { page_version_id: second_version.id }
 
-    expect(response).to have_http_status(:ok)
+      expect(response).to redirect_to(new_user_session_path)
+    end
+
+    it 'redirects the direct page version show route to sign in' do
+      get page_version_show_path, params: { page_version_id: second_version.id }
+
+      expect(response).to redirect_to(new_user_session_path)
+    end
   end
 end
