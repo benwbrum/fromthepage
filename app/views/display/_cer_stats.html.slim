@@ -1,55 +1,53 @@
-#cer_stats
-  -if @ai_accuracy_stats
-    .ai-accuracy-statistics
-      h4 =t('.accuracy_statistics')
-      p.accuracy-explanation =t('.accuracy_explanation')
+-if ai_stats_available
+  .ai-accuracy-statistics
+    h4 =t('.accuracy_statistics')
+    p.accuracy-explanation =t('.accuracy_explanation')
 
-      .statistics-grid
-        .stat-section
-          h5 =t('.verbatim_comparison')
-          p.section-description =t('.verbatim_description')
+    .statistics-grid
+      .stat-section
+        h5 =t('.verbatim_comparison')
+        p.section-description =t('.verbatim_description')
 
+        .stat-item
+          .stat-label
+            =t('.character_error_rate')
+            span.help-icon(title=t('.character_error_rate_tooltip')) ⓘ
+          .stat-value
+            =sprintf("%.2f%%", @ai_transcription.verbatim_cer)
+
+        .stat-item
+          .stat-label
+            =t('.word_error_rate')
+            span.help-icon(title=t('.word_error_rate_tooltip')) ⓘ
+          .stat-value
+            =sprintf("%.2f%%", @ai_transcription.verbatim_wer)
+
+      .stat-section
+        h5 =t('.text_only_comparison')
+        p.section-description =t('.text_only_description')
+
+        .stat-item
+          .stat-label
+            =t('.character_error_rate')
+            span.help-icon(title=t('.character_error_rate_tooltip')) ⓘ
+          .stat-value
+            =sprintf("%.2f%%", @ai_transcription.text_cer)
+
+        .stat-item
+          .stat-label
+            =t('.word_error_rate')
+            span.help-icon(title=t('.word_error_rate_tooltip')) ⓘ
+          .stat-value
+            =sprintf("%.2f%%", @ai_transcription.text_wer)
+
+        -if @ai_transcription.verbatim_non_stopword_accuracy
           .stat-item
             .stat-label
-              =t('.character_error_rate')
-              span.help-icon(title=t('.character_error_rate_tooltip')) ⓘ
+              =t('.non_stopword_accuracy')
+              span.help-icon(title=t('.non_stopword_accuracy_tooltip')) ⓘ
             .stat-value
-              =sprintf("%.2f%%", @ai_accuracy_stats[:verbatim][:cer])
-
-          .stat-item
-            .stat-label
-              =t('.word_error_rate')
-              span.help-icon(title=t('.word_error_rate_tooltip')) ⓘ
-            .stat-value
-              =sprintf("%.2f%%", @ai_accuracy_stats[:verbatim][:wer])
-
-        .stat-section
-          h5 =t('.text_only_comparison')
-          p.section-description =t('.text_only_description')
-
-          .stat-item
-            .stat-label
-              =t('.character_error_rate')
-              span.help-icon(title=t('.character_error_rate_tooltip')) ⓘ
-            .stat-value
-              =sprintf("%.2f%%", @ai_accuracy_stats[:text_only][:cer])
-
-          .stat-item
-            .stat-label
-              =t('.word_error_rate')
-              span.help-icon(title=t('.word_error_rate_tooltip')) ⓘ
-            .stat-value
-              =sprintf("%.2f%%", @ai_accuracy_stats[:text_only][:wer])
-
-          -if @ai_accuracy_stats[:verbatim][:non_stopword_accuracy]
-            .stat-item
-              .stat-label
-                =t('.non_stopword_accuracy')
-                span.help-icon(title=t('.non_stopword_accuracy_tooltip')) ⓘ
-              .stat-value
-                =sprintf("%.2f%%", @ai_accuracy_stats[:verbatim][:non_stopword_accuracy])
-
-  -elsif @ai_transcription.present?
-    .ai-accuracy-unavailable
-      p.info-message =t('.statistics_unavailable')
-      p =t('.statistics_unavailable_reason')
+              =sprintf("%.2f%%", @ai_transcription.verbatim_non_stopword_accuracy)
+-else
+  .ai-accuracy-unavailable
+    p.info-message =t('.statistics_unavailable')
+    p =t('.statistics_unavailable_reason')

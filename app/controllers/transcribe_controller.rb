@@ -115,6 +115,30 @@ class TranscribeController  < ApplicationController
         log_transcript_success
         flash[:notice] = t('.saved_notice')
 
+        # TODO: Implement in save_transcription refactor PR as well
+        if @page.source_text_previously_changed?
+          @page.ai_transcriptions.update_all(
+            verbatim_cer: nil,
+            verbatim_cer_distance: nil,
+            verbatim_cer_length: nil,
+            verbatim_wer: nil,
+            verbatim_wer_distance: nil,
+            verbatim_wer_length: nil,
+            verbatim_non_stopword_accuracy: nil,
+            text_cer: nil,
+            text_cer_distance: nil,
+            text_cer_length: nil,
+            text_wer: nil,
+            text_wer_distance: nil,
+            text_wer_length: nil
+          )
+
+          Transcribe::CalculateAiStatsJob.perform_later(
+            page_id: @page.id,
+            user_id: current_user.id
+          )
+        end
+
         if @page.work.ocr_correction
           record_deed(DeedType::OCR_CORRECTED)
         elsif @page.source_text_previously_changed?
