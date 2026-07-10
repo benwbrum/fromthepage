@@ -1,5 +1,5 @@
 class PageVersionController < ApplicationController
-  prepend_before_action :authenticate_user!
+  prepend_before_action :authenticate_registered_or_guest_user!
   before_action :set_versions
 
   def set_versions
@@ -15,5 +15,13 @@ class PageVersionController < ApplicationController
 
   def list
     render 'show'
+  end
+
+  private
+
+  def authenticate_registered_or_guest_user!
+    return if current_user.present?
+
+    authenticate_user!
   end
 end
