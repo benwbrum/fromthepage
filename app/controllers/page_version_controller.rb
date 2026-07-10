@@ -1,4 +1,5 @@
 class PageVersionController < ApplicationController
+  prepend_before_action :authenticate_user!
   before_action :set_versions
 
   def set_versions
