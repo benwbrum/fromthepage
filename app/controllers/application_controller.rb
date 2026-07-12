@@ -349,6 +349,17 @@ class ApplicationController < ActionController::Base
     # Override in controller for custom defaults
     DEFAULT_PER_PAGE
   end
+
+  def noindex_headers
+    response.set_header('X-Robots-Tag', 'noindex, nofollow, noarchive')
+  end
+
+  def authenticate_registered_or_guest_user!
+    return if current_user.present?
+
+    authenticate_user!
+  end
+
 end
 
 def page_params(page)

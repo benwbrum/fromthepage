@@ -17,10 +17,11 @@ RSpec.describe PageVersionController do
       login_as(owner, scope: :user)
     end
 
-    it 'lists page versions for a page' do
+    it 'lists page versions for a page with robots noindex headers' do
       get collection_page_version_path(owner, collection, work, page)
 
       expect(response).to have_http_status(:ok)
+      expect(response.headers['X-Robots-Tag']).to eq('noindex, nofollow, noarchive')
     end
 
     it 'uses the requested comparison version' do
@@ -29,10 +30,18 @@ RSpec.describe PageVersionController do
       expect(response).to have_http_status(:ok)
     end
 
-    it 'uses the selected page version from params' do
+    it 'uses the selected page version from params with robots noindex headers' do
       get page_version_list_path, params: { page_version_id: second_version.id }
 
       expect(response).to have_http_status(:ok)
+      expect(response.headers['X-Robots-Tag']).to eq('noindex, nofollow, noarchive')
+    end
+
+    it 'uses robots noindex headers on direct page version show routes' do
+      get page_version_show_path, params: { page_version_id: second_version.id }
+
+      expect(response).to have_http_status(:ok)
+      expect(response.headers['X-Robots-Tag']).to eq('noindex, nofollow, noarchive')
     end
   end
 

@@ -16,6 +16,7 @@
     :name => t('.versions'),
     :selected => 2,
     :path => "#{collection_article_version_path(@collection.owner, @collection, @article)}",
+    :opts => { :rel => 'nofollow' },
   }]
 
 -description = cached_article_xml_to_html(@article, collection: @collection)
@@ -27,7 +28,7 @@ h1[*language_attrs(@collection)] =@article.title
 .tabs
   -for tab in tabs
     -if tab[:path]
-      =link_to_unless tab[:selected] == selected, tab[:name], tab[:path]
+      =link_to_unless tab[:selected] == selected, tab[:name], tab[:path], tab[:opts]
         a.active =tab[:name]
     -else
       =link_to_unless tab[:selected] == selected, tab[:name], tab[:options].merge(:article_id => article_id)

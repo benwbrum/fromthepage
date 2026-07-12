@@ -4,6 +4,8 @@
 User-agent: *
 Disallow: /display/search
 Disallow: /*?*search*
+Disallow: /page_version/
+Disallow: /article_version/
 
 # Allow crawling of transcripts and other content for archival purposes
 Allow: /*/display/*
