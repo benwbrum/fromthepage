@@ -359,7 +359,6 @@ class ApplicationController < ActionController::Base
 
     authenticate_user!
   end
-
 end
 
 def page_params(page)
