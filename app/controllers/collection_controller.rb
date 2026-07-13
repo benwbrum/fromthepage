@@ -69,7 +69,10 @@ class CollectionController < ApplicationController
                      collaborator_ids
     end
 
-    users = User.where('LOWER(real_name) LIKE :search OR LOWER(email) LIKE :search', search: query)
+    users = User.where(
+      'LOWER(real_name) LIKE :search OR LOWER(email) LIKE :search OR LOWER(display_name) LIKE :search',
+      search: query
+    )
                 .where.not(id: excluded_ids)
                 .where.not(id: @collection.owner.id)
                 .limit(100)
