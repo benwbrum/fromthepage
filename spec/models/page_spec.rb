@@ -373,4 +373,65 @@ describe Page do
       end
     end
   end
+
+  describe '#field_ai_draft_available?' do
+    let(:page) { build_stubbed(:page) }
+    let(:collection) { build_stubbed(:collection) }
+
+    before do
+      allow(page).to receive(:collection).and_return(collection)
+    end
+
+    context 'when the collection is not field based' do
+      before do
+        allow(page).to receive(:field_based).and_return(false)
+      end
+
+      it 'returns false' do
+        expect(page.field_ai_draft_available?).to be false
+      end
+    end
+
+    context 'when the collection is field based' do
+      before do
+        allow(page).to receive(:field_based).and_return(true)
+      end
+
+      context 'when there is no finished ai transcription' do
+        before do
+          allow(page).to receive(:finished_ai_transcription).and_return(nil)
+        end
+
+        it 'returns false' do
+          expect(page.field_ai_draft_available?).to be false
+        end
+      end
+
+      context 'when there is a finished ai transcription' do
+        before do
+          allow(page).to receive(:finished_ai_transcription).and_return(build_stubbed(:ai_transcription, status: :finished))
+        end
+
+        context 'when the collection has a spreadsheet field' do
+          before do
+            allow(collection).to receive_message_chain(:transcription_fields, :where, :exists?).and_return(true)
+          end
+
+          it 'returns false' do
+            expect(page.field_ai_draft_available?).to be false
+          end
+        end
+
+        context 'when the collection has no spreadsheet field' do
+          before do
+            allow(collection).to receive_message_chain(:transcription_fields, :where, :exists?).and_return(false)
+          end
+
+          it 'returns true' do
+            expect(page.field_ai_draft_available?).to be true
+          end
+        end
+      end
+    end
+  end
 end

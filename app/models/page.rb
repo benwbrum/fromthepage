@@ -272,6 +272,12 @@ class Page < ApplicationRecord
     self.collection.field_based
   end
 
+  def field_ai_draft_available?
+    field_based &&
+      finished_ai_transcription.present? &&
+      !collection.transcription_fields.where(input_type: 'spreadsheet').exists?
+  end
+
   def articles_with_text
     articles conditions: ['articles.source_text is not null']
   end
