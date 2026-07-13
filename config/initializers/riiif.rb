@@ -6,7 +6,13 @@ ActiveSupport::Reloader.to_prepare do
 end
 
 module RiiifImagesControllerRedirectPatch
+  def info
+    response.headers['X-Robots-Tag'] = 'noindex'
+    super
+  end
+
   def redirect
+    response.headers['X-Robots-Tag'] = 'noindex'
     redirect_to "/image-service/#{ERB::Util.url_encode(params[:id].to_s)}/info.json"
   end
 end

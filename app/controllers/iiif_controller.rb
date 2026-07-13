@@ -5,6 +5,7 @@ class IiifController < ApplicationController
   include ActionController::HttpAuthentication::Token::ControllerMethods
 
   before_action :set_cors_headers
+  before_action :set_iiif_support_noindex_header, only: [:canvas, :canvas_status, :list, :notes]
   before_action :set_api_user
   before_action :load_objects_from_ids
   before_action :check_api_access, except: [:collections, :contributions, :for, :collection_for_domain]
@@ -17,6 +18,10 @@ class IiifController < ApplicationController
         end
       end
     end
+  end
+
+  def set_iiif_support_noindex_header
+    response.headers['X-Robots-Tag'] = 'noindex'
   end
 
   def collections

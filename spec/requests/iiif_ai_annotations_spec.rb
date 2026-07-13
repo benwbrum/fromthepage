@@ -23,6 +23,13 @@ describe 'IIIF AI Annotations' do
   end
 
   describe 'Canvas with AI annotations' do
+    it 'marks the canvas response as noindex without blocking IIIF link traversal' do
+      get iiif_canvas_path(work.id, page.id)
+
+      expect(response).to have_http_status(:ok)
+      expect(response.headers['X-Robots-Tag']).to eq('noindex')
+    end
+
     context 'when page has no human-transcribed source text' do
       it 'includes AI text annotation in canvas' do
         get iiif_canvas_path(work.id, page.id)
@@ -338,6 +345,7 @@ describe 'IIIF AI Annotations' do
       get iiif_page_annotation_list_for_type_path(page.id, 'ai_text')
 
       expect(response).to have_http_status(:ok)
+      expect(response.headers['X-Robots-Tag']).to eq('noindex')
       json = JSON.parse(response.body)
 
       expect(json['resources']).to be_present

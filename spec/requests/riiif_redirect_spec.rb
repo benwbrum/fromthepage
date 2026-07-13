@@ -6,4 +6,10 @@ RSpec.describe 'Riiif image service redirects' do
 
     expect(response).to redirect_to('/image-service/32407848/info.json')
   end
+
+  it 'marks bare image service redirects as noindex without blocking link traversal' do
+    get '/image-service/32407848'
+
+    expect(response.headers['X-Robots-Tag']).to eq('noindex')
+  end
 end
