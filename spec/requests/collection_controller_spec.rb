@@ -76,6 +76,21 @@ describe CollectionController do
         expect(response).to have_http_status(:ok)
         expect(response.content_type).to eq('application/json; charset=utf-8')
       end
+
+      it 'finds users by display name' do
+        matching_user = create(:unique_user,
+                               login: 'jsmith1776',
+                               email: 'john.smith@google.com',
+                               real_name: 'John Smith')
+
+        expect(matching_user.display_name).to eq('jsmith1776')
+
+        login_as owner
+        get action_path, params: { term: 'jsmith1776' }
+
+        result_ids = JSON.parse(response.body)['results'].map { |result| result['id'] }
+        expect(result_ids).to include(matching_user.id)
+      end
     end
   end
 
