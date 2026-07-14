@@ -79,9 +79,11 @@ describe CollectionController do
 
       it 'finds users by display name' do
         matching_user = create(:unique_user,
-                               display_name: 'jsmith1776',
+                               login: 'jsmith1776',
                                email: 'john.smith@google.com',
                                real_name: 'John Smith')
+
+        expect(matching_user.display_name).to eq('jsmith1776')
 
         login_as owner
         get action_path, params: { term: 'jsmith1776' }
