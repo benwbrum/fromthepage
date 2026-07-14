@@ -278,6 +278,13 @@ class Page < ApplicationRecord
       !collection.transcription_fields.where(input_type: 'spreadsheet').exists?
   end
 
+  # Latest finished, non-ALTO AiTranscription per engine (e.g. "gemini", "claude"),
+  # used to compare AI drafts field-by-field when more than one engine has transcribed the page.
+  def finished_ai_transcriptions_by_engine
+    candidates = ai_transcriptions.select { |t| t.status_finished? && t.model != AiTranscription::ALTO_MODEL }
+    candidates.group_by(&:engine).transform_values { |transcriptions| transcriptions.max_by(&:created_at) }
+  end
+
   def articles_with_text
     articles conditions: ['articles.source_text is not null']
   end

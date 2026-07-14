@@ -434,4 +434,32 @@ describe Page do
       end
     end
   end
+
+  describe '#finished_ai_transcriptions_by_engine' do
+    let(:page) { create(:page, work: create(:work)) }
+
+    it 'returns an empty hash when there are no finished ai transcriptions' do
+      create(:ai_transcription, page: page, status: :new, model: 'gemini-3-pro-preview')
+
+      expect(page.finished_ai_transcriptions_by_engine).to eq({})
+    end
+
+    it 'excludes the alto engine' do
+      create(:ai_transcription, page: page, status: :finished, model: AiTranscription::ALTO_MODEL)
+
+      expect(page.finished_ai_transcriptions_by_engine).to eq({})
+    end
+
+    it 'returns the latest finished transcription for each engine' do
+      older_gemini = create(:ai_transcription, page: page, status: :finished, model: 'gemini-3-pro-preview', created_at: 2.days.ago)
+      newer_gemini = create(:ai_transcription, page: page, status: :finished, model: 'gemini-3-pro-preview', created_at: 1.day.ago)
+      claude = create(:ai_transcription, page: page, status: :finished, model: 'claude-sonnet')
+      create(:ai_transcription, page: page, status: :error, model: 'claude-sonnet')
+
+      result = page.finished_ai_transcriptions_by_engine
+
+      expect(result).to eq({ 'gemini' => newer_gemini, 'claude' => claude })
+      expect(result['gemini']).not_to eq(older_gemini)
+    end
+  end
 end
