@@ -46,7 +46,7 @@ namespace :fromthepage do
           page.title,
           page.id,
           Rails.application.routes.url_helpers.collection_ai_text_page_url(page_collection.owner, page_collection, page_work, page),
-          Rails.application.routes.url_helpers.collection_transcribe_page_url(page_collection.owner, page_collection, page_work, page),
+          "#{Rails.application.routes.url_helpers.collection_transcribe_page_url(page_collection.owner, page_collection, page_work, page)}?ai_draft=1",
           disagreement_rate,
           missing_models.join(' ')
         ]

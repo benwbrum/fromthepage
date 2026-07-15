@@ -7,17 +7,188 @@
 -if @page&.field_ai_draft_available?
   -content_for :javascript
     javascript:
-      var aiTranscriptionFields = #{{@page.finished_ai_transcription.transcription_json.to_json}};
+      var aiDraftByEngine = #{{@page.finished_ai_transcriptions_by_engine.transform_values { |t| t.transcription_json || {} }.to_json}};
+      var aiDraftModelNames = #{{@page.finished_ai_transcriptions_by_engine.transform_values(&:model).to_json}};
+      var aiDraftBothAgreeText = #{{t('.ai_both_agree').to_json}};
+      var aiDraftDisagreeHeaderText = #{{t('.ai_disagree_header').to_json}};
+      var aiDraftOptionPlaceholder = #{{t('.ai_option_placeholder').to_json}};
 
       document.getElementById('ai-draft-fields').addEventListener('click', function() {
-        $('.field-wrapper .field-input').each(function() {
-          var match = /^fields\[(\d+)\]/.exec($(this).attr('name'));
-          if (!match) return;
-          var fieldId = match[1];
-          if (Object.prototype.hasOwnProperty.call(aiTranscriptionFields, fieldId) && aiTranscriptionFields[fieldId] !== null) {
-            $(this).val(aiTranscriptionFields[fieldId]).trigger('input').trigger('change');
+        var engineKeys = Object.keys(aiDraftByEngine).sort();
+
+        function escapeHtml(str) {
+          return String(str).replace(/[&<>"']/g, function(ch) {
+            return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch];
+          });
+        }
+
+        // Word-level diff via LCS, used to highlight the differing words between two AI suggestions.
+        function diffWords(a, b) {
+          var aw = a.split(/\s+/).filter(Boolean);
+          var bw = b.split(/\s+/).filter(Boolean);
+          var n = aw.length, m = bw.length;
+          var dp = [];
+          for (var i = 0; i <= n; i++) { dp.push(new Array(m + 1).fill(0)); }
+          for (i = n - 1; i >= 0; i--) {
+            for (var j = m - 1; j >= 0; j--) {
+              dp[i][j] = aw[i] === bw[j] ? dp[i + 1][j + 1] + 1 : Math.max(dp[i + 1][j], dp[i][j + 1]);
+            }
           }
+          var ai = 0, bi = 0, aOut = [], bOut = [];
+          while (ai < n && bi < m) {
+            if (aw[ai] === bw[bi]) {
+              aOut.push({ text: aw[ai], changed: false });
+              bOut.push({ text: bw[bi], changed: false });
+              ai++; bi++;
+            } else if (dp[ai + 1][bi] >= dp[ai][bi + 1]) {
+              aOut.push({ text: aw[ai], changed: true });
+              ai++;
+            } else {
+              bOut.push({ text: bw[bi], changed: true });
+              bi++;
+            }
+          }
+          while (ai < n) { aOut.push({ text: aw[ai], changed: true }); ai++; }
+          while (bi < m) { bOut.push({ text: bw[bi], changed: true }); bi++; }
+          return [aOut, bOut];
+        }
+
+        function renderTokens(tokens) {
+          return tokens.map(function(tok) {
+            var escaped = escapeHtml(tok.text);
+            return tok.changed ? '<b class="ai-diff-word">' + escaped + '</b>' : escaped;
+          }).join(' ');
+        }
+
+        // Processed row by row. Neither the "both agree" note nor a disagreement panel is ever
+        // appended inside its own field-wrapper — every wrapper in a row stays exactly label+input,
+        // so .fields-row never grows taller than its actual fields regardless of how many notes a
+        // row's fields end up with. Instead, all of a row's notes/panels are collected and placed
+        // into one shared, absolutely-positioned container right after the row, each lined up (via
+        // left/width) under its own field's column — side by side rather than stacked on each other.
+        $('.fields-row').each(function() {
+          var $row = $(this);
+          var rowLeft = $row.offset().left;
+          $row.nextUntil('.fields-row', '.ai-draft-notes-row').remove();
+
+          var notes = [];
+
+          $row.find('.field-wrapper .field-input').each(function() {
+            var $field = $(this);
+            var match = /^fields\[(\d+)\]/.exec($field.attr('name'));
+            if (!match) return;
+            var fieldId = match[1];
+
+            var $wrapper = $field.closest('.field-wrapper');
+            $field.removeClass('ai-draft-agree ai-draft-disagree-input');
+
+            var valuesByEngine = {};
+            engineKeys.forEach(function(engine) {
+              var value = aiDraftByEngine[engine][fieldId];
+              if (value !== undefined && value !== null && value !== '') {
+                valuesByEngine[engine] = String(value);
+              }
+            });
+
+            var presentEngines = Object.keys(valuesByEngine);
+            if (presentEngines.length === 0) return;
+
+            if (presentEngines.length === 1) {
+              $field.val(valuesByEngine[presentEngines[0]]).trigger('input').trigger('change');
+              return;
+            }
+
+            var firstValue = valuesByEngine[presentEngines[0]].trim();
+            var allAgree = presentEngines.every(function(engine) {
+              return valuesByEngine[engine].trim() === firstValue;
+            });
+
+            if (allAgree) {
+              $field.val(valuesByEngine[presentEngines[0]]).trigger('input').trigger('change');
+              $field.addClass('ai-draft-agree');
+              notes.push({ kind: 'agree', wrapper: $wrapper });
+              return;
+            }
+
+            $field.addClass('ai-draft-disagree-input');
+            if ($field.is('input[type="text"], textarea') && !$field.val()) {
+              $field.attr('placeholder', aiDraftOptionPlaceholder);
+            }
+
+            notes.push({
+              kind: 'disagree',
+              field: $field,
+              wrapper: $wrapper,
+              valuesByEngine: valuesByEngine,
+              presentEngines: presentEngines
+            });
+          });
+
+          if (notes.length === 0) return;
+
+          var $notesRow = $('<div class="ai-draft-notes-row"></div>');
+          $row.after($notesRow);
+
+          notes.forEach(function(entry) {
+            var left = (entry.wrapper.offset().left - rowLeft) + 'px';
+            var width = entry.wrapper.outerWidth() + 'px';
+
+            if (entry.kind === 'agree') {
+              var $status = $('<div class="ai-draft-status ai-draft-status-agree">&#10003; ' + escapeHtml(aiDraftBothAgreeText) + '</div>');
+              $status.css({ left: left, width: width });
+              $notesRow.append($status);
+              return;
+            }
+
+            var $field = entry.field;
+            var presentEngines = entry.presentEngines;
+            var valuesByEngine = entry.valuesByEngine;
+
+            var diffTokens = presentEngines.length === 2
+              ? diffWords(valuesByEngine[presentEngines[0]], valuesByEngine[presentEngines[1]])
+              : null;
+
+            var $panel = $('<div class="ai-draft-disagree"></div>');
+            $panel.css({ left: left, width: width });
+            $panel.append(
+              '<div class="ai-draft-disagree-header">&#9888; ' + escapeHtml(aiDraftDisagreeHeaderText) + '</div>'
+            );
+
+            presentEngines.forEach(function(engine, idx) {
+              var value = valuesByEngine[engine];
+              var html = diffTokens ? renderTokens(diffTokens[idx]) : escapeHtml(value);
+              var $option = $('<div class="ai-draft-option" tabindex="0" role="button"></div>');
+              var modelName = aiDraftModelNames[engine] || engine;
+              $option.append('<span class="ai-draft-option-label">' + escapeHtml(modelName) + '</span>');
+              $option.append('<span class="ai-draft-option-text">' + html + '</span>');
+              $option.on('click', function() {
+                $field.val(value).trigger('input').trigger('change');
+                $panel.find('.ai-draft-option').removeClass('selected');
+                $option.addClass('selected');
+              });
+              $option.on('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  $option.trigger('click');
+                }
+              });
+              $panel.append($option);
+            });
+
+            $notesRow.append($panel);
+          });
+
+          // Notes/panels are positioned absolutely (so several sitting side by side in the same row
+          // don't stack on top of each other), which takes them out of normal flow — give their
+          // shared container an explicit height so it still pushes the next .fields-row down instead
+          // of being overlapped.
+          var maxNoteHeight = 0;
+          $notesRow.children().each(function() {
+            maxNoteHeight = Math.max(maxNoteHeight, $(this).outerHeight());
+          });
+          $notesRow.css('height', maxNoteHeight + 'px');
         });
+
         $('#ai-draft-fields').prop('disabled', true);
         $('#ai_draft_used').val('true');
       });
