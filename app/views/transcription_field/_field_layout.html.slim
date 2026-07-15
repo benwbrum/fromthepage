@@ -193,6 +193,12 @@
         $('#ai_draft_used').val('true');
       });
 
+      // Deep-linking support: ?ai_draft=1 resolves the AI draft on load, as if the button were
+      // clicked, so external tools (e.g. a spreadsheet) can link straight to the resolved fields.
+      if (new URLSearchParams(window.location.search).get('ai_draft') === '1') {
+        document.getElementById('ai-draft-fields').click();
+      }
+
 -content_for :javascript
   javascript:
     function countChars() {
