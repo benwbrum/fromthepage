@@ -6,7 +6,10 @@
 
 \begin{small}
 <% notes.each do |note| %>
-  <%= "\\hspace*{0.5em}\\textit{#{Work::Export::Lib::Utils.latex_escape(note.user.display_name + ': ' + note.body)}} \\\\" %>
+  <% raw_note = '<div><p>' + note.user.display_name + ': ' + note.body + '</p></div>' %>
+  <% raw_note = raw_note.gsub("\n", '<lb/>') %>
+  <% converted_note = Work::Export::Lib::Utils.xml_to_latex(page: note, xml_text: raw_note, preserve_lb: @preserve_lb, flatten_links: true) %>
+  <%= "\\hspace*{0.5em}\\textit{#{converted_note}} \\\\" %>
 
 <% end %>
 \end{small}

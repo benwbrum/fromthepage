@@ -10,14 +10,14 @@ class Work::Export::Lib::Utils
     'row' => 'tr',
     'cell' => 'td'
   }
-  HTML_ENTITIES = [
-    '&amp;',
-    '&lt;',
-    '&gt;',
-    '&quot;',
-    '&#39;',
-    '&nbsp;'
-  ]
+  HTML_ENTITY_REPLACEMENTS = {
+    '&amp;'  => '&',
+    '&lt;'   => '<',
+    '&gt;'   => '>',
+    '&quot;' => '"',
+    '&#39;'  => "'",
+    '&nbsp;' => ' '
+  }.freeze
 
   # Zero-width and invisible Unicode characters that LaTeX cannot handle
   LATEX_INVISIBLE_CHARS = /[\u{2060}\u{200B}\u{200C}\u{200D}\u{FEFF}]/
@@ -53,6 +53,10 @@ class Work::Export::Lib::Utils
 
     text = text.gsub(LATEX_INVISIBLE_CHARS, '')
 
+    HTML_ENTITY_REPLACEMENTS.each do |entity, replacement|
+      text.gsub!(entity, replacement)
+    end
+
     replacements = {
       '\\' => '\\textbackslash{}',
       '{'  => '\\{',
@@ -63,7 +67,8 @@ class Work::Export::Lib::Utils
       '#'  => '\\#',
       '_'  => '\\_',
       '~'  => '\\textasciitilde{}',
-      '^'  => '\\textasciicircum{}'
+      '^'  => '\\textasciicircum{}',
+      '\<' => '<'
     }.merge(VULGAR_FRACTION_REPLACEMENTS)
 
     command_regex = /\\[a-zA-Z]+(?:\{[^}]*\})?/
@@ -92,6 +97,8 @@ class Work::Export::Lib::Utils
   end
 
   def self.xml_to_latex(page:, xml_text:, preserve_lb: true, flatten_links: false)
+    # Escape initial backslashes before recursive parsing
+    xml_text = xml_text.gsub('\\', '\\textbackslash{}')
     doc = REXML::Document.new(xml_text)
     page_doc = doc.root
 
@@ -252,6 +259,9 @@ class Work::Export::Lib::Utils
     all_rows += table_element.elements['tbody'].elements.to_a('tr') if table_element.elements['tbody']
 
     column_count = all_rows.map { |tr| tr.elements.count }.max
+
+    return '' if column_count.zero?
+
     column_format = ('X' * column_count).strip
 
     latex = "#{LINEBREAK_ELEMENT}\n"

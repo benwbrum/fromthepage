@@ -96,10 +96,11 @@
         }
 
         .home-main::before {
-            background: url('<%=path_to_image('materials/main-bg.png')%>') no-repeat;
+            background: url('<%=path_to_image('materials/main-bg.png')%>') no-repeat bottom center;
+            background-size: cover;
         }
         .home-services::before {
-            background: url('<%=path_to_image('materials/services-bg.png')%>') no-repeat;
+            background: url('<%=path_to_image('materials/video-bg.png')%>') no-repeat;
             background-size: cover;
         }
 
@@ -108,6 +109,15 @@
         }
         .home-start::before {
             background: url('<%=path_to_image('materials/bg-start.png')%>') no-repeat;
+        }
+        .home-accessibility::before {
+            background: url('<%=path_to_image('materials/video-bg.png')%>') no-repeat;
+            background-size: cover;
+        }
+        .home-structured::before,
+        .home-testimonials::before {
+            background: url('<%=path_to_image('materials/video-bg.png')%>') no-repeat;
+            background-size: cover;
         }
     </style>
     <!-- Links End -->
