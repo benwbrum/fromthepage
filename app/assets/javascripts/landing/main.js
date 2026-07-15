@@ -27,23 +27,24 @@ $(function () {
     });
 
 
-    $('#videoButton').on('click', function() {
-        $(this).toggleClass('active');
-    });
-
     var videoPlayer = document.getElementById('video');
     var videoButton = document.getElementById('videoButton');
 
+    if (videoButton && videoPlayer) {
+        $('#videoButton').on('click', function() {
+            $(this).toggleClass('active');
+        });
 
-    videoButton.addEventListener('click', function () {
-        if (videoPlayer.paused == false) {
-            videoPlayer.pause();
-            videoPlayer.firstChild.nodeValue = 'Play';
-        } else {
-            videoPlayer.play();
-            videoPlayer.firstChild.nodeValue = 'Pause';
-        }
-    });
+        videoButton.addEventListener('click', function () {
+            if (videoPlayer.paused == false) {
+                videoPlayer.pause();
+                videoPlayer.firstChild.nodeValue = 'Play';
+            } else {
+                videoPlayer.play();
+                videoPlayer.firstChild.nodeValue = 'Pause';
+            }
+        });
+    }
 
 
     
