@@ -200,8 +200,16 @@ parser = OptionParser.new do |opts|
 
   opts.on('--apache-log PATH', 'Path to the Apache access log') { |value| options[:apache_log] = value }
   opts.on('--rails-log PATH', 'Path to the Rails production log') { |value| options[:rails_log] = value }
-  opts.on('--start TIME', 'Start time, parseable by Ruby Time.parse') { |value| options[:start_time] = Time.parse(value) }
-  opts.on('--end TIME', 'End time, parseable by Ruby Time.parse') { |value| options[:end_time] = Time.parse(value) }
+  opts.on('--start TIME', 'Start time, parseable by Ruby Time.parse') do |value|
+    options[:start_time] = Time.parse(value)
+  rescue ArgumentError
+    raise OptionParser::InvalidArgument, "Invalid --start time: #{value.inspect}"
+  end
+  opts.on('--end TIME', 'End time, parseable by Ruby Time.parse') do |value|
+    options[:end_time] = Time.parse(value)
+  rescue ArgumentError
+    raise OptionParser::InvalidArgument, "Invalid --end time: #{value.inspect}"
+  end
   opts.on('--before SECONDS', Integer, 'Seconds before Apache timestamp to search for Rails start; default 120') do |value|
     options[:before_seconds] = value
   end
@@ -211,7 +219,13 @@ parser = OptionParser.new do |opts|
   opts.on('--output PATH', 'Write unmatched Apache requests to CSV') { |value| options[:output] = value }
 end
 
-parser.parse!
+begin
+  parser.parse!
+rescue OptionParser::ParseError => e
+  warn e.message
+  warn parser
+  exit 1
+end
 
 missing_options = %i[apache_log rails_log start_time end_time].select { |key| options[key].nil? }
 unless missing_options.empty?
