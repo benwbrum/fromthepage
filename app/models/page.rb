@@ -280,14 +280,14 @@ class Page < ApplicationRecord
 
   # Latest finished, non-ALTO AiTranscription per engine (e.g. "gemini", "claude"),
   # used to compare AI drafts field-by-field when more than one engine has transcribed the page.
-def finished_ai_transcriptions_by_engine
-  @finished_ai_transcriptions_by_engine ||= ai_transcriptions
-    .status_finished
-    .not_alto
-    .order(created_at: :desc)
-    .group_by(&:engine)
-    .transform_values(&:first)
-end
+  def finished_ai_transcriptions_by_engine
+    @finished_ai_transcriptions_by_engine ||= ai_transcriptions
+      .status_finished
+      .not_alto
+      .order(created_at: :desc)
+      .group_by(&:engine)
+      .transform_values(&:first)
+  end
 
   def articles_with_text
     articles conditions: ['articles.source_text is not null']
