@@ -38,9 +38,10 @@ namespace :fromthepage do
         missing_models << 'Gemini' if gemini_transcription.nil?
 
         disagreement_rate = if missing_models.empty?
-                              page.send(:character_error_rate, claude_transcription.text_for_comparison, gemini_transcription.text_for_comparison)
+          page.send(:character_error_rate, claude_transcription.text_for_comparison, gemini_transcription.text_for_comparison)
+        end
         ci_disagreement_rate = if missing_models.empty?
-                                 page.send(:character_error_rate, claude_transcription.text_for_comparison.downcase, gemini_transcription.text_for_comparison.downcase)
+          page.send(:character_error_rate, claude_transcription.text_for_comparison.downcase, gemini_transcription.text_for_comparison.downcase)
         end
 
         csv << [
