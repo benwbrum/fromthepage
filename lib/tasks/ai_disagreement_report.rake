@@ -23,7 +23,7 @@ namespace :fromthepage do
     filename = "ai_disagreement_#{slug}.csv"
 
     CSV.open(filename, 'wb') do |csv|
-      csv << ['Work Title', 'Page Title', 'Page ID', 'AI Tab URL', 'Transcribe Tab URL', 'Character Disagreement Rate', 'Missing Models']
+      csv << ['Work Title', 'Page Title', 'Page ID', 'AI Tab URL', 'Transcribe Tab URL', 'Character Disagreement Rate', 'Case-insensitive CDR', 'Missing Models']
 
       pages.each do |page|
         page_work = page.work
@@ -38,7 +38,10 @@ namespace :fromthepage do
         missing_models << 'Gemini' if gemini_transcription.nil?
 
         disagreement_rate = if missing_models.empty?
-                              page.send(:character_error_rate, claude_transcription.text_for_comparison, gemini_transcription.text_for_comparison)
+          page.send(:character_error_rate, claude_transcription.text_for_comparison, gemini_transcription.text_for_comparison)
+        end
+        ci_disagreement_rate = if missing_models.empty?
+          page.send(:character_error_rate, claude_transcription.text_for_comparison.downcase, gemini_transcription.text_for_comparison.downcase)
         end
 
         csv << [
@@ -48,6 +51,7 @@ namespace :fromthepage do
           Rails.application.routes.url_helpers.collection_ai_text_page_url(page_collection.owner, page_collection, page_work, page),
           "#{Rails.application.routes.url_helpers.collection_transcribe_page_url(page_collection.owner, page_collection, page_work, page)}?ai_draft=1",
           disagreement_rate,
+          ci_disagreement_rate,
           missing_models.join(' ')
         ]
       end
