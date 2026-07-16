@@ -274,10 +274,14 @@ describe DashboardController do
     end
 
     context 'with elasticsearch' do
+      let(:title) { "UniqueTitle#{SecureRandom.uuid}" }
+      let!(:collection) { create(:collection, title: title, owner_user_id: owner.id) }
+
       before do
         VCR.configure { |c| c.allow_http_connections_when_no_cassette = true }
 
         stub_const('ELASTIC_ENABLED', true)
+
         CollectionsIndex.import collection
       end
 
@@ -285,7 +289,7 @@ describe DashboardController do
         VCR.configure { |c| c.allow_http_connections_when_no_cassette = false }
       end
 
-      let(:params) { { search: collection.title } }
+      let(:params) { { search: title } }
 
       it 'renders status and template' do
         login_as owner
@@ -296,7 +300,7 @@ describe DashboardController do
       end
 
       context 'filter by collection' do
-        let(:params) { { search: collection.title, filter: 'collection' } }
+        let(:params) { { search: title, filter: 'collection' } }
 
         it 'renders status and template' do
           login_as owner
@@ -308,7 +312,7 @@ describe DashboardController do
       end
 
       context 'filter by work' do
-        let(:params) { { search: collection.title, filter: 'work' } }
+        let(:params) { { search: title, filter: 'work' } }
 
         it 'renders status and template' do
           login_as owner
@@ -320,7 +324,7 @@ describe DashboardController do
       end
 
       context 'filter by page' do
-        let(:params) { { search: collection.title, filter: 'page' } }
+        let(:params) { { search: title, filter: 'page' } }
 
         it 'renders status and template' do
           login_as owner
