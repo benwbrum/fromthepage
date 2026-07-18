@@ -11,8 +11,7 @@ describe Admin::SuspiciousBehaviorsController do
 
   describe '#index' do
     let(:action_path) { admin_suspicious_behaviors_path }
-    let(:params) { {} }
-    let(:subject) { get action_path, params: params }
+    let(:subject) { get action_path }
 
     it 'redirects when not logged in' do
       subject
@@ -27,52 +26,11 @@ describe Admin::SuspiciousBehaviorsController do
       expect(response).to redirect_to(dashboard_path)
     end
 
-    it 'renders status and template' do
+    it 'redirects admin to new AI suspicious behaviors path' do
       login_as admin
       subject
-      expect(response).to have_http_status(:ok)
-      expect(response).to render_template(:index)
-    end
-
-    context 'filters' do
-      let(:params) do
-        {
-          behaviour_type: 'large_paste',
-          status: 'flagged',
-          ordering: 'ASC',
-          sorting: 'resolved_at',
-          search_user: user.slug,
-          search_collection: collection.slug,
-          search_owner: owner.slug
-        }
-      end
-      let(:subject) { get action_path, params: params, as: :turbo_stream }
-
-      it 'renders status and template' do
-        login_as admin
-        subject
-        expect(response).to have_http_status(:ok)
-        expect(response).to render_template(:index)
-      end
-
-      context 'when elastic enabled' do
-        before do
-          VCR.configure { |c| c.allow_http_connections_when_no_cassette = true }
-
-          stub_const('ELASTIC_ENABLED', true)
-        end
-
-        after do
-          VCR.configure { |c| c.allow_http_connections_when_no_cassette = false }
-        end
-
-        it 'renders status and template' do
-          login_as admin
-          subject
-          expect(response).to have_http_status(:ok)
-          expect(response).to render_template(:index)
-        end
-      end
+      expect(response).to have_http_status(:moved_permanently)
+      expect(response).to redirect_to(admin_ai_suspicious_behaviors_path)
     end
   end
 
@@ -93,10 +51,11 @@ describe Admin::SuspiciousBehaviorsController do
       expect(response).to redirect_to(dashboard_path)
     end
 
-    it 'renders status' do
+    it 'redirects admin to new AI suspicious behavior path' do
       login_as admin
       subject
-      expect(response).to have_http_status(:ok)
+      expect(response).to have_http_status(:moved_permanently)
+      expect(response).to redirect_to(admin_ai_suspicious_behavior_path(suspicious_behavior))
     end
   end
 end

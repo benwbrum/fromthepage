@@ -56,9 +56,30 @@ en:
       ok_user: OK User
       remove: Remove
       user: User
+    ai:
+      errors:
+        collection_label: 'Collection: '
+        detail_title: AI Transcription Error Detail
+        error: Error
+        model: Model
+        none: No AI transcription errors found.
+        owner_label: 'Owner: '
+        table:
+          collection: Collection
+          error: Error
+          flagged_at: Flagged At
+          model: Model
+          owner: Owner
+          page: Page
+          work: Work
+        title: AI Transcription Errors
+      nav:
+        errors: Errors
+        suspicious_behaviors: Suspicious Behaviors
     header:
       abuse: Abuse
       administration: Administration
+      ai: AI
       exports: Exports
       jobs: Jobs
       logfile: Logfile

@@ -83,7 +83,14 @@ Fromthepage::Application.routes.draw do
       post 'manual_merge', to: 'admin#merge_tag', as: 'manual_merge'
     end
 
+    # Legacy route preserved; controller now redirects to admin/ai/suspicious_behaviors
     resources :suspicious_behaviors, module: :admin, only: [:index, :show]
+
+    scope 'ai', as: 'ai', module: 'admin/ai' do
+      get '/', to: 'dashboard#index', as: ''
+      resources :suspicious_behaviors, only: [:index, :show]
+      resources :errors, only: [:index, :show]
+    end
   end
 
   scope 'facets', as: 'facets' do
