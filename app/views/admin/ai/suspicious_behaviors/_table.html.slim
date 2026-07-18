@@ -33,7 +33,7 @@ table.datagrid.striped.dataTable.no-footer
             -if item.collection&.owner.present?
               =link_to item.collection.owner.display_name, user_profile_path(item.collection.owner)
           td
-            =link_to t('admin.suspicious_behaviors.table.metadata'), admin_ai_suspicious_behavior_path(item), target: '_blank'
+            =link_to t('admin.suspicious_behaviors.table.metadata'), admin_ai_suspicious_behavior_path(item), target: '_blank', rel: 'noopener noreferrer'
           td
             -if item.resolved_by_user.present?
               =link_to item.resolved_by_user.display_name, user_profile_path(item.resolved_by_user)
