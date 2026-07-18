@@ -1,4 +1,6 @@
 class Admin::Ai::BaseController < AdminController
+  ADMIN_HEADER_TAB = 12
+
   def side_nav_tabs
     [
       {
