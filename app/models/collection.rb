@@ -14,11 +14,11 @@
 #  facets_enabled                 :boolean          default(FALSE)
 #  featured_at                    :datetime
 #  field_based                    :boolean          default(FALSE)
-#  footer_block                   :string(2000)
+#  footer_block                   :text(16777215)
 #  help                           :text(65535)
 #  hide_completed                 :boolean          default(TRUE)
 #  hide_notes                     :boolean          default(FALSE)
-#  intro_block                    :text(65535)
+#  intro_block                    :text(16777215)
 #  is_active                      :boolean          default(TRUE)
 #  language                       :string(255)
 #  legend                         :text(65535)
@@ -47,6 +47,7 @@
 # Indexes
 #
 #  index_collections_on_owner_user_id                   (owner_user_id)
+#  index_collections_on_restricted                      (restricted)
 #  index_collections_on_slug                            (slug) UNIQUE
 #  index_collections_on_thredded_messageboard_group_id  (thredded_messageboard_group_id)
 #

@@ -1,19 +1,4 @@
--tabs = [
-  { selected: 1, name: t('.summary') },
-  { selected: 2, name: t('.owners') },
-  { selected: 3, name: t('.users') },
-  { selected: 4, name: t('.abuse') },
-  { selected: 5, name: t('.moderation') },
-  { selected: 6, name: t('.uploads') },
-  { selected: 7, name: t('.exports') },
-  { selected: 8, name: t('.searches') },
-  { selected: 9, name: t('.logfile') },
-  { selected: 10, name: t('.settings') },
-  { selected: 11, name: t('.tags') },
-  { selected: 12, name: t('.ai') },
-  { selected: 13, name: t('.jobs') }
-]
--selected_tab = tabs.find { |tab| tab[:selected] == selected }&.dig(:name) || ""
+-selected_tab = tabs.find { |tab| tab[:selected] == selected }[:name] rescue ""
 -content_for :page_title, "#{selected_tab} - #{t('.administration')}"
 
 h1 =t('.administration')
