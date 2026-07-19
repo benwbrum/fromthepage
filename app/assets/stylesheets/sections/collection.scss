@@ -46,6 +46,12 @@
   }
 }
 
+#suspicious-behaviors-table-form {
+  .dataTables_filter.search input[type=search] {
+    width: 180px;
+  }
+}
+
 // Overview
 
 .collection-intro {
