@@ -38,9 +38,8 @@ describe Admin::Ai::SuspiciousBehaviorsController do
       let(:params) do
         {
           behaviour_type: 'large_paste',
-          status: 'flagged',
           ordering: 'ASC',
-          sorting: 'resolved_at',
+          sorting: 'created_at',
           search_user: user.slug,
           search_collection: collection.slug,
           search_owner: owner.slug
