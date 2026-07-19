@@ -27,15 +27,8 @@ class Admin::Ai::SuspiciousBehaviorsController < Admin::Ai::BaseController
     @filtered_scope = SuspiciousBehavior.includes(
       :user,
       { collection: :owner },
-      :page,
-      :resolved_by_user
+      :page
     )
-
-    status_filter = params[:status]&.downcase&.to_sym || :pending
-
-    if (SuspiciousBehavior::STATUS_FILTERS - [:all]).include?(status_filter)
-      @filtered_scope = @filtered_scope.where(status: status_filter)
-    end
 
     type_filter = params[:behavior_type]&.downcase&.to_sym
 
@@ -83,12 +76,7 @@ class Admin::Ai::SuspiciousBehaviorsController < Admin::Ai::BaseController
       @filtered_scope = @filtered_scope.where(collection_id: owner_filter.select(:id))
     end
 
-    case @sorting
-    when :resolved_at
-      @filtered_scope = @filtered_scope.order(resolved_at: @ordering)
-    else
-      @filtered_scope = @filtered_scope.order(created_at: @ordering)
-    end
+    @filtered_scope = @filtered_scope.order(created_at: @ordering)
 
     @filtered_scope = @filtered_scope.paginate(page: params[:page], per_page: DEFAULT_PER_PAGE)
 
