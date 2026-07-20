@@ -1,6 +1,23 @@
 ---
 en:
   admin:
+    ai:
+      errors:
+        collection_label: 'Collection: '
+        none: No AI transcription errors found.
+        owner_label: 'Owner: '
+        table:
+          collection: Collection
+          error: Error
+          flagged_at: Flagged At
+          model: Model
+          owner: Owner
+          page: Page
+          work: Work
+        title: AI Transcription Errors
+      nav:
+        errors: Errors
+        suspicious_behaviors: Suspicious Behaviors
     autoflag:
       flag_message: Looking for additional content to flag.  Revisit this page in a few minutes.
     collection_activity:
@@ -56,26 +73,6 @@ en:
       ok_user: OK User
       remove: Remove
       user: User
-    ai:
-      errors:
-        collection_label: 'Collection: '
-        detail_title: AI Transcription Error Detail
-        error: Error
-        model: Model
-        none: No AI transcription errors found.
-        owner_label: 'Owner: '
-        table:
-          collection: Collection
-          error: Error
-          flagged_at: Flagged At
-          model: Model
-          owner: Owner
-          page: Page
-          work: Work
-        title: AI Transcription Errors
-      nav:
-        errors: Errors
-        suspicious_behaviors: Suspicious Behaviors
     header:
       abuse: Abuse
       administration: Administration
@@ -86,7 +83,6 @@ en:
       owners: Owners
       settings: Settings
       summary: Summary
-      suspicious_behaviors: Suspicious Behaviors
       uploads: Uploads
       users: Users
     index:
@@ -138,12 +134,8 @@ en:
       table:
         collection: Collection
         flagged_at: Flagged at
-        metadata: Metadata
         owner: Owner
         page: Page
-        resolved_at: Resolved at
-        resolved_by: Resolved by
-        status: Status
         type: Type
         user: User
     tail_logfile:
