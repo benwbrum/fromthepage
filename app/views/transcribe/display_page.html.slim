@@ -110,10 +110,10 @@
     =render partial: 'shared/markup_help'
     p =link_to t('.more_help'), collection_work_help_path(@collection.owner, @collection, @page.work), target: '_blank'
 
-  -if notes_visible?(@collection, current_user)
-    h2.legend =t('.notes_and_questions')
-    .page-notes
-      =render partial: "notes/notes"
+-if notes_visible?(@collection, current_user)
+  h2.legend =t('.notes_and_questions')
+  .page-notes
+    =render partial: "notes/notes"
 
 
 #custom-alert
