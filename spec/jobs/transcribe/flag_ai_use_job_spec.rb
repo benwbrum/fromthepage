@@ -18,7 +18,7 @@ describe Transcribe::FlagAiUseJob do
     worker.perform_now(page_id: page.id, user_id: user.id)
   end
 
-  it 'enqueues GenerateJob for ai_transcriptions' do
+  it 'flags ai_use' do
     perform_worker
 
     expect(page.suspicious_behaviors).to match_array([

@@ -272,6 +272,23 @@ class Page < ApplicationRecord
     self.collection.field_based
   end
 
+  def field_ai_draft_available?
+    field_based &&
+      finished_ai_transcription.present? &&
+      !collection.transcription_fields.where(input_type: 'spreadsheet').exists?
+  end
+
+  # Latest finished, non-ALTO AiTranscription per engine (e.g. "gemini", "claude"),
+  # used to compare AI drafts field-by-field when more than one engine has transcribed the page.
+  def finished_ai_transcriptions_by_engine
+    @finished_ai_transcriptions_by_engine ||= ai_transcriptions
+      .status_finished
+      .not_alto
+      .order(created_at: :desc)
+      .group_by(&:engine)
+      .transform_values(&:first)
+  end
+
   def articles_with_text
     articles conditions: ['articles.source_text is not null']
   end
@@ -589,18 +606,22 @@ class Page < ApplicationRecord
   end
 
   # TODO: Remove this on different PR after running migration
-  def has_ai_plaintext?
-    (self.finished_ai_transcription.present? && ai_plaintext.present?) || File.exist?(self.ai_plaintext_path)
+  def has_ai_plaintext?(ai_transcription_to_use: nil)
+    ai_transcription_to_use ||= self.finished_ai_transcription
+
+    (ai_transcription_to_use.present? && ai_plaintext(ai_transcription_to_use: ai_transcription_to_use).present?) || File.exist?(self.ai_plaintext_path)
   end
 
   # TODO: Remove this on different PR after running migration
-  def ai_plaintext
+  def ai_plaintext(ai_transcription_to_use: nil)
+    ai_transcription_to_use ||= self.finished_ai_transcription
+
     if self.alto_transcription.present?
       self.alto_transcription.source_text
-    elsif self.finished_ai_transcription.present?
-      text = self.finished_ai_transcription.source_text
-      if text.blank? && self.finished_ai_transcription.transcription_json.present?
-        text = field_transcription_json_to_plaintext(self.finished_ai_transcription.transcription_json)
+    elsif ai_transcription_to_use.present?
+      text = ai_transcription_to_use.source_text
+      if text.blank? && ai_transcription_to_use.transcription_json.present?
+        text = field_transcription_json_to_plaintext(ai_transcription_to_use.transcription_json)
       end
       text
     elsif File.exist?(self.ai_plaintext_path)

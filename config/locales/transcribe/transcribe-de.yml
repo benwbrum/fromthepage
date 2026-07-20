@@ -49,6 +49,8 @@ de:
       saved_and_next_notice: Gespeichert. Zur nächsten Seite wechseln.
       saved_notice: Gespeichert
     save_buttons:
+      ai_draft_fields: KI-Entwurf
+      ai_draft_fields_tooltip: KI-generierten Text in die Felder kopieren
       approve: Freigeben
       approve_to_transcribed_tooltip: Diese Seite speichern und freigeben
       autolink: Autolink

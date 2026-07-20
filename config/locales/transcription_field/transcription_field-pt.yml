@@ -53,6 +53,9 @@ pt:
     edit_metadata_fields:
       edit_metadata_fields: Editar campos de metadados
     field_layout:
+      ai_both_agree: Ambos os modelos de IA concordam
+      ai_disagree_header: Os modelos de IA discordam — revise e escolha um
+      ai_option_placeholder: Clique em uma sugestão abaixo, ou digite sua transcrição…
       instructions: Instruções
     line_form:
       field_options: Opções de campos (separar com ponto-e-vírgula)

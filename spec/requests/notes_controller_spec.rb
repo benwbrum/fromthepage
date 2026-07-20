@@ -11,6 +11,13 @@ describe NotesController do
   let!(:page) { create(:page, work: work) }
   let!(:note) { create(:note, collection_id: collection.id, work_id: work.id, page_id: page.id, user_id: owner.id) }
 
+  # Race condition fix
+  before do
+    Note.left_outer_joins(:collection)
+      .where(collections: { id: nil })
+      .delete_all
+  end
+
   describe '#index' do
     let(:action_path) { collection_notes_path(collection_id: collection.slug) }
     let(:params) { {} }
