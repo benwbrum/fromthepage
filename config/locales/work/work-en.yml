@@ -6,6 +6,7 @@ en:
         success: AI transcription job launched.
       form:
         ai_transcription: AI Transcription
+        calculating_tokens: Calculating tokens...
         contact_us: Contact %{email} to upgrade to a plan that includes AI drafts.
         description: Launch AI transcription job for pages in this work.
         description_complete: All pages in this work have AI transcriptions.

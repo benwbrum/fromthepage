@@ -6,6 +6,7 @@ fr:
         success: Lancement d'un projet de transcription par IA.
       form:
         ai_transcription: Transcription par IA
+        calculating_tokens: Calcul des jetons...
         contact_us: Contactez %{email} pour passer à un forfait incluant les brouillons IA.
         description: Lancer une tâche de transcription IA pour les pages de ce document.
         description_complete: Toutes les pages de cet ouvrage comportent des transcriptions réalisées par IA.
