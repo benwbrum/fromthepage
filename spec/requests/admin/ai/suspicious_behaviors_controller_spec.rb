@@ -37,7 +37,7 @@ describe Admin::Ai::SuspiciousBehaviorsController do
     context 'filters' do
       let(:params) do
         {
-          behaviour_type: 'large_paste',
+          behavior_type: 'large_paste',
           ordering: 'ASC',
           sorting: 'created_at',
           search_user: user.slug,
