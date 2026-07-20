@@ -22,14 +22,14 @@ describe AiTranscription::BatchGenerateJob do
   end
 
   it 'calls batch api and enqueues poll job' do
-    expect(AiTranscription::BatchPollJob).to receive(:perform_later).with(
-      user_id: owner.id,
-      ai_batch_generation_id: kind_of(Integer)
-    )
-
-    VCR.use_cassette('ai_transcriptions/batch_generate', record: :none, allow_playback_repeats: false) do
-      perform_worker
-    end
+    expect {
+      VCR.use_cassette('ai_transcriptions/batch_generate', record: :none) do
+        perform_worker
+      end
+    }.to have_enqueued_job(AiTranscription::BatchPollJob).with(
+        user_id: owner.id,
+        ai_batch_generation_id: kind_of(Integer)
+      )
 
     ai_batch_generation = collection.reload.ai_batch_generations.first
     expect(ai_batch_generation.batch_key).to eq('batches/redacted')

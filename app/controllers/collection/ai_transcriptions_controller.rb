@@ -49,6 +49,9 @@ class Collection::AiTranscriptionsController < CollectionController
       .includes(page: :work)
       .order(updated_at: :desc)
       .limit(AiTranscription::MAX_FAILED_ERRORS)
+
+    @failed_transcriptions_count = @collection.pages.where(cached_ai_status: :error).count
+
     @failed_ai_transcriptions_hidden_count = [0, @failed_transcriptions_count - @failed_ai_transcriptions.size].max
 
     render turbo_stream: turbo_stream.replace('failed_transcriptions', partial: 'failed')
