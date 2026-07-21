@@ -65,3 +65,14 @@
                   =link_to ai_transcription.short_error_message, collection_ai_transcription_path(user_slug: collection.owner.to_param, collection_id: collection.to_param, id: ai_transcription.id)
             -if @failed_ai_transcriptions_hidden_count.positive?
               p =t('.failed_transcription_errors_hidden', count: @failed_ai_transcriptions_hidden_count)
+
+      -if @finished_transcriptions_count.to_i > 0
+        =form_for collection, url: collection_update_path(collection.id, scope: 'edit_ai'), method: :post, html: { data: { controller: 'form', action: 'change->form#requestSubmit', turbo: true } } do |f|
+          =f.submit t('collection.edit.save_changes'), id: 'ai-draft-disabled-save', hidden: true
+          table.form.collection-settings
+            tr
+              td(colspan="2")
+                =f.check_box :ai_draft_disabled
+                =f.label :ai_draft_disabled
+                  h3 =t('.ai_draft_disabled')
+                  p =t('.ai_draft_disabled_description')

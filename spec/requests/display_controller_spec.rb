@@ -141,6 +141,37 @@ describe DisplayController do
         expect(assigns(:ai_transcription)).to eq(finished_transcription)
       end
     end
+
+    context 'when ai_draft_disabled is true' do
+      let!(:disabled_collection) { create(:collection, :ai_draft_disabled, owner_user_id: owner.id) }
+      let!(:disabled_work) { create(:work, collection: disabled_collection, owner_user_id: owner.id) }
+      let!(:disabled_page) { create(:page, work: disabled_work) }
+      let!(:disabled_ai_transcription) { create(:ai_transcription, page: disabled_page, source_text: 'AI text', status: :finished) }
+
+      context 'when user is the owner' do
+        before { login_as owner }
+
+        it 'allows access for the owner' do
+          get collection_ai_text_page_path(owner, disabled_collection, disabled_work, disabled_page)
+
+          expect(response).to have_http_status(:ok)
+          expect(response).to render_template(:ai_text)
+        end
+      end
+
+      context 'when user is a transcriber (non-owner)' do
+        let(:transcriber) { create(:unique_user) }
+
+        before { login_as transcriber }
+
+        it 'redirects the transcriber to the display page' do
+          get collection_ai_text_page_path(owner, disabled_collection, disabled_work, disabled_page)
+
+          expect(response).to have_http_status(:redirect)
+          expect(response).to redirect_to(collection_display_page_path(owner, disabled_collection, disabled_work, disabled_page))
+        end
+      end
+    end
   end
 
   describe '#ai_stats' do

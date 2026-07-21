@@ -4,7 +4,7 @@
       .field-wrapper[style="width: #{formatted_field[:width]}%"]
         =@field_presenter.generate_field_input(field_id: formatted_field[:field].id, content: formatted_field[:values])
 
--if @page&.field_ai_draft_available?
+-if @page&.field_ai_draft_available? && show_ai_draft_to_user?(@collection, current_user)
   -content_for :javascript
     javascript:
       var aiDraftByEngine = #{{@page.finished_ai_transcriptions_by_engine.transform_values { |t| t.transcription_json || {} }.to_json}};

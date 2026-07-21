@@ -34,5 +34,9 @@ FactoryBot.define do
     trait :field_based do
       field_based { true }
     end
+
+    trait :ai_draft_disabled do
+      ai_draft_disabled { true }
+    end
   end
 end

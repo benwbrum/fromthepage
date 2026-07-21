@@ -596,6 +596,26 @@ describe CollectionController do
         expect(response).to render_template(:update_danger)
       end
     end
+
+    context 'when scope edit_ai' do
+      let(:scope) { 'edit_ai' }
+      let(:params) { { collection: { ai_draft_disabled: true } } }
+
+      it 'renders status and template' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:update_ai)
+      end
+
+      it 'saves ai_draft_disabled' do
+        login_as owner
+        subject
+
+        expect(collection.reload.ai_draft_disabled).to be(true)
+      end
+    end
   end
 
   describe '#blank_collection' do

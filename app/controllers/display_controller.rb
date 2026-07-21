@@ -145,6 +145,12 @@ class DisplayController < ApplicationController
       return
     end
 
+    if @collection.ai_draft_disabled? && !current_user&.like_owner?(@collection)
+      redirect_to collection_display_page_path(@collection.owner, @collection, @work, @page.id)
+
+      return
+    end
+
     ai_transcriptions_scope = @page.ai_transcriptions.where(status: :finished).order(created_at: :desc)
     @finished_transcription_count = ai_transcriptions_scope.count
     @ai_transcription = ai_transcriptions_scope.find_by(id: params[:ai_transcription_id]) || ai_transcriptions_scope.first

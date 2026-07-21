@@ -5,6 +5,12 @@ module CollectionHelper
     user.present? && (user.like_owner?(collection) || user.collaborator?(collection))
   end
 
+  def show_ai_draft_to_user?(collection, user)
+    return true unless collection.ai_draft_disabled?
+
+    user.present? && user.like_owner?(collection)
+  end
+
   def link
     if params[:works] == 'show'
       @link_title = t('.incomplete_works')

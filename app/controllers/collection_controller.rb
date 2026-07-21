@@ -591,6 +591,8 @@ class CollectionController < ApplicationController
                    'collection/update_quality_control'
       when 'edit_danger'
                    'collection/update_danger'
+      when 'edit_ai'
+                   'collection/update_ai'
       else
                    # edit
                    @tags_options = Tag.where(canonical: true)
@@ -832,6 +834,7 @@ class CollectionController < ApplicationController
       :search_attempt_id,
       :alphabetize_works,
       :restricted,
+      :ai_draft_disabled,
       tags: []
     )
   end

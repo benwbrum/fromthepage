@@ -20,6 +20,10 @@ en:
         queued: Queued
         retry: Retry failed jobs
         total_tokens_used: Total tokens used
+        ai_draft_disabled: Disable AI Draft for transcribers
+        ai_draft_disabled_description: When enabled, the AI Draft button and AI tab will
+          be hidden from transcribers. Project owners will still be able to see the AI
+          Draft button and the AI tab.
       update:
         success: Retrying AI transcription job.
     approve_all:

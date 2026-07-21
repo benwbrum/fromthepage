@@ -31,7 +31,7 @@ ruby:
     end
   end
 
-  if @page.finished_ai_transcription
+  if @page.finished_ai_transcription && show_ai_draft_to_user?(@collection, current_user)
     tabs << {
       name: t('.ai'),
       selected: 5,
