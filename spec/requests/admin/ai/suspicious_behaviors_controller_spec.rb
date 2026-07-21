@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Admin::SuspiciousBehaviorsController do
+describe Admin::Ai::SuspiciousBehaviorsController do
   let!(:user) { create(:unique_user) }
   let!(:admin) { create(:unique_user, :admin) }
   let!(:owner) { create(:unique_user, :owner) }
@@ -10,7 +10,7 @@ describe Admin::SuspiciousBehaviorsController do
   let!(:suspicious_behavior) { create(:suspicious_behavior, collection: collection, page: page, user: user, resolved_by_user_id: nil) }
 
   describe '#index' do
-    let(:action_path) { admin_suspicious_behaviors_path }
+    let(:action_path) { admin_ai_suspicious_behaviors_path }
     let(:params) { {} }
     let(:subject) { get action_path, params: params }
 
@@ -37,10 +37,9 @@ describe Admin::SuspiciousBehaviorsController do
     context 'filters' do
       let(:params) do
         {
-          behaviour_type: 'large_paste',
-          status: 'flagged',
+          behavior_type: 'large_paste',
           ordering: 'ASC',
-          sorting: 'resolved_at',
+          sorting: 'created_at',
           search_user: user.slug,
           search_collection: collection.slug,
           search_owner: owner.slug
@@ -77,7 +76,7 @@ describe Admin::SuspiciousBehaviorsController do
   end
 
   describe '#show' do
-    let(:action_path) { admin_suspicious_behavior_path(suspicious_behavior) }
+    let(:action_path) { admin_ai_suspicious_behavior_path(suspicious_behavior) }
     let(:subject) { get action_path }
 
     it 'redirects when not logged in' do

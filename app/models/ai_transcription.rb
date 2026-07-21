@@ -3,7 +3,7 @@
 # Table name: ai_transcriptions
 #
 #  id                             :bigint           not null, primary key
-#  metadata                       :json
+#  metadata                       :text(4294967295)
 #  model                          :string(255)      not null
 #  prompt                         :text(4294967295)
 #  reasoning                      :text(4294967295)
@@ -29,7 +29,10 @@
 #
 # Indexes
 #
-#  index_ai_transcriptions_on_page_id  (page_id)
+#  index_ai_transcriptions_on_page_id                (page_id)
+#  index_ai_transcriptions_on_page_id_and_id         (page_id,id)
+#  index_ai_transcriptions_on_status                 (status)
+#  index_ai_transcriptions_on_status_and_updated_at  (status,updated_at)
 #
 # Foreign Keys
 #

@@ -51,7 +51,7 @@ describe SuspiciousBehaviorsController do
     context 'filters' do
       let(:params) do
         {
-          behaviour_type: 'large_paste',
+          behavior_type: 'large_paste',
           status: 'flagged',
           ordering: 'ASC',
           sorting: 'resolved_at',

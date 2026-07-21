@@ -40,10 +40,10 @@ RSpec.describe AdminMailer, type: :mailer do
       expect(body).not_to include(bulk_export_show_url(bulk_export_id: older_failed_bulk_export.id))
 
       expect(body).to include('Failed AI Transcriptions')
-      expect(body).to include(collection_display_page_url(collection.owner, collection, failed_work, failed_page, only_path: false))
+      expect(body).to include(admin_ai_error_url(failed_ai_transcription, only_path: false))
       expect(body).to include('Recent AI failure')
-      expect(body).not_to include(collection_display_page_url(collection.owner, collection, older_failed_work, older_failed_page, only_path: false))
-      expect(body).not_to include(collection_display_page_url(collection.owner, collection, retried_work, retried_page, only_path: false))
+      expect(body).not_to include(admin_ai_error_url(older_failed_ai_transcription, only_path: false))
+      expect(body).not_to include(admin_ai_error_url(retried_failed_ai_transcription, only_path: false))
     end
   end
 
