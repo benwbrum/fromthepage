@@ -18,12 +18,42 @@ namespace :fromthepage do
       exit 1
     end
 
+    report_collection = work ? work.collection : collection
     pages = work ? work.pages.includes(:work, :ai_transcriptions) : collection.pages.includes(:work, :ai_transcriptions)
+    report_fields = report_collection.transcription_fields
+                                     .includes(:spreadsheet_columns)
+                                     .order(:line_number, :position)
+                                     .reject { |field| %w[description instruction].include?(field.input_type) }
+
+    field_value_for_comparison = lambda do |field, json|
+      return '' if json.blank?
+
+      value = json[field.id.to_s]
+      return '' if value.blank?
+
+      if field.input_type == 'spreadsheet' && value.is_a?(Array)
+        cols = field.spreadsheet_columns
+        value.filter_map do |row|
+          row_text = cols.map { |column| row[column.id.to_s].to_s }.reject(&:blank?).join(' ')
+          row_text.presence
+        end.join(' ')
+      else
+        value.to_s
+      end
+    end
+
+    normalize_text = lambda do |text|
+      text.to_s.gsub(/[[:punct:]]/, ' ').downcase.gsub(/\s+/, ' ').strip
+    end
+
+    field_headers = report_fields.flat_map do |field|
+      ["#{field.label} CDR", "#{field.label} Text-only CDR"]
+    end
 
     filename = "ai_disagreement_#{slug}.csv"
 
     CSV.open(filename, 'wb') do |csv|
-      csv << ['Work Title', 'Page Title', 'Page ID', 'AI Tab URL', 'Transcribe Tab URL', 'Character Disagreement Rate', 'Case-insensitive CDR', 'Missing Models']
+      csv << ['Work Title', 'Page Title', 'Page ID', 'AI Tab URL', 'Transcribe Tab URL', 'Character Disagreement Rate', 'Case-insensitive CDR', *field_headers, 'Missing Models']
 
       pages.each do |page|
         page_work = page.work
@@ -44,6 +74,19 @@ namespace :fromthepage do
           page.send(:character_error_rate, claude_transcription.text_for_comparison.downcase, gemini_transcription.text_for_comparison.downcase)
         end
 
+        field_disagreement_rates = report_fields.flat_map do |field|
+          if missing_models.empty?
+            claude_field_text = field_value_for_comparison.call(field, claude_transcription.transcription_json)
+            gemini_field_text = field_value_for_comparison.call(field, gemini_transcription.transcription_json)
+            [
+              page.send(:character_error_rate, claude_field_text, gemini_field_text),
+              page.send(:character_error_rate, normalize_text.call(claude_field_text), normalize_text.call(gemini_field_text))
+            ]
+          else
+            [nil, nil]
+          end
+        end
+
         csv << [
           page_work.title,
           page.title,
@@ -52,6 +95,7 @@ namespace :fromthepage do
           "#{Rails.application.routes.url_helpers.collection_transcribe_page_url(page_collection.owner, page_collection, page_work, page)}?ai_draft=1",
           disagreement_rate,
           ci_disagreement_rate,
+          *field_disagreement_rates,
           missing_models.join(' ')
         ]
       end
