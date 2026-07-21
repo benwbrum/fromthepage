@@ -84,9 +84,10 @@ describe Admin::Ai::ErrorsController do
     context 'when record is not an error' do
       let(:action_path) { admin_ai_error_path(ai_transcription_finished) }
 
-      it 'raises RecordNotFound for non-error record' do
+      it 'redirects to 404 for non-error record' do
         login_as admin
-        expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
+        subject
+        expect(response).to redirect_to('/404')
       end
     end
   end
