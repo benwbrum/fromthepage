@@ -34,8 +34,8 @@ RSpec.describe 'display/_ai_text.html.slim', type: :view do
   it 'renders the human diff pane from structured transcription JSON when available' do
     render partial: 'display/ai_text'
 
-    human_pane = Capybara.string(rendered).find('[data-diff-transcription="changed"] .html-code')
-    ai_pane = Capybara.string(rendered).find('[data-diff-transcription="original"] .html-code')
+    human_pane = Capybara.string(rendered).find('[data-diff-transcription="changed"] .html-code', visible: :all)
+    ai_pane = Capybara.string(rendered).find('[data-diff-transcription="original"] .html-code', visible: :all)
 
     expect(human_pane).to have_css('.field__label', text: 'First Name:')
     expect(human_pane).to have_text('Ada Lovelace')
@@ -46,10 +46,13 @@ RSpec.describe 'display/_ai_text.html.slim', type: :view do
   it 'falls back to XML for the human diff pane when structured transcription JSON is unavailable' do
     allow(page).to receive(:transcription_json).and_return({})
 
+    allow(view).to receive(:xml_to_html).with(page.xml_text).and_return('<p>first name: Ada Lovelace</p>'.html_safe)
+
     render partial: 'display/ai_text'
 
-    human_pane = Capybara.string(rendered).find('[data-diff-transcription="changed"] .html-code')
+    human_pane = Capybara.string(rendered).find('[data-diff-transcription="changed"] .html-code', visible: :all)
 
+    expect(view).to have_received(:xml_to_html).with(page.xml_text)
     expect(human_pane).to have_text('first name: Ada Lovelace')
   end
 end
