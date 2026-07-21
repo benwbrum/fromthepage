@@ -5,14 +5,9 @@ table.datagrid.striped.dataTable.no-footer
     th =t('admin.suspicious_behaviors.table.collection')
     th =t('admin.suspicious_behaviors.table.page')
     th =t('admin.suspicious_behaviors.table.owner')
-    th =t('admin.suspicious_behaviors.table.metadata')
-    th =t('admin.suspicious_behaviors.table.resolved_by')
-    =fe_sortable_header(key: :resolved_at, sorting: @sorting, ordering: @ordering) do
-      =t('admin.suspicious_behaviors.table.resolved_at')
     =fe_sortable_header(key: :created_at, sorting: @sorting, ordering: @ordering) do
       =t('admin.suspicious_behaviors.table.flagged_at')
     th =t('admin.suspicious_behaviors.table.type')
-    th =t('admin.suspicious_behaviors.table.status')
 
   tbody
     -if @suspicious_behaviors.any?
@@ -33,17 +28,8 @@ table.datagrid.striped.dataTable.no-footer
             -if item.collection&.owner.present?
               =link_to item.collection.owner.display_name, user_profile_path(item.collection.owner)
           td
-            =link_to t('admin.suspicious_behaviors.table.metadata'), admin_suspicious_behavior_path(item), target: '_blank'
-          td
-            -if item.resolved_by_user.present?
-              =link_to item.resolved_by_user.display_name, user_profile_path(item.resolved_by_user)
-          td
-            =item.resolved_at&.strftime('%D %H:%M:%S')
-          td
             =item.created_at.strftime('%D %H:%M:%S')
           td
-            =t("suspicious_behaviors.filters.behavior_type.#{item.behavior_type}")
-          td
-            =t("suspicious_behaviors.filters.status.#{item.status}")
+            =link_to t("suspicious_behaviors.filters.behavior_type.#{item.behavior_type}"), admin_ai_suspicious_behavior_path(item), target: '_blank', rel: 'noopener noreferrer'
 
-=render partial: 'shared/pagination', locals: { model: @suspicious_behaviors, entries_info: true, controller: 'admin/suspicious_behaviors', action: 'index' }
+=render partial: 'shared/pagination', locals: { model: @suspicious_behaviors, entries_info: true, controller: 'admin/ai/suspicious_behaviors', action: 'index' }
