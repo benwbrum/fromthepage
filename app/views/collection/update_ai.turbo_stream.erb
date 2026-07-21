@@ -1,6 +1,5 @@
 <% if @result.success? %>
   <%= turbo_flash(t('collection.update.notice'), :notice) %>
-  <%= turbo_stream.update('collection-settings', partial: 'collection/ai_transcriptions/form', locals: { collection: @collection }) %>
 <% else %>
   <%= turbo_flash(t('collection.update.error'), :error) %>
 <% end %>
