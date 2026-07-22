@@ -381,18 +381,22 @@ class DashboardController < ApplicationController
       \n#{generated_format_date(Time.now.to_date)}\n
       &nbsp; &nbsp;
       \n#{I18n.t('dashboard.hours_letter.to_whom_it_may_concern')}\n
-      #{I18n.t('dashboard.hours_letter.certification_text', user_name: current_user.real_name, time_duration: @time_duration, start_date: generated_format_date(@start_date_hours), end_date: generated_format_date(@end_date_hours))}\n
-      #{I18n.t('dashboard.hours_letter.worked_on_collections', user_name: current_user.real_name)}\n
+      #{I18n.t('dashboard.hours_letter.certification_text', user_name: volunteer_hours_letter_name, time_duration: @time_duration, start_date: generated_format_date(@start_date_hours), end_date: generated_format_date(@end_date_hours))}\n
+      #{I18n.t('dashboard.hours_letter.worked_on_collections', user_name: volunteer_hours_letter_name)}\n
       #{I18n.t('dashboard.hours_letter.institutions_header')}
       #{I18n.t('dashboard.hours_letter.institutions_separator')}
       #{generate_collection_rows(@user_collections)}
-      #{I18n.t('dashboard.hours_letter.volunteer_text', user_display_name: current_user.display_name)}\n
+      #{I18n.t('dashboard.hours_letter.volunteer_text', user_display_name: volunteer_hours_letter_name)}\n
       |
       #{I18n.t('dashboard.hours_letter.regards_text')}\n
       |
       | Sara Brumfield
       | Partner, FromThePage
     MARKDOWN
+  end
+
+  def volunteer_hours_letter_name
+    current_user.real_name.presence || current_user.display_name
   end
 
   def generate_collection_rows(user_collections)
