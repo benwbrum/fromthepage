@@ -190,19 +190,19 @@ describe DashboardController do
 
       expect(generated_markdown.first).to include('Avery Example has contributed 12 hours and 44 minutes')
       expect(generated_markdown.first).to include('Avery Example has worked on the following collections')
-      expect(generated_markdown.first).to include("We appreciate Avery Example\'s contribution")
+      expect(generated_markdown.first).to include("We appreciate Avery Example\\'s contribution")
       expect(generated_markdown.first).not_to include('ArchiveOtter42')
     end
 
     it 'falls back to the display name when no real name is present' do
-      user.update!(real_name: nil, login: 'ArchiveOtter42')
+      user.update!(real_name: nil, login: 'CatalogFox17')
       login_as user
 
       get action_path
 
-      expect(generated_markdown.first).to include('ArchiveOtter42 has contributed 12 hours and 44 minutes')
-      expect(generated_markdown.first).to include('ArchiveOtter42 has worked on the following collections')
-      expect(generated_markdown.first).to include("We appreciate ArchiveOtter42\'s contribution")
+      expect(generated_markdown.first).to include('CatalogFox17 has contributed 12 hours and 44 minutes')
+      expect(generated_markdown.first).to include('CatalogFox17 has worked on the following collections')
+      expect(generated_markdown.first).to include("We appreciate CatalogFox17\\'s contribution")
     end
   end
 
