@@ -815,6 +815,7 @@ class CollectionController < ApplicationController
       :review_type,
       :hide_completed,
       :hide_notes,
+      :ai_draft_disabled,
       :text_language,
       :default_orientation,
       :default_overview_orientation,

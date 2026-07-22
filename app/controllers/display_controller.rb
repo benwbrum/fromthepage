@@ -139,7 +139,8 @@ class DisplayController < ApplicationController
   end
 
   def ai_text
-    unless @page.finished_ai_transcription
+    if !@page.finished_ai_transcription ||
+      (@collection.ai_draft_disabled && !current_user.like_owner?(@collection))
       redirect_to collection_display_page_path(@collection.owner, @collection, @work, @page.id)
 
       return
