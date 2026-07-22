@@ -163,6 +163,49 @@ describe DashboardController do
     end
   end
 
+  describe '#download_hours_letter' do
+    let(:action_path) do
+      dashboard_download_hours_letter_path(
+        start_date: '2026-02-01',
+        end_date: '2026-07-22',
+        time_duration: '12 hours and 44 minutes'
+      )
+    end
+    let(:generated_markdown) { [] }
+
+    before do
+      allow_any_instance_of(DashboardController).to receive(:generate_pdf) do |_controller, _input_path, _output_path, markdown_text|
+        generated_markdown << markdown_text
+      end
+      allow_any_instance_of(DashboardController).to receive(:send_generated_pdf) do |controller, _output_path|
+        controller.render plain: 'PDF generated'
+      end
+    end
+
+    it 'uses the real name throughout the volunteer hours letter when present' do
+      user.update!(real_name: 'Avery Example', login: 'ArchiveOtter42')
+      login_as user
+
+      get action_path
+
+      expect(generated_markdown.first).to include('Avery Example has contributed 12 hours and 44 minutes')
+      expect(generated_markdown.first).to include('Avery Example has worked on the following collections')
+      expect(generated_markdown.first).to include("We appreciate Avery Example\\'s contribution")
+      expect(generated_markdown.first).not_to include('ArchiveOtter42')
+    end
+
+    it 'falls back to the display name when no real name is present' do
+      user.update!(real_name: nil, login: 'CatalogFox17')
+      login_as user
+
+      get action_path
+
+      expect(generated_markdown.first).to include('CatalogFox17 has contributed 12 hours and 44 minutes')
+      expect(generated_markdown.first).to include('CatalogFox17 has worked on the following collections')
+      expect(generated_markdown.first).to include("We appreciate CatalogFox17\\'s contribution")
+    end
+  end
+
   describe '#owner' do
     let(:action_path) { dashboard_owner_path }
 
