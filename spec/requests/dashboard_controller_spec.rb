@@ -163,6 +163,42 @@ describe DashboardController do
     end
   end
 
+  describe '#generate_markdown_text' do
+    before do
+      allow(controller).to receive(:current_user).and_return(user)
+      controller.instance_variable_set(:@time_duration, '12 hours and 44 minutes')
+      controller.instance_variable_set(:@start_date_hours, Date.new(2026, 2, 1))
+      controller.instance_variable_set(:@end_date_hours, Date.new(2026, 7, 22))
+      controller.instance_variable_set(:@user_collections, [])
+      controller.instance_variable_set(:@collection_id_to_page_count, {})
+    end
+
+    it 'uses the real name throughout the volunteer hours letter when present' do
+      user.real_name = 'Avery Example'
+      user.login = 'ArchiveOtter42'
+      user.display_name = 'ArchiveOtter42'
+
+      markdown_text = controller.send(:generate_markdown_text)
+
+      expect(markdown_text).to include('Avery Example has contributed 12 hours and 44 minutes')
+      expect(markdown_text).to include('Avery Example has worked on the following collections')
+      expect(markdown_text).to include("We appreciate Avery Example\'s contribution")
+      expect(markdown_text).not_to include('ArchiveOtter42')
+    end
+
+    it 'falls back to the display name when no real name is present' do
+      user.real_name = nil
+      user.login = 'ArchiveOtter42'
+      user.display_name = 'ArchiveOtter42'
+
+      markdown_text = controller.send(:generate_markdown_text)
+
+      expect(markdown_text).to include('ArchiveOtter42 has contributed 12 hours and 44 minutes')
+      expect(markdown_text).to include('ArchiveOtter42 has worked on the following collections')
+      expect(markdown_text).to include("We appreciate ArchiveOtter42\'s contribution")
+    end
+  end
+
   describe '#owner' do
     let(:action_path) { dashboard_owner_path }
 
