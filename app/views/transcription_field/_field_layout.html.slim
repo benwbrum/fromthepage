@@ -159,8 +159,8 @@
               var html = diffTokens ? renderTokens(diffTokens[idx]) : escapeHtml(value);
               var $option = $('<div class="ai-draft-option" tabindex="0" role="button"></div>');
               var modelName = aiDraftModelNames[engine] || engine;
-              $option.append('<span class="ai-draft-option-label">' + escapeHtml(modelName) + '</span>');
               $option.append('<span class="ai-draft-option-text">' + html + '</span>');
+              $option.append('<span class="ai-draft-option-label">' + escapeHtml(modelName) + '</span>');
               $option.on('click', function() {
                 $field.val(value).trigger('input').trigger('change');
                 $panel.find('.ai-draft-option').removeClass('selected');
