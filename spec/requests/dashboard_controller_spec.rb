@@ -163,39 +163,46 @@ describe DashboardController do
     end
   end
 
-  describe '#generate_markdown_text' do
+  describe '#download_hours_letter' do
+    let(:action_path) do
+      dashboard_download_hours_letter_path(
+        start_date: '2026-02-01',
+        end_date: '2026-07-22',
+        time_duration: '12 hours and 44 minutes'
+      )
+    end
+    let(:generated_markdown) { [] }
+
     before do
-      allow(controller).to receive(:current_user).and_return(user)
-      controller.instance_variable_set(:@time_duration, '12 hours and 44 minutes')
-      controller.instance_variable_set(:@start_date_hours, Date.new(2026, 2, 1))
-      controller.instance_variable_set(:@end_date_hours, Date.new(2026, 7, 22))
-      controller.instance_variable_set(:@user_collections, [])
-      controller.instance_variable_set(:@collection_id_to_page_count, {})
+      allow_any_instance_of(DashboardController).to receive(:generate_pdf) do |_controller, _input_path, _output_path, markdown_text|
+        generated_markdown << markdown_text
+      end
+      allow_any_instance_of(DashboardController).to receive(:send_generated_pdf) do |controller, _output_path|
+        controller.render plain: 'PDF generated'
+      end
     end
 
     it 'uses the real name throughout the volunteer hours letter when present' do
-      user.real_name = 'Avery Example'
-      user.login = 'ArchiveOtter42'
-      user.display_name = 'ArchiveOtter42'
+      user.update!(real_name: 'Avery Example', login: 'ArchiveOtter42')
+      login_as user
 
-      markdown_text = controller.send(:generate_markdown_text)
+      get action_path
 
-      expect(markdown_text).to include('Avery Example has contributed 12 hours and 44 minutes')
-      expect(markdown_text).to include('Avery Example has worked on the following collections')
-      expect(markdown_text).to include("We appreciate Avery Example\'s contribution")
-      expect(markdown_text).not_to include('ArchiveOtter42')
+      expect(generated_markdown.first).to include('Avery Example has contributed 12 hours and 44 minutes')
+      expect(generated_markdown.first).to include('Avery Example has worked on the following collections')
+      expect(generated_markdown.first).to include("We appreciate Avery Example\'s contribution")
+      expect(generated_markdown.first).not_to include('ArchiveOtter42')
     end
 
     it 'falls back to the display name when no real name is present' do
-      user.real_name = nil
-      user.login = 'ArchiveOtter42'
-      user.display_name = 'ArchiveOtter42'
+      user.update!(real_name: nil, login: 'ArchiveOtter42')
+      login_as user
 
-      markdown_text = controller.send(:generate_markdown_text)
+      get action_path
 
-      expect(markdown_text).to include('ArchiveOtter42 has contributed 12 hours and 44 minutes')
-      expect(markdown_text).to include('ArchiveOtter42 has worked on the following collections')
-      expect(markdown_text).to include("We appreciate ArchiveOtter42\'s contribution")
+      expect(generated_markdown.first).to include('ArchiveOtter42 has contributed 12 hours and 44 minutes')
+      expect(generated_markdown.first).to include('ArchiveOtter42 has worked on the following collections')
+      expect(generated_markdown.first).to include("We appreciate ArchiveOtter42\'s contribution")
     end
   end
 
