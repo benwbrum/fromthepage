@@ -48,11 +48,11 @@ module ExportService
     )
   end
 
-  def export_grover_printable_to_zip(work, out, by_work, original_filenames, preserve_lb, include_metadata, include_contributors, include_notes)
+  def export_grover_printable_to_zip(work, path, by_work, original_filenames, preserve_lb, include_metadata, include_contributors, include_notes)
     return if work.pages.count == 0
 
     dirname = path_from_work(work)
-    path = File.join dirname, 'printable', 'html_facing_edition.pdf'
+    relative = File.join dirname, 'printable', 'html_facing_edition.pdf'
 
     result = Work::Export::GroverPrintable.new(
       work: work,
@@ -63,16 +63,13 @@ module ExportService
       preserve_lb: preserve_lb
     ).call
 
-    return unless result.success?
-
-    out.put_next_entry(path)
-    out.write(result.file)
-  end
-
-  def export_owner_mailing_list_csv(out:, owner:)
-    path = 'mailing_list.csv'
-    out.put_next_entry(path)
-    out.write(owner_mailing_list_csv(owner))
+    if result.success?
+      destination_path = File.join(path, relative)
+      FileUtils.mkdir_p(File.dirname(destination_path))
+      FileUtils.cp(result.file, destination_path)
+    else
+      raise result.full_errors
+    end
   end
 
   def export_collection_activity_csv(path:, collection:, report_arguments:)
