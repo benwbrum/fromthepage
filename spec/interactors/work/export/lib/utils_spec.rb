@@ -88,5 +88,34 @@ describe Work::Export::Lib::Utils do
       expect(result).not_to include('⅛')
       expect(result).to include('\ensuremath{\frac{1}{8}}')
     end
+
+    it 'does not double-escape th cells containing nested inline formatting' do
+      xml = <<~XML
+        <page><table class="tabular"><thead>
+          <tr><th><u><b>-8-</b></u></th><th>Name</th></tr>
+        </thead><tbody>
+          <tr><td>1</td><td>John</td></tr>
+        </tbody></table></page>
+      XML
+
+      result = described_class.xml_to_latex(page: page, xml_text: xml)
+
+      expect(result).to include('\\underline{\\textbf{-8-}}')
+      expect(result).not_to include('\\underline{\\textbf{-8-}\\}')
+    end
+
+    it 'does not double-escape th cells with escaped special characters' do
+      xml = <<~XML
+        <page><table class="tabular"><thead>
+          <tr><th><b>100%</b></th><th>Total</th></tr>
+        </thead><tbody>
+          <tr><td>50</td><td>50</td></tr>
+        </tbody></table></page>
+      XML
+
+      result = described_class.xml_to_latex(page: page, xml_text: xml)
+
+      expect(result).to include('\\textbf{100\\%}')
+    end
   end
 end
