@@ -18,12 +18,13 @@
           p.nomargin= t('.docx_download_description')
         .bulk-export_options
           span =button_to t('.download'), export_printable_path(@collection, @work), class: 'btnExport', params: { edition: 'text', format: 'doc', method: :post }
-      li
-        .bulk-export_format
-          h5= t('.html_pdf')
-          p.nomargin= t('.html_pdf_download_description')
-        .bulk-export_options
-          span =button_to t('.download'), export_grover_printable_path(@collection, @work), class: 'btnExport', params: { edition: 'text', method: :post }
+      -if current_user.admin?
+        li
+          .bulk-export_format
+            h5= t('.html_pdf')
+            p.nomargin= t('.html_pdf_download_description')
+          .bulk-export_options
+            span =button_to t('.download'), export_grover_printable_path(@collection, @work), class: 'btnExport', params: { edition: 'text', method: :post }
 
     h2.nomargin= t('.experiment')
     ul.bulk-export
