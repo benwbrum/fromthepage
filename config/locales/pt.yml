@@ -20,6 +20,8 @@ pt:
   en: English
   es: Español
   fr: Français
+  general:
+    loading: Carregando...
   message_boards_are_disabled: O fórum do projeto %{project} foi desativado.
   pt: Português
   time:

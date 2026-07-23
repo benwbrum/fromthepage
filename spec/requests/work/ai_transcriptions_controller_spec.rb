@@ -58,23 +58,6 @@ describe Work::AiTranscriptionsController do
           expect(response).to render_template(:edit)
         end
       end
-
-      context 'with failed transcriptions' do
-        let!(:failed_page) { create(:page, work: work, title: 'Failed Work Page') }
-        let!(:failed_ai_transcription) do
-          create(:ai_transcription, page_id: failed_page.id, status: :error, metadata: { error_message: 'RECITATION' })
-        end
-
-        it 'renders failed transcription details' do
-          login_as owner
-          subject
-
-          expect(response.body).to include('Failed transcription errors')
-          expect(response.body).to include('RECITATION')
-          expect(response.body).to include('Failed Work Page')
-          expect(response.body).to include(collection_display_page_path(owner, collection, work, failed_page))
-        end
-      end
     end
 
     context 'when accessed by non-owner user' do
@@ -159,6 +142,42 @@ describe Work::AiTranscriptionsController do
         expect(response).to have_http_status(:ok)
         expect(response).to render_template(:update)
       end
+    end
+  end
+
+
+  describe '#tokens' do
+    let(:action_path) { tokens_collection_work_ai_transcriptions_path(owner, collection, work) }
+    let(:subject) { get action_path, as: :turbo_stream }
+
+    it 'renders status and template' do
+      login_as owner
+      subject
+
+      expect(response).to have_http_status(:ok)
+      expect(response).to render_template(:_token)
+    end
+  end
+
+  describe '#failed' do
+    let(:action_path) { failed_collection_work_ai_transcriptions_path(owner, collection, work) }
+    let(:subject) { get action_path, as: :turbo_stream }
+
+    let!(:failed_page) { create(:page, work: work, title: 'Failed Work Page') }
+    let!(:failed_ai_transcription) do
+      create(:ai_transcription, page_id: failed_page.id, status: :error, metadata: { error_message: 'RECITATION' })
+    end
+
+    it 'renders status and template' do
+      login_as owner
+      subject
+
+      expect(response.body).to include('Failed transcription errors')
+      expect(response.body).to include('RECITATION')
+      expect(response.body).to include('Failed Work Page')
+
+      expect(response).to have_http_status(:ok)
+      expect(response).to render_template(:_failed)
     end
   end
 end

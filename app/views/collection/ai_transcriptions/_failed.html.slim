@@ -8,8 +8,8 @@
           li
             =work.title
             |  —
-            =link_to ai_transcription.page.title, collection_display_page_path(collection.owner, collection, work, ai_transcription.page)
+            =link_to ai_transcription.page.title, collection_display_page_path(@collection.owner, @collection, work, ai_transcription.page)
             |  —
-            =link_to ai_transcription.short_error_message, collection_ai_transcription_path(user_slug: collection.owner.to_param, collection_id: collection.to_param, id: ai_transcription.id)
+            =link_to ai_transcription.short_error_message, collection_ai_transcription_path(user_slug: @collection.owner.to_param, collection_id: @collection.to_param, id: ai_transcription.id)
       -if @failed_ai_transcriptions_hidden_count.positive?
         p =t('collection.ai_transcriptions.form.failed_transcription_errors_hidden', count: @failed_ai_transcriptions_hidden_count)
