@@ -10,7 +10,7 @@ describe ScCollectionsController, type: :controller do
       controller.instance_variable_set(:@raw_manifest, nil)
     end
 
-    it 'fetches manifest with custom headers for SSL compatibility' do
+    it 'fetches manifest with custom headers for SSL compatibility when URL has no extra whitespace' do
       expected_options = {
         'Accept-Encoding' => 'identity',
         'User-Agent' => 'FromThePage-IIIF/1.0',
