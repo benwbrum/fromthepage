@@ -14,7 +14,9 @@ RSpec.describe ScCollection do
       relation = instance_double(ActiveRecord::Relation)
       allow(described_class).to receive(:where).with(at_id: collection_url).and_return(relation)
       allow(relation).to receive(:first).and_return(nil)
-      allow_any_instance_of(described_class).to receive(:save!).and_return(true)
+      sc_collection_instance = described_class.new
+      allow(described_class).to receive(:new).and_return(sc_collection_instance)
+      allow(sc_collection_instance).to receive(:save!).and_return(true)
 
       sc_collection = described_class.collection_for_at_id("  #{collection_url} ")
 
