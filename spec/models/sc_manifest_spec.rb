@@ -137,7 +137,7 @@ RSpec.describe ScManifest, type: :model do
     end
 
     it 'trims whitespace from at_id before fetching and assigning it' do
-      allow(URI).to receive(:open).with('https://example.com/manifest/v2').and_return(double(read: v2_manifest_json))
+      expect(URI).to receive(:open).with('https://example.com/manifest/v2').and_return(double(read: v2_manifest_json))
 
       sc_manifest = ScManifest.manifest_for_at_id('  https://example.com/manifest/v2 ')
 

@@ -21,7 +21,7 @@ describe ScCollectionsController, type: :controller do
       }
 
       # Mock URI.open to verify it's called with the right parameters
-      allow(URI).to receive(:open).with(
+      expect(URI).to receive(:open).with(
         manifest_url,
         expected_options
       ).and_return(double(read: mock_manifest_content))
