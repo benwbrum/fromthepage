@@ -102,7 +102,7 @@
 -if current_user&.like_owner?(@collection) || current_user&.collaborator?(@collection)
   -tabs += [{\
       :name => t('.suspicious_behaviors'),
-      :selected => 10,
+      :selected => 15,
       :path => "#{main_app.collection_suspicious_behaviors_path(@collection.owner, @collection)}",
     }]
 

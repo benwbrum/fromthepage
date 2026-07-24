@@ -67,6 +67,24 @@ describe 'collection field-based transcription settings' do
     expect(fields.last.input_type).to eq('text')
   end
 
+  it 'highlights only the fields tab on edit fields page' do
+    visit transcription_field_edit_fields_path(collection_id: collection)
+
+    within '#collection-tabs .tabs' do
+      expect(page).to have_selector('a.active', text: 'Fields')
+      expect(page).to have_no_selector('a.active', text: 'Suspicious Behaviors')
+    end
+  end
+
+  it 'highlights only the suspicious behaviors tab on suspicious behaviors page' do
+    visit collection_suspicious_behaviors_path(owner, collection)
+
+    within '#collection-tabs .tabs' do
+      expect(page).to have_selector('a.active', text: 'Suspicious Behaviors')
+      expect(page).to have_no_selector('a.active', text: 'Fields')
+    end
+  end
+
   it 'checks the field preview on the edit page' do
     create_transcription_fields
     visit transcription_field_edit_fields_path(collection_id: collection)
