@@ -1,6 +1,7 @@
 class SystemMailer < ActionMailer::Base
   include ContributorHelper
   FAILURE_LOG_PATTERN = /\b(fail(?:ed|ures?)?|error(?:s)?)\b/i
+  CDM_SYNC_EMAIL_LOG_LINE_LIMIT = 200
 
   default from: 'FromThePage <support@fromthepage.com>'
   layout 'mailer'
@@ -22,10 +23,11 @@ class SystemMailer < ActionMailer::Base
 
   def cdm_sync_finished(collection)
     @collection = collection
-    @log_contents = ContentdmTranslator.log_contents(collection)
+    full_log_contents = ContentdmTranslator.log_contents(collection)
+    @log_contents = full_log_contents.lines.last(CDM_SYNC_EMAIL_LOG_LINE_LIMIT).join
     recipients = [ADMIN_EMAILS, owner_emails(collection)].reject(&:blank?).join(', ')
     subject = "CONTENTdm Sync Finished for #{collection.title}"
-    subject = "CONTENTdm Sync Finished with Failures for #{collection.title}" if @log_contents.match?(FAILURE_LOG_PATTERN)
+    subject = "CONTENTdm Sync Finished with Failures for #{collection.title}" if full_log_contents.match?(FAILURE_LOG_PATTERN)
     mail from: SENDING_EMAIL_ADDRESS, to: recipients, subject: subject
   end
 
