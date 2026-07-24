@@ -22,10 +22,24 @@
               -collection = work.collection
               tr
                 td =ai_transcription.updated_at.strftime('%D %H:%M:%S')
-                td =link_to work.title, collection_path(collection.owner, collection)
-                td =link_to ai_transcription.page.title, collection_display_page_path(collection.owner, collection, work, ai_transcription.page)
-                td =link_to collection.title, collection_path(collection.owner, collection)
-                td =link_to collection.owner.display_name, user_profile_path(collection.owner)
+                td
+                  -if collection&.owner.present?
+                    =link_to work.title, collection_path(collection.owner, collection)
+                  -else
+                    =work.title
+                td
+                  -if collection&.owner.present?
+                    =link_to ai_transcription.page.title, collection_display_page_path(collection.owner, collection, work, ai_transcription.page)
+                  -else
+                    =ai_transcription.page.title
+                td
+                  -if collection&.owner.present?
+                    =link_to collection.title, collection_path(collection.owner, collection)
+                  -else
+                    =collection&.title
+                td
+                  -if collection&.owner.present?
+                    =link_to collection.owner.display_name, user_profile_path(collection.owner)
                 td =ai_transcription.model
                 td =link_to ai_transcription.short_error_message, admin_ai_error_path(ai_transcription)
         =render partial: 'shared/pagination', locals: { model: @ai_transcriptions, entries_info: true, controller: 'admin/ai/errors', action: 'index' }
