@@ -40,7 +40,7 @@ describe ScCollectionsController, type: :controller do
         ssl_verify_mode: OpenSSL::SSL::VERIFY_PEER
       }
 
-      allow(URI).to receive(:open).with(
+      expect(URI).to receive(:open).with(
         manifest_url,
         expected_options
       ).and_return(double(read: mock_manifest_content))
