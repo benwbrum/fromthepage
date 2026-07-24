@@ -1,4 +1,4 @@
-=render partial: '/shared/collection_tabs', locals: { selected: 10, collection_id: @collection }
+=render partial: '/shared/collection_tabs', locals: { selected: 15, collection_id: @collection }
 
 =fe_filter_table_wrapper(selector: 'suspicious-behaviors-table') do
   =fe_filter_form_wrapper(url: collection_suspicious_behaviors_path(@collection.owner, @collection), selector: 'suspicious-behaviors-table', sorting: @sorting, ordering: @ordering) do
