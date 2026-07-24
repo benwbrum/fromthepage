@@ -52,6 +52,7 @@ class ScCollection < ApplicationRecord
   end
 
   def self.collection_for_at_id(at_id)
+    at_id = at_id.strip
     connection = URI.open(at_id)
     collection_json = connection.read
     # collection_json = TEST_COLLECTION

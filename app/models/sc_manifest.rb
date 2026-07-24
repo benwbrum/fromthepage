@@ -56,6 +56,7 @@ class ScManifest < ApplicationRecord
   end
 
   def self.manifest_for_at_id(at_id)
+    at_id = at_id.strip
     connection = URI.open(at_id)
     manifest_json = connection.read
     # manifest_json = TEST_MANIFEST

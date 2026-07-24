@@ -344,6 +344,7 @@ class ScCollectionsController < ApplicationController
   end
 
   def fetch_manifest(at_id)
+    at_id = at_id.strip
     if @raw_manifest.nil?
       # Set OpenSSL flag to ignore unexpected EOF (for OpenSSL 3.0 compatibility)
       if OpenSSL::SSL.const_defined?(:OP_IGNORE_UNEXPECTED_EOF)

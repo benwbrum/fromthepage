@@ -30,6 +30,25 @@ describe ScCollectionsController, type: :controller do
       expect(result).to eq(mock_manifest_content)
     end
 
+    it 'trims whitespace from the manifest URL before fetching' do
+      expected_options = {
+        'Accept-Encoding' => 'identity',
+        'User-Agent' => 'FromThePage-IIIF/1.0',
+        'Connection' => 'close',
+        open_timeout: 10,
+        read_timeout: 20,
+        ssl_verify_mode: OpenSSL::SSL::VERIFY_PEER
+      }
+
+      allow(URI).to receive(:open).with(
+        manifest_url,
+        expected_options
+      ).and_return(double(read: mock_manifest_content))
+
+      result = controller.send(:fetch_manifest, "  #{manifest_url} ")
+      expect(result).to eq(mock_manifest_content)
+    end
+
     it 'caches manifest content to avoid repeated requests' do
       allow(URI).to receive(:open).and_return(double(read: mock_manifest_content))
 
