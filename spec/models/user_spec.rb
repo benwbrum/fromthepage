@@ -1,6 +1,36 @@
 require 'spec_helper'
 
 describe User do
+  describe 'website normalization and validation' do
+    let(:user) { build(:unique_user, :owner) }
+
+    it 'normalizes schemeless website URLs with https' do
+      user.website = 'www.example.com'
+
+      expect(user).to be_valid
+
+      user.save!
+      expect(user.reload.website).to eq('https://www.example.com')
+    end
+
+    it 'strips surrounding whitespace from website values' do
+      user.website = '  https://example.com  '
+
+      expect(user).to be_valid
+
+      user.save!
+      expect(user.reload.website).to eq('https://example.com')
+    end
+
+    it 'allows blank website values' do
+      user.website = '  '
+
+      expect(user).to be_valid
+
+      user.save!
+      expect(user.reload.website).to eq('')
+    end
+  end
   describe '#can_transcribe?' do
     let(:owner) { create(:unique_user, :owner) }
     let(:collection) { create(:collection, :private, :docset_enabled, owner_user_id: owner.id) }

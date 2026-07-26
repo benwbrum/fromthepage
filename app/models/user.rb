@@ -142,11 +142,12 @@ class User < ApplicationRecord
                     exclusion: { in: %w[transcribe translate work collection deed],
                                  message: ->(_, _) { I18n.t('devise.errors.messages.login.exclusion') } }
 
-  validates :website, allow_blank: true, format: { with: URI.regexp }
+  validates :website, allow_blank: true, format: { with: /\Ahttps?:\/\/[^\s]+\z/i }
   validate :email_does_not_match_denylist
   validate :display_name_presence
   validate :email_domain_blacklist, if: -> { validation_context == :registration }
 
+  before_validation :normalize_website
   before_validation :update_display_name
 
   after_save :create_notifications
@@ -203,6 +204,15 @@ class User < ApplicationRecord
     else
       self[:display_name] = self.login
     end
+  end
+
+  def normalize_website
+    return if website.nil?
+
+    normalized_website = website.strip
+    return self.website = normalized_website if normalized_website.blank?
+
+    self.website = normalized_website.match?(/\Ahttps?:\/\//i) ? normalized_website : "https://#{normalized_website}"
   end
 
   def self.from_omniauth(access_token)
