@@ -35,4 +35,70 @@ RSpec.describe OwnerExporter do
       expect(csv.third).to eq(['user-two', 'User Two', 'two@example.com', 'false', '0', '3'])
     end
   end
+
+  describe '#detailed_activity_csv' do
+    let!(:owner) { build(:owner).tap { |o| o.save(validate: false) } }
+    let!(:other_owner) { build(:owner).tap { |o| o.save(validate: false) } }
+    let!(:collection_one) { create(:collection, owner_user_id: owner.id) }
+    let!(:collection_two) { create(:collection, owner_user_id: owner.id) }
+    let!(:other_collection) { create(:collection, owner_user_id: other_owner.id) }
+    let!(:user_one) do
+      build(:user, login: 'alpha-user', display_name: 'Alpha User', email: 'alpha@example.com').tap { |u| u.save(validate: false) }
+    end
+    let!(:user_two) do
+      build(:user, login: 'beta-user', display_name: 'Beta User', email: 'beta@example.com').tap { |u| u.save(validate: false) }
+    end
+    let!(:user_three) do
+      build(:user, login: 'gamma-user', display_name: 'Gamma User', email: 'gamma@example.com').tap { |u| u.save(validate: false) }
+    end
+    let(:start_date) { Date.new(2026, 1, 1) }
+    let(:end_date) { Date.new(2026, 1, 3) }
+
+    before do
+      create(:ahoy_activity_summary, user_id: user_one.id, collection_id: collection_one.id, date: start_date, activity: 'transcribe', minutes: 15)
+      create(:ahoy_activity_summary, user_id: user_one.id, collection_id: collection_two.id, date: start_date, activity: 'review', minutes: 10)
+      create(:ahoy_activity_summary, user_id: user_one.id, collection_id: collection_two.id, date: start_date + 1.day, activity: 'translate', minutes: 30)
+      create(:ahoy_activity_summary, user_id: user_two.id, collection_id: collection_one.id, date: start_date, activity: 'transcribe', minutes: 5)
+      create(:ahoy_activity_summary, user_id: user_two.id, collection_id: collection_one.id, date: end_date, activity: 'translate', minutes: 20)
+      create(:ahoy_activity_summary, user_id: user_three.id, collection_id: other_collection.id, date: start_date + 1.day, activity: 'transcribe', minutes: 999)
+    end
+
+    it 'exports headers and per-day activity with zero fill' do
+      csv = CSV.parse(exporter.detailed_activity_csv(owner, start_date, end_date), headers: true)
+
+      expect(csv.headers).to eq(['Username', 'Email', 'Jan 01, 2026', 'Jan 02, 2026', 'Jan 03, 2026'])
+      expect(csv.map { |row| row['Username'] }).to eq([user_one.display_name, user_two.display_name])
+      expect(csv.map { |row| row['Email'] }).to eq(['alpha@example.com', 'beta@example.com'])
+      expect(csv[0].fields).to eq([user_one.display_name, 'alpha@example.com', '25', '30', '0'])
+      expect(csv[1].fields).to eq([user_two.display_name, 'beta@example.com', '5', '0', '20'])
+    end
+
+    it 'does not duplicate users with activity across multiple owned collections' do
+      csv = CSV.parse(exporter.detailed_activity_csv(owner, start_date, end_date), headers: true)
+      usernames = csv.map { |row| row['Username'] }
+
+      expect(usernames.size).to eq(2)
+      expect(usernames.uniq.size).to eq(2)
+      expect(csv.map { |row| row['Email'] }).to contain_exactly('alpha@example.com', 'beta@example.com')
+    end
+
+    it 'executes a single grouped sum query across all contributors' do
+      queries = []
+      callback = lambda do |_name, _start, _finish, _id, payload|
+        sql = payload[:sql]
+        next if payload[:name] == 'SCHEMA'
+        next unless sql.include?('ahoy_activity_summaries')
+
+        queries << sql
+      end
+
+      ActiveSupport::Notifications.subscribed(callback, 'sql.active_record') do
+        exporter.detailed_activity_csv(owner, start_date, end_date)
+      end
+
+      sum_queries = queries.grep(/SELECT\s+SUM\(/i)
+      expect(sum_queries.size).to eq(1)
+      expect(sum_queries.first).to match(/GROUP BY.*user_id.*date/i)
+    end
+  end
 end
