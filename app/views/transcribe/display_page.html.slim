@@ -361,6 +361,9 @@
 
       // Handle blank page button click
       $("#blankPageButton").click(function() {
+          // Purge the autosaved draft so we do not re-offer unsaved work that
+          // the user has intentionally discarded by blanking the page.
+          if (typeof FtpDraftAutosave !== 'undefined') { FtpDraftAutosave.purge(); }
           allowFormToSubmit();
           hideCustomAlert();
       });
@@ -373,3 +376,7 @@
 
     // TODO change the parameter name for the HOT data to the name of the spreadsheet field
     // TODO change the way we access the HOT data to allow more than one spreadsheet
+
+    // Draft autosave: persist work-in-progress to localStorage so it can be
+    // restored if the user's save request fails (e.g. a Cloudflare 522 timeout).
+    FtpDraftAutosave.init("ftp:draft:#{@collection.id}:#{@work.id}:#{@page.id}:transcription:#{current_user.id}");
