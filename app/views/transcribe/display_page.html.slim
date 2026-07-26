@@ -379,4 +379,4 @@
 
     // Draft autosave: persist work-in-progress to localStorage so it can be
     // restored if the user's save request fails (e.g. a Cloudflare 522 timeout).
-    FtpDraftAutosave.init("ftp:draft:#{@collection.id}:#{@work.id}:#{@page.id}:transcription:#{current_user.id}");
+    FtpDraftAutosave.init("ftp:draft:#{@collection.id}:#{@work.id}:#{@page.id}:transcription:#{current_user.slug}");

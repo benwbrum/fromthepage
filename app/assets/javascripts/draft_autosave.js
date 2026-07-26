@@ -144,7 +144,13 @@ var FtpDraftAutosave = (function () {
         // Update the hidden field (what gets submitted to the server)
         var hiddenField = document.getElementById(fieldId);
         if (hiddenField) { hiddenField.value = JSON.stringify(data); }
-        // Update the visual Handsontable instance when available
+        // Update the visual Handsontable instance when available.
+        // Note: window.hot references the most recently connected Handsontable
+        // instance.  If only one spreadsheet field is present (the common case)
+        // this correctly restores it.  For pages with multiple spreadsheet fields,
+        // the hidden-field update above is sufficient to ensure the correct data
+        // is submitted; the visual table for all but the last-connected instance
+        // will not reflect the restore until the user reloads.
         if (typeof hot !== 'undefined') {
           // Legacy global `hot` variable (single-spreadsheet support)
           hot.loadData(data);
@@ -166,7 +172,7 @@ var FtpDraftAutosave = (function () {
     var msgSpan = document.createElement('span');
     msgSpan.className = 'flash_message';
     msgSpan.appendChild(
-      document.createTextNode('You have unsaved work from ' + savedAt + ' that may not have been saved to the server. ')
+      document.createTextNode('You have unsaved work from ' + savedAt + ' that was not saved to the server. ')
     );
 
     var restoreBtn = document.createElement('button');
@@ -278,7 +284,7 @@ var FtpDraftAutosave = (function () {
         clearInterval(cmHookInterval);
         myCodeMirror.on('change', debouncedSave);
       } else if (cmHookAttempts > 50) {
-        // Give up after ~5 s if CodeMirror never appears
+        // Give up after ~5 seconds if CodeMirror never appears
         clearInterval(cmHookInterval);
       }
     }, 100);
@@ -302,7 +308,7 @@ var FtpDraftAutosave = (function () {
     storageKey = key;
     wireEvents();
     // Delay the draft check to let CodeMirror (and field rendering) finish
-    // initialising so captureContent() reads the correct server-rendered value.
+    // initializing so captureContent() reads the correct server-rendered value.
     setTimeout(checkForDraft, 500);
   }
 
