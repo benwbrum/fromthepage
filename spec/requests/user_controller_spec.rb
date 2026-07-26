@@ -128,10 +128,10 @@ describe UserController do
         }
       end
       let(:website_value) { 'www.example.com' }
+      let(:cookie_handler) { instance_double(Cookies::Lib::CreateOrUpdateHandler, perform: true) }
 
       before do
         owner.create_notifications unless owner.notification
-        cookie_handler = instance_double(Cookies::Lib::CreateOrUpdateHandler, perform: true)
         allow(Cookies::Lib::CreateOrUpdateHandler).to receive(:new).and_return(cookie_handler)
         login_as owner
       end
@@ -141,6 +141,7 @@ describe UserController do
 
         expect(response).to have_http_status(:found)
         expect(owner.reload.website).to eq('https://www.example.com')
+        expect(cookie_handler).to have_received(:perform)
       end
 
       it 'strips surrounding whitespace from website values during save' do
@@ -159,9 +160,19 @@ describe UserController do
 
         expect(response).to have_http_status(:ok)
         expect(response).to render_template(:update_profile)
-        expect(response.body).to include('Website')
-        expect(response.body).to include('invalid')
+        expect(response.body).to include('Website is invalid')
         expect(owner.reload.website).not_to eq('https://bad url')
+      end
+
+      it 're-renders update_profile for unsupported URL schemes' do
+        params[:user][:website] = 'ftp://example.com'
+
+        patch action_path, params: params
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:update_profile)
+        expect(response.body).to include('Website is invalid')
+        expect(owner.reload.website).not_to eq('ftp://example.com')
       end
     end
   end

@@ -22,6 +22,15 @@ describe User do
       expect(user.reload.website).to eq('https://example.com')
     end
 
+    it 'keeps valid urls with path, query, and fragment' do
+      user.website = 'example.com/path?q=1#section'
+
+      expect(user).to be_valid
+
+      user.save!
+      expect(user.reload.website).to eq('https://example.com/path?q=1#section')
+    end
+
     it 'allows blank website values' do
       user.website = '  '
 
