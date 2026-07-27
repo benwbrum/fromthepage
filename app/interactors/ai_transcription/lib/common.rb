@@ -17,6 +17,14 @@ module AiTranscription::Lib::Common
     'Do not add any commentary or explanations - only provide the transcribed text.'
   end
 
+  def build_prompt
+    return sanitize_prompt if @prompt_file.present? || !@collection.field_based
+
+    AiTranscription::Lib::FieldBasedPromptBuilder
+      .new(collection: @collection)
+      .build
+  end
+
   def check_user_permission
     return if @user.admin?
 
