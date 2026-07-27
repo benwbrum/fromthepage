@@ -5,12 +5,6 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery with: :exception, except: [:switch_locale, :saml]
 
-  before_action do
-    if current_user && current_user.admin
-      Rack::MiniProfiler.authorize_request
-    end
-  end
-
   before_action :load_objects_from_params
   before_action :store_current_location, unless: :devise_controller?
   before_action :load_html_blocks
