@@ -43,13 +43,6 @@ tr
       p =t('collection.edit_tasks.subjects_enabled_description')
 tr
   td(colspan="2")
-    =f.check_box :ai_draft_disabled
-    =f.label :ai_draft_disabled
-      h3 =t('collection.edit_tasks.ai_draft_disabled')
-      p =t('collection.edit_tasks.ai_draft_disabled_description')
-tr: td
-tr
-  td(colspan="2")
     h3 =t('collection.edit_tasks.ocr_correction')
     -if collection.works.ocr_disabled.any? || collection.works.empty?
       =link_to collection_enable_ocr_path(collection_id: collection.id), method: :post, class: 'button action-btn', disabled: collection.works.empty? || !collection.text_entry? do
@@ -58,10 +51,11 @@ tr
       =link_to collection_disable_ocr_path(collection_id: collection.id), method: :post, class: 'button action-btn', disabled: !collection.text_entry? do
         span =t('collection.edit_tasks.disable_ocr')
     p =t('collection.edit_tasks.ocr_description')
-tr: td
-tr
-  td(colspan="2")
-    =f.check_box :ai_draft_disabled
-    =f.label :ai_draft_disabled
-      h3 =t('collection.edit_tasks.ai_draft_disabled')
-      p =t('collection.edit_tasks.ai_draft_disabled_description')
+-if @has_finished_ai_transcription
+  tr: td
+  tr
+    td(colspan="2")
+      =f.check_box :ai_draft_disabled
+      =f.label :ai_draft_disabled
+        h3 =t('collection.edit_tasks.ai_draft_disabled')
+        p =t('collection.edit_tasks.ai_draft_disabled_description')

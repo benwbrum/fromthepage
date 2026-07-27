@@ -530,6 +530,12 @@ class CollectionController < ApplicationController
   end
 
   def edit_tasks
+    @has_finished_ai_transcription =
+      @collection.pages
+        .joins(:ai_transcriptions)
+        .where(ai_transcriptions: { status: :finished })
+        .exists?
+
     flash.now[:info] = t('.alert') if @collection.field_based && !@collection.transcription_fields.present?
   end
 
@@ -571,6 +577,11 @@ class CollectionController < ApplicationController
     respond_to do |format|
       template = case params[:scope]
       when 'edit_tasks'
+                   @has_finished_ai_transcription =
+                     @collection.pages
+                       .joins(:ai_transcriptions)
+                       .where(ai_transcriptions: { status: :finished })
+                       .exists?
                    'collection/update_tasks'
       when 'edit_look'
                    'collection/update_look'
