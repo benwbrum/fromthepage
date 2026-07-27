@@ -37,8 +37,8 @@ describe 'fromthepage:ai_disagreement_report' do
   it 'reports each model text-only CER and identifies fields with 100% text-only disagreement' do
     misplaced_page = create(:page, work: work)
     aligned_page = create(:page, work: work)
-    create_transcription(page: misplaced_page, model: 'claude-sonnet', field_text: 'alpha', text_cer: 12.34)
-    create_transcription(page: misplaced_page, model: 'gemini-pro', field_text: 'omega', text_cer: 56.78)
+    create_transcription(page: misplaced_page, model: 'claude-sonnet', field_text: 'alpha', text_cer: 12)
+    create_transcription(page: misplaced_page, model: 'gemini-pro', field_text: 'omega', text_cer: 57)
     create_transcription(page: aligned_page, model: 'claude-sonnet', field_text: 'same')
     create_transcription(page: aligned_page, model: 'gemini-pro', field_text: 'same')
 
@@ -48,8 +48,8 @@ describe 'fromthepage:ai_disagreement_report' do
 
     expect(rows.headers).to include('Claude Text-only CER', 'Gemini Text-only CER')
     expect(rows.headers.index('Misplaced FIelds')).to eq(rows.headers.index('Character Disagreement Rate') + 1)
-    expect(misplaced_row['Claude Text-only CER']).to eq('12.34')
-    expect(misplaced_row['Gemini Text-only CER']).to eq('56.78')
+    expect(misplaced_row['Claude Text-only CER']).to eq('12')
+    expect(misplaced_row['Gemini Text-only CER']).to eq('57')
     expect(misplaced_row['Misplaced FIelds']).to eq('yes')
     expect(aligned_row['Claude Text-only CER']).to be_nil
     expect(aligned_row['Gemini Text-only CER']).to be_nil
