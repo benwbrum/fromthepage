@@ -134,6 +134,31 @@ RSpec.describe ContentdmTranslator do
     let(:vanity_collection_2) { 'http://www.digitalindy.org/cdm/search/collection/ahs' }
     let(:vanity_repository) { 'http://www.digitalindy.org' }
 
+    context 'when collection aliases contain punctuation' do
+      before do
+        allow(ContentdmTranslator).to receive(:get_cdm_host_from_url).and_return('kdl')
+        allow(URI).to receive(:open).and_return(StringIO.new('{}'))
+      end
+
+      it 'translates a hyphenated item alias and permits trailing routes' do
+        url = ContentdmTranslator.cdm_url_to_iiif('https://kdl.contentdm.oclc.org/digital/collection/tu-medtheses/id/4805/rec/1')
+
+        expect(url).to eq('https://kdl.contentdm.oclc.org/iiif/info/tu-medtheses/4805/manifest.json')
+      end
+
+      it 'translates a hyphenated collection alias' do
+        url = ContentdmTranslator.cdm_url_to_iiif('https://kdl.contentdm.oclc.org/digital/collection/tu-medtheses')
+
+        expect(url).to eq('https://kdl.contentdm.oclc.org/iiif/info/tu-medtheses/manifest.json')
+      end
+
+      it 'does not treat a malformed item path as a collection URL' do
+        expect do
+          ContentdmTranslator.cdm_url_to_iiif('https://kdl.contentdm.oclc.org/digital/collection/tu-medtheses/id/not-a-record')
+        end.to raise_error(ArgumentError, %r{/id/ but no valid numeric record ID})
+      end
+    end
+
     context 'default' do
       around(:each) do |example|
         VCR.use_cassette('cdm/digital-alabama', record: :none) do
