@@ -2,8 +2,8 @@ require 'spec_helper'
 
 RSpec.describe AdminMailer, type: :mailer do
   describe 'email stats' do
-    let!(:trial_owner) { create(:user, :owner, account_type: 'Trial', created_at: 2.hours.ago) }
-    let!(:older_trial_owner) { create(:user, :owner, account_type: 'Trial', created_at: 2.days.ago) }
+    let!(:trial_owner) { create(:unique_user, :owner, account_type: 'Trial', created_at: 2.hours.ago) }
+    let!(:older_trial_owner) { create(:unique_user, :owner, account_type: 'Trial', created_at: 2.days.ago) }
     let!(:failed_bulk_export) { create(:bulk_export, :error, collection_id: collection.id, user_id: admin.id, updated_at: 2.hours.ago) }
     let!(:older_failed_bulk_export) { create(:bulk_export, :error, collection_id: collection.id, user_id: admin.id, updated_at: 2.days.ago) }
     let!(:admin) { create(:admin) }
