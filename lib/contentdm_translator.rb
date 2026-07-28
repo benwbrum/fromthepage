@@ -271,7 +271,11 @@ module ContentdmTranslator
     server = get_cdm_host_from_url("#{uri.scheme}://#{uri.host}")
     raise 'ContentDM URLs must be of the form http://cdmNNNNN.contentdm.oclc.org/...' if server.nil?
 
-    matches = uri.path.match(/.*collection\/(\w+)(?:\/id\/(\d+))?/)
+    matches = uri.path.match(%r{.*collection/([^/]+)(?:/id/(\d+)(?:/.*)?)?\z})
+
+    if uri.path.include?('/id/') && (!matches || matches[2].nil?)
+      raise ArgumentError, "ContentDM item URL contains /id/ but no valid numeric record ID: #{url}"
+    end
 
     if matches
       collection = matches[1]
