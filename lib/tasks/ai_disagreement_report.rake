@@ -53,7 +53,7 @@ namespace :fromthepage do
     filename = "ai_disagreement_#{slug}.csv"
 
     CSV.open(filename, 'wb') do |csv|
-      csv << ['Work Title', 'Page Title', 'Page ID', 'AI Tab URL', 'Transcribe Tab URL', 'Character Disagreement Rate', 'Case-insensitive CDR', *field_headers, 'Missing Models']
+      csv << ['Work Title', 'Page Title', 'Page ID', 'AI Tab URL', 'Transcribe Tab URL', 'Character Disagreement Rate', 'Misplaced FIelds', 'Case-insensitive CDR', 'Claude Text-only CER', 'Gemini Text-only CER', *field_headers, 'Missing Models']
 
       pages.each do |page|
         page_work = page.work
@@ -86,6 +86,7 @@ namespace :fromthepage do
             [nil, nil]
           end
         end
+        misplaced_fields = field_disagreement_rates.each_slice(2).any? { |_cdr, text_only_cdr| text_only_cdr == 100.0 } ? 'yes' : 'no'
 
         csv << [
           page_work.title,
@@ -94,7 +95,10 @@ namespace :fromthepage do
           Rails.application.routes.url_helpers.collection_ai_text_page_url(page_collection.owner, page_collection, page_work, page),
           "#{Rails.application.routes.url_helpers.collection_transcribe_page_url(page_collection.owner, page_collection, page_work, page)}?ai_draft=1",
           disagreement_rate,
+          misplaced_fields,
           ci_disagreement_rate,
+          claude_transcription&.text_cer,
+          gemini_transcription&.text_cer,
           *field_disagreement_rates,
           missing_models.join(' ')
         ]
