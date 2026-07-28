@@ -40,6 +40,8 @@ class Work::Export::Printable < ApplicationInteractor
       "--to=#{@format}",
       "--pdf-engine=#{PDF_ENGINE}",
       "--lua-filter=#{Rails.root.join('lib', 'pandoc', 'ftp_filters.lua')}",
+      '--metadata', "title=#{@work.title}",
+      '--metadata', 'lang=en',
       '--verbose'
     ]
 

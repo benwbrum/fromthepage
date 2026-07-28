@@ -118,6 +118,9 @@ function handle_meta(meta)
 \usepackage{xltabular}
 \usepackage{booktabs}
 \usepackage[margin=0.75in]{geometry}
+
+% For strikethrough (deletion/strike-out markup from transcriptions)
+\usepackage[normalem]{ulem}
 ]]
 
   table.insert(meta['header-includes'], pandoc.RawBlock('latex', header))
