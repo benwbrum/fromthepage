@@ -9,8 +9,9 @@ describe AiTranscription::Lib::Gemini::TranscribeHandler do
     error = StandardError.new(
       'the server responded with status 429 for URL https://provider.example/generate?token=fake-secret&alt=json'
     )
-    allow(handler).to receive(:client).and_return(double(generate_content: nil))
-    allow(handler.client).to receive(:generate_content).and_raise(error)
+    client = double
+    allow(client).to receive(:generate_content).and_raise(error)
+    allow(handler).to receive(:client).and_return(client)
     logged_messages = []
     allow(Rails.logger).to receive(:error) { |message| logged_messages << message }
 
