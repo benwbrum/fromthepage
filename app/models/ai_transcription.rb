@@ -102,7 +102,7 @@ class AiTranscription < ApplicationRecord
   def error_message
     return if metadata.blank? || !metadata.is_a?(Hash)
 
-    metadata['error_message']
+    AiTranscription::Lib::ErrorMessageSanitizer.sanitize(metadata['error_message'])
   end
 
   def provider_error_details

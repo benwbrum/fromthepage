@@ -42,16 +42,20 @@ class AiTranscription::Lib::Gemini::TranscribeHandler < AiTranscription::Lib::Ba
         end
 
         # If not a 503 or out of retries, raise the error
-        Rails.logger.error("Gemini API error: #{e.message}")
+        Rails.logger.error("Gemini API error: #{sanitized_message(e)}")
         raise e
       end
     end
   rescue => e
-    Rails.logger.error("Gemini API error: #{e.message}")
+    Rails.logger.error("Gemini API error: #{sanitized_message(e)}")
     raise e
   end
 
   private
+
+  def sanitized_message(error)
+    AiTranscription::Lib::ErrorMessageSanitizer.sanitize(error.message)
+  end
 
   def api_key
     return @api_key if defined?(@api_key)
