@@ -16,7 +16,7 @@ class AiTranscription::BulkCreate < ApplicationInteractor
     check_user_permission
 
     @sanitized_model = sanitize_model
-    @sanitized_prompt = sanitize_prompt
+    @sanitized_prompt = build_prompt
 
     ai_transcription_records = []
 

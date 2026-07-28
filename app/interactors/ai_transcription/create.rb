@@ -48,11 +48,6 @@ class AiTranscription::Create < ApplicationInteractor
 
   private
 
-  def build_prompt
-    return sanitize_prompt if @prompt_file.present? || !@collection.field_based
-    AiTranscription::Lib::FieldBasedPromptBuilder.new(collection: @collection).build
-  end
-
   def find_or_generate_ai_transcription
     ai_transcription = latest_ai_transcription_for_model_engine
 
