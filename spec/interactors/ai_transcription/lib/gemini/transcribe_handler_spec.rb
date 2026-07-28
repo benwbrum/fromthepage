@@ -12,6 +12,7 @@ describe AiTranscription::Lib::Gemini::TranscribeHandler do
     client = double
     allow(client).to receive(:generate_content).and_raise(error)
     allow(handler).to receive(:client).and_return(client)
+    allow(handler).to receive(:payload).and_return({})
     logged_messages = []
     allow(Rails.logger).to receive(:error) { |message| logged_messages << message }
 
