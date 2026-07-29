@@ -89,6 +89,92 @@ describe UserController do
         expect(response.body).to include('<a href="#">description</a>')
       end
     end
+
+    describe '#update' do
+      let(:action_path) { user_update_path }
+      let(:notification_params) do
+        {
+          user_activity: owner.notification.user_activity,
+          owner_stats: owner.notification.owner_stats,
+          add_as_collaborator: owner.notification.add_as_collaborator,
+          add_as_owner: owner.notification.add_as_owner,
+          note_added: owner.notification.note_added,
+          add_as_reviewer: owner.notification.add_as_reviewer
+        }
+      end
+      let(:user_attrs) do
+        {
+          real_name: owner.real_name,
+          orcid: owner.orcid,
+          slug: owner.slug,
+          website: website_value,
+          location: owner.location,
+          about: owner.about,
+          preferred_locale: owner.preferred_locale,
+          help: owner.help,
+          footer_block: owner.footer_block,
+          privacy_preferences: {
+            marketing: '1',
+            analytics: '1'
+          },
+          notifications: notification_params
+        }
+      end
+      let(:params) do
+        {
+          user_id: owner.slug,
+          dialect: owner.dictation_language,
+          user: user_attrs
+        }
+      end
+      let(:website_value) { 'www.example.com' }
+      let(:cookie_handler) { instance_double(Cookies::Lib::CreateOrUpdateHandler, perform: true) }
+
+      before do
+        owner.create_notifications unless owner.notification
+        allow(Cookies::Lib::CreateOrUpdateHandler).to receive(:new).and_return(cookie_handler)
+        login_as owner
+      end
+
+      it 'saves schemeless website values as normalized https URLs' do
+        patch action_path, params: params
+
+        expect(response).to have_http_status(:found)
+        expect(owner.reload.website).to eq('https://www.example.com')
+        expect(cookie_handler).to have_received(:perform)
+      end
+
+      it 'strips surrounding whitespace from website values during save' do
+        params[:user][:website] = '  https://example.com  '
+
+        patch action_path, params: params
+
+        expect(response).to have_http_status(:found)
+        expect(owner.reload.website).to eq('https://example.com')
+      end
+
+      it 're-renders update_profile with errors for invalid website values' do
+        params[:user][:website] = 'https://bad url'
+
+        patch action_path, params: params
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:update_profile)
+        expect(response.body).to include('Website is invalid')
+        expect(owner.reload.website).not_to eq('https://bad url')
+      end
+
+      it 're-renders update_profile for unsupported URL schemes' do
+        params[:user][:website] = 'ftp://example.com'
+
+        patch action_path, params: params
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:update_profile)
+        expect(response.body).to include('Website is invalid')
+        expect(owner.reload.website).not_to eq('ftp://example.com')
+      end
+    end
   end
 
   describe '#update' do
