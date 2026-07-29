@@ -8,33 +8,29 @@ module Gemini
     # Add custom handling here if the model you are using
     # does not use `v1`
     VERSION_MAP = {
-      'gemini-3-pro-preview' => 'v1beta',
       'gemini-3.1-pro-preview' => 'v1beta',
       'gemini-3-flash-preview' => 'v1beta'
     }.freeze
 
     REASONING_MAP = {
-      'gemini-3-pro-preview' => true,
       'gemini-3.1-pro-preview' => true
     }
 
     # Transcribes text from a page image using Google's Gemini multi-modal model
-    # Defaults to gemini-3-pro-preview but can be configured via model parameter
-    # Note: The issue mentions Gemini 2.5, but we use gemini-3-pro-preview as default.
-    # This can be updated when other models are released.
+    # Defaults to AiTranscription::DEFAULT_MODEL but can be configured via model parameter
     #
     # Implements exponential backoff retry logic for 503 errors (server overload) and 429 errors (rate limit)
     #
     # @param image_url [String] The URL of the page image to transcribe
     # @param prompt [String] Optional custom prompt for transcription
-    # @param model [String] Optional custom model to use. Defaults to gemini-3-pro-preview
+    # @param model [String] Optional custom model to use. Defaults to AiTranscription::DEFAULT_MODEL
     # @param max_retries [Integer] Maximum number of retry attempts for 503/429 errors
     # @return [String] The transcribed text from the image
-    def self.transcribe_image(image_url, prompt: nil, model: 'gemini-3-pro-preview', max_retries: 5)
+    def self.transcribe_image(image_url, prompt: nil, model: AiTranscription::DEFAULT_MODEL, max_retries: 5)
       api_key = ENV['GEMINI_API_KEY']
       raise ArgumentError, 'GEMINI_API_KEY environment variable is not set' if api_key.blank?
 
-      model ||= 'gemini-3-pro-preview'
+      model ||= AiTranscription::DEFAULT_MODEL
 
       client = ::Gemini.new(
         credentials: {

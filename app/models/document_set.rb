@@ -160,45 +160,45 @@ class DocumentSet < ApplicationRecord
     self.slug = "#{slug}-set" if Collection.where(slug: slug).exists?
   end
 
-  delegate :metadata_coverages,          to: :collection
-  delegate :enable_spellcheck,           to: :collection
-  delegate :reviewers,                   to: :collection
-  delegate :facet_configs,               to: :collection
-  delegate :text_entry?,                 to: :collection
-  delegate :metadata_entry?,             to: :collection
-  delegate :metadata_only_entry?,        to: :collection
-  delegate :text_and_metadata_entry?,    to: :collection
-  delegate :hide_completed,              to: :collection
-  delegate :hide_notes,                  to: :collection
-  delegate :hide_notes?,                 to: :collection
-  delegate :review_workflow,             to: :collection
-  delegate :review_type,                 to: :collection
-  delegate :review_type_optional?,       to: :collection
-  delegate :review_type_required?,       to: :collection
-  delegate :review_type_restricted?,     to: :collection
-  delegate :user_download,               to: :collection
-  delegate :subjects_disabled,           to: :collection
-  delegate :editor_buttons,              to: :collection
-  delegate :categories,                  to: :collection
-  delegate :active?,                     to: :collection
-  delegate :footer_block,                to: :collection
-  delegate :help,                        to: :collection
-  delegate :link_help,                   to: :collection
-  delegate :voice_recognition,           to: :collection
-  delegate :language,                    to: :collection
-  delegate :text_language,               to: :collection
-  delegate :field_based,                 to: :collection
-  delegate :transcription_fields,        to: :collection
-  delegate :metadata_fields,             to: :collection
-  delegate :description_instructions,    to: :collection
-  delegate :facets_enabled?,             to: :collection
-  delegate :api_access,                  to: :collection
-  delegate :alphabetize_works,           to: :collection
-  delegate :institution_signature,       to: :collection
-  delegate :most_recent_deed_created_at, to: :collection
-  delegate :legend,                      to: :collection
+  delegate :metadata_coverages,           to: :collection
+  delegate :enable_spellcheck,            to: :collection
+  delegate :reviewers,                    to: :collection
+  delegate :facet_configs,                to: :collection
+  delegate :text_entry?,                  to: :collection
+  delegate :metadata_entry?,              to: :collection
+  delegate :metadata_only_entry?,         to: :collection
+  delegate :text_and_metadata_entry?,     to: :collection
+  delegate :hide_completed,               to: :collection
+  delegate :hide_notes,                   to: :collection
+  delegate :hide_notes?,                  to: :collection
+  delegate :review_workflow,              to: :collection
+  delegate :review_type,                  to: :collection
+  delegate :review_type_optional?,        to: :collection
+  delegate :review_type_required?,        to: :collection
+  delegate :review_type_restricted?,      to: :collection
+  delegate :user_download,                to: :collection
+  delegate :subjects_disabled,            to: :collection
+  delegate :editor_buttons,               to: :collection
+  delegate :categories,                   to: :collection
+  delegate :active?,                      to: :collection
+  delegate :footer_block,                 to: :collection
+  delegate :help,                         to: :collection
+  delegate :link_help,                    to: :collection
+  delegate :voice_recognition,            to: :collection
+  delegate :language,                     to: :collection
+  delegate :text_language,                to: :collection
+  delegate :field_based,                  to: :collection
+  delegate :transcription_fields,         to: :collection
+  delegate :metadata_fields,              to: :collection
+  delegate :description_instructions,     to: :collection
+  delegate :facets_enabled?,              to: :collection
+  delegate :api_access,                   to: :collection
+  delegate :alphabetize_works,            to: :collection
+  delegate :institution_signature,        to: :collection
+  delegate :most_recent_deed_created_at,  to: :collection
+  delegate :legend,                       to: :collection
   delegate :default_overview_orientation, to: :collection
-
+  delegate :ai_draft_disabled,            to: :collection
 
   def export_subject_index_as_csv
     subject_link = SubjectExporter::Exporter.new(self)

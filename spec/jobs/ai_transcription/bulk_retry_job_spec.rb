@@ -22,4 +22,20 @@ describe AiTranscription::BulkRetryJob do
 
     perform_worker
   end
+
+  it 'upgrades the retired model before enqueueing generation' do
+    ai_transcription.update!(model: 'gemini-3-pro-preview', status: :error)
+
+    perform_worker
+
+    expect(ai_transcription.reload.model).to eq(AiTranscription::DEFAULT_MODEL)
+  end
+
+  it 'preserves supported non-default models' do
+    ai_transcription.update!(model: 'gemini-3-flash-preview', status: :error)
+
+    perform_worker
+
+    expect(ai_transcription.reload.model).to eq('gemini-3-flash-preview')
+  end
 end

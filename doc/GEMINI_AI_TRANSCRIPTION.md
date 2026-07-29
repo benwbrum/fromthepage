@@ -27,7 +27,7 @@ To obtain a Gemini API key:
 
 ### 3. (Optional) Configure Model
 
-By default, the integration uses `gemini-3-pro-preview`. You can override this by setting:
+By default, the integration uses `gemini-3.1-pro-preview`. You can override this by setting:
 
 ```bash
 export GEMINI_MODEL='gemini-1.5-pro'
@@ -38,7 +38,7 @@ Available models include:
 - `gemini-1.5-pro` (stable, more accurate, slower)
 - `gemini-pro-vision` (older model with vision capabilities)
 - `gemini-2.5-pro`
-- `gemini-3-pro-preview` (default model with reasoning capabilities)
+- `gemini-3.1-pro-preview` (default model with reasoning capabilities)
 - `gemini-3-flash-preview` (optional, available via rake task model argument)
 
 ## Usage

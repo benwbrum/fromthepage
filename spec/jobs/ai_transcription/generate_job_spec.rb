@@ -51,6 +51,18 @@ describe AiTranscription::GenerateJob do
       )
     end
 
+    context 'with the retired model persisted' do
+      let(:model) { 'gemini-3-pro-preview' }
+
+      it 'invokes Gemini with the default model' do
+        VCR.use_cassette('ai_transcriptions/generate', record: :none, allow_playback_repeats: false) do
+          perform_worker
+        end
+
+        expect(ai_transcription.reload.model).to eq('gemini-3.1-pro-preview')
+      end
+    end
+
     context 'when user is admin' do
       let!(:admin) { create(:unique_user, :admin) }
 
@@ -102,6 +114,21 @@ describe AiTranscription::GenerateJob do
 
         expect(ai_transcription.reload.status).to eq('error')
         expect(ai_transcription.error_message).to eq('RECITATION')
+      end
+
+      context 'when the provider error includes a credential' do
+        let(:error) do
+          StandardError.new('the server responded with status 429 for URL https://provider.example/v1/models?alt=json&api_key=fake-secret&format=text')
+        end
+
+        it 'stores a useful error without the credential' do
+          expect { perform_worker }.to raise_error(StandardError)
+
+          message = ai_transcription.reload.metadata['error_message']
+          expect(message).to include('status 429')
+          expect(message).to include('provider.example/v1/models?alt=json&api_key=[FILTERED]&format=text')
+          expect(message).not_to include('fake-secret')
+        end
       end
     end
 

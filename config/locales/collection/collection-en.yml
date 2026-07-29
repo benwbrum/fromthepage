@@ -273,6 +273,8 @@ en:
       quality_control: Quality Control
       task_configuration: Task Configuration
     edit_tasks:
+      ai_draft_disabled: Disable AI Drafts
+      ai_draft_disabled_description: Disable AI Drafts for all users except the collection owner.
       alert: Please configure fields or choose document based transcription under Transcription Type.
       disable_ocr: Disable OCR Correction
       document_based_transcription: Document-based transcription

@@ -23,6 +23,7 @@ class AiTranscription::GenerateJob < ApplicationJob
       raise ArgumentError, error_message
     end
 
+    ai_transcription.normalize_model!
     result = AiTranscription::Generate.new(ai_transcription: ai_transcription).call
 
     if result.success?
@@ -38,7 +39,7 @@ class AiTranscription::GenerateJob < ApplicationJob
 
   def store_error!(ai_transcription, error_message)
     metadata = ai_transcription.metadata.is_a?(Hash) ? ai_transcription.metadata.dup : {}
-    metadata['error_message'] = error_message
+    metadata['error_message'] = AiTranscription::Lib::ErrorMessageSanitizer.sanitize(error_message)
     ai_transcription.update!(status: :error, metadata: metadata)
   end
 end
