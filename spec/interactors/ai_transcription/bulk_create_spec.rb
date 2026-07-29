@@ -89,5 +89,20 @@ describe AiTranscription::BulkCreate do
         expect(prompts.none? { |prompt| prompt.include?(text_field.id.to_s) }).to be_truthy
       end
     end
+
+    context 'when a stale ai_transcription with a non-field-based prompt is still status new' do
+      let!(:ai_transcription) do
+        create(:ai_transcription, page_id: page_1.id, source_text: nil, status: :new, prompt: 'Please transcribe all the text you see in this image.')
+      end
+
+      it 'rebuilds the field-based prompt instead of reusing the stale one' do
+        expect(result.success?).to be_truthy
+
+        ai_transcription.reload
+        expect(ai_transcription.status_processing?).to be_truthy
+        expect(ai_transcription.prompt).to include(text_field.id.to_s, 'Name', select_field.id.to_s, 'County')
+        expect(ai_transcription.prompt).not_to include('Please transcribe all the text you see in this image.')
+      end
+    end
   end
 end

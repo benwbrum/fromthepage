@@ -16,6 +16,9 @@ class AiTranscription::BulkRetry < ApplicationInteractor
   def perform
     check_user_permission
 
+    @sanitized_model = sanitize_model
+    @sanitized_prompt = build_prompt
+
     ai_transcription_records = []
 
     pages.find_each do |page|
@@ -24,10 +27,12 @@ class AiTranscription::BulkRetry < ApplicationInteractor
       next unless ai_transcription.status_error?
 
       ai_transcription.status = :processing
+      ai_transcription.model = @sanitized_model
+      ai_transcription.prompt = @sanitized_prompt
       ai_transcription_records << ai_transcription
     end
 
-    AiTranscription.import! ai_transcription_records, on_duplicate_key_update: [:status], batch_size: BATCH_SIZE
+    AiTranscription.import! ai_transcription_records, on_duplicate_key_update: [:status, :model, :prompt], batch_size: BATCH_SIZE
 
     @ai_transcription_ids = ai_transcription_records.pluck(:id)
   end
