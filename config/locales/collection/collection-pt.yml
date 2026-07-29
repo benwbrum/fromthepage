@@ -273,6 +273,8 @@ pt:
       quality_control: Controle de qualidade
       task_configuration: Configuração de tarefa
     edit_tasks:
+      ai_draft_disabled: Desativar rascunhos de IA
+      ai_draft_disabled_description: Desative os rascunhos de IA para todos os usuários, exceto o proprietário da coleção.
       alert: Configure os campos ou escolha a transcrição baseada em documento em Tipo de transcrição.
       disable_ocr: Desativar OCR
       document_based_transcription: Transcrição baseada em documento

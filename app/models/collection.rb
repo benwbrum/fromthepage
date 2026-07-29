@@ -3,6 +3,7 @@
 # Table name: collections
 #
 #  id                             :integer          not null, primary key
+#  ai_draft_disabled              :boolean          default(FALSE)
 #  alphabetize_works              :boolean          default(TRUE)
 #  api_access                     :boolean          default(FALSE)
 #  created_on                     :datetime
