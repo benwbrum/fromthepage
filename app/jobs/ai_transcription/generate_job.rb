@@ -23,6 +23,7 @@ class AiTranscription::GenerateJob < ApplicationJob
       raise ArgumentError, error_message
     end
 
+    ai_transcription.normalize_model!
     result = AiTranscription::Generate.new(ai_transcription: ai_transcription).call
 
     if result.success?

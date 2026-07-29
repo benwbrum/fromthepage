@@ -51,6 +51,18 @@ describe AiTranscription::GenerateJob do
       )
     end
 
+    context 'with the retired model persisted' do
+      let(:model) { 'gemini-3-pro-preview' }
+
+      it 'invokes Gemini with the default model' do
+        VCR.use_cassette('ai_transcriptions/generate', record: :none, allow_playback_repeats: false) do
+          perform_worker
+        end
+
+        expect(ai_transcription.reload.model).to eq('gemini-3.1-pro-preview')
+      end
+    end
+
     context 'when user is admin' do
       let!(:admin) { create(:unique_user, :admin) }
 

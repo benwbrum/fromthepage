@@ -95,6 +95,10 @@ class AiTranscription < ApplicationRecord
     self.class.engine_for_model(model)
   end
 
+  def normalize_model!
+    update!(model: DEFAULT_MODEL) if model == 'gemini-3-pro-preview'
+  end
+
   def self.engine_for_model(model)
     model.to_s.start_with?('claude') ? 'claude' : 'gemini'
   end

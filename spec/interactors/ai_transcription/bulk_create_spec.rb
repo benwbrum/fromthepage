@@ -32,7 +32,10 @@ describe AiTranscription::BulkCreate do
   end
 
   context 'when ai_transcription for page exist' do
-    let!(:ai_transcription) { create(:ai_transcription, page_id: page_1.id, source_text: nil, status: :new) }
+    let!(:ai_transcription) do
+      create(:ai_transcription, page_id: page_1.id, model: 'gemini-3-pro-preview', prompt: 'Old prompt',
+                                source_text: nil, status: :new)
+    end
 
     it 'initializes processing ai_transcription records' do
       expect(result.success?).to be_truthy
@@ -40,6 +43,10 @@ describe AiTranscription::BulkCreate do
       expect(ai_transcriptions.size).to eq(2)
       expect(ai_transcriptions.pluck(:id)).to include(ai_transcription.id)
       expect(ai_transcriptions.pluck(:status).uniq).to eq(['processing'])
+      expect(ai_transcription.reload).to have_attributes(
+        model: AiTranscription::DEFAULT_MODEL,
+        prompt: File.read(Rails.root.join('lib/transcription_prompt.txt'))
+      )
     end
   end
 

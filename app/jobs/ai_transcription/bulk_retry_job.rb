@@ -9,6 +9,7 @@ class AiTranscription::BulkRetryJob < ApplicationJob
     ai_transcriptions = AiTranscription.where(id: ai_transcription_ids)
 
     ai_transcriptions.each do |ai_transcription|
+      ai_transcription.normalize_model!
       AiTranscription::GenerateJob.perform_later(
         ai_transcription_id: ai_transcription.id,
         user_id: user.id
