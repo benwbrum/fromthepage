@@ -66,7 +66,11 @@ gem 'chewy'
 # Analytics / Background / Metrics
 gem 'ahoy_matey'
 gem 'newrelic_rpm'
+gem 'rack-mini-profiler'
+gem 'flamegraph'
+gem 'memory_profiler'
 gem 'meta_request'
+gem 'stackprof'
 
 # Internationalization / Localization
 gem 'rails-i18n', '~> 7.0.0'
