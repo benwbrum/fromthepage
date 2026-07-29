@@ -25,6 +25,19 @@ RSpec.describe AiTranscription, type: :model do
     end
   end
 
+  describe '#error_message' do
+    it 'redacts credentials from historical error metadata' do
+      ai_transcription.metadata = {
+        'error_message' => 'status 403: https://another-provider.example/path?access_token=fake-secret&key=another-secret'
+      }
+
+      expect(ai_transcription.error_message).to eq(
+        'status 403: https://another-provider.example/path?access_token=[FILTERED]&key=[FILTERED]'
+      )
+      expect(ai_transcription.error_message).not_to include('fake-secret', 'another-secret')
+    end
+  end
+
   describe '#normalize_source_text' do
     it 'replaces non-breaking spaces with regular spaces' do
       ai_transcription.source_text = 'Hello&nbsp;World'
