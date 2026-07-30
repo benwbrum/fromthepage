@@ -20,7 +20,7 @@ describe 'Devise' do
     let(:user) { build(:unique_user) }
     let(:owner) { build(:unique_user, :owner) }
     let(:collection_owner) { create(:unique_user, :owner) }
-    let(:collection) { create(:collection, owner: collection_owner, works: []) }
+    let(:collection) { create(:collection, owner: collection_owner) }
     let(:coll_path) { collection_path(collection.owner, collection) }
 
     it 'fails to create a new user account' do
@@ -62,9 +62,15 @@ describe 'Devise' do
       complete_user_registration(user)
 
       expect(page.current_path).to eq coll_path
+
+      # Lazy loaded deeds workaround
+      lazy_frame = page.find('turbo-frame#lazy_deeds')
+      src = lazy_frame[:src]
+      expect(src).to be_present
       registered_user = User.find_by!(email: user.email)
       joined_deed_text = "#{registered_user.display_name} joined #{collection.title}"
-      expect(page).to have_content(joined_deed_text)
+      visit src
+      expect(ActionView::Base.full_sanitizer.sanitize(page.body)).to include(joined_deed_text)
 
       visit dashboard_watchlist_path
       expect(page).to have_content(joined_deed_text)
