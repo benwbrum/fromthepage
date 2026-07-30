@@ -6,9 +6,9 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception, except: [:switch_locale, :saml]
 
   before_action do
-    if current_user && current_user.admin
-      Rack::MiniProfiler.authorize_request
-    end
+    next unless current_user&.admin
+
+    Rack::MiniProfiler.authorize_request
   end
 
   before_action :load_objects_from_params
@@ -431,6 +431,18 @@ def update_search_attempt_user(user, session_var)
     search_attempt.owner = user.owner
     search_attempt.save
   end
+end
+
+
+def require_login_for_hidden_page
+  return false if user_signed_in?
+
+  response.headers['X-Robots-Tag'] = 'noindex, nofollow, noarchive'
+  head :not_found
+end
+
+def require_login_for_work_queue
+  require_login_for_hidden_page
 end
 
 private

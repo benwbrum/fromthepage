@@ -246,8 +246,10 @@ const ResizableSplitter = {
         ? parseFloat(position) / 100 * totalHeight
         : parseFloat(position);
 
-      const heightPanel1 = initialHeight;
-      const heightPanel2 = totalHeight - initialHeight;
+      const maxInitialHeight = window.innerHeight * 0.8;
+
+      const heightPanel1 = Math.min(initialHeight, maxInitialHeight);;
+      const heightPanel2 = Math.min((totalHeight - initialHeight), maxInitialHeight);
 
       return {
         heightPanel1,

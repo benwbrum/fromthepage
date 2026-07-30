@@ -12,7 +12,6 @@
 -else
   =render({ :partial => '/shared/page_tabs', :locals => { :selected => 3, :page_id => @page.id }})
 
-
 =render({ :partial => '/shared/insert_table_modal' })
 
 -editor_class = 'page-editor' + (@auto_fullscreen == 'yes' ? ' fullscreen' : '')
@@ -107,15 +106,15 @@
           -else
             =render partial: 'transcription_field/field_layout', locals: { collection_id: @collection, transcribe: true }
 
-.fgfaded
-  ==@work.set_transcription_conventions
-  =render :partial => 'shared/markup_help'
-  p =link_to t('.more_help'), collection_work_help_path(@collection.owner, @collection, @page.work), target: '_blank'
+  .fgfaded
+    ==@work.set_transcription_conventions
+    =render partial: 'shared/markup_help'
+    p =link_to t('.more_help'), collection_work_help_path(@collection.owner, @collection, @page.work), target: '_blank'
 
 -if notes_visible?(@collection, current_user)
   h2.legend =t('.notes_and_questions')
   .page-notes
-    =render :partial => "notes/notes"
+    =render partial: "notes/notes"
 
 
 #custom-alert

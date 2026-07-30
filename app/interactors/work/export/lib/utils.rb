@@ -10,17 +10,38 @@ class Work::Export::Lib::Utils
     'row' => 'tr',
     'cell' => 'td'
   }
-  HTML_ENTITIES = [
-    '&amp;',
-    '&lt;',
-    '&gt;',
-    '&quot;',
-    '&#39;',
-    '&nbsp;'
-  ]
+  HTML_ENTITY_REPLACEMENTS = {
+    '&amp;'  => '&',
+    '&lt;'   => '<',
+    '&gt;'   => '>',
+    '&quot;' => '"',
+    '&#39;'  => "'",
+    '&nbsp;' => ' '
+  }.freeze
 
   # Zero-width and invisible Unicode characters that LaTeX cannot handle
   LATEX_INVISIBLE_CHARS = /[\u{2060}\u{200B}\u{200C}\u{200D}\u{FEFF}]/
+
+  VULGAR_FRACTION_REPLACEMENTS = {
+    '¼' => '\\textonequarter{}',
+    '½' => '\\textonehalf{}',
+    '¾' => '\\textthreequarters{}',
+    '⅐' => '\\ensuremath{\\frac{1}{7}}',
+    '⅑' => '\\ensuremath{\\frac{1}{9}}',
+    '⅒' => '\\ensuremath{\\frac{1}{10}}',
+    '⅓' => '\\ensuremath{\\frac{1}{3}}',
+    '⅔' => '\\ensuremath{\\frac{2}{3}}',
+    '⅕' => '\\ensuremath{\\frac{1}{5}}',
+    '⅖' => '\\ensuremath{\\frac{2}{5}}',
+    '⅗' => '\\ensuremath{\\frac{3}{5}}',
+    '⅘' => '\\ensuremath{\\frac{4}{5}}',
+    '⅙' => '\\ensuremath{\\frac{1}{6}}',
+    '⅚' => '\\ensuremath{\\frac{5}{6}}',
+    '⅛' => '\\ensuremath{\\frac{1}{8}}',
+    '⅜' => '\\ensuremath{\\frac{3}{8}}',
+    '⅝' => '\\ensuremath{\\frac{5}{8}}',
+    '⅞' => '\\ensuremath{\\frac{7}{8}}'
+  }.freeze
 
   # Manually catch unsupported control_sequence that got through our parser
   UNSUPPORTED_LATEX_COMMANDS = [
@@ -32,6 +53,10 @@ class Work::Export::Lib::Utils
 
     text = text.gsub(LATEX_INVISIBLE_CHARS, '')
 
+    HTML_ENTITY_REPLACEMENTS.each do |entity, replacement|
+      text.gsub!(entity, replacement)
+    end
+
     replacements = {
       '\\' => '\\textbackslash{}',
       '{'  => '\\{',
@@ -42,8 +67,9 @@ class Work::Export::Lib::Utils
       '#'  => '\\#',
       '_'  => '\\_',
       '~'  => '\\textasciitilde{}',
-      '^'  => '\\textasciicircum{}'
-    }
+      '^'  => '\\textasciicircum{}',
+      '\<' => '<'
+    }.merge(VULGAR_FRACTION_REPLACEMENTS)
 
     command_regex = /\\[a-zA-Z]+(?:\{[^}]*\})?/
 
@@ -71,6 +97,8 @@ class Work::Export::Lib::Utils
   end
 
   def self.xml_to_latex(page:, xml_text:, preserve_lb: true, flatten_links: false)
+    # Escape initial backslashes before recursive parsing
+    xml_text = xml_text.gsub('\\', '\\textbackslash{}')
     doc = REXML::Document.new(xml_text)
     page_doc = doc.root
 
@@ -117,7 +145,7 @@ class Work::Export::Lib::Utils
       process_table(page, element, preserve_lb, flatten_links)
     when 'tr', 'row'
       element.elements.to_a('th|td').map { |td| process_element(page, td, preserve_lb, flatten_links) }.join(' & ') + " \\\\\n"
-    when 'td'
+    when 'td', 'th'
       content
     when 'link'
       process_links(element, content, flatten_links)
@@ -208,11 +236,32 @@ class Work::Export::Lib::Utils
       end
     end
 
+    thead = table_element.elements['thead']
+    if thead
+      th_elements = thead.elements.to_a('th')
+      if th_elements.any?
+        tr = REXML::Element.new('tr')
+        th_elements.each do |th|
+          thead.delete_element(th)
+          tr.add(th)
+        end
+        existing_tr = thead.elements['tr']
+        if existing_tr
+          thead.insert_before(existing_tr, tr)
+        else
+          thead.add(tr)
+        end
+      end
+    end
+
     all_rows = []
     all_rows += table_element.elements['thead'].elements.to_a('tr') if table_element.elements['thead']
     all_rows += table_element.elements['tbody'].elements.to_a('tr') if table_element.elements['tbody']
 
     column_count = all_rows.map { |tr| tr.elements.count }.max
+
+    return '' if column_count.zero?
+
     column_format = ('X' * column_count).strip
 
     latex = "#{LINEBREAK_ELEMENT}\n"

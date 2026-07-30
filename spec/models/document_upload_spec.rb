@@ -35,4 +35,23 @@ describe DocumentUpload do
       end
     end
   end
+
+  describe '#log_contents' do
+    let(:document_upload) { create(:document_upload, collection: collection, user: owner) }
+
+    after do
+      File.delete(document_upload.log_file) if File.exist?(document_upload.log_file)
+    end
+
+    it 'reads the upload log file when present' do
+      FileUtils.mkdir_p(File.dirname(document_upload.log_file))
+      File.write(document_upload.log_file, 'upload log contents')
+
+      expect(document_upload.log_contents).to eq('upload log contents')
+    end
+
+    it 'returns a cleaned message when the upload log file is missing' do
+      expect(document_upload.log_contents).to eq('Log file has been cleaned')
+    end
+  end
 end

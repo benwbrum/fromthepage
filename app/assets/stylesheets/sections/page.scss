@@ -332,6 +332,104 @@
   }
 }
 
+.field-input {
+  &.ai-draft-agree {
+    background-color: #eaf6ec;
+    border-color: #6cb26c !important;
+  }
+
+  &.ai-draft-disagree-input {
+    border-color: #e0a942 !important;
+  }
+}
+
+.ai-draft-status {
+  position: absolute;
+  top: 0;
+  font-size: 12px;
+
+  &.ai-draft-status-agree {
+    color: #2e7d32;
+  }
+}
+
+// Rendered after the .fields-row (not inside the field's own field-wrapper column) so neither a
+// "both agree" note nor a disagreement panel ever makes .fields-row taller than its actual fields.
+// Each note/panel is absolutely positioned within this shared, relatively-positioned container and
+// sized/offset in JS (see _field_layout.html.slim) to line up under its own field's column — that
+// way several notes on one row sit side by side instead of stacking on top of each other.
+//
+// .field-wrapper's own margin-bottom (10px) and .fields-row's own margin-bottom (10px) both still
+// apply before this container even starts, since neither is ours to change (they're the baseline
+// spacing used between every pair of field rows in the app). The negative margin-top here pulls
+// this container back up out of that 20px gap so the note/panel reads as attached to its field
+// rather than as a whole separate row, leaving a tight ~8px gap overall.
+.ai-draft-notes-row {
+  position: relative;
+  margin-top: -12px;
+  margin-bottom: 10px;
+}
+
+.ai-draft-disagree {
+  position: absolute;
+  top: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+  border: 1px solid #f0c869;
+  border-radius: 4px;
+  background: #fff9ec;
+
+  .ai-draft-disagree-header {
+    padding: 5px 10px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #8a6116;
+    background: #fdedc8;
+  }
+
+  .ai-draft-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    font-size: 13px;
+    cursor: pointer;
+
+    &:not(:last-child) {
+      border-bottom: 1px solid #f3e0ae;
+    }
+
+    &:hover {
+      background: #fdedc8;
+    }
+
+    &.selected {
+      background: #eaf6ec;
+    }
+
+    &:focus-visible {
+      outline: 2px solid #8a6116;
+      outline-offset: -2px;
+    }
+  }
+
+  .ai-draft-option-label {
+    flex: 0 0 auto;
+    font-size: 11px;
+    font-weight: bold;
+    color: #8a6116;
+  }
+
+  .ai-draft-option-text {
+    flex: 1 1 auto;
+    word-break: break-word;
+
+    .ai-diff-word {
+      color: #c0392b;
+    }
+  }
+}
+
 .page-preview {
   height: 100%;
   padding: 1.5rem;
@@ -670,10 +768,35 @@
 // AI Text specific styles
 .ai-accuracy-statistics {
   padding: 1.5rem;
+  margin-top: 1.5rem;
   margin-bottom: 1.5rem;
   background-color: $highlightBoxBg;
   border: 1px solid $borderColor;
   border-radius: 4px;
+  position: relative;
+
+  .loading {
+    background: rgba(#111, 0.5);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    transform: translate3d(0,0,0);
+    transition: opacity 0.3s, visibility 0.3s;
+    top: 0;
+    left: 0;
+
+    .spinner {
+      top: 50%;
+      left: 50%;
+      width: 48px;
+      height: 48px;
+      margin: -24px 0 0 -24px;
+      transform-origin: 24px 24px;
+      position: absolute;
+      animation: spinner 1s infinite steps(12);
+      @include background-svg(48, 48, svg-spinner());
+    }
+  }
 
   h4 {
     margin-top: 0;

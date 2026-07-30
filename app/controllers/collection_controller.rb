@@ -69,7 +69,14 @@ class CollectionController < ApplicationController
                      collaborator_ids
     end
 
-    users = User.where('LOWER(real_name) LIKE :search OR LOWER(email) LIKE :search', search: query)
+    search_conditions = [
+      'LOWER(real_name) LIKE :search',
+      'LOWER(email) LIKE :search',
+      'LOWER(display_name) LIKE :search',
+      'LOWER(login) LIKE :search'
+    ].join(' OR ')
+
+    users = User.where(search_conditions, search: query)
                 .where.not(id: excluded_ids)
                 .where.not(id: @collection.owner.id)
                 .limit(100)
@@ -523,6 +530,12 @@ class CollectionController < ApplicationController
   end
 
   def edit_tasks
+    @has_finished_ai_transcription =
+      @collection.pages
+        .joins(:ai_transcriptions)
+        .where(ai_transcriptions: { status: :finished })
+        .exists?
+
     flash.now[:info] = t('.alert') if @collection.field_based && !@collection.transcription_fields.present?
   end
 
@@ -564,6 +577,11 @@ class CollectionController < ApplicationController
     respond_to do |format|
       template = case params[:scope]
       when 'edit_tasks'
+                   @has_finished_ai_transcription =
+                     @collection.pages
+                       .joins(:ai_transcriptions)
+                       .where(ai_transcriptions: { status: :finished })
+                       .exists?
                    'collection/update_tasks'
       when 'edit_look'
                    'collection/update_look'
@@ -680,6 +698,8 @@ class CollectionController < ApplicationController
   end
 
   def needs_transcription_pages
+    return if require_login_for_work_queue
+
     work_ids = @collection.works.pluck(:id)
     @review='transcription'
     @pages = Page.where(work_id: work_ids).joins(:work).merge(Work.unrestricted).needs_transcription.order(work_id: :asc, position: :asc).paginate(page: params[:page], per_page: 10)
@@ -690,6 +710,8 @@ class CollectionController < ApplicationController
   end
 
   def needs_review_pages
+    return if require_login_for_work_queue
+
     work_ids = @collection.works.pluck(:id)
     @review='review'
     @pages = Page.where(work_id: work_ids).joins(:work).merge(Work.unrestricted).review.paginate(page: params[:page], per_page: 10)
@@ -697,6 +719,8 @@ class CollectionController < ApplicationController
   end
 
   def needs_metadata_works
+    return if require_login_for_work_queue
+
     if params['need_review']
       @works = @collection.works.where(description_status: 'needsreview')
     else
@@ -802,6 +826,7 @@ class CollectionController < ApplicationController
       :review_type,
       :hide_completed,
       :hide_notes,
+      :ai_draft_disabled,
       :text_language,
       :default_orientation,
       :default_overview_orientation,

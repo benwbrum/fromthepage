@@ -4,7 +4,7 @@
   :path => "#{main_app.collection_path(@collection.owner, @collection)}",
 }]
 
--if notes_visible?(@collection, current_user)
+-if user_signed_in? && notes_visible?(@collection, current_user)
   -tabs += [{\
     :name => t('.statistics'),
     :selected => 2,
@@ -102,7 +102,7 @@
 -if current_user&.like_owner?(@collection) || current_user&.collaborator?(@collection)
   -tabs += [{\
       :name => t('.suspicious_behaviors'),
-      :selected => 10,
+      :selected => 15,
       :path => "#{main_app.collection_suspicious_behaviors_path(@collection.owner, @collection)}",
     }]
 

@@ -1,26 +1,15 @@
-class AiTranscription::Lib::Gemini::TranscribeHandler
-  MAX_RETRY = 5
-  IMAGE_FETCH_LIMIT = 10
-
+class AiTranscription::Lib::Gemini::TranscribeHandler < AiTranscription::Lib::BaseTranscribeHandler
   # Follows key (model_name) value (version)
   # Add custom handling here if the model you are using
   # does not use `v1`
   VERSION_MAP = {
-    'gemini-3-pro-preview' => 'v1beta',
     'gemini-3.1-pro-preview' => 'v1beta',
     'gemini-3-flash-preview' => 'v1beta'
   }.freeze
 
   REASONING_MAP = {
-    'gemini-3-pro-preview' => true,
     'gemini-3.1-pro-preview' => true
   }
-
-  def initialize(prompt:, model:, image_url:)
-    @prompt = prompt
-    @model = model
-    @image_url = image_url
-  end
 
   def perform
     attempt = 0
@@ -51,16 +40,20 @@ class AiTranscription::Lib::Gemini::TranscribeHandler
         end
 
         # If not a 503 or out of retries, raise the error
-        Rails.logger.error("Gemini API error: #{e.message}")
+        Rails.logger.error("Gemini API error: #{sanitized_message(e)}")
         raise e
       end
     end
   rescue => e
-    Rails.logger.error("Gemini API error: #{e.message}")
+    Rails.logger.error("Gemini API error: #{sanitized_message(e)}")
     raise e
   end
 
   private
+
+  def sanitized_message(error)
+    AiTranscription::Lib::ErrorMessageSanitizer.sanitize(error.message)
+  end
 
   def api_key
     return @api_key if defined?(@api_key)
@@ -83,24 +76,6 @@ class AiTranscription::Lib::Gemini::TranscribeHandler
     )
   end
 
-  def fetch_and_encode_image(url:, limit: IMAGE_FETCH_LIMIT)
-    raise ArgumentError, 'Too many HTTP redirects' if limit.zero?
-
-    uri = URI.parse(url)
-    response = Net::HTTP.get_response(uri)
-
-    case response
-    when Net::HTTPSuccess
-      Base64.strict_encode64(response.body)
-    when Net::HTTPRedirection
-      location = response['location']
-      Rails.logger.info("Following redirect to: #{location}")
-      fetch_and_encode_image(url: location, limit: limit - 1)
-    else
-      raise "Failed to fetch image from #{url}: #{response.code} #{response.message}"
-    end
-  end
-
   def payload
     return @payload if defined?(@payload)
 
@@ -112,7 +87,7 @@ class AiTranscription::Lib::Gemini::TranscribeHandler
           {
             inline_data: {
               mime_type: 'image/jpeg',
-              data: fetch_and_encode_image(url: @image_url)
+              data: encoded_image
             }
           }
         ]
@@ -130,6 +105,15 @@ class AiTranscription::Lib::Gemini::TranscribeHandler
     end
 
     @payload
+  end
+
+  def encoded_image
+    return @encoded_image if defined?(@encoded_image)
+    @encoded_image = if @image_path
+      Base64.strict_encode64(File.binread(@image_path))
+    else
+      fetch_and_encode_image(url: @image_url)
+    end
   end
 
   def extract_texts_from_response(response)

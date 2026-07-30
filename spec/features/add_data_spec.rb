@@ -1,30 +1,44 @@
 require 'spec_helper'
 
-describe "uploads data for collections", order: :defined do
-  before :all do
-    @owner = User.find_by(login: OWNER)
-    @collections = @owner.all_owner_collections
-    @collection = @collections.second
-    @set_collection = @collections.last
-    @title = "This is an empty work"
+RSpec.describe 'uploads data for collections', order: :defined do
+  let(:owner) { create(:unique_user, :owner) }
+  let(:collection) { create(:collection, owner_user_id: owner.id, works: []) }
+  let(:empty_work_title) { "This is an empty work #{SecureRandom.hex(4)}" }
+
+  before do |example|
+    DatabaseCleaner.start unless example.metadata[:js]
+    login_as(owner, scope: :user)
   end
 
-  before :each do
-    login_as(@owner, scope: :user)
+  after do |example|
+    if example.metadata[:js]
+      Collection.where(owner_user_id: owner.id).find_each(&:destroy!) if owner&.persisted?
+    else
+      DatabaseCleaner.clean
+    end
   end
 
-  it "sets slugs" do
-    Collection.find_each(&:save)
-    Work.find_each(&:save)
-    User.find_each(&:save)
+  it 'sets slugs' do
+    collection = create_collection_with_works
+    work = collection.works.first
+
+    collection.save!
+    work.save!
+    owner.save!
+
+    expect(collection.slug).to be_present
+    expect(work.slug).to be_present
+    expect(owner.slug).to be_present
   end
 
-  it "starts a new project from tab", js: true do
+  it 'starts a new project from tab', js: true do
+    collection
+
     visit dashboard_owner_path
-    page.find('.tabs').click_link("Start A Project")
-    page.find(:css, "#document-upload").click
+    page.find('.tabs').click_link('Start A Project')
+    page.find(:css, '#document-upload').click
 
-    select2_select(id: 'document_upload_collection_id', value: @collection.title)
+    select2_select(id: 'document_upload_collection_id', value: collection.title)
 
     attach_file(
       'document_upload_file',
@@ -33,19 +47,21 @@ describe "uploads data for collections", order: :defined do
     )
     sleep 2
     click_button('Upload File')
-    expect(page).to have_content("Document has been uploaded", wait: 30)
+    expect(page).to have_content('Document has been uploaded', wait: 30)
     title = find('h1').text
-    expect(title).to eq @collection.title
+    expect(title).to eq collection.title
     wait_for_upload_processing
     sleep(10)
   end
 
-  it "starts an ocr project", js: true do
-    visit dashboard_owner_path
-    page.find('.tabs').click_link("Start A Project")
-    page.find(:css, "#document-upload").click
+  it 'starts an ocr project', js: true do
+    collection
 
-    select2_select(id: 'document_upload_collection_id', value: @collection.title)
+    visit dashboard_owner_path
+    page.find('.tabs').click_link('Start A Project')
+    page.find(:css, '#document-upload').click
+
+    select2_select(id: 'document_upload_collection_id', value: collection.title)
 
     attach_file(
       'document_upload_file',
@@ -56,140 +72,158 @@ describe "uploads data for collections", order: :defined do
     find('input[name="document_upload[ocr]"]').check
     click_button('Upload File')
 
-    expect(page).to have_content("Document has been uploaded", wait: 30)
+    expect(page).to have_content('Document has been uploaded', wait: 30)
     title = find('h1').text
-    expect(title).to eq @collection.title
+    expect(title).to eq collection.title
     wait_for_upload_processing
-    uploaded_work = Work.last
+    uploaded_work = collection.works.reload.last
     expect(uploaded_work.ocr_correction).to eq true
     expect(uploaded_work.pages.first.source_text).to match 'dagegen'
   end
 
-  it "imports IIIF manifests" do
-    # import a manifest for test data
+  it 'imports IIIF manifests' do
+    collection
+
     VCR.use_cassette('iiif/imports_iiif_manifests', record: :none) do
       visit dashboard_owner_path
-      page.find('.tabs').click_link("Start A Project")
+      page.find('.tabs').click_link('Start A Project')
       find('#at_id', visible: false)
-        .set("https://data.ucd.ie/api/img/manifests/ivrla:2638")
+        .set('https://iiif.io/api/cookbook/recipe/0001-mvm-image/manifest.json')
       find('#iiif_import', visible: false).click
-      expect(page).to have_content("Metadata")
-      expect(page).to have_content("Manifest")
-      select(@collection.title, from: 'sc_manifest_collection_id')
+      expect(page).to have_content('Metadata')
+      expect(page).to have_content('Manifest')
+      select(collection.title, from: 'sc_manifest_collection_id')
       click_button('Import Manifest')
-      expect(page).to have_content(@collection.title)
+      expect(page).to have_content(collection.title)
       visit dashboard_owner_path
-      works_count = Work.all.count
-      page.find('.tabs').click_link("Start A Project")
-      # this manifest has a very long title
+      works_count = collection.works.reload.count
+      page.find('.tabs').click_link('Start A Project')
       find('#at_id', visible: false)
-        .set("https://data.ucd.ie/api/img/manifests/ivrla:2654")
+        .set('https://iiif.io/api/cookbook/recipe/0009-book-1/manifest.json')
       find('#iiif_import', visible: false).click
-      expect(page).to have_content("Metadata")
-      expect(page).to have_content("Manifest")
-      select(@collection.title, from: 'sc_manifest_collection_id')
+      expect(page).to have_content('Metadata')
+      expect(page).to have_content('Manifest')
+      select(collection.title, from: 'sc_manifest_collection_id')
       click_button('Import')
-      expect(page).to have_content(@collection.title)
-      expect((@collection.works.last.title).length).to be < 255
-      new_works = Work.all.count
-      expect(new_works).to be >= works_count
+      expect(page).to have_content(collection.title)
+      expect(collection.works.reload.last.title.length).to be < 255
+      expect(collection.works.reload.count).to be >= works_count
     end
   end
 
-  it "creates an empty work", js: true do
+  it 'creates an empty work', js: true do
+    collection
+
     visit dashboard_owner_path
-    page.find('.tabs').click_link("Start A Project")
-    page.find(:css, "#create-empty-work").click
-    select2_select(id: 'work_collection_id', value: @collection.title)
-    fill_in 'work_title', with: @title
-    fill_in 'work_description', with: "This work contains no pages."
+    page.find('.tabs').click_link('Start A Project')
+    page.find(:css, '#create-empty-work').click
+    select2_select(id: 'work_collection_id', value: collection.title)
+    fill_in 'work_title', with: empty_work_title
+    fill_in 'work_description', with: 'This work contains no pages.'
     click_button('Create Work')
-    expect(page).to have_content("Here you see the list of all pages in the work.")
-    expect(Work.find_by(title: @title)).not_to be nil
+    expect(page).to have_content('Here you see the list of all pages in the work.')
+    expect(Work.find_by(title: empty_work_title, collection: collection)).not_to be nil
   end
 
   it 'adds pages to an empty work' do
+    empty_work = create(:work,
+                        title: empty_work_title,
+                        owner: owner,
+                        owner_user_id: owner.id,
+                        collection: collection)
+
     visit dashboard_owner_path
-    page.find('.maincol').find('a', text: @collection.title).click
-    page.find('.maincol').find('a', text: @title).click
-    page.find('.tabs').click_link("Pages")
-    page.find('a', text: "Add New Page").click
+    page.find('.maincol').find('a', text: collection.title).click
+    page.find('.maincol').find('a', text: empty_work.title).click
+    page.find('.tabs').click_link('Pages')
+    page.find('a', text: 'Add New Page').click
     attach_file(
-      'page_base_image',
+      'page_image',
       Rails.root.join('test_data/uploads/JWGravesAmnestyPage1.jpg'),
       make_visible: true
     )
     click_button('Save & Add Next Page')
     expect(page).to have_content('Page created successfully')
-    work = Work.find_by(title: @title)
-    pages = work.pages
-    expect(pages).not_to be nil
-    expect(page).to have_content(pages.first.title)
+    expect(empty_work.pages.reload).not_to be_empty
+    expect(page).to have_content(empty_work.pages.first.title)
     click_link('Add New Page')
     attach_file(
-      'page_base_image',
+      'page_image',
       Rails.root.join('test_data/uploads/JWGravesAmnestyPage2.jpg'),
       make_visible: true
     )
     click_button('Save & New Work')
-    count = work.pages.count
-    expect(count).to eq 2
-    work = Work.find(work.id)
-    expect(work.work_statistic[:total_pages]).to eq 2
-    expect(page).to have_content("Create Empty Work")
-    # testing the cancel button involves ajax
+    expect(empty_work.pages.reload.count).to eq 2
+    expect(empty_work.reload.work_statistic[:total_pages]).to eq 2
+    expect(page).to have_content('Create Empty Work')
   end
 
-  it "adds new document sets", js: true do
-    @owner = User.find_by(login: OWNER)
+  it 'adds new document sets', js: true do
+    set_collection = create_collection_with_works(supports_document_sets: false)
+
     visit dashboard_owner_path
-    doc_set = DocumentSet.where(owner_user_id: @owner.id).count
-    page.find('.maincol').find('a', text: @set_collection.title).click
-    page.find('.tabs').click_link("Settings")
+    doc_set_count = owner.document_sets.count
+    page.find('.maincol').find('a', text: set_collection.title).click
+    page.find('.tabs').click_link('Settings')
     sleep 1
-    page.find('.side-tabs').click_link("Look & Feel")
+    page.find('.side-tabs').click_link('Look & Feel')
     page.check('Enable document sets')
     page.click_link('Edit Sets')
     expect(page).to have_content('Create a Document Set')
     click_link('Create a Document Set')
     expect(page).to have_selector('form#new_document_set')
-    page.fill_in 'document_set_title', with: "Test Document Set 1"
+    page.fill_in 'document_set_title', with: 'Test Document Set 1'
     click_button('Create Document Set')
     expect(page).to have_content('Document set has been created')
-    expect(DocumentSet.last.is_public).to be true
-    expect(page.current_path).to eq collection_settings_path(@owner, DocumentSet.last)
+    expect(owner.document_sets.last.is_public).to be true
+    expect(page.current_path).to eq collection_settings_path(owner, owner.document_sets.last)
     expect(page).to have_content('Manage Works')
     expect(page.find('h1')).to have_content('Test Document Set 1')
-    # add a work - has to be done manually b/c it's jquery
-    id = @set_collection.works.second.id
-    DocumentSet.last.work_ids = id
-    DocumentSet.last.save!
-    after_doc_set = DocumentSet.where(owner_user_id: @owner.id).count
-    expect(after_doc_set).to eq(doc_set + 1)
-    visit document_sets_path(collection_id: @set_collection)
-    doc_set = DocumentSet.where(owner_user_id: @owner.id).count
+    owner.document_sets.last.update!(work_ids: [set_collection.works.reload.second.id])
+    expect(owner.document_sets.count).to eq(doc_set_count + 1)
+
+    visit document_sets_path(collection_id: set_collection)
+    doc_set_count = owner.document_sets.count
     page.find('.button', text: 'Create a Document Set').click
     page.fill_in 'document_set_title', with: 'Test Document Set 2'
     find('#select2-document_set_visibility-container').click
     find('.select2-results__option', text: 'Private').click
     page.find_button('Create Document Set').click
     sleep(3)
-    expect(page.current_path).to eq collection_settings_path(@owner, DocumentSet.last)
-    expect(page).to have_content("Manage Works")
-    expect(page.find('h1')).to have_content("Test Document Set 2")
-    expect(DocumentSet.last.is_public).to be false
-    after_doc_set = DocumentSet.where(owner_user_id: @owner.id).count
-    expect(after_doc_set).to eq (doc_set + 1)
+    expect(page.current_path).to eq collection_settings_path(owner, owner.document_sets.last)
+    expect(page).to have_content('Manage Works')
+    expect(page.find('h1')).to have_content('Test Document Set 2')
+    expect(owner.document_sets.last.is_public).to be false
+    expect(owner.document_sets.count).to eq(doc_set_count + 1)
   end
 
-  it "adds works to document sets" do
-    @document_sets = DocumentSet.where(owner_user_id: @owner.id)
+  it 'adds works to document sets' do
+    set_collection = create_collection_with_works(supports_document_sets: true)
+    document_sets = create_list(:document_set, 2,
+                                :public,
+                                collection: set_collection,
+                                owner: owner,
+                                owner_user_id: owner.id)
+
     visit dashboard_owner_path
-    page.find('.maincol').find('a', text: @set_collection.title).click
-    page.find('.tabs').click_link("Sets")
-    expect(page).to have_content("Document Sets for #{@set_collection.title}")
-    page.check("work_assignment_#{@set_collection.works.first.slug}_#{@document_sets.first.slug}")
-    page.check("work_assignment_#{@set_collection.works.last.slug}_#{@document_sets.last.slug}")
+    page.find('.maincol').find('a', text: set_collection.title).click
+    page.find('.tabs').click_link('Sets')
+    expect(page).to have_content("Document Sets for #{set_collection.title}")
+    page.check("work_assignment_#{set_collection.works.first.slug}_#{document_sets.first.slug}")
+    page.check("work_assignment_#{set_collection.works.last.slug}_#{document_sets.last.slug}")
     page.find_button('Save').click
+  end
+
+  def create_collection_with_works(supports_document_sets: true)
+    create(:collection,
+           owner_user_id: owner.id,
+           works: [],
+           supports_document_sets: supports_document_sets).tap do |created_collection|
+      2.times do
+        work = create(:work, owner: owner, owner_user_id: owner.id, collection: created_collection)
+        create(:page, work: work, position: 1)
+      end
+      created_collection.works.reset
+    end
   end
 end

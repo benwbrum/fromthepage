@@ -77,6 +77,53 @@ RSpec.describe ContentdmTranslator do
   end
 
 
+  describe '.export_work_to_cdm_with_retry' do
+    let(:work)     { double('work') }
+    let(:username) { 'user' }
+    let(:password) { 'pass' }
+    let(:license)  { 'lic' }
+
+    before { allow(described_class).to receive(:export_work_to_cdm) }
+
+    it 'calls export_work_to_cdm once when no error occurs' do
+      described_class.export_work_to_cdm_with_retry(work, username, password, license)
+      expect(described_class).to have_received(:export_work_to_cdm).once
+    end
+
+    it 'retries on Net::ReadTimeout and succeeds on second attempt' do
+      call_count = 0
+      allow(described_class).to receive(:export_work_to_cdm) do
+        call_count += 1
+        raise Net::ReadTimeout if call_count == 1
+      end
+      allow(described_class).to receive(:sleep)
+
+      described_class.export_work_to_cdm_with_retry(work, username, password, license)
+      expect(described_class).to have_received(:export_work_to_cdm).twice
+    end
+
+    it 'retries on Savon::HTTPError (502) and succeeds on second attempt' do
+      call_count = 0
+      http_response = double('http_response', code: 502, headers: {}, body: 'Bad gateway')
+      allow(described_class).to receive(:export_work_to_cdm) do
+        call_count += 1
+        raise Savon::HTTPError.new(http_response) if call_count == 1
+      end
+      allow(described_class).to receive(:sleep)
+
+      described_class.export_work_to_cdm_with_retry(work, username, password, license)
+      expect(described_class).to have_received(:export_work_to_cdm).twice
+    end
+
+    it 'gives up after max delay is reached for Savon::HTTPError' do
+      http_response = double('http_response', code: 502, headers: {}, body: 'Bad gateway')
+      allow(described_class).to receive(:export_work_to_cdm).and_raise(Savon::HTTPError.new(http_response))
+      allow(described_class).to receive(:sleep)
+
+      expect { described_class.export_work_to_cdm_with_retry(work, username, password, license) }.not_to raise_error
+    end
+  end
+
   describe '#cdm_url_to_iiif' do
     let(:item_url) { 'https://digital.archives.alabama.gov/digital/collection/supreme_court/id/7076' }
     let(:collection_url) { 'https://digital.archives.alabama.gov/digital/collection/supreme_court' }
@@ -86,6 +133,31 @@ RSpec.describe ContentdmTranslator do
     let(:vanity_collection) { 'http://www.digitalindy.org/cdm/landingpage/collection/ahs' }
     let(:vanity_collection_2) { 'http://www.digitalindy.org/cdm/search/collection/ahs' }
     let(:vanity_repository) { 'http://www.digitalindy.org' }
+
+    context 'when collection aliases contain punctuation' do
+      before do
+        allow(ContentdmTranslator).to receive(:get_cdm_host_from_url).and_return('kdl')
+        allow(URI).to receive(:open).and_return(StringIO.new('{}'))
+      end
+
+      it 'translates a hyphenated item alias and permits trailing routes' do
+        url = ContentdmTranslator.cdm_url_to_iiif('https://kdl.contentdm.oclc.org/digital/collection/tu-medtheses/id/4805/rec/1')
+
+        expect(url).to eq('https://kdl.contentdm.oclc.org/iiif/info/tu-medtheses/4805/manifest.json')
+      end
+
+      it 'translates a hyphenated collection alias' do
+        url = ContentdmTranslator.cdm_url_to_iiif('https://kdl.contentdm.oclc.org/digital/collection/tu-medtheses')
+
+        expect(url).to eq('https://kdl.contentdm.oclc.org/iiif/info/tu-medtheses/manifest.json')
+      end
+
+      it 'does not treat a malformed item path as a collection URL' do
+        expect do
+          ContentdmTranslator.cdm_url_to_iiif('https://kdl.contentdm.oclc.org/digital/collection/tu-medtheses/id/not-a-record')
+        end.to raise_error(ArgumentError, %r{/id/ but no valid numeric record ID})
+      end
+    end
 
     context 'default' do
       around(:each) do |example|

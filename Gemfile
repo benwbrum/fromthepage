@@ -17,6 +17,7 @@ gem 'acts_as_tree'
 gem 'interactor-rails', '~> 2.0'
 gem 'friendly_id'
 gem 'thredded', '~> 1.1'
+gem 'solid_cache'
 gem 'solid_queue', '~> 1.2'
 gem 'mission_control-jobs'
 gem 'aws-sdk-s3', require: false
@@ -37,6 +38,7 @@ gem 'recaptcha', require: 'recaptcha/rails'
 
 # File handling / Media
 gem 'carrierwave'
+gem 'image_processing'
 gem 'rmagick'
 gem 'rubyzip'
 
@@ -45,6 +47,7 @@ gem 'httparty'
 gem 'savon', '~> 2.15', '>= 2.15.1'
 gem 'ruby-openai'
 gem 'gemini-ai'
+gem 'anthropic'
 gem 'open3'
 gem 'bento-sdk', github: 'bentonow/bento-ruby-sdk', branch: 'master'
 gem 'iiif-image-api', git: 'https://github.com/samvera-labs/iiif-image-api.git', branch: 'main'
@@ -68,7 +71,6 @@ gem 'flamegraph'
 gem 'memory_profiler'
 gem 'meta_request'
 gem 'stackprof'
-
 
 # Internationalization / Localization
 gem 'rails-i18n', '~> 7.0.0'

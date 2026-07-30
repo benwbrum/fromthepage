@@ -6,7 +6,7 @@ module AiTranscription::Lib::Common
   end
 
   def sanitize_prompt
-    @prompt_file ||= 'lib/gemini/transcription_prompt.txt'
+    @prompt_file ||= 'lib/transcription_prompt.txt'
 
     File.read(File.join(Rails.root.join(@prompt_file)))
   rescue Errno::ENOENT
@@ -15,6 +15,14 @@ module AiTranscription::Lib::Common
     'Preserve the original formatting, line breaks, and layout as much as possible. ' \
     'If the text is handwritten, do your best to interpret it accurately. ' \
     'Do not add any commentary or explanations - only provide the transcribed text.'
+  end
+
+  def build_prompt
+    return sanitize_prompt if @prompt_file.present? || !@collection.field_based
+
+    AiTranscription::Lib::FieldBasedPromptBuilder
+      .new(collection: @collection)
+      .build
   end
 
   def check_user_permission

@@ -17,6 +17,7 @@ class DisplayController < ApplicationController
     end
     if params.has_key?(:needs_review)
       @review = params[:needs_review]
+      return if work_queue_filter?(@review) && require_login_for_work_queue
     end
 
     # Handle page range parameter
@@ -138,7 +139,8 @@ class DisplayController < ApplicationController
   end
 
   def ai_text
-    unless @page.ai_transcription&.status_finished?
+    if !@page.finished_ai_transcription ||
+      (@collection.ai_draft_disabled && !current_user.like_owner?(@collection))
       redirect_to collection_display_page_path(@collection.owner, @collection, @work, @page.id)
 
       return
@@ -147,10 +149,6 @@ class DisplayController < ApplicationController
     ai_transcriptions_scope = @page.ai_transcriptions.where(status: :finished).order(created_at: :desc)
     @finished_transcription_count = ai_transcriptions_scope.count
     @ai_transcription = ai_transcriptions_scope.find_by(id: params[:ai_transcription_id]) || ai_transcriptions_scope.first
-
-    if !current_user.blank?
-      @ai_accuracy_stats = @page.ai_accuracy_statistics(ai_transcription: @ai_transcription)
-    end
 
     respond_to do |format|
       format.html do
@@ -163,6 +161,35 @@ class DisplayController < ApplicationController
 
       format.turbo_stream
     end
+  end
+
+  def ai_stats
+    ai_transcriptions_scope = @page.ai_transcriptions.where(status: :finished).order(created_at: :desc)
+    @ai_transcription = ai_transcriptions_scope.find_by(id: params[:ai_transcription_id]) || ai_transcriptions_scope.first
+
+    if @ai_transcription.recalculate_stats?
+      @ai_accuracy_stats = @page.ai_accuracy_statistics(ai_transcription: @ai_transcription, extract_raw_values: true)
+
+      @ai_transcription.update!(
+        verbatim_cer_distance: @ai_accuracy_stats&.dig(:verbatim, :cer_distance),
+        verbatim_cer_length: @ai_accuracy_stats&.dig(:verbatim, :cer_length),
+        verbatim_cer: @ai_accuracy_stats&.dig(:verbatim, :cer),
+        verbatim_wer_distance: @ai_accuracy_stats&.dig(:verbatim, :wer_distance),
+        verbatim_wer_length: @ai_accuracy_stats&.dig(:verbatim, :wer_length),
+        verbatim_wer: @ai_accuracy_stats&.dig(:verbatim, :wer),
+        verbatim_non_stopword_accuracy: @ai_accuracy_stats&.dig(:verbatim, :non_stopword_accuracy),
+        text_cer_distance: @ai_accuracy_stats&.dig(:text_only, :cer_distance),
+        text_cer_length: @ai_accuracy_stats&.dig(:text_only, :cer_length),
+        text_cer: @ai_accuracy_stats&.dig(:text_only, :cer),
+        text_wer_distance: @ai_accuracy_stats&.dig(:text_only, :wer_distance),
+        text_wer_length: @ai_accuracy_stats&.dig(:text_only, :wer_length),
+        text_wer: @ai_accuracy_stats&.dig(:text_only, :wer)
+      )
+    end
+
+    render turbo_stream: turbo_stream.replace(
+      'cer_stats', partial: 'cer_stats', locals: { ai_stats_available: !@ai_accuracy_stats.blank? }
+    )
   end
 
   def paged_search
@@ -264,5 +291,11 @@ class DisplayController < ApplicationController
     else
       nil
     end
+  end
+
+  private
+
+  def work_queue_filter?(filter)
+    %w[review incomplete transcription index translation translation_review translation_index].include?(filter)
   end
 end

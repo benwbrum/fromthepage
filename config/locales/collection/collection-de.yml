@@ -10,6 +10,8 @@ de:
         description: Starte einen KI-Transkriptionsauftrag für Seiten in dieser Sammlung.
         description_complete: Alle Seiten dieser Sammlung enthalten KI-Transkriptionen.
         failed: Fehlgeschlagen
+        failed_transcription_errors: Fehlgeschlagene Transkriptionsfehler
+        failed_transcription_errors_hidden: "%{count} zusätzliche Transkriptionsfehler werden nicht angezeigt."
         finished: Fertig
         generate: Erstellen Sie KI-Entwürfe für Seiten ohne diese.
         in_progress: Im Gange
@@ -271,6 +273,8 @@ de:
       quality_control: Qualitätskontrolle
       task_configuration: Aufgabenkonfiguration
     edit_tasks:
+      ai_draft_disabled: KI-Entwürfe deaktivieren
+      ai_draft_disabled_description: Deaktivieren Sie AI Drafts für alle Benutzer außer dem Sammlungsinhaber.
       alert: Bitte passen Sie die Felder an oder wählen Sie unter Transkriptionstyp die dokumentbasierte Transkription aus.
       disable_ocr: OCR deaktivieren
       document_based_transcription: Dokumentbasierte Transkription

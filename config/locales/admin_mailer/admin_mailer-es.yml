@@ -7,6 +7,8 @@ es:
       opt_out_email: Si prefieres no recibir estos correos electrónicos, haga clic en %{link} para darte de baja.
       other_recent_activity: 'Otra Actividad Reciente en las Colecciones:'
       recent_activity: Actividad reciente en tu proyecto de Fromthepage
+      suspicious_behaviors: 'Comportamientos sospechosos:'
+      view_collection_suspicious_behaviors: Ver comportamientos sospechosos de la colección
       what_is_easy: "¿Qué es fácil? ¿Qué es difícil? ¿Qué podemos hacer para mejorar FromThePage? Nos encantaría saber tu opinión — sólo responde a este correo."
       you_have_new_collaborators: "¡Tienes nuevos colaboradores!"
       you_may_consider: Considera enviarles un %{link} una breve nota dándoles la bienvenida al proyecto.

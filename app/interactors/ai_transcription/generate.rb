@@ -37,7 +37,38 @@ class AiTranscription::Generate < ApplicationInteractor
 
     return if @ai_transcription.source_text.present? || @ai_transcription.reasoning.present?
 
-    raise ArgumentError, "AI Transcription has blank text and reasoning.\nResponse:\n#{response}"
+    metadata = @ai_transcription.metadata.is_a?(Hash) ? @ai_transcription.metadata.dup : {}
+    metadata['provider_error_details'] = provider_error_details(response)
+    @ai_transcription.update!(metadata: metadata)
+
+    provider_error = provider_error_summary(metadata['provider_error_details'])
+    details = provider_error.present? ? "\nProvider details: #{provider_error}" : ''
+
+    raise ArgumentError, "AI Transcription has blank text and reasoning.#{details}"
+  end
+
+  def provider_error_details(response)
+    response = {} unless response.is_a?(Hash)
+    candidate = response.dig('candidates', 0) || {}
+
+    {
+      'finish_reason' => candidate['finishReason'],
+      'finish_message' => candidate['finishMessage'],
+      'citation_sources' => candidate.dig('citationMetadata', 'citationSources') || [],
+      'model_version' => response['modelVersion'],
+      'response_id' => response['responseId'],
+      'usage_metadata' => response['usageMetadata'],
+      'raw_response' => response
+    }.compact
+  end
+
+  def provider_error_summary(provider_error_details)
+    provider_error_parts = []
+    finish_reason = provider_error_details['finish_reason']
+    finish_message = provider_error_details['finish_message']
+    provider_error_parts << "finishReason=#{finish_reason}" if finish_reason.present?
+    provider_error_parts << "finishMessage=#{finish_message}" if finish_message.present?
+    provider_error_parts.join('; ')
   end
 
   def handle_field_based_response(source_text, reasoning, metadata)
@@ -64,22 +95,31 @@ class AiTranscription::Generate < ApplicationInteractor
 
   def image_url
     return @image_url if defined?(@image_url)
-
-    @image_url = @page.image_url_for_download
-
-    raise ArgumentError, 'Page has no image to transcribe' if @image_url.blank?
-
-    @image_url
+    @image_url = @page.image_url_for_ai
   end
 
-  # TODO: When we support claude, this should handle what transcribe_handler is used
-  # We will refactor this to inherit into one `BaseHandler` so it follows consistent form
-  # for each AI models
+  def local_image_path
+    @local_image_path ||= @page.local_image_path
+  end
+
   def transcribe_handler
-    @transcribe_handler ||= AiTranscription::Lib::Gemini::TranscribeHandler.new(
+    raise ArgumentError, 'Page has no image to transcribe' if image_url.blank? && local_image_path.blank?
+
+    Rails.logger.info("AiTranscription::Generate image URL for page #{@page.id}: #{image_url || local_image_path}")
+
+    @transcribe_handler ||= handler_class.new(
       model: @ai_transcription.model,
       prompt: @ai_transcription.prompt,
-      image_url: image_url
+      image_url: image_url,
+      image_path: local_image_path
     )
+  end
+
+  def handler_class
+    if @ai_transcription.model.start_with?('claude')
+      AiTranscription::Lib::Claude::TranscribeHandler
+    else
+      AiTranscription::Lib::Gemini::TranscribeHandler
+    end
   end
 end

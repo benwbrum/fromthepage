@@ -1,0 +1,14 @@
+---
+de:
+  admin_mailer:
+    collection_stats_by_owner:
+      comments_from_your_collaborators: 'Kommentare von Ihren Mitarbeitenden:'
+      how_is_your_project_going: Wie läuft Ihr Projekt?
+      opt_out_email: Wenn Sie diese E-Mails nicht mehr erhalten möchten, klicken Sie bitte auf %{link}, um Ihre Benachrichtigungseinstellungen zu ändern
+      other_recent_activity: 'Weitere aktuelle Aktivitäten in Ihren Sammlungen:'
+      recent_activity: Aktuelle Aktivität in Ihrem FromThePage-Projekt
+      suspicious_behaviors: 'Verdächtige Verhaltensweisen:'
+      view_collection_suspicious_behaviors: Verdächtige Verhaltensweisen der Sammlung anzeigen
+      what_is_easy: Was ist einfach? Was ist schwierig? Was können wir tun, um FromThePage zu verbessern? Wir freuen uns auf Ihr Feedback &mdash; antworten Sie einfach auf diese E-Mail.
+      you_have_new_collaborators: Sie haben neue Mitarbeitende!
+      you_may_consider: Sie könnten ihnen %{link} eine kurze Willkommensnachricht für Ihr Projekt senden.

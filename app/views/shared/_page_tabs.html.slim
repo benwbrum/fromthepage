@@ -31,7 +31,7 @@ ruby:
     end
   end
 
-  if @page.ai_transcription&.status_finished?
+  if @page.finished_ai_transcription && (!@collection.ai_draft_disabled || current_user.like_owner?(@collection))
     tabs << {
       name: t('.ai'),
       selected: 5,
@@ -62,7 +62,7 @@ ruby:
     }
   end
 
-  description = xml_to_html(@page.xml_text)
+  description = cached_page_xml_to_html(@page, :xml_text, collection: @collection)
   selected_tab = tabs.find { |tab| tab[:selected] == selected }[:name] rescue ''
   tab_title = [3, 6].include?(selected) ? "#{selected_tab.downcase} #{t('.page')}" : "#{t('.page')} #{selected_tab.downcase}"
   page_title = @collection.present? ? "#{@page.title} (#{@collection.title}, #{@work.title})" : "#{@page.title} (#{@work.title})"

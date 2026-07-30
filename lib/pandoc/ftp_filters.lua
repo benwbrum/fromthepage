@@ -125,8 +125,15 @@ function handle_meta(meta)
   return meta
 end
 
+local function escape_table_brackets(tex)
+  return tex
+    :gsub("%[", "{[}")
+    :gsub("%]", "{]}")
+end
+
 function handle_rawblock(el)
   if el.format == "latex" and el.text:match("\\begin{xltabular}") then
+    el.text = escape_table_brackets(el.text)
     return pandoc.RawBlock("latex", el.text)
   end
   return el

@@ -56,7 +56,7 @@ class ScCollectionsController < ApplicationController
   end
 
   def import
-    at_id = params[:at_id]
+    at_id = params[:at_id].strip
 
     begin
       version = detect_version(at_id)

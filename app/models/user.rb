@@ -2,48 +2,49 @@
 #
 # Table name: users
 #
-#  id                        :integer          not null, primary key
-#  about                     :text(65535)
-#  account_type              :string(255)
-#  activity_email            :boolean
-#  admin                     :boolean          default(FALSE)
-#  api_key                   :string(255)
-#  current_sign_in_at        :datetime
-#  current_sign_in_ip        :string(255)
-#  deleted                   :boolean          default(FALSE)
-#  dictation_language        :string(255)      default("en-US")
-#  display_name              :string(255)
-#  email                     :string(255)
-#  encrypted_password        :string(255)      default(""), not null
-#  footer_block              :text(16777215)
-#  guest                     :boolean
-#  help                      :text(65535)
-#  last_sign_in_at           :datetime
-#  last_sign_in_ip           :string(255)
-#  location                  :string(255)
-#  login                     :string(255)
-#  orcid                     :string(255)
-#  owner                     :boolean          default(FALSE)
-#  paid_date                 :datetime
-#  password_salt             :string(255)      default(""), not null
-#  picture                   :string(255)
-#  preferred_locale          :string(255)
-#  provider                  :string(255)
-#  real_name                 :string(255)
-#  remember_created_at       :datetime
-#  remember_token            :string(255)
-#  remember_token_expires_at :datetime
-#  reset_password_sent_at    :datetime
-#  reset_password_token      :string(255)
-#  sign_in_count             :integer          default(0), not null
-#  slug                      :string(255)
-#  sso_issuer                :string(255)
-#  start_date                :datetime
-#  uid                       :string(255)
-#  website                   :string(255)
-#  created_at                :datetime
-#  updated_at                :datetime
-#  external_id               :string(255)
+#  id                          :integer          not null, primary key
+#  about                       :text(65535)
+#  account_type                :string(255)
+#  activity_email              :boolean
+#  admin                       :boolean          default(FALSE)
+#  api_key                     :string(255)
+#  current_sign_in_at          :datetime
+#  current_sign_in_ip          :string(255)
+#  deleted                     :boolean          default(FALSE)
+#  dictation_language          :string(255)      default("en-US")
+#  display_name                :string(255)
+#  document_sets_on_owner_page :boolean          default(FALSE)
+#  email                       :string(255)
+#  encrypted_password          :string(255)      default(""), not null
+#  footer_block                :text(16777215)
+#  guest                       :boolean
+#  help                        :text(65535)
+#  last_sign_in_at             :datetime
+#  last_sign_in_ip             :string(255)
+#  location                    :string(255)
+#  login                       :string(255)
+#  orcid                       :string(255)
+#  owner                       :boolean          default(FALSE)
+#  paid_date                   :datetime
+#  password_salt               :string(255)      default(""), not null
+#  picture                     :string(255)
+#  preferred_locale            :string(255)
+#  provider                    :string(255)
+#  real_name                   :string(255)
+#  remember_created_at         :datetime
+#  remember_token              :string(255)
+#  remember_token_expires_at   :datetime
+#  reset_password_sent_at      :datetime
+#  reset_password_token        :string(255)
+#  sign_in_count               :integer          default(0), not null
+#  slug                        :string(255)
+#  sso_issuer                  :string(255)
+#  start_date                  :datetime
+#  uid                         :string(255)
+#  website                     :string(255)
+#  created_at                  :datetime
+#  updated_at                  :datetime
+#  external_id                 :string(255)
 #
 # Indexes
 #
@@ -53,6 +54,9 @@
 #  index_users_on_slug                  (slug) UNIQUE
 #
 class User < ApplicationRecord
+  WEBSITE_SCHEME_REGEX = /\Ahttps?:\/\//i
+  ANY_SCHEME_REGEX = /\A[a-z][a-z0-9+\-.]*:\/\//i
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable, :masqueradable,
@@ -141,11 +145,12 @@ class User < ApplicationRecord
                     exclusion: { in: %w[transcribe translate work collection deed],
                                  message: ->(_, _) { I18n.t('devise.errors.messages.login.exclusion') } }
 
-  validates :website, allow_blank: true, format: { with: URI.regexp }
+  validate :website_format
   validate :email_does_not_match_denylist
   validate :display_name_presence
   validate :email_domain_blacklist, if: -> { validation_context == :registration }
 
+  before_validation :normalize_website
   before_validation :update_display_name
 
   after_save :create_notifications
@@ -202,6 +207,28 @@ class User < ApplicationRecord
     else
       self[:display_name] = self.login
     end
+  end
+
+  def normalize_website
+    return if website.nil?
+
+    normalized_website = website.strip
+    if normalized_website.present? && !normalized_website.match?(ANY_SCHEME_REGEX)
+      normalized_website = "https://#{normalized_website}"
+    end
+
+    self.website = normalized_website
+  end
+
+  def website_format
+    return if website.blank?
+
+    parsed_website = URI.parse(website)
+    return if parsed_website.is_a?(URI::HTTP) && parsed_website.host.present? && parsed_website.userinfo.nil?
+
+    errors.add(:website, :invalid)
+  rescue URI::InvalidURIError
+    errors.add(:website, :invalid)
   end
 
   def self.from_omniauth(access_token)

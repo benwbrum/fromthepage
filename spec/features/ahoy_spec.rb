@@ -1,16 +1,17 @@
 require 'spec_helper'
 
-describe 'Ahoy' do
-  before :each do
+RSpec.describe 'Ahoy' do
+  before do
     DatabaseCleaner.start
+    Capybara.reset_sessions!
   end
-  after :each do
+
+  after do
+    Capybara.reset_sessions!
     DatabaseCleaner.clean
   end
 
   it 'logs a visit' do
-    count = Visit.count
-    visit root_path
-    expect(Visit.count).to eq(count + 1)
+    expect { visit root_path }.to change(Visit, :count).by(1)
   end
 end

@@ -10,6 +10,8 @@ fr:
         description: Lancer une tâche de transcription IA pour les pages de cette collection.
         description_complete: Toutes les pages de cette collection comportent des transcriptions IA.
         failed: Échoué
+        failed_transcription_errors: Erreurs de transcription échouées
+        failed_transcription_errors_hidden: Les erreurs de transcription supplémentaires %{count} ne sont pas affichées.
         finished: Fini
         generate: Créer des brouillons IA pour les pages qui en sont dépourvues.
         in_progress: En cours
@@ -271,6 +273,8 @@ fr:
       quality_control: Contrôle de qualité
       task_configuration: Configuration des tâches
     edit_tasks:
+      ai_draft_disabled: Désactiver les brouillons IA
+      ai_draft_disabled_description: Désactiver les brouillons IA pour tous les utilisateurs, sauf le propriétaire de la collection.
       alert: Veuillez configurer les champs ou choisir la transcription basée sur le document sous Type de transcription.
       disable_ocr: Désactiver la OCR
       document_based_transcription: Transcription basée sur des documents

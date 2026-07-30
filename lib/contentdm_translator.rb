@@ -141,15 +141,15 @@ module ContentdmTranslator
 
     begin
       ContentdmTranslator.export_work_to_cdm(work, username, password, license)
-    rescue Net::ReadTimeout => e
+    rescue Net::ReadTimeout, Savon::HTTPError => e
       delay_to_use = [delay, max_delay].min
-      print "Net::ReadTimeout: Retrying in #{delay_to_use} seconds... (#{e.message})"
+      print "#{e.class}: Retrying in #{delay_to_use} seconds... (#{e.message})"
 
       sleep(delay_to_use)
 
       delay = (delay * 1.5).round
       if delay > max_delay
-        print "Net::ReadTimeout: Max retry delay reached, giving up. (#{e.message})"
+        print "#{e.class}: Max retry delay reached, giving up. (#{e.message})"
       else
         retry
       end
@@ -271,7 +271,11 @@ module ContentdmTranslator
     server = get_cdm_host_from_url("#{uri.scheme}://#{uri.host}")
     raise 'ContentDM URLs must be of the form http://cdmNNNNN.contentdm.oclc.org/...' if server.nil?
 
-    matches = uri.path.match(/.*collection\/(\w+)(?:\/id\/(\d+))?/)
+    matches = uri.path.match(%r{.*collection/([^/]+)(?:/id/(\d+)(?:/.*)?)?\z})
+
+    if uri.path.include?('/id/') && (!matches || matches[2].nil?)
+      raise ArgumentError, "ContentDM item URL contains /id/ but no valid numeric record ID: #{url}"
+    end
 
     if matches
       collection = matches[1]

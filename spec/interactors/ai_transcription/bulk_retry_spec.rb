@@ -44,4 +44,20 @@ describe AiTranscription::BulkRetry do
       expect(ai_transcription_2.reload.status_processing?).to be_truthy
     end
   end
+
+  context 'when the collection is field_based' do
+    let!(:collection) { create(:collection, :field_based, owner_user_id: owner.id, works: []) }
+    let!(:text_field) do
+      create(:transcription_field, :text_field,
+             label: 'Name', collection: collection, position: 1, line_number: 1)
+    end
+
+    it 'rebuilds the field-based prompt instead of reusing the stale errored prompt' do
+      expect(result.success?).to be_truthy
+
+      ai_transcription_2.reload
+      expect(ai_transcription_2.status_processing?).to be_truthy
+      expect(ai_transcription_2.prompt).to include(text_field.id.to_s, 'Name')
+    end
+  end
 end

@@ -11,7 +11,7 @@ describe AiTranscription::GenerateJob do
   let!(:ai_transcription) { create(:ai_transcription, page_id: page.id, model: model, prompt: prompt, status: :processing, source_text: nil, reasoning: nil) }
 
   let(:model) { AiTranscription::DEFAULT_MODEL }
-  let(:prompt) { File.read(Rails.root.join('lib/gemini/transcription_prompt.txt')) }
+  let(:prompt) { File.read(Rails.root.join('lib/transcription_prompt.txt')) }
 
   let(:expected_response) do
     JSON.parse(
@@ -32,7 +32,7 @@ describe AiTranscription::GenerateJob do
         .and_return(ai_transcription)
 
       allow(ai_transcription).to receive(:page).and_return(page)
-      allow(page).to receive(:image_url_for_download).and_return('http://example.com/image.jpg')
+      allow(page).to receive(:image_url_for_ai).and_return('http://example.com/image.jpg')
     end
 
     it 'performs generate job' do
@@ -49,6 +49,18 @@ describe AiTranscription::GenerateJob do
         reasoning: expected_response["candidates"].first["content"]["parts"].first["text"],
         status: 'finished'
       )
+    end
+
+    context 'with the retired model persisted' do
+      let(:model) { 'gemini-3-pro-preview' }
+
+      it 'invokes Gemini with the default model' do
+        VCR.use_cassette('ai_transcriptions/generate', record: :none, allow_playback_repeats: false) do
+          perform_worker
+        end
+
+        expect(ai_transcription.reload.model).to eq('gemini-3.1-pro-preview')
+      end
     end
 
     context 'when user is admin' do
@@ -77,6 +89,49 @@ describe AiTranscription::GenerateJob do
   end
 
   context 'failure' do
+    context 'when generation fails' do
+      let(:error) { StandardError.new('RECITATION') }
+      let(:result) do
+        instance_double(
+          'Result',
+          success?: false,
+          ai_transcription: ai_transcription,
+          full_errors: error
+        )
+      end
+      let(:service) { instance_double(AiTranscription::Generate, call: result) }
+
+      before do
+        allow(AiTranscription::Generate).to receive(:new).with(ai_transcription: ai_transcription).and_return(service)
+      end
+
+      it 'stores the failure message' do
+        expect {
+          perform_enqueued_jobs do
+            perform_worker
+          end
+        }.to raise_error
+
+        expect(ai_transcription.reload.status).to eq('error')
+        expect(ai_transcription.error_message).to eq('RECITATION')
+      end
+
+      context 'when the provider error includes a credential' do
+        let(:error) do
+          StandardError.new('the server responded with status 429 for URL https://provider.example/v1/models?alt=json&api_key=fake-secret&format=text')
+        end
+
+        it 'stores a useful error without the credential' do
+          expect { perform_worker }.to raise_error(StandardError)
+
+          message = ai_transcription.reload.metadata['error_message']
+          expect(message).to include('status 429')
+          expect(message).to include('provider.example/v1/models?alt=json&api_key=[FILTERED]&format=text')
+          expect(message).not_to include('fake-secret')
+        end
+      end
+    end
+
     context 'API returns blank source_text and reasoning' do
       before do
         allow(AiTranscription).to receive(:find)
@@ -84,7 +139,7 @@ describe AiTranscription::GenerateJob do
           .and_return(ai_transcription)
 
         allow(ai_transcription).to receive(:page).and_return(page)
-        allow(page).to receive(:image_url_for_download).and_return('http://example.com/image.jpg')
+        allow(page).to receive(:image_url_for_ai).and_return('http://example.com/image.jpg')
       end
 
       it 'performs generate job' do
@@ -111,7 +166,7 @@ describe AiTranscription::GenerateJob do
           .and_return(ai_transcription)
 
         allow(ai_transcription).to receive(:page).and_return(page)
-        allow(page).to receive(:image_url_for_download).and_return(nil)
+        allow(page).to receive(:image_url_for_ai).and_return(nil)
       end
 
       it 'performs generate job' do
@@ -141,6 +196,7 @@ describe AiTranscription::GenerateJob do
       }.to raise_error
 
       expect(ai_transcription.reload.status).to eq('error')
+      expect(ai_transcription.error_message).to eq('User has no permission to create AiTranscription on this page')
     end
   end
 end

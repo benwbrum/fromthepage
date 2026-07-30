@@ -184,7 +184,7 @@ describe Page do
 
   describe '#image_url_for_download' do
     context 'when page has base_image with deployment path' do
-      let(:page) { build_stubbed(:page, :with_image) }
+      let(:page) { build_stubbed(:page, :with_legacy_image) }
 
       before do
         # Ensure no sc_canvas or ia_leaf to test the local image scenario
@@ -216,7 +216,7 @@ describe Page do
     end
 
     context 'when page has base_image with special characters' do
-      let(:page) { build_stubbed(:page, :with_image) }
+      let(:page) { build_stubbed(:page, :with_legacy_image) }
 
       before do
         # Ensure no sc_canvas or ia_leaf to test the local image scenario
@@ -371,6 +371,95 @@ describe Page do
       it 'returns false' do
         expect(page.ai_plaintext_has_emoji_placeholders?).to be false
       end
+    end
+  end
+
+  describe '#field_ai_draft_available?' do
+    let(:page) { build_stubbed(:page) }
+    let(:collection) { build_stubbed(:collection) }
+
+    before do
+      allow(page).to receive(:collection).and_return(collection)
+    end
+
+    context 'when the collection is not field based' do
+      before do
+        allow(page).to receive(:field_based).and_return(false)
+      end
+
+      it 'returns false' do
+        expect(page.field_ai_draft_available?).to be false
+      end
+    end
+
+    context 'when the collection is field based' do
+      before do
+        allow(page).to receive(:field_based).and_return(true)
+      end
+
+      context 'when there is no finished ai transcription' do
+        before do
+          allow(page).to receive(:finished_ai_transcription).and_return(nil)
+        end
+
+        it 'returns false' do
+          expect(page.field_ai_draft_available?).to be false
+        end
+      end
+
+      context 'when there is a finished ai transcription' do
+        before do
+          allow(page).to receive(:finished_ai_transcription).and_return(build_stubbed(:ai_transcription, status: :finished))
+        end
+
+        context 'when the collection has a spreadsheet field' do
+          before do
+            allow(collection).to receive_message_chain(:transcription_fields, :where, :exists?).and_return(true)
+          end
+
+          it 'returns false' do
+            expect(page.field_ai_draft_available?).to be false
+          end
+        end
+
+        context 'when the collection has no spreadsheet field' do
+          before do
+            allow(collection).to receive_message_chain(:transcription_fields, :where, :exists?).and_return(false)
+          end
+
+          it 'returns true' do
+            expect(page.field_ai_draft_available?).to be true
+          end
+        end
+      end
+    end
+  end
+
+  describe '#finished_ai_transcriptions_by_engine' do
+    let(:page) { create(:page, work: create(:work)) }
+
+    it 'returns an empty hash when there are no finished ai transcriptions' do
+      create(:ai_transcription, page: page, status: :new, model: 'gemini-3-pro-preview')
+
+      expect(page.finished_ai_transcriptions_by_engine).to eq({})
+    end
+
+    it 'excludes the alto engine' do
+      create(:ai_transcription, page: page, status: :finished, model: AiTranscription::ALTO_MODEL)
+
+      expect(page.finished_ai_transcriptions_by_engine).to eq({})
+    end
+
+    it 'returns the latest finished transcription for each engine' do
+      older_gemini = create(:ai_transcription, page: page, status: :finished, model: 'gemini-3-pro-preview', created_at: 2.days.ago)
+      newer_gemini = create(:ai_transcription, page: page, status: :finished, model: 'gemini-3-pro-preview', created_at: 1.day.ago)
+      claude = create(:ai_transcription, page: page, status: :finished, model: 'claude-sonnet')
+      create(:ai_transcription, page: page, status: :error, model: 'claude-sonnet')
+
+      result = page.finished_ai_transcriptions_by_engine
+
+      expect(result).to eq({ 'gemini' => newer_gemini, 'claude' => claude })
+      expect(result['gemini']).not_to eq(older_gemini)
     end
   end
 end

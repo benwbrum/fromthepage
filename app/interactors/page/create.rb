@@ -12,10 +12,12 @@ class Page::Create < ApplicationInteractor
 
   def perform
     ActiveRecord::Base.transaction do
-      @page = Page.new(@page_params)
+      @page = Page.new(@page_params.except(:image))
       @work.pages << @page
 
-      process_uploaded_file(@page_params[:base_image]) if @page_params[:base_image]
+      process_uploaded_file(@page_params[:image]) if @page_params[:image]
     end
+
+    @page.thumbnail_image if @page.image.attached?
   end
 end

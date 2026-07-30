@@ -10,6 +10,8 @@ es:
         description: Iniciar un trabajo de transcripción de IA para las páginas de esta colección.
         description_complete: Todas las páginas de esta colección tienen transcripciones de IA.
         failed: Fallido
+        failed_transcription_errors: Errores de transcripción fallidos
+        failed_transcription_errors_hidden: No se muestran los errores de transcripción adicionales %{count}.
         finished: Finalizado
         generate: Crea borradores de IA para páginas que no los tengan.
         in_progress: En curso
@@ -271,6 +273,8 @@ es:
       quality_control: Control de calidad
       task_configuration: Configuración de tareas
     edit_tasks:
+      ai_draft_disabled: Desactivar borradores de IA
+      ai_draft_disabled_description: Deshabilitar la función de borradores de IA para todos los usuarios, excepto para el propietario de la colección.
       alert: Configure los campos o elija la transcripción basada en documentos en Tipo de transcripción.
       disable_ocr: Deshabilitar OCR
       document_based_transcription: Transcripción basada en documentos

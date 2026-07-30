@@ -115,6 +115,30 @@ class TranscribeController  < ApplicationController
         log_transcript_success
         flash[:notice] = t('.saved_notice')
 
+        # TODO: Implement in save_transcription refactor PR as well
+        if @page.source_text_previously_changed?
+          @page.ai_transcriptions.update_all(
+            verbatim_cer: nil,
+            verbatim_cer_distance: nil,
+            verbatim_cer_length: nil,
+            verbatim_wer: nil,
+            verbatim_wer_distance: nil,
+            verbatim_wer_length: nil,
+            verbatim_non_stopword_accuracy: nil,
+            text_cer: nil,
+            text_cer_distance: nil,
+            text_cer_length: nil,
+            text_wer: nil,
+            text_wer_distance: nil,
+            text_wer_length: nil
+          )
+
+          Transcribe::CalculateAiStatsJob.perform_later(
+            page_id: @page.id,
+            user_id: current_user.id
+          )
+        end
+
         if @page.work.ocr_correction
           record_deed(DeedType::OCR_CORRECTED)
         elsif @page.source_text_previously_changed?
@@ -180,8 +204,23 @@ class TranscribeController  < ApplicationController
 
           next_page_id = @page.last? || save_button_clicked ? @page.id : @page.lower_item.id
           flash[:notice] = t('.saved_and_next_notice') if next_page_id != @page.id
+
+          cache_key = [
+            'assign_categories',
+            'save_transcription',
+            current_user.id,
+            @page.id,
+            SecureRandom.hex(8)
+          ].join(':')
+
+          Rails.cache.write(
+            cache_key,
+            old_article_ids,
+            expires_in: 30.minutes
+          )
+
           redirect_to action: 'assign_categories', page_id: @page.id,
-                      collection_id: @collection, next_page_id: next_page_id, old_article_ids: old_article_ids
+                      collection_id: @collection, next_page_id: next_page_id, article_ids_cache_key: cache_key
           return
         end
       else
@@ -229,7 +268,8 @@ class TranscribeController  < ApplicationController
     # no reason to check articles if subjects disabled
     unless @page.collection.subjects_disabled
       @unassigned_articles = []
-      @new_article_ids = @page.articles.where.not(id: params[:old_article_ids]).pluck(:id)
+      old_article_ids = Rails.cache.read(params[:article_ids_cache_key]) || []
+      @new_article_ids = @page.articles.where.not(id: old_article_ids).pluck(:id)
 
       # Separate translationa and transcription links
       left, right = @page.page_article_links.partition { |x| x.text_type == 'translation' }
@@ -321,8 +361,22 @@ class TranscribeController  < ApplicationController
           end
         end
 
+        cache_key = [
+          'assign_categories',
+          'save_translation',
+          current_user.id,
+          @page.id,
+          SecureRandom.hex(8)
+        ].join(':')
+
+        Rails.cache.write(
+          cache_key,
+          old_article_ids,
+          expires_in: 30.minutes
+        )
+
         redirect_to action: 'assign_categories', page_id: @page.id,
-                    collection_id: @collection, text_type: 'translation', old_article_ids: old_article_ids
+                    collection_id: @collection, text_type: 'translation', article_ids_cache_key: cache_key
         return
       else
         log_translation_error(message)

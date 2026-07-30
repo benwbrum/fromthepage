@@ -52,7 +52,7 @@ See https://github.com/arnab/jQuery.prettyXMLDiff/
   };
 
   $.fn.prettyXMLDiff.createHTML = function(diff) {
-    var data, html, operation, text;
+    var data, html, operation, pattern_amp, pattern_gt, pattern_lt, pattern_para, text;
     html = [];
     operation = diff[0];
     data = diff[1];

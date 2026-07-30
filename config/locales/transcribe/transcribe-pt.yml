@@ -49,6 +49,8 @@ pt:
       saved_and_next_notice: Salvo. Passando para a próxima página.
       saved_notice: Guardada
     save_buttons:
+      ai_draft_fields: Rascunho de IA
+      ai_draft_fields_tooltip: Copie o texto gerado pela IA para os campos
       approve: Confirmar
       approve_to_transcribed_tooltip: Salve e aprove esta página
       autolink: Autolink

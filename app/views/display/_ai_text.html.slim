@@ -3,7 +3,7 @@
     -if @ai_transcription&.status_finished?
       -if @ai_transcription.transcription_json.present?
         -# Field-based AI transcription
-        -human_has_fields = @page.xml_text.present?
+        -human_has_fields = @page.transcription_json.present? || @page.xml_text.present?
         -if human_has_fields
           .ai-text-toggle
             label.toggle-label
@@ -26,7 +26,10 @@
                       div.table-responsive(data-diff-transcription="changed")
                         div.html-code
                           h5 =t('.human_transcription')
-                          == xml_to_html(@page.xml_text)
+                          -if @page.transcription_json.present?
+                            == ai_field_html(@page.transcription_json, @collection)
+                          -else
+                            == xml_to_html(@page.xml_text)
                   div.version-col.right
                     div.version-content
                       div.table-responsive(data-diff-transcription="original")
