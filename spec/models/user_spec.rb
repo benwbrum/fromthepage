@@ -201,4 +201,25 @@ describe User do
       end
     end
   end
+
+  describe '#inactive_page_count' do
+    let(:owner) { create(:unique_user, :owner) }
+    let(:active_collection) { create(:collection, owner_user_id: owner.id, is_active: true) }
+    let(:inactive_collection) { create(:collection, owner_user_id: owner.id, is_active: false) }
+
+    before do
+      active_collection.works.each { |w| w.update!(owner: owner) }
+      inactive_collection.works.each { |w| w.update!(owner: owner) }
+    end
+
+    it 'returns 0 when all collections are active' do
+      expect(owner.inactive_page_count).to eq(0)
+    end
+
+    it 'returns the count of pages in inactive collections' do
+      inactive_collection
+      active_collection
+      expect(owner.inactive_page_count).to eq(owner.page_count - owner.active_page_count)
+    end
+  end
 end

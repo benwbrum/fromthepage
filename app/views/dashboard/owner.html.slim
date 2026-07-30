@@ -8,7 +8,10 @@
       .collections
         -@collections.each do |c|
           -if c == @inactive_collections.first
-            h4 =t('.inactive_collections')
+            -if current_user.account_type == 'Trial'
+              h4 =t('.inactive_collections')
+            -else
+              h4 =t('.read_only_collections')
           .owner-collection
             h4.collection_title
               =link_to c.title, collection_path(c.owner, c) unless c.owner.nil?

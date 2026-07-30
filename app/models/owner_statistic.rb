@@ -14,6 +14,10 @@ module OwnerStatistic
       .where('collections.is_active': true).count
   end
 
+  def inactive_page_count
+    page_count - active_page_count
+  end
+
   def incomplete_page_count
     Page.where(work_id: self.owner_works.select(:id))
         .where(status: Page::NEEDS_WORK_STATUSES)

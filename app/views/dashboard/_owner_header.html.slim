@@ -52,6 +52,13 @@
     span 
       |&nbsp;&middot;&nbsp;
       =t('.total_pages', pages: current_user.page_count)
+    -if current_user.inactive_page_count > 0
+      span
+        |&nbsp;&middot;&nbsp;
+        -if current_user.account_type == 'Trial'
+          =t('.inactive_pages', pages: current_user.inactive_page_count)
+        -else
+          =t('.read_only_pages', pages: current_user.inactive_page_count)
     -if (current_user.account_type == 'Trial') 
       span 
         |&nbsp;&middot;&nbsp; 

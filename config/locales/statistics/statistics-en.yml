@@ -113,6 +113,12 @@ en:
       active_page:
         one: Active page
         other: Active pages
+      inactive_page:
+        one: Inactive page
+        other: Inactive pages
+      read_only_page:
+        one: Read only page
+        other: Read only pages
       collaborator:
         one: Collaborator
         other: Collaborators

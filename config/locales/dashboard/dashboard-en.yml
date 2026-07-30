@@ -101,6 +101,7 @@ en:
       create_a_collection: create a collection
       document_sets: Document Sets
       inactive_collections: Inactive Collections
+      read_only_collections: Read Only Collections
       n_works:
         one: '1 work: '
         other: "%{count} works: "
@@ -137,6 +138,8 @@ en:
       summary: Summary
       to_upgrade_contact: To upgrade contact support@fromthepage.com
       total_pages: 'Total pages: %{pages}'
+      inactive_pages: 'Inactive pages: %{pages}'
+      read_only_pages: 'Read only pages: %{pages}'
       work:
         one: Work
         other: Works

@@ -4,6 +4,11 @@
       .counter(data-prefix="#{number_with_delimiter @statistics_object.work_count}") #{t('.work', count: @statistics_object.work_count)}
       .counter(data-prefix="#{number_with_delimiter @statistics_object.page_count}") #{t('.total_page', count: @statistics_object.page_count)}
       .counter(data-prefix="#{number_with_delimiter @statistics_object.active_page_count}") #{t('.active_page', count: @statistics_object.active_page_count)}
+      -if @statistics_object.inactive_page_count > 0
+        -if @statistics_object.account_type == 'Trial'
+          .counter(data-prefix="#{number_with_delimiter @statistics_object.inactive_page_count}") #{t('.inactive_page', count: @statistics_object.inactive_page_count)}
+        -else
+          .counter(data-prefix="#{number_with_delimiter @statistics_object.inactive_page_count}") #{t('.read_only_page', count: @statistics_object.inactive_page_count)}
       .counter(data-prefix="#{number_with_delimiter @statistics_object.comment_count}") #{t('.note', count: @statistics_object.comment_count)}
       -unless subjects_disabled
         .counter(data-prefix="#{number_with_delimiter @statistics_object.subject_count}") #{t('.subject', count: @statistics_object.subject_count)}
