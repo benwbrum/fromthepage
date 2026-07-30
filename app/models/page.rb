@@ -42,6 +42,8 @@ require 'search_translator'
 require 'transkribus/page_processor'
 
 class Page < ApplicationRecord
+  AI_FULL_RESOLUTION_LIMIT = 8000
+
   ActiveRecord::Base.lock_optimistically = false
 
   include XmlSourceProcessor
@@ -667,7 +669,24 @@ class Page < ApplicationRecord
     size = "!#{max_dim},#{max_dim}"
     if sc_canvas
       if sc_canvas.sc_service_id.present?
-        "#{sc_canvas.sc_service_id.sub(/\/$/, '')}/full/#{size}/0/default.jpg"
+        service_id = sc_canvas.sc_service_id.sub(/\/$/, '')
+        begin
+          info = JSON.parse(URI.open("#{service_id}/info.json").read)
+          advertised_sizes = [info, *Array(info['sizes'])].filter_map do |image_info|
+            width, height = image_info.values_at('width', 'height').map(&:to_i)
+            [width, height] if width.positive? && height.positive?
+          end
+          maximum_width = advertised_sizes.map(&:first).max
+          maximum_height = advertised_sizes.map(&:last).max
+          dimensions_are_small = maximum_width.present? && maximum_height.present? &&
+                                 maximum_width < AI_FULL_RESOLUTION_LIMIT &&
+                                 maximum_height < AI_FULL_RESOLUTION_LIMIT
+          size = 'full' if dimensions_are_small
+        rescue StandardError => e
+          Rails.logger.warn("Unable to read IIIF image dimensions from #{service_id}/info.json: #{e.message}")
+        end
+
+        "#{service_id}/full/#{size}/0/default.jpg"
       else
         sc_canvas.sc_resource_id
       end
