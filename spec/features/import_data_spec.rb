@@ -21,6 +21,9 @@ describe 'import data' do
     let(:bad_item_url) { 'https://hrc.contentdm.oclc.org/digital/collection/p15878coll90/id/41/rec/3' }
 
     it 'browses a single record' do
+      stub_request(:get, 'https://cdm16488.contentdm.oclc.org/digital/api/singleitem/collection/MPD01/id/2')
+        .to_return(body: '{"parentId":-1}')
+
       VCR.use_cassette('cdm/midpoint-shelwater-item', record: :none) do
         browse_contentdm(item_url)
 
@@ -45,6 +48,9 @@ describe 'import data' do
     end
 
     it 'gives an error for a well-formed CONTENTdm URL with an empty IIIF manifest' do
+      stub_request(:get, 'https://cdm15878.contentdm.oclc.org/digital/api/singleitem/collection/p15878coll90/id/41')
+        .to_return(body: '{"parentId":-1}')
+
       VCR.use_cassette('cdm/bad_iiif_manifest', record: :none) do
         browse_contentdm(bad_item_url)
 
