@@ -1038,6 +1038,6 @@
     gap: 0.5rem;
     margin-top: 0.625rem;
 
-    button { flex-shrink: 0; width: auto; padding: 0 1.25em; }
+    button, input[type="submit"] { flex-shrink: 0; width: auto; padding: 0 1.25em; }
   }
 }
