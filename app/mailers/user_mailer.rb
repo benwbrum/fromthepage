@@ -28,7 +28,7 @@ class UserMailer < ActionMailer::Base
     @user = user
     @work = work
     @collection = collection
-    mail to: @user.email, subject: t('.segmentation_finished.subject', work: @work.title)
+    mail to: @user.email, subject: t('.subject', work: @work.title)
   end
 
   def bulk_export_finished(bulk_export)

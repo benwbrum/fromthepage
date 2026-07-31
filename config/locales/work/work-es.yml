@@ -19,7 +19,12 @@ es:
         pages: Páginas
         queued: En cola
         retry: Reintentar trabajos fallidos
+        segment_collection: Segmentar Colección
+        segmentation: Segmentar Colección
+        segmentation_description: Al subir un conjunto de imágenes (por ejemplo, una carpeta) y luego segmentarlo, sugeriremos los lugares donde los documentos deben dividirse en obras individuales.
         total_tokens_used: Total de tokens utilizados
+      segment:
+        success: Se inició el trabajo de segmentación. Recibirá un correo electrónico cuando haya finalizado.
       update:
         success: Reintentando la tarea de transcripción de IA.
     configurable_printout:
@@ -242,6 +247,10 @@ es:
       source_collection_name: Nombre de la colección de la fuente
       source_location: Ubicación de la fuente
       uploaded_by: Subido por
+    split_page:
+      create_failed: 'No se pudo crear la nueva obra: %{errors}'
+      no_previous_pages: No hay páginas antes de esta para dividir en una obra nueva.
+      unauthorized: No tiene permiso para dividir esta obra.
     undescribed: Sin metadatos.
     update:
       work_updated: Obra actualizada con éxito
