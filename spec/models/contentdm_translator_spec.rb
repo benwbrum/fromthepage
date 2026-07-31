@@ -215,6 +215,12 @@ RSpec.describe ContentdmTranslator do
           example.run
         end
       end
+
+      before do
+        stub_request(:get, 'https://cdm17217.contentdm.oclc.org/digital/api/singleitem/collection/supreme_court/id/7076')
+          .to_return(body: '{"parentId":-1}')
+      end
+
       it "returns a message for a bad URL" do
         expect { ContentdmTranslator.cdm_url_to_iiif('BadUrl') }.to raise_error StandardError
       end
@@ -236,6 +242,11 @@ RSpec.describe ContentdmTranslator do
         VCR.use_cassette('cdm/digitalindy.org', record: :none) do
           example.run
         end
+      end
+
+      before do
+        stub_request(:get, 'https://cdm17308.contentdm.oclc.org/digital/api/singleitem/collection/ahs/id/200')
+          .to_return(body: '{"parentId":-1}')
       end
 
       it "item" do
