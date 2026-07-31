@@ -46,7 +46,6 @@ en:
       segmentation_dismiss: Dismiss
       split_into_new_work: Split into new work
       segmentation_split_confirm_message: Split this into a new work starting here?
-      segmentation_split_confirm_button: Confirm split
     goto_next_untranscribed_page:
       another_page_notice: Here's another page in this work.
       no_more_pages_notice: There are no more pages to transcribe in this work. Here's another page in this collection.

@@ -1,6 +1,10 @@
 = turbo_frame_tag "segmentation-split-strip-#{page.id}"
   .segmentation-banner.segmentation-split-strip(data-segmentation-split-strip)
-    .segmentation-banner-content
-      p.segmentation-banner-message =t('transcribe.display_page.segmentation_split_confirm_message')
-      .segmentation-banner-actions
-        =link_to(t('transcribe.display_page.segmentation_split_confirm_button'), split_page_collection_work_path(collection.owner, collection, work, page_id: page.id), class: 'button action-btn', data: { turbo: true, turbo_method: :post })
+    p.segmentation-banner-message =t('transcribe.display_page.segmentation_split_confirm_message')
+    .segmentation-title-field
+      =label_tag "segmentation_split_title_#{page.id}", t('transcribe.display_page.previous_work_title', n: page.position - 1), class: 'segmentation-title-label'
+      =text_field_tag :new_work_title, default_split_title(work), id: "segmentation_split_title_#{page.id}", class: 'segmentation-title-input', data: { segmentation_split_title: true }
+    .segmentation-banner-actions
+      button.button.outline(type='button' data-segmentation-split-cancel)
+        =t('transcribe.display_page.segmentation_cancel')
+      =link_to(t('transcribe.display_page.segmentation_confirm'), split_page_collection_work_path(collection.owner, collection, work, page_id: page.id), class: 'button action-btn', data: { turbo: true, turbo_method: :post, segmentation_split_link: true })
