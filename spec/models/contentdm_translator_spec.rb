@@ -159,12 +159,68 @@ RSpec.describe ContentdmTranslator do
       end
     end
 
+    context 'when an item belongs to a compound object' do
+      let(:item_api_url) do
+        'https://kdl.contentdm.oclc.org/digital/api/singleitem/collection/tu-medtheses/id/4805'
+      end
+
+      before do
+        allow(ContentdmTranslator).to receive(:get_cdm_host_from_url).and_return('kdl')
+        allow(URI).to receive(:open).and_return(StringIO.new('{}'))
+      end
+
+      it 'uses the parent record manifest' do
+        allow(URI).to receive(:open).with(item_api_url).and_return(StringIO.new('{"parentId":"5000"}'))
+
+        url = ContentdmTranslator.cdm_url_to_iiif('https://kdl.contentdm.oclc.org/digital/collection/tu-medtheses/id/4805')
+
+        expect(url).to eq('https://kdl.contentdm.oclc.org/iiif/info/tu-medtheses/5000/manifest.json')
+      end
+
+      it 'supports parent IDs nested in object information' do
+        response = { objectInfo: { parentId: 5000 } }.to_json
+        allow(URI).to receive(:open).with(item_api_url).and_return(StringIO.new(response))
+
+        url = ContentdmTranslator.cdm_url_to_iiif('https://kdl.contentdm.oclc.org/digital/collection/tu-medtheses/id/4805')
+
+        expect(url).to eq('https://kdl.contentdm.oclc.org/iiif/info/tu-medtheses/5000/manifest.json')
+      end
+
+      it 'uses the requested record when it has no parent' do
+        allow(URI).to receive(:open).with(item_api_url).and_return(StringIO.new('{"parentId":-1}'))
+
+        url = ContentdmTranslator.cdm_url_to_iiif('https://kdl.contentdm.oclc.org/digital/collection/tu-medtheses/id/4805')
+
+        expect(url).to eq('https://kdl.contentdm.oclc.org/iiif/info/tu-medtheses/4805/manifest.json')
+      end
+
+      it 'rejects an invalid parent ID' do
+        allow(URI).to receive(:open).with(item_api_url).and_return(StringIO.new('{"parentId":"not-an-id"}'))
+
+        expect do
+          ContentdmTranslator.cdm_url_to_iiif('https://kdl.contentdm.oclc.org/digital/collection/tu-medtheses/id/4805')
+        end.to raise_error(ArgumentError, /invalid parent ID/)
+      end
+
+      it 'does not request item information for collection URLs' do
+        ContentdmTranslator.cdm_url_to_iiif('https://kdl.contentdm.oclc.org/digital/collection/tu-medtheses')
+
+        expect(URI).not_to have_received(:open).with(%r{/digital/api/singleitem/})
+      end
+    end
+
     context 'default' do
       around(:each) do |example|
         VCR.use_cassette('cdm/digital-alabama', record: :none) do
           example.run
         end
       end
+
+      before do
+        stub_request(:get, 'https://cdm17217.contentdm.oclc.org/digital/api/singleitem/collection/supreme_court/id/7076')
+          .to_return(body: '{"parentId":-1}')
+      end
+
       it "returns a message for a bad URL" do
         expect { ContentdmTranslator.cdm_url_to_iiif('BadUrl') }.to raise_error StandardError
       end
@@ -186,6 +242,11 @@ RSpec.describe ContentdmTranslator do
         VCR.use_cassette('cdm/digitalindy.org', record: :none) do
           example.run
         end
+      end
+
+      before do
+        stub_request(:get, 'https://cdm17308.contentdm.oclc.org/digital/api/singleitem/collection/ahs/id/200')
+          .to_return(body: '{"parentId":-1}')
       end
 
       it "item" do
