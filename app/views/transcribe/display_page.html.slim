@@ -65,7 +65,15 @@
           =f.label 'needs_review', t('.needs_review')
           =f.check_box('needs_review', {checked: @page.status_needs_review?})
 
+      -if @page.position > 1 && @work.segmentation_candidates?
+        .flex-toolbar_group
+          button.button.outline(type='button' data-segmentation-split-toggle title=t('.split_into_new_work') aria-label=t('.split_into_new_work'))
+            =svg_symbol "#icon-scissors", class: 'icon'
+
       =render partial: 'save_buttons'
+
+  -if @page.position > 1 && @work.segmentation_candidates?
+    =render partial: 'transcribe/segmentation_split_strip', locals: { page: @page, work: @work, collection: @collection }
 
   -if @page.status_needs_review? && current_user.can_review?(@collection)
     .page-review

@@ -22,6 +22,24 @@ describe Work do
       expect(work.supports_indexing?).to be false
     end
   end
+  describe '#segmentation_candidates?' do
+    let(:work) { create(:work, owner_user_id: 1) }
+
+    it "returns false when no pages have been flagged as first-page candidates" do
+      create(:page, work_id: work.id, position: 1, is_first_page_candidate: false)
+      create(:page, work_id: work.id, position: 2, is_first_page_candidate: nil)
+
+      expect(work.segmentation_candidates?).to be false
+    end
+
+    it "returns true when at least one page is flagged as a first-page candidate" do
+      create(:page, work_id: work.id, position: 1, is_first_page_candidate: false)
+      create(:page, work_id: work.id, position: 2, is_first_page_candidate: true)
+
+      expect(work.segmentation_candidates?).to be true
+    end
+  end
+
   describe '#set/update_next_untranscribed_page' do
     let(:work) { create(:work, owner_user_id: 1) }
     it "sets nil with no pages" do

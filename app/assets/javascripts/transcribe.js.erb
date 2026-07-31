@@ -159,24 +159,56 @@ document.addEventListener('click', function(e) {
   }
 });
 
-// Segmentation banner toggle
+// Segmentation: AI-detected confirm popover (1a)
 window.addEventListener('DOMContentLoaded', function() {
   var toggleBtn = document.querySelector('[data-segmentation-toggle]');
+  var popover = document.querySelector('[data-segmentation-popover]');
   var cancelBtn = document.querySelector('[data-segmentation-cancel]');
-  var form = document.querySelector('[data-segmentation-form]');
 
-  if (toggleBtn && form) {
-    toggleBtn.addEventListener('click', function() {
-      form.style.display = 'block';
-      toggleBtn.closest('.segmentation-banner-actions').style.display = 'none';
-    });
+  if (!toggleBtn || !popover) { return; }
+
+  function handleOutsideClick(e) {
+    if (!popover.contains(e.target) && e.target !== toggleBtn) { closePopover(); }
   }
 
-  if (cancelBtn && form) {
-    cancelBtn.addEventListener('click', function() {
-      form.style.display = 'none';
-      var actions = document.querySelector('.segmentation-banner-actions');
-      if (actions) { actions.style.display = ''; }
-    });
+  function handleEscape(e) {
+    if (e.key === 'Escape') { closePopover(); }
   }
+
+  function openPopover() {
+    popover.classList.add('open');
+    document.addEventListener('click', handleOutsideClick);
+    document.addEventListener('keydown', handleEscape);
+  }
+
+  function closePopover() {
+    popover.classList.remove('open');
+    document.removeEventListener('click', handleOutsideClick);
+    document.removeEventListener('keydown', handleEscape);
+  }
+
+  toggleBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    if (popover.classList.contains('open')) {
+      closePopover();
+    } else {
+      openPopover();
+    }
+  });
+
+  if (cancelBtn) {
+    cancelBtn.addEventListener('click', closePopover);
+  }
+});
+
+// Segmentation: human-in-the-loop split control (1b)
+window.addEventListener('DOMContentLoaded', function() {
+  var splitToggleBtn = document.querySelector('[data-segmentation-split-toggle]');
+  var splitStrip = document.querySelector('[data-segmentation-split-strip]');
+
+  if (!splitToggleBtn || !splitStrip) { return; }
+
+  splitToggleBtn.addEventListener('click', function() {
+    splitStrip.classList.toggle('open');
+  });
 });
