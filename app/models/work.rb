@@ -502,6 +502,10 @@ class Work < ApplicationRecord
     next_untranscribed_page.present?
   end
 
+  def segmentation_candidates?
+    pages.where(is_first_page_candidate: true).exists?
+  end
+
   def process_fields(field_cells)
     metadata_fields = []
     # new_table_cells = []
