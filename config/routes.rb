@@ -574,7 +574,9 @@ Fromthepage::Application.routes.draw do
       end
 
       resources :work, path: '', only: [] do
-        resource :ai_transcriptions, only: [:edit, :create, :update], controller: 'work/ai_transcriptions'
+        resource :ai_transcriptions, only: [:edit, :create, :update], controller: 'work/ai_transcriptions' do
+          post 'segment', on: :member
+        end
         resources :ai_transcriptions, only: [:show], controller: 'work/ai_transcriptions'
       end
 
