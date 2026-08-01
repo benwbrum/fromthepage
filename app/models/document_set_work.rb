@@ -14,4 +14,13 @@ class DocumentSetWork < ApplicationRecord
 
   belongs_to :document_set, counter_cache: :works_count, optional: true
   belongs_to :work, optional: true
+
+  after_create :update_document_set_next_untranscribed_page
+  after_destroy :update_document_set_next_untranscribed_page
+
+  private
+
+  def update_document_set_next_untranscribed_page
+    document_set&.set_next_untranscribed_page
+  end
 end

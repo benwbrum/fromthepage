@@ -33,6 +33,10 @@ class DocumentSetsController < ApplicationController
         end
       end
 
+      # Update next untranscribed page for affected document sets
+      source_set.set_next_untranscribed_page
+      target_set.set_next_untranscribed_page
+
       ajax_redirect_to document_sets_path(collection_id: @collection)
     end
   end
