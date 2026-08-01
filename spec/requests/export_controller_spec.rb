@@ -1032,5 +1032,49 @@ describe ExportController do
       expect(response).to have_http_status(:ok)
       expect(response).to render_template(:edit_contentdm_credentials)
     end
+
+    context 'with a document set' do
+      let!(:document_set) do
+        create(:document_set, collection: collection, owner_user_id: owner.id)
+      end
+      let(:action_path) { export_edit_contentdm_credentials_path(collection_id: document_set.slug) }
+
+      it 'renders status and template for document set' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:edit_contentdm_credentials)
+      end
+    end
+  end
+
+  describe '#index with document set and CDM collection' do
+    let(:cdm_at_id) { 'https://cdm12345.contentdm.oclc.org/iiif/test:1/manifest.json' }
+    let!(:sc_manifest) { create(:sc_manifest, work: work, at_id: cdm_at_id) }
+    let!(:document_set) do
+      ds = create(:document_set, collection: collection, owner_user_id: owner.id)
+      ds.works << work
+      ds
+    end
+    let(:action_path) { collection_export_path(owner, document_set) }
+
+    it 'shows the CDM export button on the document set export page' do
+      login_as owner
+      get action_path
+
+      expect(response).to have_http_status(:ok)
+      expect(response).to render_template(:index)
+      expect(response.body).to include('export_to_contentdm')
+    end
+
+    it 'does not show the CDM export button when the collection is not CDM' do
+      sc_manifest.destroy
+      login_as owner
+      get collection_export_path(owner, collection)
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).not_to include('export_to_contentdm')
+    end
   end
 end

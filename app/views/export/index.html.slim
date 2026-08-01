@@ -11,7 +11,7 @@ p.big
 
 
 -cdm_collection = @collection.is_a?(DocumentSet) ? @collection.collection : @collection
--if ContentdmTranslator.collection_is_cdm?(@collection) && cdm_collection.text_entry?
+-if ContentdmTranslator.collection_is_cdm?(cdm_collection) && cdm_collection.text_entry?
   h2 =t('.export_to_contentdm')
   p.big
     span.fright(style="margin-left: 30px")

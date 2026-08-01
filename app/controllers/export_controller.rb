@@ -194,9 +194,9 @@ class ExportController < ApplicationController
     @sync_target = @collection
     @cdm_collection = cdm_collection_for(@sync_target)
 
-    if ContentdmTranslator.collection_is_cdm?(@sync_target)
+    if ContentdmTranslator.collection_is_cdm?(@cdm_collection)
       begin
-        field_config = ContentdmTranslator.fetch_cdm_field_config(@sync_target)
+        field_config = ContentdmTranslator.fetch_cdm_field_config(@cdm_collection)
         @cdm_fulltext_fields = field_config.select { |e| e['type'] == 'FTS' }.map { |e| [e['name'], e['nick']] }
         @cdm_metadata_fields = field_config.map { |e| [e['name'], e['nick']] }
       rescue => e
@@ -211,11 +211,11 @@ class ExportController < ApplicationController
     license_key = params[:collection][:license_key]
     contentdm_user_name = params[:contentdm_user_name]
     contentdm_password = params[:contentdm_password]
-    error_message, _fts_field = ContentdmTranslator.fts_field_for_collection(@collection)
+    cdm_collection = cdm_collection_for(@collection)
+    error_message, _fts_field = ContentdmTranslator.fts_field_for_collection(cdm_collection)
 
     # persist license key and export settings so the user doesn't have to retype them
     if error_message.blank? || !error_message.match(/license.*invalid/)
-      cdm_collection = cdm_collection_for(@collection)
       cdm_collection.license_key = license_key
       cdm_collection.save!
 
