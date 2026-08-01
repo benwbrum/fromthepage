@@ -31,7 +31,7 @@ describe TranscriptionField::Lib::Utils do
 
       parsed_page = described_class.parse_fields(page: page, field_cells: field_cells)
 
-      expect(parsed_page.transcription_json[spreadsheet_field.id].first[text_column.id])
+      expect(parsed_page.transcription_json[spreadsheet_field.id.to_s].first[text_column.id.to_s])
         .to eq('&lt;test&gt;')
       expect(parsed_page.source_text).to include('&lt;test&gt;')
     end
@@ -45,7 +45,7 @@ describe TranscriptionField::Lib::Utils do
 
       parsed_page = described_class.parse_fields(page: page, field_cells: field_cells)
 
-      expect(parsed_page.transcription_json[spreadsheet_field.id].first[text_column.id])
+      expect(parsed_page.transcription_json[spreadsheet_field.id.to_s].first[text_column.id.to_s])
         .to eq('<hi>ok</hi>')
       expect(parsed_page.source_text).to include('<hi>ok</hi>')
     end
