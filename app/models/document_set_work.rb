@@ -11,6 +11,7 @@
 #
 class DocumentSetWork < ApplicationRecord
   self.table_name = 'document_sets_works'
+  self.primary_key = [:document_set_id, :work_id]
 
   belongs_to :document_set, counter_cache: :works_count, optional: true
   belongs_to :work, optional: true
