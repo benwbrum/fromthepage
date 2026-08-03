@@ -63,17 +63,22 @@ describe 'Devise' do
 
       expect(page.current_path).to eq coll_path
 
+      registered_user = User.find_by!(email: user.email)
+      joined_deed_text = "#{registered_user.display_name} joined #{collection.title}"
+
       # Lazy loaded deeds workaround
       lazy_frame = page.find('turbo-frame#lazy_deeds')
       src = lazy_frame[:src]
       expect(src).to be_present
-      registered_user = User.find_by!(email: user.email)
-      joined_deed_text = "#{registered_user.display_name} joined #{collection.title}"
       visit src
       expect(ActionView::Base.full_sanitizer.sanitize(page.body)).to include(joined_deed_text)
 
+      # Lazy loaded deeds workaround
       visit dashboard_watchlist_path
-      expect(page).to have_content(joined_deed_text)
+      src = lazy_frame[:src]
+      expect(src).to be_present
+      visit src
+      expect(ActionView::Base.full_sanitizer.sanitize(page.body)).to include(joined_deed_text)
     end
 
     it 'creates a new trial owner account' do
