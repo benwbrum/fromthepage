@@ -11,6 +11,28 @@ class AiTranscription::Lib::Gemini::TranscribeHandler < AiTranscription::Lib::Ba
     'gemini-3.1-pro-preview' => true
   }
 
+  USAGE_METADATA_SCHEMA_VERSION = 2
+
+  NORMALIZED_USAGE_FIELDS = {
+    'promptTokenCount' => :prompt_token_count,
+    'candidatesTokenCount' => :candidates_token_count,
+    'thoughtsTokenCount' => :thoughts_token_count,
+    'toolUsePromptTokenCount' => :tool_use_prompt_token_count,
+    'cachedContentTokenCount' => :cached_content_token_count,
+    'totalTokenCount' => :total_token_count,
+    'promptTokensDetails' => :prompt_tokens_details,
+    'candidatesTokensDetails' => :candidates_tokens_details,
+    'cacheTokensDetails' => :cache_tokens_details,
+    'toolUsePromptTokensDetails' => :tool_use_prompt_tokens_details
+  }.freeze
+
+  ACCOUNTED_TOKEN_FIELDS = %i[
+    prompt_token_count
+    candidates_token_count
+    thoughts_token_count
+    tool_use_prompt_token_count
+  ].freeze
+
   def perform
     attempt = 0
     last_error = nil
@@ -137,12 +159,29 @@ class AiTranscription::Lib::Gemini::TranscribeHandler < AiTranscription::Lib::Ba
 
   def extract_usage_metadata(response)
     usage = response['usageMetadata'] || {}
+    metadata = NORMALIZED_USAGE_FIELDS.each_with_object({}) do |(provider_key, normalized_key), normalized|
+      normalized[normalized_key] = usage[provider_key] if usage.key?(provider_key)
+    end
 
-    {
-      prompt_token_count: usage['promptTokenCount'],
-      candidates_token_count: usage['candidatesTokenCount'],
-      thoughts_token_count: usage['thoughtsTokenCount'],
-      total_token_count: usage['totalTokenCount']
-    }.compact
+    # cachedContentTokenCount describes the cached portion of promptTokenCount,
+    # rather than another mutually exclusive category, so it is deliberately not
+    # included in this sum.
+    metadata[:accounted_token_count] = ACCOUNTED_TOKEN_FIELDS.sum { |key| metadata[key].to_i }
+    metadata[:unaccounted_token_count] = if metadata.key?(:total_token_count)
+      metadata[:total_token_count] - metadata[:accounted_token_count]
+    end
+    metadata[:usage_metadata_schema_version] = USAGE_METADATA_SCHEMA_VERSION
+    metadata[:usage_metadata_reconciliation_status] = reconciliation_status(metadata)
+    metadata[:provider_usage_metadata] = usage
+
+    metadata.compact
+  end
+
+  def reconciliation_status(metadata)
+    return 'total_unavailable' unless metadata.key?(:total_token_count)
+    return 'reconciled' if metadata[:unaccounted_token_count].zero?
+    return 'over_accounted' if metadata[:unaccounted_token_count].negative?
+
+    'unaccounted_tokens'
   end
 end

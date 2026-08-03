@@ -77,6 +77,69 @@ describe AiTranscription::Generate do
       end
     end
 
+    context 'with expanded Gemini usage metadata' do
+      let(:usage_metadata) do
+        {
+          'promptTokenCount' => 100,
+          'candidatesTokenCount' => 30,
+          'thoughtsTokenCount' => 20,
+          'toolUsePromptTokenCount' => 10,
+          'cachedContentTokenCount' => 40,
+          'totalTokenCount' => 165,
+          'promptTokensDetails' => [{ 'modality' => 'TEXT', 'tokenCount' => 60 }],
+          'candidatesTokensDetails' => [{ 'modality' => 'TEXT', 'tokenCount' => 30 }],
+          'cacheTokensDetails' => [{ 'modality' => 'IMAGE', 'tokenCount' => 40 }],
+          'toolUsePromptTokensDetails' => [{ 'modality' => 'TEXT', 'tokenCount' => 10 }],
+          'unknownFutureField' => [{ 'providerValue' => 7 }]
+        }
+      end
+      let(:provider_response) do
+        {
+          'candidates' => [{
+            'content' => {
+              'parts' => [
+                { 'thought' => true, 'text' => 'Expanded reasoning' },
+                { 'text' => 'Expanded transcription' }
+              ]
+            }
+          }],
+          'usageMetadata' => usage_metadata
+        }
+      end
+
+      before do
+        handler = AiTranscription::Lib::Gemini::TranscribeHandler.new(
+          prompt: prompt,
+          model: model,
+          image_url: 'http://example.com/image.jpg'
+        )
+        allow(handler).to receive(:client).and_return(double(generate_content: provider_response))
+        allow(handler).to receive(:payload).and_return({})
+        allow_any_instance_of(AiTranscription::Lib::Gemini::TranscribeHandler).to receive(:perform) do
+          handler.perform
+        end
+      end
+
+      it 'persists raw and reconciled usage metadata without double-counting cached tokens' do
+        expect(result.success?).to be_truthy
+
+        metadata = result.ai_transcription.reload.metadata
+        expect(metadata['provider_usage_metadata']).to eq(usage_metadata)
+        expect(metadata).to include(
+          'tool_use_prompt_token_count' => 10,
+          'cached_content_token_count' => 40,
+          'accounted_token_count' => 160,
+          'unaccounted_token_count' => 5,
+          'usage_metadata_schema_version' => 2,
+          'usage_metadata_reconciliation_status' => 'unaccounted_tokens'
+        )
+        expect(metadata['prompt_tokens_details']).to eq(usage_metadata['promptTokensDetails'])
+        expect(metadata['candidates_tokens_details']).to eq(usage_metadata['candidatesTokensDetails'])
+        expect(metadata['cache_tokens_details']).to eq(usage_metadata['cacheTokensDetails'])
+        expect(metadata['tool_use_prompt_tokens_details']).to eq(usage_metadata['toolUsePromptTokensDetails'])
+      end
+    end
+
     context 'when 503 error' do
       before do
         stub_const('AiTranscription::Lib::BaseTranscribeHandler::MAX_RETRY', 1)
