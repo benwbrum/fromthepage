@@ -1,0 +1,71 @@
+=render partial: 'admin/header', locals: { selected: Admin::Ai::BaseController::ADMIN_HEADER_TAB }
+
+.collection-meta-wrapper
+  =render partial: 'admin/ai/side_nav', locals: { current_section: :dashboard }
+  #collection-settings
+    .collection-settings-wrapper.ai-dashboard
+      h3 =t('admin.ai.dashboard.title')
+
+      =form_tag admin_ai_path, method: :get, class: 'ai-dashboard-filters' do
+        div
+          =label_tag :start_date, t('admin.ai.dashboard.filters.start_date')
+          =date_field_tag :start_date, @start_date&.iso8601
+        div
+          =label_tag :end_date, t('admin.ai.dashboard.filters.end_date')
+          =date_field_tag :end_date, @end_date&.iso8601
+        =submit_tag t('admin.ai.dashboard.filters.apply'), class: 'button'
+        p.ai-dashboard-hint =t('admin.ai.dashboard.filters.hint', count: Admin::Ai::DashboardController::MAX_DATE_RANGE_DAYS)
+        -if @date_range_error
+          p.ai-dashboard-error role='alert' =@date_range_error
+
+      -unless @date_range_error
+        .ai-dashboard-cards
+          .ai-dashboard-card
+            =t('admin.ai.dashboard.summary.total')
+            strong =@totals[:total]
+          .ai-dashboard-card
+            =t('admin.ai.dashboard.summary.finished')
+            strong =@totals[:counts]['finished']
+          .ai-dashboard-card
+            =t('admin.ai.dashboard.summary.success_rate')
+            strong =number_to_percentage(@totals[:success_rate], precision: 1)
+
+        -if @rows.any?
+          .table-responsive
+            table.datagrid.striped
+              caption =t('admin.ai.dashboard.table.caption')
+              thead
+                tr
+                  th scope='col' =t('admin.ai.dashboard.table.model')
+                  -AiTranscription.statuses.each_key do |status|
+                    th scope='col' =t("admin.ai.dashboard.statuses.#{status}")
+                  th scope='col' =t('admin.ai.dashboard.table.distribution')
+                  th scope='col' =t('admin.ai.dashboard.table.total')
+                  th scope='col' =t('admin.ai.dashboard.table.success_rate')
+              tbody
+                -@rows.each do |row|
+                  tr
+                    th scope='row' =row[:model]
+                    -AiTranscription.statuses.each_key do |status|
+                      td =row[:counts][status]
+                    td
+                      .ai-dashboard-bar aria-label=t('admin.ai.dashboard.table.distribution')
+                        -AiTranscription.statuses.each_key do |status|
+                          -width = row[:total].zero? ? 0 : row[:counts][status].to_f / row[:total] * 100
+                          span class=status style="width: #{width}%"
+                    td =row[:total]
+                    td =number_to_percentage(row[:success_rate], precision: 1)
+              tfoot
+                tr
+                  th scope='row' =t('admin.ai.dashboard.table.totals')
+                  -AiTranscription.statuses.each_key do |status|
+                    td =@totals[:counts][status]
+                  td
+                    .ai-dashboard-bar aria-label=t('admin.ai.dashboard.table.distribution')
+                      -AiTranscription.statuses.each_key do |status|
+                        -width = @totals[:total].zero? ? 0 : @totals[:counts][status].to_f / @totals[:total] * 100
+                        span class=status style="width: #{width}%"
+                  td =@totals[:total]
+                  td =number_to_percentage(@totals[:success_rate], precision: 1)
+        -else
+          p.ai-dashboard-empty =t('admin.ai.dashboard.none')

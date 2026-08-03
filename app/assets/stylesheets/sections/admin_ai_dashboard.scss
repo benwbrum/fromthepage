@@ -1,0 +1,49 @@
+.ai-dashboard {
+  &-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75em 1em;
+    align-items: end;
+    margin-bottom: 1.5em;
+
+    label { display: block; }
+  }
+
+  &-hint, &-error { flex-basis: 100%; margin: 0; }
+  &-error { color: $inputInvalidColor; }
+
+  &-cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1em;
+    margin-bottom: 1.5em;
+  }
+
+  &-card {
+    padding: 1em;
+    background: rgba(#000, 0.05);
+    border: 1px solid rgba(#000, 0.1);
+
+    strong { display: block; font-size: 1.75em; }
+  }
+
+  &-bar {
+    display: flex;
+    min-width: 10em;
+    height: 1em;
+    overflow: hidden;
+    background: rgba(#000, 0.08);
+
+    span { min-width: 0; }
+    .finished { background: #6C2; }
+    .processing { background: #F0E68C; }
+    .error { background: #C44; }
+    .new { background: #CCC; }
+  }
+
+  tfoot th, tfoot td { font-weight: bold; }
+}
+
+@media screen and (max-width: $widthMin) {
+  .ai-dashboard-cards { grid-template-columns: 1fr; }
+}

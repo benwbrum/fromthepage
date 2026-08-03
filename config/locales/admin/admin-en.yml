@@ -2,6 +2,34 @@
 en:
   admin:
     ai:
+      dashboard:
+        title: AI Transcription Dashboard
+        filters:
+          start_date: Start date
+          end_date: End date
+          apply: Apply
+          hint: Select up to %{count} calendar days. The end date is included.
+        errors:
+          invalid_date: Enter valid start and end dates.
+          reversed_range: End date must be on or after start date.
+          range_too_large: Date range cannot exceed %{count} days.
+        summary:
+          total: Total transcriptions
+          finished: Finished
+          success_rate: Success rate
+        table:
+          caption: Transcriptions grouped by model and status
+          model: Model
+          distribution: Status distribution
+          total: Total
+          success_rate: Success rate
+          totals: Totals
+        statuses:
+          new: New
+          processing: Processing
+          finished: Finished
+          error: Error
+        none: No AI transcriptions were found in this date range.
       errors:
         collection_label: 'Collection: '
         none: No AI transcription errors found.
@@ -16,6 +44,7 @@ en:
           work: Work
         title: AI Transcription Errors
       nav:
+        dashboard: Dashboard
         errors: Errors
         suspicious_behaviors: Suspicious Behaviors
     autoflag:

@@ -4,6 +4,12 @@ class Admin::Ai::BaseController < AdminController
   def side_nav_tabs
     [
       {
+        icon: '#icon-list',
+        name: t('admin.ai.nav.dashboard'),
+        path: admin_ai_path,
+        selected: :dashboard
+      },
+      {
         icon: '#icon-warning-sign',
         name: t('admin.ai.nav.suspicious_behaviors'),
         path: admin_ai_suspicious_behaviors_path,
