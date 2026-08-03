@@ -3,7 +3,10 @@ require 'spec_helper'
 describe Admin::Ai::DashboardController do
   let(:user) { create(:unique_user) }
   let(:admin) { create(:unique_user, :admin) }
-  let(:page) { create(:page) }
+  let(:owner) { create(:unique_user, :owner) }
+  let(:collection) { create(:collection, owner_user_id: owner.id) }
+  let(:work) { create(:work, collection: collection) }
+  let(:page) { create(:page, work: work) }
 
   describe '#index' do
     it 'redirects anonymous and non-admin users' do
@@ -16,14 +19,13 @@ describe Admin::Ai::DashboardController do
     end
 
     it 'defaults to the current calendar month in Time.zone' do
-      travel_to Time.zone.local(2026, 8, 18, 12) do
-        login_as admin
-        get admin_ai_path
+      allow(Time.zone).to receive(:today).and_return(Date.new(2026, 8, 18))
+      login_as admin
+      get admin_ai_path
 
-        expect(response).to have_http_status(:ok)
-        expect(assigns(:start_time)).to eq(Time.zone.local(2026, 8, 1))
-        expect(assigns(:end_time)).to eq(Time.zone.local(2026, 9, 1))
-      end
+      expect(response).to have_http_status(:ok)
+      expect(assigns(:start_time)).to eq(Time.zone.local(2026, 8, 1))
+      expect(assigns(:end_time)).to eq(Time.zone.local(2026, 9, 1))
     end
 
     it 'uses inclusive custom date boundaries and excludes records outside them' do
