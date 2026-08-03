@@ -29,6 +29,7 @@
 #
 # Indexes
 #
+#  idx_ai_transcriptions_dashboard                   (created_at,model,status)
 #  index_ai_transcriptions_on_page_id                (page_id)
 #  index_ai_transcriptions_on_page_id_and_id         (page_id,id)
 #  index_ai_transcriptions_on_status                 (status)
