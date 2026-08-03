@@ -1,3 +1,6 @@
+-content_for :stylesheet do
+  =stylesheet_link_tag 'sections/admin_ai_dashboard'
+
 =render partial: 'admin/header', locals: { selected: Admin::Ai::BaseController::ADMIN_HEADER_TAB }
 
 .collection-meta-wrapper

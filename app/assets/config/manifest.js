@@ -6,6 +6,7 @@
 //= link datepicker/lang/en-us.js
 //= link datepicker/lang/en.js
 //= link application.css
+//= link sections/admin_ai_dashboard.css
 //= link bootstrap.min.css
 //= link optimize.css
 //= link main.css.map

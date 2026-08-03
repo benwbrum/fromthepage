@@ -10,7 +10,7 @@
   }
 
   &-hint, &-error { flex-basis: 100%; margin: 0; }
-  &-error { color: $inputInvalidColor; }
+  &-error { color: #C00; }
 
   &-cards {
     display: grid;
@@ -44,6 +44,6 @@
   tfoot th, tfoot td { font-weight: bold; }
 }
 
-@media screen and (max-width: $widthMin) {
+@media screen and (max-width: 768px) {
   .ai-dashboard-cards { grid-template-columns: 1fr; }
 }
