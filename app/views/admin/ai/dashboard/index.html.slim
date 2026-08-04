@@ -10,10 +10,10 @@
       h3 =t('admin.ai.dashboard.title')
 
       =form_tag admin_ai_path, method: :get, class: 'ai-dashboard-filters' do
-        div
+        .ai-dashboard-date-field
           =label_tag :start_date, t('admin.ai.dashboard.filters.start_date')
           =text_field_tag :start_date, @start_date&.iso8601
-        div
+        .ai-dashboard-date-field
           =label_tag :end_date, t('admin.ai.dashboard.filters.end_date')
           =text_field_tag :end_date, @end_date&.iso8601
         =submit_tag t('admin.ai.dashboard.filters.apply')

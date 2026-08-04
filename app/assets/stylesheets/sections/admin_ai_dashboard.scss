@@ -9,6 +9,22 @@
     label { display: block; }
   }
 
+  &-date-field {
+    display: grid;
+    grid-template-columns: minmax(12em, 16em) 18px;
+    gap: 0 0.25em;
+    align-items: center;
+
+    label { grid-column: 1 / -1; }
+
+    input {
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .date-picker-control { margin: 0; }
+  }
+
   &-hint, &-error { flex-basis: 100%; margin: 0; }
   &-error { color: #C00; }
 

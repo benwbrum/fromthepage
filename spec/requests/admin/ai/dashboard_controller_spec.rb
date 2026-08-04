@@ -95,6 +95,7 @@ describe Admin::Ai::DashboardController do
       expect(response.body).to include('formElements: { "end_date": "%Y-%m-%d" }')
       expect(response.body).to have_selector('input[type="text"][name="start_date"]')
       expect(response.body).to have_selector('input[type="text"][name="end_date"]')
+      expect(response.body).to have_selector('.ai-dashboard-date-field', count: 2)
       expect(response.body).to have_selector('input[type="submit"]:not(.button)')
     end
   end
