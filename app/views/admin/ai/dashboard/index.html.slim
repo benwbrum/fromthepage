@@ -12,11 +12,11 @@
       =form_tag admin_ai_path, method: :get, class: 'ai-dashboard-filters' do
         div
           =label_tag :start_date, t('admin.ai.dashboard.filters.start_date')
-          =date_field_tag :start_date, @start_date&.iso8601
+          =text_field_tag :start_date, @start_date&.iso8601
         div
           =label_tag :end_date, t('admin.ai.dashboard.filters.end_date')
-          =date_field_tag :end_date, @end_date&.iso8601
-        =submit_tag t('admin.ai.dashboard.filters.apply'), class: 'button'
+          =text_field_tag :end_date, @end_date&.iso8601
+        =submit_tag t('admin.ai.dashboard.filters.apply')
         p.ai-dashboard-hint =t('admin.ai.dashboard.filters.hint', count: Admin::Ai::DashboardController::MAX_DATE_RANGE_DAYS)
         -if @date_range_error
           p.ai-dashboard-error role='alert' =@date_range_error
@@ -72,3 +72,17 @@
                   td =number_to_percentage(@totals[:success_rate], precision: 1)
         -else
           p.ai-dashboard-empty =t('admin.ai.dashboard.none')
+
+-content_for :javascript do
+  =javascript_include_tag 'datepicker/datepicker'
+
+  javascript:
+    datePickerController.createDatePicker({
+      formElements: { "start_date": "%Y-%m-%d" },
+      noFadeEffect: true
+    });
+
+    datePickerController.createDatePicker({
+      formElements: { "end_date": "%Y-%m-%d" },
+      noFadeEffect: true
+    });
