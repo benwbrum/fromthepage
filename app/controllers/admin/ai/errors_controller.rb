@@ -4,7 +4,7 @@ class Admin::Ai::ErrorsController < Admin::Ai::BaseController
   def index
     @ai_transcriptions = AiTranscription
       .where(status: :error)
-      .includes(page: { work: { collection: :owner } })
+      .includes(page: { work: :collection })
       .order(updated_at: :desc)
       .paginate(page: params[:page], per_page: DEFAULT_PER_PAGE)
 

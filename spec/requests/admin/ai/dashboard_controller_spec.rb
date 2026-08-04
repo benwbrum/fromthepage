@@ -93,10 +93,11 @@ describe Admin::Ai::DashboardController do
       expect(response.body).to include('datepicker/datepicker')
       expect(response.body).to include('formElements: { "start_date": "%Y-%m-%d" }')
       expect(response.body).to include('formElements: { "end_date": "%Y-%m-%d" }')
-      expect(response.body).to have_selector('input[type="text"][name="start_date"]')
-      expect(response.body).to have_selector('input[type="text"][name="end_date"]')
-      expect(response.body).to have_selector('.ai-dashboard-date-field', count: 2)
-      expect(response.body).to have_selector('input[type="submit"]:not(.button)')
+      document = Nokogiri::HTML(response.body)
+      expect(document.css('input[type="text"][name="start_date"]').count).to eq(1)
+      expect(document.css('input[type="text"][name="end_date"]').count).to eq(1)
+      expect(document.css('.ai-dashboard-date-field').count).to eq(2)
+      expect(document.css('input[type="submit"]:not(.button)').count).to eq(1)
     end
   end
 end
