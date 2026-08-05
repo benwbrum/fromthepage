@@ -66,7 +66,7 @@ module ExportService
     if result.success?
       destination_path = File.join(path, relative)
       FileUtils.mkdir_p(File.dirname(destination_path))
-      FileUtils.cp(result.file, destination_path)
+      File.binwrite(destination_path, result.file)
     else
       raise result.full_errors
     end
