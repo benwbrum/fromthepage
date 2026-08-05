@@ -19,7 +19,7 @@
     br
 
     h3 =t('export.facing_edition.notes')
-      page.notes.each do |note|
-        p.indent ="#{note.user.display_name}: #{note.body}"
+    -page.notes.each do |note|
+      p.indent ="#{note.user.display_name}: #{note.body}"
 
   .page-break
