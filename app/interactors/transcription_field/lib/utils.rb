@@ -104,9 +104,8 @@ class TranscriptionField::Lib::Utils
 
         if cell_value.blank?
           cell_value = ''
-        elsif cell_value.to_s.scan('<').count != cell_value.to_s.scan('>').count
-          # broken tags or actual < / > signs
-          cell_value = ERB::Util.html_escape(cell_value)
+        else
+          cell_value = sanitize_spreadsheet_cell(cell_value)
         end
 
         cell_value = ActiveRecord::Type::Boolean.new.cast(cell_value) if column.input_type == 'checkbox'
@@ -123,5 +122,12 @@ class TranscriptionField::Lib::Utils
     source_text << '</tbody></table>'
 
     [rows, source_text]
+  end
+
+  def self.sanitize_spreadsheet_cell(value)
+    REXML::Document.new("<cell>#{value}</cell>")
+    value
+  rescue REXML::ParseException
+    ERB::Util.html_escape(value)
   end
 end

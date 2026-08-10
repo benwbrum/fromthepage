@@ -279,6 +279,73 @@ describe Page do
     end
   end
 
+  describe '#image_url_for_ai' do
+    let(:service_id) { 'https://iiif.example.com/image/1' }
+    let(:sc_canvas) { double('sc_canvas', sc_service_id: service_id, sc_resource_id: "#{service_id}/full/full/0/default.jpg") }
+    let(:page) { build_stubbed(:page) }
+
+    before do
+      allow(page).to receive(:sc_canvas).and_return(sc_canvas)
+      stub_request(:get, "#{service_id}/info.json").to_return(
+        status: 200,
+        body: image_info.to_json,
+        headers: { 'Content-Type' => 'application/json' }
+      )
+    end
+
+    context 'when the IIIF image is smaller than 8000 pixels in both dimensions' do
+      let(:image_info) do
+        {
+          width: 1651,
+          height: 2551,
+          sizes: [
+            { width: 103, height: 159 },
+            { width: 826, height: 1276 },
+            { width: 1651, height: 2551 }
+          ]
+        }
+      end
+
+      it 'requests the full-resolution image rather than a smaller advertised size' do
+        expect(page.image_url_for_ai).to eq("#{service_id}/full/full/0/default.jpg")
+      end
+    end
+
+    context 'when any advertised IIIF resolution is at least 8000 pixels' do
+      let(:image_info) do
+        {
+          width: 4000,
+          height: 6000,
+          sizes: [{ width: 5334, height: 8000 }]
+        }
+      end
+
+      it 'requests an image constrained to the AI maximum dimensions' do
+        expect(page.image_url_for_ai).to eq("#{service_id}/full/!7900,7900/0/default.jpg")
+      end
+    end
+
+    context 'when an IIIF image dimension is at least 8000 pixels' do
+      let(:image_info) { { width: 8000, height: 5000 } }
+
+      it 'requests an image constrained to the AI maximum dimensions' do
+        expect(page.image_url_for_ai).to eq("#{service_id}/full/!7900,7900/0/default.jpg")
+      end
+    end
+
+    context 'when the IIIF image information cannot be fetched' do
+      let(:image_info) { {} }
+
+      before do
+        stub_request(:get, "#{service_id}/info.json").to_return(status: 403)
+      end
+
+      it 'falls back to requesting an image constrained to the AI maximum dimensions' do
+        expect(page.image_url_for_ai).to eq("#{service_id}/full/!7900,7900/0/default.jpg")
+      end
+    end
+  end
+
   describe '#thumbnail_url' do
     context 'when page has base_image with special characters' do
       let(:page) { build_stubbed(:page) }
