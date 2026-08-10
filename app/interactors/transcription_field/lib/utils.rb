@@ -62,12 +62,12 @@ class TranscriptionField::Lib::Utils
         transcription_json[field_id.to_i] = json_value
         source_text += string_value
       else
-        field_data.each do |cell_key, cell_value|
+        field_data.each_value do |cell_value|
           # broken tags or actual < / > signs
           cell_value = ERB::Util.html_escape(cell_value) if cell_value.scan('<').count != cell_value.scan('>').count
 
-          cell_key = "#{cell_key}#{field.input_type == 'description' ? ' ' : ': '}"
-          source_text << "<span class=\"field__label\">#{cell_key}</span>#{cell_value}\n\n"
+          label = "#{ERB::Util.html_escape(field.label)}#{field.input_type == 'description' ? ' ' : ': '}"
+          source_text << "<span class=\"field__label\">#{label}</span>#{cell_value}\n\n"
 
           transcription_json[field_id.to_i] = cell_value
         end
