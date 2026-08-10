@@ -22,6 +22,23 @@ describe TranscriptionField::Lib::Utils do
       )
     end
 
+    it 'renders the field label as configured, not the parameterized form key' do
+      field = create(:transcription_field, :text_field,
+                     collection: collection,
+                     label: '1. Please provide a listing of activities and programs:')
+
+      field_cells = {
+        field.id.to_s => { field.label.parameterize => 'Some transcribed value' }
+      }
+
+      described_class.parse_fields(page: page, field_cells: field_cells)
+
+      expect(page.source_text).to include(
+        '<span class="field__label">1. Please provide a listing of activities and programs:: </span>Some transcribed value'
+      )
+      expect(page.source_text).not_to include('1-please-provide-a-listing')
+    end
+
     it 'escapes parse-invalid XML-like spreadsheet cell content' do
       field_cells = {
         spreadsheet_field.id.to_s => {

@@ -136,7 +136,7 @@ describe 'collection field-based transcription settings' do
     find('#save_button_top').click
     click_button 'Preview', match: :first
 
-    expect(page.find('.page-preview')).to have_content('first-field: Field one')
+    expect(page.find('.page-preview')).to have_content('First field: Field one')
     click_button 'Edit', match: :first
     expect(page.find('.page-editarea')).to have_selector("##{field_input_id(first_field)}")
   end
