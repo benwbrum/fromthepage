@@ -220,6 +220,7 @@ Fromthepage::Application.routes.draw do
     get 'exports', to: 'dashboard#exports'
     post 'create_work', to: 'dashboard#create_work'
     get 'your_hours', to: 'dashboard#your_hours'
+    get 'deeds' => 'dashboard#deeds'
     get 'dashboard/download_hours_letter/:start_date/:end_date/:time_duration', to: 'dashboard#download_hours_letter', as: 'download_hours_letter', format: :pdf
     post 'upload', to: 'dashboard#upload'
   end
@@ -515,6 +516,7 @@ Fromthepage::Application.routes.draw do
       get 'facets'
       post 'search', to: 'collection#facet_search', as: 'facet_search'
       get 'search', to: 'collection#search', as: 'search'
+      get :deeds
 
       get 'edit', on: :member
       get 'edit/tasks', on: :member, to: 'collection#edit_tasks'

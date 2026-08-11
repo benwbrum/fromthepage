@@ -448,6 +448,8 @@ end
 private
 
 def store_current_location
+  return if turbo_frame_request?
+
   store_location_for(:user, request.url)
 end
 
