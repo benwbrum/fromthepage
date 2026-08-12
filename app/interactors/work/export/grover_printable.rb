@@ -39,7 +39,7 @@ class Work::Export::GroverPrintable < ApplicationInteractor
         include_notes: @include_notes,
         preserve_lb: @preserve_lb,
         time: @time,
-        flatten_links: true
+        flatten_links: false
       }
     )
 
