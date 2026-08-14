@@ -8,10 +8,6 @@ class RegistrationsController < Devise::RegistrationsController
     new
   end
 
-  def new_trial
-    new
-  end
-
   def destroy
     resource.soft_delete
     Devise.sign_out_all_scopes ? sign_out : sign_out(resource_name)
@@ -58,11 +54,6 @@ class RegistrationsController < Devise::RegistrationsController
         session[:guest_user_id] = nil
       end
 
-      if @user.owner
-        @user.account_type = 'Trial'
-        @user.save
-        alert_bento
-      end
     else
       clean_up_passwords resource
       @validatable = devise_mapping.validatable?
@@ -70,7 +61,7 @@ class RegistrationsController < Devise::RegistrationsController
         @minimum_password_length = resource_class.password_length.min
       end
 
-      after_failed_sign_up_action_for(params[:registration_type]&.to_sym)
+      render :new
     end
   end
 
@@ -100,40 +91,20 @@ class RegistrationsController < Devise::RegistrationsController
   def choose_saml
   end
 
-  def alert_bento
-    if defined?(BENTO_ENABLED) && BENTO_ENABLED
-      $bento.track(identity: { email: current_user.email }, event: '$action', details: { action_information: 'signed_up_for_trial' })
-    end
-  end
-
   # redirect new sign up back to starting page
   def after_sign_up_path_for(resource)
-    if @user.owner
-      # Always send new owners to their dashboard for analytics purposes
-      "#{dashboard_owner_path}#freetrial"
+    # New users should be returned to where they were or to their dashboard/watchlist
+    if session[:user_return_to] && !landing_pages.include?(session[:user_return_to])
+      session[:user_return_to]
+    elsif @owner
+      user_profile_path(@owner)
     else
-      # New users should be returned to where they were or to their dashboard/watchlist
-      if session[:user_return_to] && !landing_pages.include?(session[:user_return_to])
-        session[:user_return_to]
-      elsif @owner
-        user_profile_path(@owner)
-      else
-        dashboard_watchlist_path
-      end
+      dashboard_watchlist_path
     end
   end
 
   def after_update_path_for(resource)
     edit_registration_path(resource)
-  end
-
-  def after_failed_sign_up_action_for(registration_type)
-    case registration_type
-    when :free_trial
-      render :new_trial
-    else
-      render :new
-    end
   end
 
   def check_recaptcha(options)
@@ -144,7 +115,7 @@ class RegistrationsController < Devise::RegistrationsController
   private
 
   def sign_up_params
-    params.require(:user).permit(:login, :real_name, :owner, :activity_email, :paid_date, :display_name, :email, :password, :password_confirmation)
+    params.require(:user).permit(:login, :real_name, :activity_email, :display_name, :email, :password, :password_confirmation)
   end
 
   def saml_provider_param

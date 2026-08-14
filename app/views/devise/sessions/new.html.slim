@@ -38,12 +38,6 @@ section.signon
 
     = link_to t('.sign_up_now'), new_user_registration_path, class: 'button big'
 
-  section#free_trial.signup-links
-    h2= t('.start_free_trial')
-    p= t('.start_free_trial_message')
-
-    =link_to t('.start_free_trial'), users_new_trial_path, class: 'button big'
-
   hr.clearfix
 
 -unless MIXPANEL_ID.blank?
