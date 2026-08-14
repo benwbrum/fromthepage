@@ -40,7 +40,7 @@ module ImageHelper
         FileUtils.mkdir_p(File.dirname(outfile))
 
         print "\textracting #{outfile}\n"
-        zip_file.extract(f, outfile)
+        zip_file.extract(f, destination_directory: destination)
 
         # Ensure directories have write permissions so files can be written into them
         if File.directory?(outfile)
