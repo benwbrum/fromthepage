@@ -6,7 +6,7 @@ namespace :fromthepage do
     collection = Collection.find collection_id
     import_ocr=false
 
-    raw_json = URI.open(collection_at_id).read
+    raw_json = URI.parse(collection_at_id).open.read
     hash = JSON.parse(raw_json)
     manifests=[]
     page_uri = hash['first']
@@ -14,7 +14,7 @@ namespace :fromthepage do
     # loop through each sub-page
     while page_uri
       print "fetching collection page #{page_uri}\n"
-      raw_json = URI.open(page_uri).read
+      raw_json = URI.parse(page_uri).open.read
       hash = JSON.parse(raw_json)
       manifests += hash['manifests']
 
@@ -178,7 +178,7 @@ namespace :fromthepage do
 
   def fetch_raw(at_id)
     puts "Importing #{at_id}"
-    connection = URI.open(at_id)
+    connection = URI.parse(at_id).open
     manifest_json = connection.read
 
     manifest_json

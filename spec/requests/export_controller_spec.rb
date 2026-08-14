@@ -730,6 +730,17 @@ describe ExportController do
 
     let(:subject) { get action_path, params: params }
 
+    it 'redirects when not logged in' do
+      subject
+      expect(response).to redirect_to(dashboard_path)
+    end
+
+    it 'redirects a non-owner' do
+      login_as user
+      subject
+      expect(response).to redirect_to(dashboard_path)
+    end
+
     it 'renders status' do
       login_as owner
       subject
