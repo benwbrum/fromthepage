@@ -22,11 +22,11 @@
                             <h4>Start engaging the public to transcribe your documents</h4>
 
                             <div class="bottom">
-                                <p>Upload 200 pages FREE</p>
+                                <p>Learn about hosting your projects</p>
                                 <% if signed_in?
                                     target_path = dashboard_role_path
                                    else
-                                    target_path = users_new_trial_path
+                                    target_path = contact_path(contact_form_token)
                                    end %>
 
                                 <%= link_to 'Transcribe My Documents', target_path, class: 'button' %>
@@ -608,7 +608,7 @@
 
                 <div class="buttons">
                     <a href="https://calendly.com/fromthepage/30-minute-meeting/" target="_blank">Schedule a Demo</a>
-                    <%= link_to 'Upload 200 pages FREE', users_new_trial_path, class: 'second' %>
+                    <%= link_to 'Contact Us', contact_path(contact_form_token), class: 'second' %>
                 </div>
             </div>
         </div>

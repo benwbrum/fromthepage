@@ -21,7 +21,6 @@ class AhoyActivitySummary < ActiveRecord::Base
   WEEKLY_TRIAL_COHORT_TARGET_ACTIONS = [
     'collection#create',
     'registrations#create',
-    'registrations#new_trial',
     'static#landing_page'
   ]
 
