@@ -9,6 +9,68 @@ describe CollectionController do
   let!(:user) { create(:unique_user) }
   let!(:collection) { create(:collection, owner_user_id: owner.id) }
 
+  describe 'collection creation authorization' do
+    let(:new_path) { collection_new_path }
+    let(:create_path) { collection_create_path }
+    let(:create_params) { { collection: { title: 'Authorized collection', intro_block: 'Introduction' } } }
+    let(:administrator) { create(:unique_user, :admin) }
+    let(:collaborator) { create(:unique_user) }
+
+    shared_examples 'cannot create collections' do
+      it 'cannot access the new collection form' do
+        get new_path
+
+        expect(response).to redirect_to(dashboard_path)
+      end
+
+      it 'cannot submit a collection' do
+        expect do
+          post create_path, params: create_params, headers: { 'HTTP_REFERER' => dashboard_startproject_url }
+        end.not_to change(Collection, :count)
+        expect(response).to redirect_to(dashboard_path)
+      end
+    end
+
+    context 'as an anonymous user' do
+      include_examples 'cannot create collections'
+    end
+
+    context 'as an ordinary authenticated user' do
+      before { login_as user }
+
+      include_examples 'cannot create collections'
+    end
+
+    context 'as a collection collaborator without owner capability' do
+      before do
+        collection.collaborators << collaborator
+        login_as collaborator
+      end
+
+      include_examples 'cannot create collections'
+    end
+
+    it 'allows an owner account to access and submit collection creation' do
+      login_as owner
+
+      get new_path
+      expect(response).to have_http_status(:ok)
+      expect do
+        post create_path, params: create_params, headers: { 'HTTP_REFERER' => dashboard_startproject_url }
+      end.to change(Collection, :count).by(1)
+    end
+
+    it 'allows an administrator to access and submit collection creation' do
+      login_as administrator
+
+      get new_path
+      expect(response).to have_http_status(:ok)
+      expect do
+        post create_path, params: create_params, headers: { 'HTTP_REFERER' => dashboard_startproject_url }
+      end.to change(Collection, :count).by(1)
+    end
+  end
+
   describe '#search_users' do
     let(:action_path) { collection_search_users_path(collection_id: collection.slug) }
     let(:params) { { term: 'Search' } }

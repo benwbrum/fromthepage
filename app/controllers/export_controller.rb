@@ -9,6 +9,13 @@ class ExportController < ApplicationController
 
   DEFAULT_WORKS_PER_PAGE = 15
 
+  # Collection metadata is administrative data, even when the collection itself
+  # is public.  Do not let the general collection visibility policy authorize
+  # this endpoint: exports require an authenticated owner, collaborator, or
+  # administrator for both restricted and unrestricted collections.
+  skip_before_action :authorize_collection, only: :work_metadata_csv
+  before_action :authorize_work_metadata_export!, only: :work_metadata_csv
+
   def index
     filtered_data
 
@@ -191,6 +198,17 @@ class ExportController < ApplicationController
   end
 
   private
+
+  def authorize_work_metadata_export!
+    authorized = user_signed_in? && (
+      current_user.admin? ||
+      current_user.like_owner?(@collection) ||
+      current_user.collaborator?(@collection)
+    )
+    return if authorized
+
+    redirect_to(user_signed_in? ? collection_path(@collection.owner, @collection) : dashboard_path)
+  end
 
   def filtered_data
     @sorting = (params[:sort] || 'title').to_sym

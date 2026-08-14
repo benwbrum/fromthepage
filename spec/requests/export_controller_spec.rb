@@ -309,13 +309,53 @@ describe ExportController do
     let(:action_path) { export_work_metadata_path(collection) }
     let(:params) { {} }
 
+    let(:ordinary_user) { create(:unique_user) }
+    let(:collaborator) { create(:unique_user) }
+    let(:administrator) { create(:unique_user, :admin) }
+
     let(:subject) { get action_path, params: params }
 
-    it 'renders status' do
-      login_as owner
-      subject
+    [false, true].each do |restricted|
+      context "with a #{restricted ? 'restricted' : 'unrestricted'} collection" do
+        before do
+          collection.update!(restricted: restricted)
+          collection.collaborators << collaborator
+        end
 
-      expect(response).to have_http_status(:ok)
+        it 'rejects an anonymous user' do
+          subject
+
+          expect(response).to redirect_to(dashboard_path)
+        end
+
+        it 'rejects an ordinary authenticated user' do
+          login_as ordinary_user
+          subject
+
+          expect(response).to redirect_to(collection_path(owner, collection))
+        end
+
+        it 'allows a collaborator' do
+          login_as collaborator
+          subject
+
+          expect(response).to have_http_status(:ok)
+        end
+
+        it 'allows the owner' do
+          login_as owner
+          subject
+
+          expect(response).to have_http_status(:ok)
+        end
+
+        it 'allows an administrator' do
+          login_as administrator
+          subject
+
+          expect(response).to have_http_status(:ok)
+        end
+      end
     end
 
     context 'as example' do

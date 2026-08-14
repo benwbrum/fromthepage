@@ -749,6 +749,17 @@ class CollectionController < ApplicationController
       return
     end
 
+    # Creating a collection is an account capability, not a capability granted
+    # merely by signing in. Administrators retain the ability to create projects;
+    # ordinary accounts must first be granted the owner capability by an admin.
+    if [:new, :create].include?(action_name.to_sym) && !current_user.owner? && !current_user.admin?
+      respond_to do |format|
+        format.html { redirect_to dashboard_path }
+        format.js   { ajax_redirect_to dashboard_path }
+      end
+      return
+    end
+
     if @collection && !current_user.like_owner?(@collection)
       respond_to do |format|
         format.html { redirect_to collection_path(@collection.owner, @collection) }
