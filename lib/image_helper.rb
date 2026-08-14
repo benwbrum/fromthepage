@@ -15,18 +15,75 @@ module ImageHelper
   def self.unzip_file(file, destination)
     print "upzip_file(#{file})\n"
 
+    destination = File.expand_path(destination)
+
     Zip::File.open(file) do |zip_file|
-      zip_file.each do |f|
-        # f_path=File.join(destination, File.basename(f.name))
-        # FileUtils.mkdir_p(File.dirname(destination)) unless Dir.exist? destination
-        outfile = File.join(destination, f.name)
-        FileUtils.mkdir_p(File.dirname(outfile))
+      entries = zip_file.map do |entry|
+        entry_name = entry.name
+        raise Zip::EntryNameError, 'ZIP entry contains a null byte' if entry_name.include?("\0")
+
+        # ZIP uses forward slashes, but treat backslashes as separators too so
+        # archives made on Windows cannot disguise an absolute or traversal path.
+        normalized_name = entry_name.tr('\\', '/')
+        components = normalized_name.split('/', -1)
+        if normalized_name.start_with?('/') || normalized_name.match?(/\A[A-Za-z]:/) ||
+           components.include?('..')
+          raise Zip::EntryNameError, "unsafe ZIP entry path: #{entry_name.inspect}"
+        end
+
+        outfile = File.expand_path(normalized_name, destination)
+        unless outfile.start_with?("#{destination}#{File::SEPARATOR}")
+          raise Zip::EntryNameError, "ZIP entry is outside destination: #{entry_name.inspect}"
+        end
+
+        unless entry.directory? || entry.ftype == :file
+          raise Zip::EntryNameError, "unsupported ZIP entry type #{entry.ftype}: #{entry_name.inspect}"
+        end
+
+        [entry, outfile]
+      end
+
+      # Do not create anything until every entry in the archive has passed
+      # validation, so a bad entry cannot leave a partially extracted archive.
+      entries.each do |entry, outfile|
+        directory = entry.directory? ? outfile : File.dirname(outfile)
+        prepare_zip_directory(directory, destination, create: false)
+      end
+      prepare_zip_directory(destination, destination, create: true)
+      entries.each do |entry, outfile|
+        if entry.directory?
+          prepare_zip_directory(outfile, destination, create: true)
+          next
+        end
+
+        prepare_zip_directory(File.dirname(outfile), destination, create: true)
 
         print "\textracting #{outfile}\n"
-        zip_file.extract(f, outfile)
+        flags = File::WRONLY | File::CREAT | File::EXCL
+        flags |= File::NOFOLLOW if defined?(File::NOFOLLOW)
+        File.open(outfile, flags, 0o600) do |output|
+          entry.get_input_stream { |input| IO.copy_stream(input, output) }
+        end
       end
     end
   end
+
+  def self.prepare_zip_directory(directory, destination, create:)
+    relative = directory.delete_prefix(destination).delete_prefix(File::SEPARATOR)
+    current = destination
+    paths = [destination]
+    paths.concat(relative.split(File::SEPARATOR).map { |part| current = File.join(current, part) }) unless relative.empty?
+
+    paths.each do |path|
+      if File.exist?(path) || File.symlink?(path)
+        raise Zip::EntryNameError, "ZIP extraction path contains a symlink: #{path}" if File.symlink?(path)
+        raise Zip::EntryNameError, "ZIP extraction path is not a directory: #{path}" unless File.directory?(path)
+      elsif create
+        Dir.mkdir(path, 0o700)
+      end
+    end
+  end
+  private_class_method :prepare_zip_directory
 
   def self.calculate_page_size_and_dpi(filename)
     # some PDFs have page sizes so big that our 300x300 DPI creates images wider than the max 16000

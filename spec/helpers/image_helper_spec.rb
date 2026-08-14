@@ -1,8 +1,85 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
+require 'tmpdir'
 
 describe ImageHelper do
+  describe '.unzip_file' do
+    around do |example|
+      Dir.mktmpdir('image-helper-zip') do |directory|
+        @test_directory = directory
+        example.run
+      end
+    end
+
+    def build_zip(name, entries)
+      archive = File.join(@test_directory, name)
+      Zip::File.open(archive, create: true) do |zip|
+        entries.each do |entry_name, contents|
+          zip.get_output_stream(entry_name) { |stream| stream.write(contents) }
+        end
+      end
+      archive
+    end
+
+    it 'extracts valid nested files and explicit directories' do
+      archive = build_zip('valid.zip', 'pages/one.txt' => 'one', 'pages/two.txt' => 'two')
+      destination = File.join(@test_directory, 'output')
+
+      ImageHelper.unzip_file(archive, destination)
+
+      expect(File.read(File.join(destination, 'pages/one.txt'))).to eq('one')
+      expect(File.read(File.join(destination, 'pages/two.txt'))).to eq('two')
+    end
+
+    [
+      '../escaped.txt',
+      'pages/../../escaped.txt',
+      '/tmp/absolute.txt',
+      '..\\windows-escaped.txt',
+      'C:\\drive-path.txt'
+    ].each do |entry_name|
+      it "rejects unsafe entry #{entry_name.inspect}" do
+        archive = build_zip('unsafe.zip', entry_name => 'bad')
+        destination = File.join(@test_directory, 'output')
+
+        expect { ImageHelper.unzip_file(archive, destination) }.to raise_error(Zip::EntryNameError)
+        expect(Dir.exist?(destination)).to be(false)
+      end
+    end
+
+    it 'does not confuse a destination name prefix for containment' do
+      destination = File.join(@test_directory, 'output')
+      archive = build_zip('prefix.zip', '../output-other/escaped.txt' => 'bad')
+
+      expect { ImageHelper.unzip_file(archive, destination) }.to raise_error(Zip::EntryNameError)
+      expect(File.exist?(File.join(@test_directory, 'output-other/escaped.txt'))).to be(false)
+    end
+
+    it 'rejects symlink entries' do
+      link = File.join(@test_directory, 'link')
+      File.symlink('../outside', link)
+      archive = File.join(@test_directory, 'symlink.zip')
+      Zip::File.open(archive, create: true) { |zip| zip.add('link', link) }
+
+      expect do
+        ImageHelper.unzip_file(archive, File.join(@test_directory, 'output'))
+      end.to raise_error(Zip::EntryNameError)
+    end
+
+    it 'rejects an existing symlink in an extraction path before writing files' do
+      destination = File.join(@test_directory, 'output')
+      outside = File.join(@test_directory, 'outside')
+      FileUtils.mkdir_p([destination, outside])
+      File.symlink(outside, File.join(destination, 'pages'))
+      archive = build_zip('redirect.zip', 'safe.txt' => 'safe', 'pages/escaped.txt' => 'bad')
+
+      expect { ImageHelper.unzip_file(archive, destination) }.to raise_error(Zip::EntryNameError)
+      expect(File.exist?(File.join(destination, 'safe.txt'))).to be(false)
+      expect(File.exist?(File.join(outside, 'escaped.txt'))).to be(false)
+    end
+  end
+
   describe '.calculate_page_size_and_dpi' do
     context 'with filename containing spaces' do
       let(:test_pdf_source) { File.join(Rails.root, 'test_data/uploads/test.pdf') }

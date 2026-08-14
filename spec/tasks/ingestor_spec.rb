@@ -1,4 +1,29 @@
 require 'spec_helper'
+require 'tmpdir'
+
+Rails.application.load_tasks unless Rake::Task.task_defined?('fromthepage:process_document_upload')
+
+describe 'Ingestor ZIP processing' do
+  it 'recursively processes a ZIP nested inside another ZIP' do
+    Dir.mktmpdir('ingestor-nested-zip') do |temp_dir|
+      inner_archive = File.join(temp_dir, 'inner.zip')
+      Zip::File.open(inner_archive, create: true) do |zip|
+        zip.get_output_stream('pages/page.txt') { |stream| stream.write('nested contents') }
+      end
+
+      outer_archive = File.join(temp_dir, 'outer.zip')
+      Zip::File.open(outer_archive, create: true) do |zip|
+        zip.add('inner.zip', inner_archive)
+      end
+      FileUtils.rm(inner_archive)
+
+      unzip_tree(temp_dir)
+
+      extracted = File.join(temp_dir, 'outer', 'inner', 'pages', 'page.txt')
+      expect(File.read(extracted)).to eq('nested contents')
+    end
+  end
+end
 
 describe 'Ingestor email logic' do
   let(:owner) { User.find_by(login: OWNER) || create(:user, login: OWNER) }
