@@ -8,7 +8,7 @@ section.signon
     ==t('.just_want_to_transcribe', sign_up_here: (link_to t('.sign_up_here'), new_user_registration_path))
 
 
-  =form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
+  =form_for(resource, as: resource_name, url: users_new_trial_path) do |f|
     =devise_error_messages!
     .signon_field
       =f.label :login, t('.login')
@@ -25,10 +25,6 @@ section.signon
     .signon_field
       =f.label :display_name, t('devise.display_name')
       =f.text_field :real_name
-    .signon_field
-      =f.hidden_field :owner, value: true
-      =f.hidden_field :paid_date, value: 2.weeks.from_now
-      =hidden_field_tag :registration_type, :free_trial
     -if RECAPTCHA_ENABLED
       .signon_field
         =recaptcha_tags
@@ -41,4 +37,3 @@ section.signon
   javascript:  mixpanel.track("Sign Up");
 
   <script type="text/javascript" src="https://calendly.com/assets/external/widget.js"></script>
-

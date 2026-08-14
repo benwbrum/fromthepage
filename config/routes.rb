@@ -22,6 +22,7 @@ Fromthepage::Application.routes.draw do
 
   devise_scope :user do
     get 'users/new_trial' => 'registrations#new_trial'
+    post 'users/new_trial' => 'registrations#create_trial'
     get ':user_slug/sign_up', to: 'registrations#owner_new', as: 'new_for_owner'
     post 'registrations/choose_provider', to: 'registrations#choose_saml'
     post 'registrations/set_provider', to: 'registrations#set_saml'
