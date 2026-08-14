@@ -9,7 +9,7 @@ class ExportController < ApplicationController
 
   DEFAULT_WORKS_PER_PAGE = 15
 
-  before_action :require_owner, only: [:index]
+  before_action :require_owner, only: [:index, :work_metadata_csv]
 
   def index
     filtered_data
