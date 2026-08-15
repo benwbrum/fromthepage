@@ -61,9 +61,16 @@ namespace :fromthepage do
           value = page.transcription_json[field.id.to_s]
           next if value.nil?
 
-          field_cells[field.id.to_s] = {
-            'value' => field.input_type == 'spreadsheet' ? value.to_json : value.to_s
-          }
+          field_value = if field.input_type == 'spreadsheet'
+                          columns = field.spreadsheet_columns.order(:position)
+                          value.map do |row|
+                            columns.map { |column| row[column.id.to_s] }
+                          end.to_json
+          else
+                          value.to_s
+          end
+
+          field_cells[field.id.to_s] = { 'value' => field_value }
         end
 
         if field_cells.empty?
