@@ -66,9 +66,9 @@ namespace :fromthepage do
                           value.map do |row|
                             columns.map { |column| row[column.id.to_s] }
                           end.to_json
-                        else
+          else
                           value.to_s
-                        end
+          end
 
           field_cells[field.id.to_s] = { 'value' => field_value }
         end
