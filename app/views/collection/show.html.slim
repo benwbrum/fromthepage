@@ -185,8 +185,8 @@
 
     -if notes_visible?(@collection, current_user)
       h3 =t('.recent_edits')
-      -cache [@collection.id, @collection.most_recent_deed_created_at, :collection_show] do
-        =deeds_for({ collection: @collection, limit: 20, types: DeedType.collection_edits, long_view: true })
+      turbo-frame id="lazy_deeds" src=collection_deeds_path(@collection.owner, @collection, types: DeedType.collection_edits, limit: 20, long_view: true) loading="lazy"
+        = render partial: 'shared/components/loading'
 
 =link_to(collection_new_mobile_user_path(collection_id: @collection.slug), data: { controller: 'litebox', litebox: { hash: 'new-mobile-user' }}, id: 'new_mobile_user_link', style: "display: none")
   span =""

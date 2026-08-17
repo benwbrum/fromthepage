@@ -7,7 +7,8 @@ h1 =t('.collections')
     =render partial: 'alphabetical_collections_and_document_sets', collection: @collections_and_document_sets, as: :cds
   aside.sidecol
     h2 =t('.recent_activity')
-    =deeds_for()
+    turbo-frame id="lazy_deeds" src=dashboard_deeds_path(all: true) loading="lazy"
+      = render partial: 'shared/components/loading'
 
 -unless MIXPANEL_ID.blank?
   javascript:  mixpanel.track("Dashboard");
