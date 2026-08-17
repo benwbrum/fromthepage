@@ -116,7 +116,7 @@ describe 'Devise' do
 
       expect(page).to have_content("Organization Name can't be blank")
       expect(page).to have_content('Sign Up for a Trial')
-      expect(page.current_path).to eq user_registration_path
+      expect(page.current_path).to eq users_new_trial_path
     end
   end
 
