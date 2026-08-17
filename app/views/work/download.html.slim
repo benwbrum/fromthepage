@@ -18,7 +18,7 @@
           p.nomargin= t('.docx_download_description')
         .bulk-export_options
           span =button_to t('.download'), export_printable_path(@collection, @work), class: 'btnExport', params: { edition: 'text', format: 'doc', method: :post }
-      -if current_user.admin?
+      -if current_user.admin? || user_masquerade?
         li
           .bulk-export_format
             h5= t('.html_pdf')
@@ -65,7 +65,7 @@
               =f.submit t('.export')
 
 
-    -if current_user.like_owner?(@collection) || current_user.admin?
+    -if current_user.like_owner?(@collection) || current_user.admin? || user_masquerade?
       h2.nomargin= t('.export')
       p= t('.zip_export_only_project_owners')
       ul.bulk-export
@@ -88,7 +88,7 @@
               =f.hidden_field :facing_edition_work, value: true
               =f.submit t('.export')
 
-        -if current_user.admin?
+        -if current_user.admin? || user_masquerade?
           li
             .bulk-export_format
               h5= t('.html_facing_pdf')
