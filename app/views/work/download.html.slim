@@ -51,6 +51,7 @@
           =link_to iiif_manifest_path(@work.id)
             =svg_symbol '#icon-export', class: 'icon'
             span= t('.iiif')
+
       -if current_user.like_owner?(@collection)
         li
           .bulk-export_format
@@ -64,7 +65,7 @@
               =f.submit t('.export')
 
 
-    -if current_user.like_owner?(@collection)
+    -if current_user.like_owner?(@collection) || current_user.admin?
       h2.nomargin= t('.export')
       p= t('.zip_export_only_project_owners')
       ul.bulk-export
@@ -87,16 +88,17 @@
               =f.hidden_field :facing_edition_work, value: true
               =f.submit t('.export')
 
-        li
-          .bulk-export_format
-            h5= t('.html_facing_pdf')
-            p.nomargin= t('.html_facing_pdf_export_description')
-          .bulk-export_options
-            =form_for :bulk_export, url: bulk_export_create_for_work_path do |f|
-              =f.hidden_field :collection_id, value: @collection.slug
-              =hidden_field_tag :work_id, @work.id
-              =f.hidden_field :html_facing_edition_work, value: true
-              =f.submit t('.export')
+        -if current_user.admin?
+          li
+            .bulk-export_format
+              h5= t('.html_facing_pdf')
+              p.nomargin= t('.html_facing_pdf_export_description')
+            .bulk-export_options
+              =form_for :bulk_export, url: bulk_export_create_for_work_path do |f|
+                =f.hidden_field :collection_id, value: @collection.slug
+                =hidden_field_tag :work_id, @work.id
+                =f.hidden_field :html_facing_edition_work, value: true
+                =f.submit t('.export')
 
         li
           .bulk-export_format
