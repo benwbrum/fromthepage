@@ -128,15 +128,14 @@
               =f.check_box :facing_edition_work, value: @bulk_export.facing_edition_work
               span= t('.one_file_per_work')
 
-        -if current_user.admin?
-          li
-            .bulk-export_format
-              h5= t('.html_facing_edition_pdf')
-              p.nomargin= t('.html_facing_edition_pdf_description')
-            .bulk-export_options
-              =f.label :html_facing_edition_work
-                =f.check_box :html_facing_edition_work, value: @bulk_export.html_facing_edition_work
-                span= t('.one_file_per_work')
+        li
+          .bulk-export_format
+            h5= t('.accessible_pdf')
+            p.nomargin= t('.accessible_pdf_description')
+          .bulk-export_options
+            =f.label :accessible_pdf_work
+              =f.check_box :accessible_pdf_work, value: @bulk_export.accessible_pdf_work
+              span= t('.one_file_per_work')
 
         li
           .bulk-export_format

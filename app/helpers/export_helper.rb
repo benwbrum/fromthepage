@@ -190,7 +190,7 @@ module ExportHelper
           export_printable_to_zip(work, 'facing', 'pdf', path, by_work, original_filenames, true, include_metadata, include_contributors, include_notes)
         end
 
-        if bulk_export.html_facing_edition_work
+        if bulk_export.accessible_pdf_work
           # NOTE: Facing editions should always preserve_lb
           export_grover_printable_to_zip(work, path, by_work, original_filenames, true, include_metadata, include_contributors, include_notes)
         end

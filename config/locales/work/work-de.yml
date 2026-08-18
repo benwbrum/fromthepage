@@ -75,6 +75,8 @@ de:
       help_description: Anzeige und Vergleich der Änderungen, die in jeder Revision an dem Metadaten des Werkes vorgenommen wurden. Die linke Spalte zeigt die Metadaten in der ausgewählten Revision, die rechte Spalte zeigt, was geändert wurde. Unveränderter Text wird <span>weiß hervorgehoben</span>, gelöschter Text wird <del>rot hervorgehoben</del> und eingefügter Text wird <ins>grün hervorgehoben</ins>.
       revision: Revision
     download:
+      accessible_pdf: Barrierefreies PDF
+      accessible_pdf_export_description: Laden Sie eine für Bildschirmleseprogramme und assistive Technologien optimierte PDF-Version dieses Werkes herunter.
       analyze: Analysieren
       configurable_printout: Konfigurierbarer Ausdruck
       configurable_printout_button: Konfigurieren
@@ -89,10 +91,6 @@ de:
       facing_pdf_export_description: Laden Sie eine PDF-Version dieses Werkes mit Bildern und Text auf den gegenüberliegenden Seiten herunter.
       html: HTML
       html_export_description: Exportieren Sie Transkripte als ZIP-Datei mit einer HTML-Datei pro Seite.
-      html_facing_pdf: Webgerendertes Fronting-PDF
-      html_facing_pdf_export_description: Laden Sie eine PDF-Version dieses Werks herunter, die Bilder und Text auf gegenüberliegenden Seiten enthält und aus der Webansicht generiert wurde.
-      html_pdf: Webgerendertes PDF
-      html_pdf_download_description: Laden Sie eine PDF-Datei herunter, die aus der Webansicht dieses Werks generiert wurde.
       iiif: IIIF
       iiif_manifest: IIIF-Manifest
       iiif_manifest_description: IIIF-Manifest-URI zur Verwendung in jedem IIIF-Client.
@@ -106,6 +104,8 @@ de:
       subject_index_csv_description: Eine Tabelle, in der jede Stelle aufgeführt ist, an der ein Thema auf einer Seite des Werks erwähnt wird.
       table_field_csv: Tabelle/Felder CSV
       table_field_csv_export_description: Exportieren Sie alle tabellarischen, tabellen- oder feldbasierten Daten als eine einzige CSV-Datei.
+      text_only_accessible_pdf: Nur Text (Barrierefreies PDF)
+      text_only_accessible_pdf_download_description: Laden Sie eine PDF-Version dieses Werkes herunter, die nur Texttranskripte enthält und für Bildschirmleseprogramme und assistive Technologien optimiert ist.
       verbatim_plaintext: Wörtlicher Klartext
       verbatim_plaintext_export_description: Exportieren Sie wörtliche Transkripte im Klartext als ZIP-Datei mit einer Datei pro Seite.
       verbatim_plaintext_zero_index: Transkribus-Training-ZIP

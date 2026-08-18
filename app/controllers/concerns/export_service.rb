@@ -52,7 +52,7 @@ module ExportService
     return if work.pages.count == 0
 
     dirname = path_from_work(work)
-    relative = File.join dirname, 'printable', 'html_facing_edition.pdf'
+    relative = File.join dirname, 'printable', 'accessible_pdf.pdf'
 
     result = Work::Export::GroverPrintable.new(
       work: work,

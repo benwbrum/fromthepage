@@ -75,6 +75,8 @@ pt:
       help_description: Visualize e compare as alterações que foram feitas em cada revisão aos metadados da obra. A coluna da esquerda mostra os metadados na revisão selecionada, a coluna da direita mostra o que foi alterado. O texto inalterado é <span>destacado em branco</span>, o texto excluído é <del>destacado em vermelho</del> e o texto inserido é <ins>destacado em verde</ins>.
       revision: revisão
     download:
+      accessible_pdf: PDF acessível
+      accessible_pdf_export_description: Baixe uma versão em PDF deste trabalho otimizada para leitores de tela e tecnologias assistivas.
       analyze: Analisar
       configurable_printout: Impressão Configurável
       configurable_printout_button: configurar
@@ -89,10 +91,6 @@ pt:
       facing_pdf_export_description: Baixe uma versão em PDF desta obra incluindo imagens e texto nas páginas opostas.
       html: HTML
       html_export_description: Exporte as transcrições como um arquivo zip contendo um arquivo HTML por página.
-      html_facing_pdf: PDF renderizado na Web
-      html_facing_pdf_export_description: Faça o download de uma versão em PDF desta obra, incluindo imagens e texto em páginas opostas, gerada a partir da visualização da web.
-      html_pdf: PDF renderizado na Web
-      html_pdf_download_description: Faça o download de um PDF gerado a partir da visualização web desta obra.
       iiif: IIIF
       iiif_manifest: IIIF Manifesto
       iiif_manifest_description: IIIF Manifest URI para uso em qualquer cliente IIIF.
@@ -106,6 +104,8 @@ pt:
       subject_index_csv_description: Uma planilha listando cada lugar em que um assunto é mencionado em uma página dentro da obra.
       table_field_csv: CSV de tabela/campo
       table_field_csv_export_description: Exporte todos os dados tabulares, de planilha ou baseados em campo como um único arquivo CSV.
+      text_only_accessible_pdf: Texto (somente) PDF acessível
+      text_only_accessible_pdf_download_description: Baixe uma versão em PDF desta obra contendo apenas as transcrições de texto, otimizada para leitores de tela e tecnologias assistivas.
       verbatim_plaintext: Texto simples literal
       verbatim_plaintext_export_description: Exporte transcrições em texto simples como um arquivo zip contendo um arquivo por página.
       verbatim_plaintext_zero_index: Zip de treinamento Transkribus

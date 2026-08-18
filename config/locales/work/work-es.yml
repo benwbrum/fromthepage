@@ -75,6 +75,8 @@ es:
       help_description: Vea y compara los cambios que se han realizado en cada revisión a los metadatos de obra. La columna de la izquierda muestra los metadatos en la revisión seleccionada, la columna de la derecha muestra lo que se ha cambiado. El texto que no ha cambiado está <span>resaltado en blanco</span>, el texto eliminado está <del>resaltado en rojo</del> y el texto insertado está <ins>resaltado en color verde</ins>.
       revision: revisión
     download:
+      accessible_pdf: PDF accesible
+      accessible_pdf_export_description: Descargue una versión en PDF de esta obra optimizada para lectores de pantalla y tecnologías de asistencia.
       analyze: Analizar
       configurable_printout: Impresión configurable
       configurable_printout_button: Configurar
@@ -89,10 +91,6 @@ es:
       facing_pdf_export_description: Descarga una versión en PDF de esta obra que incluye imágenes y texto en las páginas opuestas.
       html: HTML
       html_export_description: Exporta las transcripciones como un archivo zip que contiene un archivo HTML por página.
-      html_facing_pdf: PDF de caras renderizado en web
-      html_facing_pdf_export_description: Descargue una versión en PDF de esta obra que incluye imágenes y texto en páginas enfrentadas, generada a partir de la vista web.
-      html_pdf: PDF renderizado en la web
-      html_pdf_download_description: Descargue un PDF generado a partir de la vista web de esta obra.
       iiif: IIIF
       iiif_manifest: Manifiesto IIIF
       iiif_manifest_description: URI de Manifiesto IIIF para usar en cualquier cliente de IIIF.
@@ -106,6 +104,8 @@ es:
       subject_index_csv_description: Una hoja de cálculo que enumera cada lugar donde se menciona un tema dentro de una página dentro de la obra.
       table_field_csv: CSV de tabla/campo
       table_field_csv_export_description: Exporta todos los datos tabulares, de hojas de cálculo o basados en campos como un solo archivo CSV.
+      text_only_accessible_pdf: Texto (solamente) PDF accesible
+      text_only_accessible_pdf_download_description: Descargue una versión en PDF de esta obra que contiene únicamente las transcripciones del texto, optimizada para lectores de pantalla y tecnologías de asistencia.
       verbatim_plaintext: Texto sin formato textual
       verbatim_plaintext_export_description: Exporta transcripciones textuales de texto sin formato como un archivo zip que contiene un archivo por página.
       verbatim_plaintext_zero_index: Archivo zip de capacitación de Transkribus
