@@ -76,7 +76,7 @@ pt:
       revision: revisão
     download:
       accessible_pdf: PDF acessível
-      accessible_pdf_export_description: Baixe uma versão em PDF deste trabalho otimizada para leitores de tela e tecnologias assistivas.
+      accessible_pdf_export_description: Baixe uma versão em PDF desta obra otimizada para leitores de tela e tecnologias assistivas.
       analyze: Analisar
       configurable_printout: Impressão Configurável
       configurable_printout_button: configurar
@@ -104,8 +104,6 @@ pt:
       subject_index_csv_description: Uma planilha listando cada lugar em que um assunto é mencionado em uma página dentro da obra.
       table_field_csv: CSV de tabela/campo
       table_field_csv_export_description: Exporte todos os dados tabulares, de planilha ou baseados em campo como um único arquivo CSV.
-      text_only_accessible_pdf: Texto (somente) PDF acessível
-      text_only_accessible_pdf_download_description: Baixe uma versão em PDF desta obra contendo apenas as transcrições de texto, otimizada para leitores de tela e tecnologias assistivas.
       verbatim_plaintext: Texto simples literal
       verbatim_plaintext_export_description: Exporte transcrições em texto simples como um arquivo zip contendo um arquivo por página.
       verbatim_plaintext_zero_index: Zip de treinamento Transkribus

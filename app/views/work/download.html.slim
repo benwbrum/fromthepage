@@ -20,8 +20,8 @@
           span =button_to t('.download'), export_printable_path(@collection, @work), class: 'btnExport', params: { edition: 'text', format: 'doc', method: :post }
       li
         .bulk-export_format
-          h5= t('.text_only_accessible_pdf')
-          p.nomargin= t('.text_only_accessible_pdf_download_description')
+          h5= t('.accessible_pdf')
+          p.nomargin= t('.accessible_pdf_download_description')
         .bulk-export_options
           span =button_to t('.download'), export_grover_printable_path(@collection, @work), class: 'btnExport', params: { edition: 'text', method: :post }
 

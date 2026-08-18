@@ -104,8 +104,6 @@ es:
       subject_index_csv_description: Una hoja de cálculo que enumera cada lugar donde se menciona un tema dentro de una página dentro de la obra.
       table_field_csv: CSV de tabla/campo
       table_field_csv_export_description: Exporta todos los datos tabulares, de hojas de cálculo o basados en campos como un solo archivo CSV.
-      text_only_accessible_pdf: Texto (solamente) PDF accesible
-      text_only_accessible_pdf_download_description: Descargue una versión en PDF de esta obra que contiene únicamente las transcripciones del texto, optimizada para lectores de pantalla y tecnologías de asistencia.
       verbatim_plaintext: Texto sin formato textual
       verbatim_plaintext_export_description: Exporta transcripciones textuales de texto sin formato como un archivo zip que contiene un archivo por página.
       verbatim_plaintext_zero_index: Archivo zip de capacitación de Transkribus

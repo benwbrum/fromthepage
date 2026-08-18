@@ -104,8 +104,6 @@ en:
       subject_index_csv_description: A spreadsheet listing each place a subject is mentioned within a page within the work.
       table_field_csv: Table/Field CSV
       table_field_csv_export_description: Export all tabular, spreadsheet, or field-based data as a single CSV file.
-      text_only_accessible_pdf: Text (only) Accessible PDF
-      text_only_accessible_pdf_download_description: Download a PDF version of this work containing text transcripts only, optimized for screen readers and assistive technologies.
       verbatim_plaintext: Verbatim Plaintext
       verbatim_plaintext_export_description: Export verbatim, plaintext transcripts as a zip file containing one file per page.
       verbatim_plaintext_zero_index: Transkribus Training Zip

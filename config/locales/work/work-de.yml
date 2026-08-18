@@ -104,8 +104,6 @@ de:
       subject_index_csv_description: Eine Tabelle, in der jede Stelle aufgeführt ist, an der ein Thema auf einer Seite des Werks erwähnt wird.
       table_field_csv: Tabelle/Felder CSV
       table_field_csv_export_description: Exportieren Sie alle tabellarischen, tabellen- oder feldbasierten Daten als eine einzige CSV-Datei.
-      text_only_accessible_pdf: Nur Text (Barrierefreies PDF)
-      text_only_accessible_pdf_download_description: Laden Sie eine PDF-Version dieses Werkes herunter, die nur Texttranskripte enthält und für Bildschirmleseprogramme und assistive Technologien optimiert ist.
       verbatim_plaintext: Wörtlicher Klartext
       verbatim_plaintext_export_description: Exportieren Sie wörtliche Transkripte im Klartext als ZIP-Datei mit einer Datei pro Seite.
       verbatim_plaintext_zero_index: Transkribus-Training-ZIP
