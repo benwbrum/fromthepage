@@ -76,7 +76,8 @@ en:
       revision: revision
     download:
       accessible_pdf: Accessible PDF
-      accessible_pdf_export_description: Download a PDF version of this work optimized for screen readers and assistive technologies.
+      accessible_pdf_download_description: Download a PDF version of this work optimized for screen readers and assistive technologies.
+      accessible_pdf_export_description: Export a PDF version of this work optimized for screen readers and assistive technologies.
       analyze: Analyze
       configurable_printout: Configurable Printout
       configurable_printout_button: Configure

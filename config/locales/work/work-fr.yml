@@ -76,6 +76,7 @@ fr:
       revision: révision
     download:
       accessible_pdf: PDF accessible
+      accessible_pdf_download_description: Téléchargez une version PDF de cet ouvrage optimisée pour les lecteurs d'écran et les technologies d'assistance.
       accessible_pdf_export_description: Téléchargez une version PDF de cet ouvrage optimisée pour les lecteurs d'écran et les technologies d'assistance.
       analyze: Analyser
       configurable_printout: Impression configurable

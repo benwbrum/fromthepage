@@ -76,6 +76,7 @@ pt:
       revision: revisão
     download:
       accessible_pdf: PDF acessível
+      accessible_pdf_download_description: Baixe uma versão em PDF deste obra otimizada para leitores de tela e tecnologias assistivas.
       accessible_pdf_export_description: Baixe uma versão em PDF desta obra otimizada para leitores de tela e tecnologias assistivas.
       analyze: Analisar
       configurable_printout: Impressão Configurável

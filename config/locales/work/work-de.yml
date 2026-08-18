@@ -76,6 +76,7 @@ de:
       revision: Revision
     download:
       accessible_pdf: Barrierefreies PDF
+      accessible_pdf_download_description: Laden Sie eine für Bildschirmleseprogramme und assistive Technologien optimierte PDF-Version dieses Werkes herunter.
       accessible_pdf_export_description: Laden Sie eine für Bildschirmleseprogramme und assistive Technologien optimierte PDF-Version dieses Werkes herunter.
       analyze: Analysieren
       configurable_printout: Konfigurierbarer Ausdruck
