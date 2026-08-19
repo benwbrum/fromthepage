@@ -18,13 +18,12 @@
           p.nomargin= t('.docx_download_description')
         .bulk-export_options
           span =button_to t('.download'), export_printable_path(@collection, @work), class: 'btnExport', params: { edition: 'text', format: 'doc', method: :post }
-      -if current_user.admin? || user_masquerade?
-        li
-          .bulk-export_format
-            h5= t('.html_pdf')
-            p.nomargin= t('.html_pdf_download_description')
-          .bulk-export_options
-            span =button_to t('.download'), export_grover_printable_path(@collection, @work), class: 'btnExport', params: { edition: 'text', method: :post }
+      li
+        .bulk-export_format
+          h5= t('.accessible_pdf')
+          p.nomargin= t('.accessible_pdf_download_description')
+        .bulk-export_options
+          span =button_to t('.download'), export_grover_printable_path(@collection, @work), class: 'btnExport', params: { edition: 'text', method: :post }
 
     h2.nomargin= t('.experiment')
     ul.bulk-export
@@ -88,17 +87,16 @@
               =f.hidden_field :facing_edition_work, value: true
               =f.submit t('.export')
 
-        -if current_user.admin? || user_masquerade?
-          li
-            .bulk-export_format
-              h5= t('.html_facing_pdf')
-              p.nomargin= t('.html_facing_pdf_export_description')
-            .bulk-export_options
-              =form_for :bulk_export, url: bulk_export_create_for_work_path do |f|
-                =f.hidden_field :collection_id, value: @collection.slug
-                =hidden_field_tag :work_id, @work.id
-                =f.hidden_field :html_facing_edition_work, value: true
-                =f.submit t('.export')
+        li
+          .bulk-export_format
+            h5= t('.accessible_pdf')
+            p.nomargin= t('.accessible_pdf_export_description')
+          .bulk-export_options
+            =form_for :bulk_export, url: bulk_export_create_for_work_path do |f|
+              =f.hidden_field :collection_id, value: @collection.slug
+              =hidden_field_tag :work_id, @work.id
+              =f.hidden_field :accessible_pdf_work, value: true
+              =f.submit t('.export')
 
         li
           .bulk-export_format
