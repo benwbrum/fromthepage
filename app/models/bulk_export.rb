@@ -3,6 +3,7 @@
 # Table name: bulk_exports
 #
 #  id                                 :integer          not null, primary key
+#  accessible_pdf_work                :boolean
 #  admin_searches                     :boolean
 #  collection_activity                :boolean
 #  collection_contributors            :boolean

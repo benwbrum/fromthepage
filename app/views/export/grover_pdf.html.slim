@@ -1,0 +1,25 @@
+-@pages.each do |page|
+  -if @edition_type == 'facing'
+    .img-container
+      img src=page.image_url_for_download
+
+    .page-break
+
+  h2 =page.title
+
+  -if !page.status_blank? && !page.source_text.blank?
+    ==xml_to_html(page.xml_text, @preserve_lb, @flatten_links)
+
+  -if @work.supports_translation && !page.source_translation.blank?
+    h2 =t('export.facing_edition.translation')
+    ==xml_to_html(page.xml_translation, @preserve_lb, @flatten_links)
+
+  -if @include_notes && page.notes.size > 0
+    br
+    br
+
+    h3 =t('export.facing_edition.notes')
+    -page.notes.each do |note|
+      p.indent ="#{note.user.display_name}: #{note.body}"
+
+  .page-break

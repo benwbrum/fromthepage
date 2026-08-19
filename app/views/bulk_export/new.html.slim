@@ -127,6 +127,16 @@
             =f.label :facing_edition_work
               =f.check_box :facing_edition_work, value: @bulk_export.facing_edition_work
               span= t('.one_file_per_work')
+
+        li
+          .bulk-export_format
+            h5= t('.accessible_pdf')
+            p.nomargin= t('.accessible_pdf_description')
+          .bulk-export_options
+            =f.label :accessible_pdf_work
+              =f.check_box :accessible_pdf_work, value: @bulk_export.accessible_pdf_work
+              span= t('.one_file_per_work')
+
         li
           .bulk-export_format
             h5= t('.table_field_csv')
@@ -138,6 +148,7 @@
             =f.label :table_csv_collection
               =f.check_box :table_csv_collection, value: @bulk_export.table_csv_collection
               span= t('.one_file_per_collection')
+
         li
           .bulk-export_format
             h5= t('.subject_details_csv')
