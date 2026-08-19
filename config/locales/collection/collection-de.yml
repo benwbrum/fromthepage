@@ -273,6 +273,8 @@ de:
       quality_control: Qualitätskontrolle
       task_configuration: Aufgabenkonfiguration
     edit_tasks:
+      ai_draft_disabled: KI-Entwürfe deaktivieren
+      ai_draft_disabled_description: Deaktivieren Sie AI Drafts für alle Benutzer außer dem Sammlungsinhaber.
       alert: Bitte passen Sie die Felder an oder wählen Sie unter Transkriptionstyp die dokumentbasierte Transkription aus.
       disable_ocr: OCR deaktivieren
       document_based_transcription: Dokumentbasierte Transkription

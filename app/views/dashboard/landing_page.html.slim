@@ -42,7 +42,8 @@
           =link_to project.owner.display_name, user_profile_path(project.owner)
 
     h2 =t('.recent_activity')
-    =deeds_for()
+    turbo-frame id="lazy_deeds" src=dashboard_deeds_path(all: true) loading="lazy"
+      = render partial: 'shared/components/loading'
 
 -content_for :javascript
   javascript:

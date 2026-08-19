@@ -136,6 +136,32 @@
   }
 }
 
+// ---------------------------
+// LOCAL BUSY INDICATOR
+// ---------------------------
+
+.busy-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .busy {
+    display: inline-block;
+
+    &::before {
+      content: '';
+      display: block;
+      width: 48px;
+      height: 48px;
+
+      @include background-svg(48, 48, svg-spinner(#231d1d));
+
+      animation: spinner 1s steps(12) infinite;
+      transform-origin: center;
+    }
+  }
+}
 
 // ---------------------------
 // IMAGE UPLOAD FORM

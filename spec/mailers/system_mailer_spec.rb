@@ -70,5 +70,32 @@ RSpec.describe SystemMailer, type: :mailer do
         expect(mail.subject).to eq("CONTENTdm Sync Finished for #{collection.title}")
       end
     end
+
+    context 'when sync log is very long' do
+      let(:full_log_contents) { (1..250).map { |n| "line #{n}" }.join("\n") }
+
+      before do
+        allow(ContentdmTranslator).to receive(:log_contents).and_return(full_log_contents)
+      end
+
+      it 'includes only the last 200 lines in the email body' do
+        mail = SystemMailer.cdm_sync_finished(collection)
+        expect(mail.body.encoded).to include('line 250')
+        expect(mail.body.encoded).to include('line 51')
+        expect(mail.body.encoded).not_to include('line 50')
+      end
+    end
+
+    context 'when failure text appears before the last 200 lines' do
+      let(:full_log_contents) do
+        (['failed: export error on first work'] + (1..220).map { |n| "line #{n}" }).join("\n")
+      end
+
+      it 'keeps failure subject detection based on the full log' do
+        allow(ContentdmTranslator).to receive(:log_contents).and_return(full_log_contents)
+        mail = SystemMailer.cdm_sync_finished(collection)
+        expect(mail.subject).to eq("CONTENTdm Sync Finished with Failures for #{collection.title}")
+      end
+    end
   end
 end

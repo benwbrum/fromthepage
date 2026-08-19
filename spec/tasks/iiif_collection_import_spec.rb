@@ -62,8 +62,8 @@ RSpec.describe 'IIIF Collection Import Rake Task' do
 
         sc_collection = ScCollection.collection_for_v3_hash(v3_collection_hash)
 
-        # Mock URI.open to return v2 manifest when manifest is fetched
-        allow(URI).to receive(:open).and_return(double(read: v2_manifest_json))
+        stub_request(:get, 'https://example.com/manifest/v2')
+          .to_return(status: 200, body: v2_manifest_json)
 
         # Simulate the rake task logic
         manifest = sc_collection.manifests.first
@@ -104,8 +104,8 @@ RSpec.describe 'IIIF Collection Import Rake Task' do
 
         sc_collection = ScCollection.collection_for_v3_hash(v3_collection_hash)
 
-        # Mock URI.open to return v3 manifest when manifest is fetched
-        allow(URI).to receive(:open).and_return(double(read: v3_manifest_json))
+        stub_request(:get, 'https://example.com/manifest/v3')
+          .to_return(status: 200, body: v3_manifest_json)
 
         # Simulate the rake task logic
         manifest = sc_collection.manifests.first
@@ -145,11 +145,12 @@ RSpec.describe 'IIIF Collection Import Rake Task' do
           ]
         }.to_json
 
-        allow(URI).to receive(:open).and_return(double(read: v2_collection_json))
+        stub_request(:get, 'https://example.com/collection/v2')
+          .to_return(status: 200, body: v2_collection_json)
         sc_collection = ScCollection.collection_for_at_id('https://example.com/collection/v2')
 
-        # Mock URI.open to return v2 manifest when manifest is fetched
-        allow(URI).to receive(:open).and_return(double(read: v2_manifest_json))
+        stub_request(:get, 'https://example.com/manifest/v2')
+          .to_return(status: 200, body: v2_manifest_json)
 
         # Simulate the rake task logic
         manifest = sc_collection.manifests.first

@@ -6,9 +6,9 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception, except: [:switch_locale, :saml]
 
   before_action do
-    if current_user && current_user.admin
-      Rack::MiniProfiler.authorize_request
-    end
+    next unless current_user&.admin
+
+    Rack::MiniProfiler.authorize_request
   end
 
   before_action :load_objects_from_params
@@ -282,7 +282,7 @@ class ApplicationController < ActionController::Base
   end
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_up) { |u| u.permit(:login, :email, :password, :password_confirmation, :display_name, :owner, :paid_date, :activity_email) }
+    devise_parameter_sanitizer.permit(:sign_up) { |u| u.permit(:login, :email, :password, :password_confirmation, :display_name, :activity_email) }
     devise_parameter_sanitizer.permit(:sign_in) { |u| u.permit(:login_id, :login, :email, :password, :remember_me) }
     devise_parameter_sanitizer.permit(:account_update) { |u| u.permit(:login, :email, :password, :current_password, :password_confirmation, :real_name) }
   end
@@ -448,6 +448,8 @@ end
 private
 
 def store_current_location
+  return if turbo_frame_request?
+
   store_location_for(:user, request.url)
 end
 

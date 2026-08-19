@@ -19,6 +19,22 @@ p
   strong Error:
 pre =ai_transcription.error_message.presence || 'Error details not provided'
 
+details
+  summary Prompt
+  pre =ai_transcription.prompt.presence || 'Not provided'
+
+details
+  summary Returned text
+  pre =ai_transcription.source_text.presence || 'Not provided'
+
+details
+  summary Reasoning
+  pre =ai_transcription.reasoning.presence || 'Not provided'
+
+details
+  summary Metadata
+  pre =ai_transcription.metadata.present? ? JSON.pretty_generate(ai_transcription.metadata) : 'Not provided'
+
 -if provider_details.present?
   h4 Provider details
   table.collection-settings

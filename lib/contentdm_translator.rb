@@ -271,12 +271,18 @@ module ContentdmTranslator
     server = get_cdm_host_from_url("#{uri.scheme}://#{uri.host}")
     raise 'ContentDM URLs must be of the form http://cdmNNNNN.contentdm.oclc.org/...' if server.nil?
 
-    matches = uri.path.match(/.*collection\/(\w+)(?:\/id\/(\d+))?/)
+    matches = uri.path.match(%r{.*collection/([^/]+)(?:/id/(\d+)(?:/.*)?)?\z})
+
+    if uri.path.include?('/id/') && (!matches || matches[2].nil?)
+      raise ArgumentError, "ContentDM item URL contains /id/ but no valid numeric record ID: #{url}"
+    end
 
     if matches
       collection = matches[1]
       record = matches[2]
     end
+
+    record = cdm_parent_record(server, collection, record) || record if record
 
     # support back-level CONTENTdm IIIF presentation implementation
     if server && collection && record
@@ -307,6 +313,23 @@ module ContentdmTranslator
 
     new_uri
   end
+
+  def self.cdm_parent_record(server, collection, record)
+    collection_path = URI.encode_www_form_component(collection)
+    item_url = "https://#{server}.contentdm.oclc.org/digital/api/singleitem/collection/#{collection_path}/id/#{record}"
+    item = JSON.parse(URI.open(item_url).read)
+    parent_id = item['parentId'] || item.dig('objectInfo', 'parentId')
+    return if parent_id.blank?
+
+    parent_id = parent_id.to_s
+    unless parent_id.match?(/\A-?\d+\z/)
+      raise ArgumentError, "CONTENTdm returned an invalid parent ID for record #{record}"
+    end
+    return unless parent_id.to_i.positive?
+
+    parent_id
+  end
+  private_class_method :cdm_parent_record
 
   def self.sample_manifest(collection)
     imported_work = collection.works.joins(:sc_manifest).last

@@ -85,6 +85,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_18_164441) do
     t.decimal "text_wer_distance", precision: 10
     t.decimal "text_wer_length", precision: 10
     t.decimal "verbatim_non_stopword_accuracy", precision: 10
+    t.index ["created_at", "model", "status"], name: "idx_ai_transcriptions_dashboard"
     t.index ["page_id", "id"], name: "index_ai_transcriptions_on_page_id_and_id"
     t.index ["page_id"], name: "index_ai_transcriptions_on_page_id"
     t.index ["status", "updated_at"], name: "index_ai_transcriptions_on_status_and_updated_at"
@@ -310,6 +311,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_18_164441) do
     t.text "legend"
     t.string "default_overview_orientation"
     t.boolean "hide_notes", default: false
+    t.boolean "ai_draft_disabled", default: false
     t.index ["owner_user_id"], name: "index_collections_on_owner_user_id"
     t.index ["restricted"], name: "index_collections_on_restricted"
     t.index ["slug"], name: "index_collections_on_slug", unique: true

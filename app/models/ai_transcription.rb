@@ -29,6 +29,7 @@
 #
 # Indexes
 #
+#  idx_ai_transcriptions_dashboard                   (created_at,model,status)
 #  index_ai_transcriptions_on_page_id                (page_id)
 #  index_ai_transcriptions_on_page_id_and_id         (page_id,id)
 #  index_ai_transcriptions_on_status                 (status)
@@ -95,6 +96,10 @@ class AiTranscription < ApplicationRecord
     self.class.engine_for_model(model)
   end
 
+  def normalize_model!
+    update!(model: DEFAULT_MODEL) if model == 'gemini-3-pro-preview'
+  end
+
   def self.engine_for_model(model)
     model.to_s.start_with?('claude') ? 'claude' : 'gemini'
   end
@@ -102,7 +107,7 @@ class AiTranscription < ApplicationRecord
   def error_message
     return if metadata.blank? || !metadata.is_a?(Hash)
 
-    metadata['error_message']
+    AiTranscription::Lib::ErrorMessageSanitizer.sanitize(metadata['error_message'])
   end
 
   def provider_error_details

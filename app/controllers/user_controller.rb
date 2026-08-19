@@ -73,7 +73,7 @@ class UserController < ApplicationController
         user: @user
       ).perform
 
-      if @user.save!
+      if @user.save
         flash[:notice] = t('.user_updated')
         ajax_redirect_to({ action: 'profile', user_id: @user.slug, anchor: '' })
       else

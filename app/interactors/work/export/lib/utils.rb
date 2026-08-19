@@ -145,7 +145,7 @@ class Work::Export::Lib::Utils
       process_table(page, element, preserve_lb, flatten_links)
     when 'tr', 'row'
       element.elements.to_a('th|td').map { |td| process_element(page, td, preserve_lb, flatten_links) }.join(' & ') + " \\\\\n"
-    when 'td'
+    when 'td', 'th'
       content
     when 'link'
       process_links(element, content, flatten_links)

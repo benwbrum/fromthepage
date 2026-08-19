@@ -246,7 +246,10 @@ class IaWork < ApplicationRecord
   private
 
   def open_doc(url)
-    doc = Nokogiri::XML(URI.open(url).read.force_encoding('utf-8'), nil, 'utf-8')
+    uri = URI.parse(url)
+    raise ArgumentError, 'document URL must use HTTP or HTTPS' unless uri.is_a?(URI::HTTP)
+
+    doc = Nokogiri::XML(uri.open.read.force_encoding('utf-8'), nil, 'utf-8')
 
     doc
   end

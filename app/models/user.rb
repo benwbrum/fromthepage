@@ -54,6 +54,9 @@
 #  index_users_on_slug                  (slug) UNIQUE
 #
 class User < ApplicationRecord
+  WEBSITE_SCHEME_REGEX = /\Ahttps?:\/\//i
+  ANY_SCHEME_REGEX = /\A[a-z][a-z0-9+\-.]*:\/\//i
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable, :masqueradable,
@@ -142,11 +145,12 @@ class User < ApplicationRecord
                     exclusion: { in: %w[transcribe translate work collection deed],
                                  message: ->(_, _) { I18n.t('devise.errors.messages.login.exclusion') } }
 
-  validates :website, allow_blank: true, format: { with: URI.regexp }
+  validate :website_format
   validate :email_does_not_match_denylist
   validate :display_name_presence
   validate :email_domain_blacklist, if: -> { validation_context == :registration }
 
+  before_validation :normalize_website
   before_validation :update_display_name
 
   after_save :create_notifications
@@ -203,6 +207,28 @@ class User < ApplicationRecord
     else
       self[:display_name] = self.login
     end
+  end
+
+  def normalize_website
+    return if website.nil?
+
+    normalized_website = website.strip
+    if normalized_website.present? && !normalized_website.match?(ANY_SCHEME_REGEX)
+      normalized_website = "https://#{normalized_website}"
+    end
+
+    self.website = normalized_website
+  end
+
+  def website_format
+    return if website.blank?
+
+    parsed_website = URI.parse(website)
+    return if parsed_website.is_a?(URI::HTTP) && parsed_website.host.present? && parsed_website.userinfo.nil?
+
+    errors.add(:website, :invalid)
+  rescue URI::InvalidURIError
+    errors.add(:website, :invalid)
   end
 
   def self.from_omniauth(access_token)

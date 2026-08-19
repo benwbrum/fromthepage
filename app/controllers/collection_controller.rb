@@ -1,5 +1,7 @@
 # handles administrative tasks for the collection object
 class CollectionController < ApplicationController
+  DEEDS_DEFAULT_LIMIT = 20
+
   include ApplicationHelper
   include ContributorHelper
   include AddWorkHelper
@@ -15,7 +17,7 @@ class CollectionController < ApplicationController
 
   edit_actions = [:edit, :edit_tasks, :edit_look, :edit_privacy, :edit_help, :edit_quality_control, :edit_danger]
 
-  before_action :set_collection, only: edit_actions + [:show, :update, :contributors, :new_work, :works_list, :needs_transcription_pages, :needs_review_pages, :start_transcribing]
+  before_action :set_collection, only: edit_actions + [:show, :update, :contributors, :new_work, :works_list, :needs_transcription_pages, :needs_review_pages, :start_transcribing, :deeds]
   before_action :authorized?, only: [
     :new,
     :edit,
@@ -530,6 +532,12 @@ class CollectionController < ApplicationController
   end
 
   def edit_tasks
+    @has_finished_ai_transcription =
+      @collection.pages
+        .joins(:ai_transcriptions)
+        .where(ai_transcriptions: { status: :finished })
+        .exists?
+
     flash.now[:info] = t('.alert') if @collection.field_based && !@collection.transcription_fields.present?
   end
 
@@ -571,6 +579,11 @@ class CollectionController < ApplicationController
     respond_to do |format|
       template = case params[:scope]
       when 'edit_tasks'
+                   @has_finished_ai_transcription =
+                     @collection.pages
+                       .joins(:ai_transcriptions)
+                       .where(ai_transcriptions: { status: :finished })
+                       .exists?
                    'collection/update_tasks'
       when 'edit_look'
                    'collection/update_look'
@@ -755,6 +768,20 @@ class CollectionController < ApplicationController
     ajax_redirect_to(collection_path(@collection.owner, @collection))
   end
 
+  def deeds
+    deed_options = {
+      collection: @collection,
+      limit: params[:limit].present? ? params[:limit].to_i : DEEDS_DEFAULT_LIMIT
+    }
+
+    deed_options[:types] = params[:types] if params[:types].present?
+    deed_options[:long_view] = ActiveRecord::Type::Boolean.new.cast(params[:long_view]) if params[:long_view].present?
+
+    render turbo_stream: turbo_stream.replace(
+      'lazy_deeds', partial: 'deeds', locals: { collection: @collection, deed_options: deed_options }
+    )
+  end
+
   private
 
   def authorized?
@@ -815,6 +842,7 @@ class CollectionController < ApplicationController
       :review_type,
       :hide_completed,
       :hide_notes,
+      :ai_draft_disabled,
       :text_language,
       :default_orientation,
       :default_overview_orientation,

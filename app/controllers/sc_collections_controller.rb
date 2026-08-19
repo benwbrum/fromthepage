@@ -1,8 +1,10 @@
 require 'open-uri'
 require 'contentdm_translator'
+require 'shellwords'
 
 class ScCollectionsController < ApplicationController
   before_action :set_sc_collection, only: %i[show edit update destroy explore_manifest import_manifest]
+  before_action :require_authenticated_user, only: %i[import_collection convert_manifest cdm_bulk_import_new cdm_bulk_import_create]
 
   respond_to :html
 
@@ -56,7 +58,7 @@ class ScCollectionsController < ApplicationController
   end
 
   def import
-    at_id = params[:at_id]
+    at_id = params[:at_id].strip
 
     begin
       version = detect_version(at_id)
@@ -173,23 +175,28 @@ class ScCollectionsController < ApplicationController
       collection = Collection.find_by(id: collection_id)
     end
 
+    unless collection && current_user.like_owner?(collection)
+      redirect_to dashboard_path
+      return
+    end
+
     # make sure import folder exists
     Dir.mkdir("#{Rails.root}/public/imports") unless Dir.exist?("#{Rails.root}/public/imports")
     # create logfile for collection
     log_file = "#{Rails.root}/public/imports/#{collection_id}_iiif.log"
 
     # map an array of at_ids for the selected manifests
-    manifest_array = params[:manifest_id].keys.map { |id| id }
+    manifest_array = params.require(:manifest_id).keys.map(&:to_s)
     # get a list of the manifests to pass to the rake task
     manifest_ids = manifest_array.join(' ')
     # kick off the rake task here, then redirect to the collection
-    rake_call = "#{RAKE} fromthepage:import_iiif_collection[#{sc_collection.id},'#{manifest_ids}',#{collection_id},#{current_user.id},#{import_ocr},#{generate_ai_draft}] --trace >> #{log_file} 2>&1 &"
+    task = "fromthepage:import_iiif_collection[#{sc_collection.id},#{manifest_ids},#{collection_id},#{current_user.id},#{import_ocr},#{generate_ai_draft}]"
+    command = Shellwords.split(RAKE) + [task, '--trace']
+    command = ['nice', '-n', NICE_RAKE_LEVEL.to_s] + command if NICE_RAKE_ENABLED
 
-    # Nice-up the rake call if we have the appropriate settings
-    rake_call = "nice -n #{NICE_RAKE_LEVEL} " << rake_call if NICE_RAKE_ENABLED
-
-    logger.info rake_call
-    system(rake_call)
+    logger.info command.shelljoin
+    pid = Process.spawn(*command, out: [log_file, 'a'], err: [:child, :out])
+    Process.detach(pid)
     # flash notice about the rake task
     flash[:notice] = t('.import_is_processing')
 
@@ -296,6 +303,10 @@ class ScCollectionsController < ApplicationController
 
   private
 
+  def require_authenticated_user
+    redirect_to dashboard_path unless user_signed_in?
+  end
+
   def set_sc_collection
     id = params[:sc_collection_id] || params[:id]
     #      @sc_collection = ScCollection.find(id)
@@ -363,7 +374,10 @@ class ScCollectionsController < ApplicationController
       # Retry logic for SSL/EOF errors common with OpenSSL 3.0
       attempts = 0
       begin
-        @raw_manifest = URI.open(at_id, options).read
+        uri = URI.parse(at_id)
+        raise ArgumentError, 'manifest URL must use HTTP or HTTPS' unless uri.is_a?(URI::HTTP)
+
+        @raw_manifest = uri.open(options).read
       rescue OpenSSL::SSL::SSLError, EOFError => e
         attempts += 1
         retry if attempts < 2

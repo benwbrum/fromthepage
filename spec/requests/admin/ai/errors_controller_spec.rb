@@ -7,7 +7,15 @@ describe Admin::Ai::ErrorsController do
   let!(:collection) { create(:collection, owner_user_id: owner.id) }
   let!(:work) { create(:work, collection: collection) }
   let!(:page) { create(:page, work: work) }
-  let!(:ai_transcription_error) { create(:ai_transcription, page_id: page.id, status: :error, metadata: { 'error_message' => 'Test error' }) }
+  let!(:ai_transcription_error) do
+    create(:ai_transcription,
+           page_id: page.id,
+           status: :error,
+           prompt: 'Test prompt',
+           source_text: 'Returned transcription',
+           reasoning: 'Test reasoning',
+           metadata: { 'error_message' => 'Test error', 'prompt_token_count' => 123 })
+  end
   let!(:ai_transcription_finished) { create(:ai_transcription, page_id: page.id, status: :finished) }
 
   describe '#index' do
@@ -79,6 +87,16 @@ describe Admin::Ai::ErrorsController do
       expect(assigns(:page)).to eq(page)
       expect(assigns(:work)).to eq(work)
       expect(assigns(:collection)).to eq(collection)
+    end
+
+    it 'shows collapsible diagnostic details' do
+      login_as admin
+      subject
+
+      expect(response.body).to include('<summary>Prompt</summary>', 'Test prompt')
+      expect(response.body).to include('<summary>Returned text</summary>', 'Returned transcription')
+      expect(response.body).to include('<summary>Reasoning</summary>', 'Test reasoning')
+      expect(response.body).to include('<summary>Metadata</summary>', '&quot;prompt_token_count&quot;: 123')
     end
 
     context 'when record is not an error' do
