@@ -130,7 +130,7 @@ describe 'document sets' do
 
   it "views document sets - regular user" do
     # need to restrict collection to test user view
-    collection.restricted = true
+    collection.visibility = :private
     collection.save!
     # user with no privileges first
     login_as(user, scope: :user)

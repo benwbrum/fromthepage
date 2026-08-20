@@ -310,7 +310,7 @@ describe 'collection settings tasks' do
 
   it "does not show 'Collaboration is restricted' for unrestricted works when not logged in" do
     # Ensure the collection is public
-    collection.restricted = false
+    collection.visibility = :public
     collection.save!
 
     # Ensure we have a work with untranscribed pages that is not restricted
@@ -334,7 +334,7 @@ describe 'collection settings tasks' do
 
   it "shows 'Collaboration is restricted' for restricted works when not logged in" do
     # Ensure the collection is public
-    collection.restricted = false
+    collection.visibility = :public
     collection.save!
 
     # Create a restricted work with untranscribed pages

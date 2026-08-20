@@ -511,7 +511,7 @@ class User < ApplicationRecord
 
     self.collections.each do |c|
       c.is_active = false
-      c.restricted = true
+      c.visibility = :private
       c.save
     end
 

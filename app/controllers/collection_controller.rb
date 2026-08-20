@@ -477,7 +477,7 @@ class CollectionController < ApplicationController
   end
 
   def publish_collection
-    @collection.restricted = false
+    @collection.visibility = :public
     @collection.save!
     redirect_back fallback_location: edit_privacy_collection_path(@collection.owner, @collection)
   end
@@ -496,7 +496,7 @@ class CollectionController < ApplicationController
   end
 
   def restrict_collection
-    @collection.restricted = true
+    @collection.visibility = :private
     @collection.save!
     redirect_back fallback_location: edit_privacy_collection_path(@collection.owner, @collection)
   end
