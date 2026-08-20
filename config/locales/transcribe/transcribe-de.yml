@@ -31,6 +31,17 @@ de:
       more_help: Mehr Hilfe....
       needs_review: Überprüfung erforderlich
       notes_and_questions: Anmerkungen und Fragen
+      previous_work_title: Titel für Seiten 1–%{n}
+      segmentation_cancel: Abbrechen
+      segmentation_candidate: Das sieht nach einem neuen Dokument aus. Soll es in ein neues Werk aufgeteilt werden?
+      segmentation_confirm: Teilen
+      segmentation_dismiss: Verwerfen
+      segmentation_no: Nein
+      segmentation_split_confirm_message: Soll dies ab hier in ein neues Werk aufgeteilt werden?
+      segmentation_success: "„%{title}“ mit %{count} Seiten erstellt."
+      segmentation_view_work: Neues Werk ansehen
+      segmentation_yes: Ja, hier teilen
+      split_into_new_work: In ein neues Werk teilen
       this_page_marked_blank: Diese Seite ist als leer gekennzeichnet
       this_page_marked_needs_review: Diese Seite wurde mit "Überprüfung erforderlich" markiert. Sie können diese Seite verbessern, indem Sie sie anhand des Originals Korrektur lesen und den Text ergänzen oder korrigieren. Wenn Sie fertig sind, deaktivieren Sie das Auswahlkästchen „Überprüfung erforderlich“ und speichern Sie die Seite.
       this_page_marked_needs_review_workflow_version: Diese Seite muss überprüft werden. Sie können diese Seite verbessern, indem Sie sie anhand des Originals Korrektur lesen und den Text hinzufügen oder korrigieren, und am Ende den Text dann freigeben.

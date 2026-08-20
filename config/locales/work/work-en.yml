@@ -19,14 +19,14 @@ en:
         pages: Pages
         queued: Queued
         retry: Retry failed jobs
-        total_tokens_used: Total tokens used
-        segmentation: Segment Collection
-        segmentation_description: "By uploading a set of images (i.e. a folder) and then segmenting it, we'll suggest places where documents should be split into individual works."
         segment_collection: Segment Collection
-      update:
-        success: Retrying AI transcription job.
+        segmentation: Segment Collection
+        segmentation_description: By uploading a set of images (i.e. a folder) and then segmenting it, we'll suggest places where documents should be split into individual works.
+        total_tokens_used: Total tokens used
       segment:
         success: Segmentation job launched. You will receive an email when it is complete.
+      update:
+        success: Retrying AI transcription job.
     configurable_printout:
       description: Export this work in a printable format
       export: Export
@@ -46,11 +46,6 @@ en:
       word_wrap: Word Wrap
     create:
       work_created: Work created successfully
-    split_page:
-      success: 'Work "%{title}" created with %{count} pages.'
-      no_previous_pages: There are no pages before this one to split into a new work.
-      create_failed: 'Could not create the new work: %{errors}'
-      unauthorized: You do not have permission to split this work.
     delete:
       success: Work deleted successfully
     describe:
@@ -252,6 +247,10 @@ en:
       source_collection_name: Source Collection Name
       source_location: Source Location
       uploaded_by: Uploaded by
+    split_page:
+      create_failed: 'Could not create the new work: %{errors}'
+      no_previous_pages: There are no pages before this one to split into a new work.
+      unauthorized: You do not have permission to split this work.
     undescribed: No metadata.
     update:
       work_updated: Work updated successfully

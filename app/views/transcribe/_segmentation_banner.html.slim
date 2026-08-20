@@ -11,7 +11,7 @@
             .segmentation-popover(data-segmentation-popover)
               =form_with(url: split_page_collection_work_path(collection.owner, collection, work), method: :post) do |f|
                 =hidden_field_tag :page_id, page.id
-                =label_tag :new_work_title, t('transcribe.display_page.previous_work_title', n: page.position - 1), class: 'segmentation-popover-label'
+                =label_tag :new_work_title, t('transcribe.display_page.previous_work_title', n: page.position - 1), class: 'segmentation-title-label'
                 =text_field_tag :new_work_title, default_split_title(work), class: 'segmentation-title-input'
                 .segmentation-popover-actions
                   button.button.outline(type='button' data-segmentation-cancel)

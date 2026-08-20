@@ -175,7 +175,15 @@ window.addEventListener('DOMContentLoaded', function() {
     if (e.key === 'Escape') { closePopover(); }
   }
 
+  function positionPopover() {
+    var rect = toggleBtn.getBoundingClientRect();
+    var width = popover.offsetWidth || 300;
+    popover.style.top = (rect.bottom + 8) + 'px';
+    popover.style.left = Math.max(8, rect.right - width) + 'px';
+  }
+
   function openPopover() {
+    positionPopover();
     popover.classList.add('open');
     document.addEventListener('click', handleOutsideClick);
     document.addEventListener('keydown', handleEscape);
@@ -205,10 +213,31 @@ window.addEventListener('DOMContentLoaded', function() {
 window.addEventListener('DOMContentLoaded', function() {
   var splitToggleBtn = document.querySelector('[data-segmentation-split-toggle]');
   var splitStrip = document.querySelector('[data-segmentation-split-strip]');
+  var splitCancelBtn = document.querySelector('[data-segmentation-split-cancel]');
+  var splitTitleInput = document.querySelector('[data-segmentation-split-title]');
+  var splitLink = document.querySelector('[data-segmentation-split-link]');
 
   if (!splitToggleBtn || !splitStrip) { return; }
+
+  function syncSplitLinkTitle() {
+    if (!splitLink || !splitTitleInput) { return; }
+    var url = new URL(splitLink.href, window.location.origin);
+    url.searchParams.set('new_work_title', splitTitleInput.value);
+    splitLink.href = url.toString();
+  }
 
   splitToggleBtn.addEventListener('click', function() {
     splitStrip.classList.toggle('open');
   });
+
+  if (splitCancelBtn) {
+    splitCancelBtn.addEventListener('click', function() {
+      splitStrip.classList.remove('open');
+    });
+  }
+
+  if (splitTitleInput) {
+    syncSplitLinkTitle();
+    splitTitleInput.addEventListener('input', syncSplitLinkTitle);
+  }
 });

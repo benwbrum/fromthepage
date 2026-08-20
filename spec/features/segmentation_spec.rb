@@ -27,7 +27,7 @@ describe 'work segmentation UI' do
 
       page.find('[data-segmentation-toggle]').click
       expect(page).to have_css('.segmentation-popover.open')
-      expect(page.find('.segmentation-popover-label')).to have_content('Title for pages 1–1')
+      expect(page.find('.segmentation-title-label')).to have_content('Title for pages 1–1')
       expect(page.find_field('new_work_title').value).to eq('Letters to Rosannah, part one')
 
       within('.segmentation-popover') { click_button 'Cancel' }
@@ -39,6 +39,11 @@ describe 'work segmentation UI' do
 
       expect(page).to have_content('Created "Letters to Rosannah, part one" with 1 pages.')
       expect(work.reload.pages.count).to eq(1)
+
+      new_work = Work.find_by!(title: 'Letters to Rosannah, part one')
+      click_link 'View new work'
+      expect(page).to have_current_path(collection_read_work_path(owner, collection, new_work))
+      expect(page).to have_content('Letters to Rosannah, part one')
     end
   end
 
@@ -59,7 +64,7 @@ describe 'work segmentation UI' do
       let!(:second_page) { create(:page, work: work, position: 2) }
       let!(:third_page) { create(:page, work: work, position: 3, is_first_page_candidate: true) }
 
-      it 'shows a quiet scissors control that confirms a split without the AI banner' do
+      it 'shows a quiet scissors control with the same title field as the AI popover' do
         visit collection_transcribe_page_path(owner, collection, work, second_page)
 
         expect(page).to have_no_content('This looks like a new document.')
@@ -69,11 +74,27 @@ describe 'work segmentation UI' do
         page.find('[data-segmentation-split-toggle]').click
         expect(page).to have_css('.segmentation-split-strip')
         expect(page).to have_content('Split this into a new work starting here?')
+        within('.segmentation-split-strip') do
+          expect(page).to have_css('.segmentation-title-label', text: 'Title for pages 1–1')
+          expect(find_field('new_work_title').value).to eq('Letter one')
+        end
 
-        within('.segmentation-split-strip') { click_link 'Confirm split' }
+        within('.segmentation-split-strip') { click_button 'Cancel' }
+        expect(page).to have_no_css('.segmentation-split-strip.open')
+        expect(work.reload.pages.count).to eq(3)
 
-        expect(page).to have_content('Created "Letter one" with 1 pages.')
+        page.find('[data-segmentation-split-toggle]').click
+        within('.segmentation-split-strip') do
+          fill_in 'new_work_title', with: 'Custom split title'
+          click_link 'Split'
+        end
+
+        expect(page).to have_content('Created "Custom split title" with 1 pages.')
         expect(work.reload.pages.count).to eq(2)
+
+        new_work = Work.find_by!(title: 'Custom split title')
+        click_link 'View new work'
+        expect(page).to have_current_path(collection_read_work_path(owner, collection, new_work))
       end
     end
   end
