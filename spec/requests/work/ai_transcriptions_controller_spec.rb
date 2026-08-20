@@ -65,7 +65,8 @@ describe Work::AiTranscriptionsController do
           subject
 
           expect(response.body).to include('disabled="disabled" type="checkbox" value="1" name="work[edit_metadata_after_split]"')
-          expect(response.body).to include('Please enable and configure metadata creation under Task Configuration.')
+          expect(response.body).to include('Please enable and configure metadata creation under')
+          expect(response.body).to include(%(href="#{edit_tasks_collection_path(owner, collection)}">Task Configuration</a>))
         end
       end
 
@@ -80,7 +81,7 @@ describe Work::AiTranscriptionsController do
           subject
 
           expect(response.body).not_to include('disabled="disabled" type="checkbox" value="1" name="work[edit_metadata_after_split]"')
-          expect(response.body).not_to include('Please enable and configure metadata creation under Task Configuration.')
+          expect(response.body).not_to include('Please enable and configure metadata creation under')
         end
       end
 

@@ -62,7 +62,8 @@
               =t('.edit_metadata_after_split')
             p =t('.edit_metadata_after_split_description')
             -unless collection.metadata_entry? && collection.metadata_fields.exists?
-              p.fglight =t('.edit_metadata_after_split_disabled')
+              -task_configuration_link = link_to(t('.edit_metadata_after_split_disabled_link'), edit_tasks_collection_path(collection.owner, collection))
+              p.fglight =t('.edit_metadata_after_split_disabled', link: task_configuration_link).html_safe
       -if @failed_ai_transcriptions.present?
         tr
           td(colspan="2")

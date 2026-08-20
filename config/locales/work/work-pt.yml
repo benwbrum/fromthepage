@@ -11,7 +11,8 @@ pt:
         description_complete: Todas as páginas desta obra possuem transcrições feitas por IA.
         edit_metadata_after_split: Editar metadados após dividir
         edit_metadata_after_split_description: Após a confirmação em linha da divisão, ir direto para o formulário de metadados da nova obra.
-        edit_metadata_after_split_disabled: Habilite e configure a criação de metadados em Configuração da tarefa.
+        edit_metadata_after_split_disabled: Habilite e configure a criação de metadados em %{link}.
+        edit_metadata_after_split_disabled_link: Configuração da tarefa
         failed: Fracassado
         failed_transcription_errors: Erros de transcrição
         failed_transcription_errors_hidden: "%{count} erros adicionais de transcrição não são exibidos."
