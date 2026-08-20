@@ -372,7 +372,7 @@ class WorkController < ApplicationController
     new_work.update_statistic
     @work.update_statistic
 
-    if params[:edit_metadata_after_split].present? && current_user.like_owner?(@work)
+    if @work.edit_metadata_after_split? && current_user.like_owner?(@work)
       redirect_to edit_metadata_collection_work_path(@collection.owner, @collection, new_work)
       return
     end

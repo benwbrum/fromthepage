@@ -9,6 +9,7 @@
 #  description_status              :string(255)      default("undescribed")
 #  document_date                   :string(255)
 #  document_history                :text(16777215)
+#  edit_metadata_after_split       :boolean          default(FALSE), not null
 #  editorial_notes                 :text(65535)
 #  featured_page                   :integer
 #  genre                           :string(255)

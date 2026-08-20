@@ -576,6 +576,7 @@ Fromthepage::Application.routes.draw do
       resources :work, path: '', only: [] do
         resource :ai_transcriptions, only: [:edit, :create, :update], controller: 'work/ai_transcriptions' do
           post 'segment', on: :member
+          patch 'segmentation_setting', on: :member
         end
         resources :ai_transcriptions, only: [:show], controller: 'work/ai_transcriptions'
       end

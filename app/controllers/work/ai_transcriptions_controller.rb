@@ -41,6 +41,13 @@ class Work::AiTranscriptionsController < WorkController
     redirect_to edit_collection_work_ai_transcriptions_path(@collection.owner, @collection, @work)
   end
 
+  def segmentation_setting
+    @work.update(edit_metadata_after_split: params.dig(:work, :edit_metadata_after_split) == '1')
+
+    calculate_counts
+    respond_to(&:turbo_stream)
+  end
+
   def update
     @result = AiTranscription::BulkRetry.new(
       collection: @collection,

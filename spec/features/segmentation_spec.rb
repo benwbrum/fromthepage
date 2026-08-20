@@ -46,17 +46,18 @@ describe 'work segmentation UI' do
       expect(page).to have_content('Letters to Rosannah, part one')
     end
 
-    it 'sends the owner to the new work metadata form when they opt in' do
-      visit collection_transcribe_page_path(owner, collection, work, flagged_page)
+    context 'when the work has "edit metadata after splitting" enabled' do
+      before { work.update!(edit_metadata_after_split: true) }
 
-      page.find('[data-segmentation-toggle]').click
-      within('.segmentation-popover') do
-        check 'segmentation_edit_metadata_' + flagged_page.id.to_s
-        click_button 'Split'
+      it 'sends the owner to the new work metadata form instead of the inline success banner' do
+        visit collection_transcribe_page_path(owner, collection, work, flagged_page)
+
+        page.find('[data-segmentation-toggle]').click
+        within('.segmentation-popover') { click_button 'Split' }
+
+        new_work = Work.find_by!(title: 'Letters to Rosannah, part one')
+        expect(page).to have_current_path(edit_metadata_collection_work_path(owner, collection, new_work))
       end
-
-      new_work = Work.find_by!(title: 'Letters to Rosannah, part one')
-      expect(page).to have_current_path(edit_metadata_collection_work_path(owner, collection, new_work))
     end
   end
 
@@ -111,19 +112,18 @@ describe 'work segmentation UI' do
       end
     end
 
-    context 'when the owner opts to edit metadata after splitting' do
+    context 'when the work has "edit metadata after splitting" enabled' do
       let!(:first_page) { create(:page, work: work, position: 1, title: 'Letter one') }
       let!(:second_page) { create(:page, work: work, position: 2) }
       let!(:third_page) { create(:page, work: work, position: 3, is_first_page_candidate: true) }
+
+      before { work.update!(edit_metadata_after_split: true) }
 
       it 'sends the owner to the new work metadata form instead of the inline success banner' do
         visit collection_transcribe_page_path(owner, collection, work, second_page)
 
         page.find('[data-segmentation-split-toggle]').click
-        within('.segmentation-split-strip') do
-          check 'segmentation_split_edit_metadata_' + third_page.id.to_s
-          click_link 'Split'
-        end
+        within('.segmentation-split-strip') { click_link 'Split' }
 
         new_work = Work.find_by!(title: 'Letter one')
         expect(page).to have_current_path(edit_metadata_collection_work_path(owner, collection, new_work))

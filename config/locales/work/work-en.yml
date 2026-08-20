@@ -9,6 +9,8 @@ en:
         contact_us: Contact %{email} to upgrade to a plan that includes AI drafts.
         description: Launch AI transcription job for pages in this work.
         description_complete: All pages in this work have AI transcriptions.
+        edit_metadata_after_split: Edit metadata after splitting
+        edit_metadata_after_split_description: When a page is split into a new work, go straight to that work's metadata form instead of the inline confirmation.
         failed: Failed
         failed_transcription_errors: Failed transcription errors
         failed_transcription_errors_hidden: "%{count} additional failed transcription errors are not shown."
@@ -25,6 +27,8 @@ en:
         total_tokens_used: Total tokens used
       segment:
         success: Segmentation job launched. You will receive an email when it is complete.
+      segmentation_setting:
+        success: Segmentation setting saved.
       update:
         success: Retrying AI transcription job.
     configurable_printout:

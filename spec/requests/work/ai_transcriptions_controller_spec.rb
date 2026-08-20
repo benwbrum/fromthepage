@@ -126,6 +126,48 @@ describe Work::AiTranscriptionsController do
     end
   end
 
+  describe '#segmentation_setting' do
+    let(:action_path) { segmentation_setting_collection_work_ai_transcriptions_path(owner, collection, work) }
+
+    let(:subject) { patch action_path, params: { work: { edit_metadata_after_split: '1' } }, as: :turbo_stream }
+
+    it 'renders status and template' do
+      login_as owner
+      subject
+
+      expect(response).to have_http_status(:ok)
+      expect(response).to render_template(:segmentation_setting)
+    end
+
+    it 'persists the setting on the work' do
+      login_as owner
+
+      expect { subject }.to change { work.reload.edit_metadata_after_split? }.from(false).to(true)
+    end
+
+    context 'when unchecking the setting' do
+      let(:subject) { patch action_path, params: { work: { edit_metadata_after_split: '0' } }, as: :turbo_stream }
+
+      before { work.update!(edit_metadata_after_split: true) }
+
+      it 'persists the setting as false' do
+        login_as owner
+
+        expect { subject }.to change { work.reload.edit_metadata_after_split? }.from(true).to(false)
+      end
+    end
+
+    context 'when accessed by non-owner user' do
+      it 'redirects' do
+        login_as user
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(dashboard_path)
+      end
+    end
+  end
+
   describe '#update' do
     let(:action_path) { collection_work_ai_transcriptions_path(owner, collection, work) }
 

@@ -9,6 +9,8 @@ es:
         contact_us: Contacta con %{email} para actualizar a un plan que incluya borradores de IA.
         description: Iniciar la transcripción mediante IA para las páginas de esta obra.
         description_complete: Todas las páginas de esta obra cuentan con transcripciones mediante IA.
+        edit_metadata_after_split: Editar metadatos después de dividir
+        edit_metadata_after_split_description: Cuando una página se divide en una obra nueva, ir directamente al formulario de metadatos de esa obra en lugar de la confirmación en línea.
         failed: Fallido
         failed_transcription_errors: Errores de transcripción fallidos
         failed_transcription_errors_hidden: No se muestran los errores de transcripción adicionales %{count}.
@@ -25,6 +27,8 @@ es:
         total_tokens_used: Total de tokens utilizados
       segment:
         success: Se inició el trabajo de segmentación. Recibirá un correo electrónico cuando haya finalizado.
+      segmentation_setting:
+        success: Configuración de segmentación guardada.
       update:
         success: Reintentando la tarea de transcripción de IA.
     configurable_printout:

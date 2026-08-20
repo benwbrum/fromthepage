@@ -4,11 +4,7 @@
     .segmentation-title-field
       =label_tag "segmentation_split_title_#{page.id}", t('transcribe.display_page.previous_work_title', n: page.position - 1), class: 'segmentation-title-label'
       =text_field_tag :new_work_title, default_split_title(work), id: "segmentation_split_title_#{page.id}", class: 'segmentation-title-input', data: { segmentation_split_title: true }
-    -if current_user.like_owner?(work)
-      .segmentation-metadata-option
-        =check_box_tag :edit_metadata_after_split, '1', false, id: "segmentation_split_edit_metadata_#{page.id}", data: { segmentation_split_edit_metadata: true }
-        =label_tag "segmentation_split_edit_metadata_#{page.id}", t('transcribe.display_page.segmentation_edit_metadata_after_split'), class: 'segmentation-metadata-label'
     .segmentation-banner-actions
       button.button.outline(type='button' data-segmentation-split-cancel)
         =t('transcribe.display_page.segmentation_cancel')
-      =link_to(t('transcribe.display_page.segmentation_confirm'), split_page_collection_work_path(collection.owner, collection, work, page_id: page.id), class: 'button action-btn', data: { turbo: true, turbo_method: :post, segmentation_split_link: true })
+      =link_to(t('transcribe.display_page.segmentation_confirm'), split_page_collection_work_path(collection.owner, collection, work, page_id: page.id), class: 'button action-btn', data: { turbo: true, turbo_method: :post, segmentation_split_link: true, turbo_frame: (work.edit_metadata_after_split? ? '_top' : nil) })

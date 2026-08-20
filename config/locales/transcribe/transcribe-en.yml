@@ -36,7 +36,6 @@ en:
       segmentation_candidate: This looks like a new document. Separate this into a new work?
       segmentation_confirm: Split
       segmentation_dismiss: Dismiss
-      segmentation_edit_metadata_after_split: Edit metadata after splitting
       segmentation_no: 'No'
       segmentation_split_confirm_message: Split this into a new work starting here?
       segmentation_success: Created "%{title}" with %{count} pages.

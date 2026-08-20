@@ -981,20 +981,6 @@
   margin: 0.5rem 0;
 }
 
-.segmentation-metadata-option {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  margin: 0.5rem 0;
-
-  input[type="checkbox"] { margin: 0; }
-
-  .segmentation-metadata-label {
-    font-size: 0.85em;
-    color: $bodyFgDark;
-  }
-}
-
 // Segmentation: human-in-the-loop split control (1b)
 .segmentation-split-strip {
   display: none;

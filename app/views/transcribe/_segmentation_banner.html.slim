@@ -9,14 +9,10 @@
             button.button.action-btn(type='button' data-segmentation-toggle)
               =t('transcribe.display_page.segmentation_yes')
             .segmentation-popover(data-segmentation-popover)
-              =form_with(url: split_page_collection_work_path(collection.owner, collection, work), method: :post) do |f|
+              =form_with(url: split_page_collection_work_path(collection.owner, collection, work), method: :post, data: (work.edit_metadata_after_split? ? { turbo_frame: '_top' } : {})) do |f|
                 =hidden_field_tag :page_id, page.id
                 =label_tag :new_work_title, t('transcribe.display_page.previous_work_title', n: page.position - 1), class: 'segmentation-title-label'
                 =text_field_tag :new_work_title, default_split_title(work), class: 'segmentation-title-input'
-                -if current_user.like_owner?(work)
-                  .segmentation-metadata-option
-                    =check_box_tag :edit_metadata_after_split, '1', false, id: "segmentation_edit_metadata_#{page.id}", data: { segmentation_edit_metadata_toggle: true }
-                    =label_tag "segmentation_edit_metadata_#{page.id}", t('transcribe.display_page.segmentation_edit_metadata_after_split'), class: 'segmentation-metadata-label'
                 .segmentation-popover-actions
                   button.button.outline(type='button' data-segmentation-cancel)
                     =t('transcribe.display_page.segmentation_cancel')

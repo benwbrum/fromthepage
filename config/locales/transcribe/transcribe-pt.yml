@@ -36,7 +36,6 @@ pt:
       segmentation_candidate: Isto parece ser um novo documento. Separar isto em uma nova obra?
       segmentation_confirm: Dividir
       segmentation_dismiss: Descartar
-      segmentation_edit_metadata_after_split: Editar metadados após dividir
       segmentation_no: Não
       segmentation_split_confirm_message: Dividir isto em uma nova obra a partir daqui?
       segmentation_success: Criou-se "%{title}" com %{count} páginas.
