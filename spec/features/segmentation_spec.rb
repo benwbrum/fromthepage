@@ -40,22 +40,29 @@ describe 'work segmentation UI' do
       expect(page).to have_content('Created "Letters to Rosannah, part one" with 1 pages.')
       expect(work.reload.pages.count).to eq(1)
 
-      new_work = Work.find_by!(title: 'Letters to Rosannah, part one')
+      new_work = collection.works.find_by!(title: 'Letters to Rosannah, part one')
       click_link 'View new work'
       expect(page).to have_current_path(collection_read_work_path(owner, collection, new_work))
       expect(page).to have_content('Letters to Rosannah, part one')
     end
 
     context 'when the work has "edit metadata after splitting" enabled' do
-      before { work.update!(edit_metadata_after_split: true) }
+      before do
+        collection.update!(data_entry_type: 'text_and_metadata')
+        create(:transcription_field, :as_metadata, collection: collection)
+        work.update!(edit_metadata_after_split: true)
+      end
 
-      it 'sends the owner to the new work metadata form instead of the inline success banner' do
+      it 'shows the inline confirmation first, then sends the owner to the new work metadata form' do
         visit collection_transcribe_page_path(owner, collection, work, flagged_page)
 
         page.find('[data-segmentation-toggle]').click
         within('.segmentation-popover') { click_button 'Split' }
 
-        new_work = Work.find_by!(title: 'Letters to Rosannah, part one')
+        expect(page).to have_content('Created "Letters to Rosannah, part one" with 1 pages.')
+
+        new_work = collection.works.find_by!(title: 'Letters to Rosannah, part one')
+        click_link 'Edit new work metadata'
         expect(page).to have_current_path(edit_metadata_collection_work_path(owner, collection, new_work))
       end
     end
@@ -106,7 +113,7 @@ describe 'work segmentation UI' do
         expect(page).to have_content('Created "Custom split title" with 1 pages.')
         expect(work.reload.pages.count).to eq(2)
 
-        new_work = Work.find_by!(title: 'Custom split title')
+        new_work = collection.works.find_by!(title: 'Custom split title')
         click_link 'View new work'
         expect(page).to have_current_path(collection_read_work_path(owner, collection, new_work))
       end
@@ -117,15 +124,22 @@ describe 'work segmentation UI' do
       let!(:second_page) { create(:page, work: work, position: 2) }
       let!(:third_page) { create(:page, work: work, position: 3, is_first_page_candidate: true) }
 
-      before { work.update!(edit_metadata_after_split: true) }
+      before do
+        collection.update!(data_entry_type: 'text_and_metadata')
+        create(:transcription_field, :as_metadata, collection: collection)
+        work.update!(edit_metadata_after_split: true)
+      end
 
-      it 'sends the owner to the new work metadata form instead of the inline success banner' do
+      it 'shows the inline confirmation first, then sends the owner to the new work metadata form' do
         visit collection_transcribe_page_path(owner, collection, work, second_page)
 
         page.find('[data-segmentation-split-toggle]').click
         within('.segmentation-split-strip') { click_link 'Split' }
 
-        new_work = Work.find_by!(title: 'Letter one')
+        expect(page).to have_content('Created "Letter one" with 1 pages.')
+
+        new_work = collection.works.find_by!(title: 'Letter one')
+        click_link 'Edit new work metadata'
         expect(page).to have_current_path(edit_metadata_collection_work_path(owner, collection, new_work))
       end
     end

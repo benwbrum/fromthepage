@@ -10,7 +10,8 @@ es:
         description: Iniciar la transcripción mediante IA para las páginas de esta obra.
         description_complete: Todas las páginas de esta obra cuentan con transcripciones mediante IA.
         edit_metadata_after_split: Editar metadatos después de dividir
-        edit_metadata_after_split_description: Cuando una página se divide en una obra nueva, ir directamente al formulario de metadatos de esa obra en lugar de la confirmación en línea.
+        edit_metadata_after_split_description: Después de la confirmación en línea de la división, ir directamente al formulario de metadatos de la nueva obra.
+        edit_metadata_after_split_disabled: Habilite y configure la creación de metadatos en Configuración de tareas.
         failed: Fallido
         failed_transcription_errors: Errores de transcripción fallidos
         failed_transcription_errors_hidden: No se muestran los errores de transcripción adicionales %{count}.

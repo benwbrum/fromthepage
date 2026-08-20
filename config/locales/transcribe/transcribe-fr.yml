@@ -36,6 +36,7 @@ fr:
       segmentation_candidate: Cela ressemble à un nouveau document. Séparer ceci dans une nouvelle œuvre ?
       segmentation_confirm: Séparer
       segmentation_dismiss: Ignorer
+      segmentation_edit_work_metadata: Modifier les métadonnées de la nouvelle œuvre
       segmentation_no: Non
       segmentation_split_confirm_message: Séparer ceci dans une nouvelle œuvre à partir d'ici ?
       segmentation_success: "« %{title} » créé avec %{count} pages."

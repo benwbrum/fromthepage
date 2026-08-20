@@ -10,7 +10,8 @@ de:
         description: Starten Sie einen KI-Transkriptionsauftrag für die Seiten dieses Werkes.
         description_complete: Alle Seiten dieses Werkes enthalten KI-Transkriptionen.
         edit_metadata_after_split: Metadaten nach dem Teilen bearbeiten
-        edit_metadata_after_split_description: Wenn eine Seite in ein neues Werk aufgeteilt wird, gehen Sie direkt zum Metadatenformular dieses Werkes anstatt zur Inline-Bestätigung.
+        edit_metadata_after_split_description: Gehen Sie nach der Inline-Bestätigung der Teilung direkt zum Metadatenformular des neuen Werkes.
+        edit_metadata_after_split_disabled: Bitte aktivieren und konfigurieren Sie die Metadatenerstellung unter Aufgabenkonfiguration.
         failed: Fehlgeschlagen
         failed_transcription_errors: Fehlgeschlagene Transkriptionsfehler
         failed_transcription_errors_hidden: "%{count} zusätzliche Transkriptionsfehler werden nicht angezeigt."

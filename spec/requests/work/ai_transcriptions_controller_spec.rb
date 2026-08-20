@@ -59,6 +59,31 @@ describe Work::AiTranscriptionsController do
         end
       end
 
+      context 'when the collection has no metadata fields configured' do
+        it 'disables the edit-metadata-after-split checkbox and shows the setup message' do
+          login_as owner
+          subject
+
+          expect(response.body).to include('disabled="disabled" type="checkbox" value="1" name="work[edit_metadata_after_split]"')
+          expect(response.body).to include('Please enable and configure metadata creation under Task Configuration.')
+        end
+      end
+
+      context 'when the collection has metadata fields configured' do
+        before do
+          collection.update!(data_entry_type: 'text_and_metadata')
+          create(:transcription_field, :as_metadata, collection: collection)
+        end
+
+        it 'enables the edit-metadata-after-split checkbox and hides the setup message' do
+          login_as owner
+          subject
+
+          expect(response.body).not_to include('disabled="disabled" type="checkbox" value="1" name="work[edit_metadata_after_split]"')
+          expect(response.body).not_to include('Please enable and configure metadata creation under Task Configuration.')
+        end
+      end
+
       context 'with failed transcriptions' do
         let!(:failed_page) { create(:page, work: work, title: 'Failed Work Page') }
         let!(:failed_ai_transcription) do

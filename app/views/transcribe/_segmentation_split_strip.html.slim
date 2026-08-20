@@ -7,4 +7,4 @@
     .segmentation-banner-actions
       button.button.outline(type='button' data-segmentation-split-cancel)
         =t('transcribe.display_page.segmentation_cancel')
-      =link_to(t('transcribe.display_page.segmentation_confirm'), split_page_collection_work_path(collection.owner, collection, work, page_id: page.id), class: 'button action-btn', data: { turbo: true, turbo_method: :post, segmentation_split_link: true, turbo_frame: (work.edit_metadata_after_split? ? '_top' : nil) })
+      =link_to(t('transcribe.display_page.segmentation_confirm'), split_page_collection_work_path(collection.owner, collection, work, page_id: page.id), class: 'button action-btn', data: { turbo: true, turbo_method: :post, segmentation_split_link: true })

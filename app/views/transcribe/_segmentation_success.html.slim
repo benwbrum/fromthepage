@@ -2,6 +2,9 @@
   .segmentation-banner-content
     p.segmentation-banner-message =t('transcribe.display_page.segmentation_success', title: new_work_title, count: count)
     .segmentation-banner-actions
-      =link_to(t('transcribe.display_page.segmentation_view_work'), collection_read_work_path(collection.owner, collection, new_work), class: 'button outline', data: { turbo_frame: '_top' })
+      -if edit_metadata_after_split
+        =link_to(t('transcribe.display_page.segmentation_edit_work_metadata'), edit_metadata_collection_work_path(collection.owner, collection, new_work), class: 'button outline', data: { turbo_frame: '_top' })
+      -else
+        =link_to(t('transcribe.display_page.segmentation_view_work'), collection_read_work_path(collection.owner, collection, new_work), class: 'button outline', data: { turbo_frame: '_top' })
       button.button.outline(type='button' data-segmentation-dismiss)
         =t('transcribe.display_page.segmentation_dismiss')
