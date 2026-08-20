@@ -370,7 +370,13 @@ class Collection < ApplicationRecord
     end
   end
 
+  # For backwards compatibility
   def restricted
+    !visibility_private?
+  end
+
+  # For backwards compatibility
+  def restricted?
     !visibility_private?
   end
 
