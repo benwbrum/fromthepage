@@ -25,6 +25,9 @@ pt:
       document_set_restricted_description: O conjunto de documentos só pode ser visualizado pelos donos listados abaixo. Você pode tornar o conjunto de documentos publicamente acessível.
       document_set_unrestricted_description: O conjunto de documentos pode ser visualizado por qualquer pessoa na internet. Qualquer obra colocada dentro de um conjunto de documentos público será acessível, mesmo que a coleção matriz seja privada. Você pode tornar o conjunto de documentos privado para restringir a sua visibilidade aos colaboradores.
       edit_collaborators: Editar colaboradores
+      parent_collection_visibility_private: A coleção principal é privada. Isso não torna o conjunto de documentos privado, pois a visibilidade do conjunto de documentos é configurada independentemente.
+      parent_collection_visibility_public: A coleção principal é pública. Isso não afeta a visibilidade do conjunto de documentos, que é configurada independentemente.
+      parent_collection_visibility_read_only: A coleção principal é somente leitura. Isso não afeta a visibilidade do conjunto de documentos, que é configurada independentemente.
       private: Privado
       public: Público
       read_only: Somente leitura

@@ -2,21 +2,28 @@ tr
   th(colspan="2")
     h3.settings-label
       =t('collection.edit_privacy.collection_privacy')
-      i =collection.is_public ? t('collection.edit_privacy.public') : t('collection.edit_privacy.private')
-    -if collection.restricted
-      =button_tag name: 'collection[restricted]', value: 'false', class: 'button inline-btn' do
-        =svg_symbol '#icon-unlock', class: 'icon'
-        span =t('collection.edit_privacy.make_collection_public')
-    -else
-      =button_tag name: 'collection[restricted]', value: 'true', class: 'button inline-btn' do
-        =svg_symbol '#icon-lock', class: 'icon'
-        span =t('collection.edit_privacy.make_collection_private')
+      i =t("collection.edit_privacy.#{collection.visibility}")
 tr
   td(colspan="2")
     -if collection.restricted
       p =t('collection.edit_privacy.collection_restricted_description')
     -else
       p =t('collection.edit_privacy.collection_public_description')
+tr
+  td(colspan="2")
+    =f.radio_button :visibility, :public, name: 'collection[visibility]', checked: collection.visibility_public?
+    =f.label :visibility_public
+      h3 =t('collection.edit_privacy.public')
+tr
+  td(colspan="2")
+    =f.radio_button :visibility, :private, name: 'collection[visibility]', checked: collection.visibility_private?
+    =f.label :visibility_private
+      h3 =t('collection.edit_privacy.private')
+tr
+  td(colspan="2")
+    =f.radio_button :visibility, :read_only, name: 'collection[visibility]', checked: collection.visibility_read_only?
+    =f.label :visibility_read_only
+      h3 =t('collection.edit_privacy.read_only')
 tr: td
 tr#collaborators
   =render partial: 'collaborators', locals: { collection: collection, collaborators: @collaborators }

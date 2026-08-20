@@ -16,7 +16,7 @@ FactoryBot.define do
     end
 
     trait :private do
-      restricted { true }
+      visibility { :private }
     end
 
     trait :docset_enabled do

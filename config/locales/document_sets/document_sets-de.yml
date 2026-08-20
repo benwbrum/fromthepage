@@ -25,6 +25,9 @@ de:
       document_set_restricted_description: Das Dokumentenset kann nur von den unterhalb angeführten Mitarbeitenden eingesehen werden. Sie können die Sammlung öffentlich einsehbar machen.
       document_set_unrestricted_description: Das Dokumentenset kann von jedem im Internet eingesehen werden. Alle Werke, die einem öffentlichen Dokumentenset zugeordnet sind, sind einsehbar, auch wenn die übergeordnete Sammlung privat ist. Sie können das Dokumentenset auf privat setzen, um die Sichtbarkeit nur auf Mitarbeitende einzuschränken.
       edit_collaborators: Mitarbeiter bearbeiten
+      parent_collection_visibility_private: Die übergeordnete Sammlung ist privat. Dies macht das Dokumentenset jedoch nicht privat, da die Sichtbarkeit des Dokumentensets unabhängig konfiguriert wird.
+      parent_collection_visibility_public: Die übergeordnete Sammlung ist öffentlich. Dies hat keinen Einfluss auf die Sichtbarkeit des Dokumentensatzes, die unabhängig konfiguriert wird.
+      parent_collection_visibility_read_only: Die übergeordnete Sammlung ist schreibgeschützt. Dies hat keinen Einfluss auf die Sichtbarkeit des Dokumentensatzes, die unabhängig konfiguriert wird.
       private: Privat
       public: Öffentlich
       read_only: Schreibgeschützt

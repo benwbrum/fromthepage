@@ -74,14 +74,14 @@ describe 'collection settings tasks' do
   end
 
   it "checks that a restricted user can't view the collection" do
-    collection.update!(restricted: true)
+    collection.update!(visibility: :private)
     login_as(rest_user, scope: :user)
     visit dashboard_path
     expect(page.find('.maincol')).not_to have_content(collection.title)
   end
 
   it 'adds collaborators to a private collection' do
-    collection.update!(restricted: true)
+    collection.update!(visibility: :private)
     login_as(owner, scope: :user)
     visit collection_path(collection.owner, collection)
     page.find('.tabs').click_link('Settings')
@@ -101,7 +101,7 @@ describe 'collection settings tasks' do
   end
 
   it 'checks that an added user can edit a work in the collection' do
-    collection.update!(restricted: true)
+    collection.update!(visibility: :private)
     collection.collaborators << rest_user
     login_as(rest_user, scope: :user)
     visit dashboard_path
@@ -123,7 +123,7 @@ describe 'collection settings tasks' do
   end
 
   it 'removes collaborators from a private collection' do
-    collection.update!(restricted: true)
+    collection.update!(visibility: :private)
     collection.collaborators << [rest_user, notify_user]
     login_as(owner, scope: :user)
     visit collection_path(collection.owner, collection)
@@ -136,14 +136,14 @@ describe 'collection settings tasks' do
   end
 
   it "checks that the removed user can't view the collection" do
-    collection.update!(restricted: true)
+    collection.update!(visibility: :private)
     login_as(rest_user, scope: :user)
     visit dashboard_path
     expect(page.find('.maincol')).not_to have_content(collection.title)
   end
 
   it 'adds owners to a private collection' do
-    collection.update!(restricted: true)
+    collection.update!(visibility: :private)
     login_as(owner, scope: :user)
     visit collection_path(collection.owner, collection)
     page.find('.tabs').click_link('Settings')
@@ -163,7 +163,7 @@ describe 'collection settings tasks' do
   end
 
   it "checks added owner permissions" do
-    collection.update!(restricted: true)
+    collection.update!(visibility: :private)
     rest_user.update!(owner: true, account_type: nil)
     collection.owners << rest_user
     login_as(rest_user, scope: :user)
@@ -183,7 +183,7 @@ describe 'collection settings tasks' do
   end
 
   it 'removes owner from a private collection' do
-    collection.update!(restricted: true)
+    collection.update!(visibility: :private)
     [rest_user, notify_user].each do |added_owner|
       added_owner.update!(owner: true)
       collection.owners << added_owner
@@ -199,14 +199,14 @@ describe 'collection settings tasks' do
   end
 
   it 'checks removed owner permissions' do
-    collection.update!(restricted: true)
+    collection.update!(visibility: :private)
     login_as(rest_user, scope: :user)
     visit dashboard_path
     expect(page.find('.maincol')).not_to have_content(collection.title)
   end
 
   it "sets collection to public", js: true do
-    collection.update!(restricted: true)
+    collection.update!(visibility: :private)
     login_as(owner, scope: :user)
     visit collection_path(collection.owner, collection)
     page.find('.tabs').click_link("Settings")

@@ -25,7 +25,7 @@ class IiifController < ApplicationController
     site_collection.label = "IIIF resources avaliable on the FromThePage installation at #{Rails.application.config.action_mailer.default_url_options[:host]}."
     site_collection.metadata << { 'label' => 'FromThePage Support for IIIF', 'value' => 'https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations' }
 
-    Collection.where(restricted: false).each do |collection|
+    Collection.where(visibility: [:public, :read_only]).each do |collection|
       iiif_collection = iiif_collection_from_collection(collection, false)
 
       site_collection.collections << iiif_collection

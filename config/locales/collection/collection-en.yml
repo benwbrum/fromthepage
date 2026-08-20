@@ -247,6 +247,7 @@ en:
       open_api: Open API
       private: Private
       public: Public
+      read_only: Read-only
       restrict_completed_works: Restrict Completed Works
       restrict_editing: Restrict editing
       restricted_completed_works_description: This button will restrict the %{work_count} works that are completed but not currently resticted to project owners or designated collaborators.  You may change this setting and add collaborators in each work's settings page.

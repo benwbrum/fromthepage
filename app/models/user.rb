@@ -126,9 +126,8 @@ class User < ApplicationRecord
   scope :with_public_projects, lambda {
     left_outer_joins(:collections, :document_sets)
       .where(
-        'collections.restricted = :unrestricted OR document_sets.visibility IN (:public_visibilities)',
-        unrestricted: false,
-        public_visibilities: [DocumentSet.visibilities[:public], DocumentSet.visibilities[:read_only]]
+        'collections.visibility IN (:public_visibilities) OR document_sets.visibility IN (:public_visibilities)',
+        public_visibilities: [:public, :read_only]
       )
       .distinct
   }
@@ -324,7 +323,7 @@ class User < ApplicationRecord
 
       has_access && (!work&.restrict_scribes || work&.scribes&.include?(self))
     else
-      !work&.restrict_scribes || like_owner?(work) || work&.scribes&.include?(self)
+      collection.visibility_public? && (!work&.restrict_scribes || like_owner?(work) || work&.scribes&.include?(self))
     end
   end
 
@@ -421,7 +420,7 @@ class User < ApplicationRecord
     public_sets = self.unrestricted_document_sets
 
     if user
-      collaborator_collections = self.all_owner_collections.where(restricted: true).joins(:collaborators).where('collection_collaborators.user_id = ?', user.id)
+      collaborator_collections = self.all_owner_collections.where(visibility: :private).joins(:collaborators).where('collection_collaborators.user_id = ?', user.id)
 
       collaborator_sets = self.document_sets.restricted.joins(:collaborators).where('document_set_collaborators.user_id = ?', user.id)
       parent_collaborator_sets = []

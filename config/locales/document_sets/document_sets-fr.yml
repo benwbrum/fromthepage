@@ -25,6 +25,9 @@ fr:
       document_set_restricted_description: L'ensemble de documents ne peut être consulté que par les collaborateurs répertoriés ci-dessous. Vous pouvez rendre la collection lisible publiquement.
       document_set_unrestricted_description: L'ensemble de documents peut être consulté par n'importe qui sur Internet. Toutes les œuvres placées dans un ensemble de documents publics seront lisibles, même si la collection parente est privée. Vous pouvez rendre le jeu de documents privé pour limiter sa visibilité aux collaborateurs.
       edit_collaborators: Modifier les collaborateurs
+      parent_collection_visibility_private: La collection parente est privée. Cela ne rend pas l'ensemble de documents privé, car sa visibilité est configurée indépendamment.
+      parent_collection_visibility_public: La collection parente est publique. Cela n'affecte pas la visibilité de l'ensemble de documents, qui est configurée indépendamment.
+      parent_collection_visibility_read_only: La collection parente est en lecture seule. Cela n'affecte pas la visibilité de l'ensemble de documents, qui est configurée indépendamment.
       private: Privé
       public: Publique
       read_only: Lecture seule

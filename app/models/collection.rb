@@ -30,7 +30,6 @@
 #  most_recent_deed_created_at    :datetime
 #  pct_completed                  :integer
 #  picture                        :string(255)
-#  restricted                     :boolean          default(FALSE)
 #  review_type                    :string(255)      default("optional")
 #  slug                           :string(255)
 #  subjects_disabled              :boolean          default(TRUE)
@@ -39,6 +38,7 @@
 #  title                          :string(255)
 #  transcription_conventions      :text(65535)
 #  user_download                  :boolean          default(FALSE)
+#  visibility                     :string(255)      default("public")
 #  voice_recognition              :boolean          default(FALSE)
 #  works_count                    :integer          default(0)
 #  next_untranscribed_page_id     :integer
@@ -48,9 +48,9 @@
 # Indexes
 #
 #  index_collections_on_owner_user_id                   (owner_user_id)
-#  index_collections_on_restricted                      (restricted)
 #  index_collections_on_slug                            (slug) UNIQUE
 #  index_collections_on_thredded_messageboard_group_id  (thredded_messageboard_group_id)
+#  index_collections_on_visibility                      (visibility)
 #
 # Foreign Keys
 #
@@ -144,6 +144,12 @@ class Collection < ApplicationRecord
     required: 'required',
     restricted: 'restricted'
   }, prefix: :review_type
+
+  enum :visibility, {
+    private: 'private',
+    public: 'public',
+    read_only: 'read_only'
+  }, prefix: :visibility
 
   update_index('collections', if: -> { ELASTIC_ENABLED && !destroyed? }) { self }
   after_destroy :handle_index_deletion

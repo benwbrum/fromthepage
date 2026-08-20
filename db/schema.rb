@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_08_18_164441) do
+ActiveRecord::Schema[7.2].define(version: 2026_08_20_191659) do
   create_table "active_storage_attachments", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -276,7 +276,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_18_164441) do
     t.datetime "created_on", precision: nil
     t.text "intro_block", size: :medium
     t.text "footer_block", size: :medium
-    t.boolean "restricted", default: false
     t.string "picture"
     t.boolean "supports_document_sets", default: false
     t.boolean "subjects_disabled", default: true
@@ -312,10 +311,12 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_18_164441) do
     t.string "default_overview_orientation"
     t.boolean "hide_notes", default: false
     t.boolean "ai_draft_disabled", default: false
+    t.integer "visibility", default: "public"
     t.index ["owner_user_id"], name: "index_collections_on_owner_user_id"
     t.index ["restricted"], name: "index_collections_on_restricted"
     t.index ["slug"], name: "index_collections_on_slug", unique: true
     t.index ["thredded_messageboard_group_id"], name: "index_collections_on_thredded_messageboard_group_id"
+    t.index ["visibility"], name: "index_collections_on_visibility"
   end
 
   create_table "collections_tags", id: false, charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|

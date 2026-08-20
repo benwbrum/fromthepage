@@ -859,7 +859,7 @@ class CollectionController < ApplicationController
       :is_active,
       :search_attempt_id,
       :alphabetize_works,
-      :restricted,
+      :visibility,
       tags: []
     )
   end

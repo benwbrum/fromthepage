@@ -247,6 +247,7 @@ de:
       open_api: API öffnen
       private: Privat
       public: Öffentlich
+      read_only: Nur lesbar
       restrict_completed_works: Sperren Sie die Bearbeitung abgeschlossener Werke
       restrict_editing: Bearbeitung einschränken
       restricted_completed_works_description: Dieser Button schränkt die Bearbeitung von %{work_count} Werken ein, die abgeschlossen sind, aber derzeit nicht auf Projektinhaber:innen oder bestimmte Mitarbeitende beschränkt sind. Sie können diese Einstellung ändern und in den Werk-Einstellungen Mitarbeitende hinzufügen.

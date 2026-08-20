@@ -623,7 +623,7 @@ class Work < ApplicationRecord
   end
 
   def is_public?
-    return true if collection.nil? || !collection.restricted?
+    return true if collection.nil? || !collection.restricted
 
     document_sets.unrestricted.any?
   end

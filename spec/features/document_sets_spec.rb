@@ -233,7 +233,7 @@ describe 'document sets' do
   end
 
   it "checks notes on a public doc set/private collection", js: true do
-    collection.update!(restricted: true)
+    collection.update!(visibility: :private)
     login_as(user, scope: :user)
     visit collection_transcribe_page_path(document_set.owner, document_set, document_set.works.first, document_set.works.first.pages.first)
     fill_in 'Write a new note or ask a question...', with: "Test private note"

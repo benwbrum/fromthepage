@@ -247,6 +247,7 @@ es:
       open_api: Abrir API
       private: Privado
       public: Público
+      read_only: Solo lectura
       restrict_completed_works: Restringir obras terminadas
       restrict_editing: Restringir edición
       restricted_completed_works_description: Este botón restringirá las %{work_count} obras que se completaron pero que actualmente no están restringidos a los propietarios del proyecto o colaboradores designados. Puede cambiar esta configuración y agregar colaboradores en la página de configuración de cada obra.
