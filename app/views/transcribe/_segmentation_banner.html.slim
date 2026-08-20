@@ -13,6 +13,10 @@
                 =hidden_field_tag :page_id, page.id
                 =label_tag :new_work_title, t('transcribe.display_page.previous_work_title', n: page.position - 1), class: 'segmentation-title-label'
                 =text_field_tag :new_work_title, default_split_title(work), class: 'segmentation-title-input'
+                -if current_user.like_owner?(work)
+                  .segmentation-metadata-option
+                    =check_box_tag :edit_metadata_after_split, '1', false, id: "segmentation_edit_metadata_#{page.id}", data: { segmentation_edit_metadata_toggle: true }
+                    =label_tag "segmentation_edit_metadata_#{page.id}", t('transcribe.display_page.segmentation_edit_metadata_after_split'), class: 'segmentation-metadata-label'
                 .segmentation-popover-actions
                   button.button.outline(type='button' data-segmentation-cancel)
                     =t('transcribe.display_page.segmentation_cancel')

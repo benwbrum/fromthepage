@@ -207,6 +207,26 @@ window.addEventListener('DOMContentLoaded', function() {
   if (cancelBtn) {
     cancelBtn.addEventListener('click', closePopover);
   }
+
+  // Edit metadata after split: break out of the turbo frame so the
+  // response (a redirect to the work metadata form) navigates the
+  // whole page instead of trying to replace this frame's contents.
+  var metadataCheckbox = popover.querySelector('[data-segmentation-edit-metadata-toggle]');
+  var popoverForm = metadataCheckbox ? metadataCheckbox.closest('form') : null;
+
+  function syncPopoverFormFrameTarget() {
+    if (!popoverForm || !metadataCheckbox) { return; }
+    if (metadataCheckbox.checked) {
+      popoverForm.dataset.turboFrame = '_top';
+    } else {
+      delete popoverForm.dataset.turboFrame;
+    }
+  }
+
+  if (metadataCheckbox && popoverForm) {
+    syncPopoverFormFrameTarget();
+    metadataCheckbox.addEventListener('change', syncPopoverFormFrameTarget);
+  }
 });
 
 // Segmentation: human-in-the-loop split control (1b)
@@ -215,6 +235,7 @@ window.addEventListener('DOMContentLoaded', function() {
   var splitStrip = document.querySelector('[data-segmentation-split-strip]');
   var splitCancelBtn = document.querySelector('[data-segmentation-split-cancel]');
   var splitTitleInput = document.querySelector('[data-segmentation-split-title]');
+  var splitEditMetadataCheckbox = document.querySelector('[data-segmentation-split-edit-metadata]');
   var splitLink = document.querySelector('[data-segmentation-split-link]');
 
   if (!splitToggleBtn || !splitStrip) { return; }
@@ -223,6 +244,22 @@ window.addEventListener('DOMContentLoaded', function() {
     if (!splitLink || !splitTitleInput) { return; }
     var url = new URL(splitLink.href, window.location.origin);
     url.searchParams.set('new_work_title', splitTitleInput.value);
+    splitLink.href = url.toString();
+  }
+
+  // Edit metadata after split: same frame-breakout as the AI popover, but
+  // since this control is a link (not a form) the option also has to be
+  // added to the link's query string for the server to see it.
+  function syncSplitLinkMetadataOption() {
+    if (!splitLink) { return; }
+    var url = new URL(splitLink.href, window.location.origin);
+    if (splitEditMetadataCheckbox && splitEditMetadataCheckbox.checked) {
+      url.searchParams.set('edit_metadata_after_split', '1');
+      splitLink.dataset.turboFrame = '_top';
+    } else {
+      url.searchParams.delete('edit_metadata_after_split');
+      delete splitLink.dataset.turboFrame;
+    }
     splitLink.href = url.toString();
   }
 
@@ -239,5 +276,10 @@ window.addEventListener('DOMContentLoaded', function() {
   if (splitTitleInput) {
     syncSplitLinkTitle();
     splitTitleInput.addEventListener('input', syncSplitLinkTitle);
+  }
+
+  if (splitEditMetadataCheckbox) {
+    syncSplitLinkMetadataOption();
+    splitEditMetadataCheckbox.addEventListener('change', syncSplitLinkMetadataOption);
   }
 });

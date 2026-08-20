@@ -45,6 +45,19 @@ describe 'work segmentation UI' do
       expect(page).to have_current_path(collection_read_work_path(owner, collection, new_work))
       expect(page).to have_content('Letters to Rosannah, part one')
     end
+
+    it 'sends the owner to the new work metadata form when they opt in' do
+      visit collection_transcribe_page_path(owner, collection, work, flagged_page)
+
+      page.find('[data-segmentation-toggle]').click
+      within('.segmentation-popover') do
+        check 'segmentation_edit_metadata_' + flagged_page.id.to_s
+        click_button 'Split'
+      end
+
+      new_work = Work.find_by!(title: 'Letters to Rosannah, part one')
+      expect(page).to have_current_path(edit_metadata_collection_work_path(owner, collection, new_work))
+    end
   end
 
   describe 'human-in-the-loop split control (1b)', js: true do
@@ -95,6 +108,25 @@ describe 'work segmentation UI' do
         new_work = Work.find_by!(title: 'Custom split title')
         click_link 'View new work'
         expect(page).to have_current_path(collection_read_work_path(owner, collection, new_work))
+      end
+    end
+
+    context 'when the owner opts to edit metadata after splitting' do
+      let!(:first_page) { create(:page, work: work, position: 1, title: 'Letter one') }
+      let!(:second_page) { create(:page, work: work, position: 2) }
+      let!(:third_page) { create(:page, work: work, position: 3, is_first_page_candidate: true) }
+
+      it 'sends the owner to the new work metadata form instead of the inline success banner' do
+        visit collection_transcribe_page_path(owner, collection, work, second_page)
+
+        page.find('[data-segmentation-split-toggle]').click
+        within('.segmentation-split-strip') do
+          check 'segmentation_split_edit_metadata_' + third_page.id.to_s
+          click_link 'Split'
+        end
+
+        new_work = Work.find_by!(title: 'Letter one')
+        expect(page).to have_current_path(edit_metadata_collection_work_path(owner, collection, new_work))
       end
     end
   end

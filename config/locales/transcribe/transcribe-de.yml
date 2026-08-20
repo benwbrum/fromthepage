@@ -36,6 +36,7 @@ de:
       segmentation_candidate: Das sieht nach einem neuen Dokument aus. Soll es in ein neues Werk aufgeteilt werden?
       segmentation_confirm: Teilen
       segmentation_dismiss: Verwerfen
+      segmentation_edit_metadata_after_split: Metadaten nach dem Teilen bearbeiten
       segmentation_no: Nein
       segmentation_split_confirm_message: Soll dies ab hier in ein neues Werk aufgeteilt werden?
       segmentation_success: "„%{title}“ mit %{count} Seiten erstellt."
