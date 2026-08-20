@@ -120,10 +120,10 @@ class Collection < ApplicationRecord
   mount_uploader :picture, PictureUploader
 
   scope :order_by_recent_activity, -> { order(most_recent_deed_created_at: :desc) }
-  scope :unrestricted, -> { where(restricted: false) }
-  scope :restricted, -> { where(restricted: true) }
+  scope :unrestricted, -> { where(visibility: [:public, :read_only]) }
+  scope :restricted, -> { where(visibility: :private) }
   scope :order_by_incomplete, -> { joins(works: :work_statistic).reorder('work_statistics.complete ASC') }
-  scope :carousel, -> { where(pct_completed: [nil, 0..90]).where.not(picture: nil).where.not(intro_block: [nil, '']).where(restricted: false).reorder(Arel.sql('RAND()')) }
+  scope :carousel, -> { where(pct_completed: [nil, 0..90]).where.not(picture: nil).where.not(intro_block: [nil, '']).where(visibility: [:public, :read_only]).reorder(Arel.sql('RAND()')) }
   scope :has_intro_block, -> { where.not(intro_block: [nil, '']) }
   scope :has_picture, -> { where.not(picture: nil) }
   scope :not_near_complete, -> { where(pct_completed: [nil, 0..90]) }
@@ -370,12 +370,12 @@ class Collection < ApplicationRecord
     end
   end
 
-  def is_public
-    !restricted
+  def restricted
+    !visibility_private?
   end
 
-  def visibility_read_only?
-    false
+  def is_public
+    !restricted
   end
 
   def active?
