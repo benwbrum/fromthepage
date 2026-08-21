@@ -51,6 +51,38 @@ describe DocumentSet do
     end
   end
 
+  describe 'next_untranscribed_page updates when works are added or removed' do
+    let(:collection) { create(:collection, works: []) }
+    let(:work) { create(:work, collection_id: collection.id) }
+
+    it "updates next_untranscribed_page when a work with untranscribed pages is added" do
+      page = create(:page, work_id: work.id, status: :new)
+      work.set_next_untranscribed_page
+
+      docset = create(:document_set, collection_id: collection.id, owner_user_id: collection.owner.id)
+      expect(docset.next_untranscribed_page).to be_nil
+
+      work.document_sets << docset
+      docset.reload
+
+      expect(docset.next_untranscribed_page).to eq(page)
+    end
+
+    it "updates next_untranscribed_page when a work is removed from the document set" do
+      page = create(:page, work_id: work.id, status: :new)
+      work.set_next_untranscribed_page
+
+      docset = create(:document_set, collection_id: collection.id, owner_user_id: collection.owner.id, works: [work])
+      docset.set_next_untranscribed_page
+      expect(docset.next_untranscribed_page).to eq(page)
+
+      DocumentSetWork.where(document_set: docset, work: work).destroy_all
+      docset.reload
+
+      expect(docset.next_untranscribed_page).to be_nil
+    end
+  end
+
   context 'es_search' do
     let(:identifier) { 'pneumonoultramicroscopicsilicovolcanoconiosis' }
 
