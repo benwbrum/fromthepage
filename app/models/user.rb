@@ -323,7 +323,11 @@ class User < ApplicationRecord
 
       has_access && (!work&.restrict_scribes || work&.scribes&.include?(self))
     else
-      collection.visibility_public? && (!work&.restrict_scribes || like_owner?(work) || work&.scribes&.include?(self))
+      has_access = collection.visibility_public? ||
+                   collection.collaborators.find_by(id: id).present? ||
+                   work&.scribes&.include?(self)
+
+      has_access && (!work&.restrict_scribes || like_owner?(work))
     end
   end
 
