@@ -38,7 +38,7 @@ class IaWork < ApplicationRecord
   before_create :truncate_title
 
   def truncate_title
-    self.title = self.title.truncate(255, omission: '...')
+    self.title = self.title.truncate(1028, omission: '...')
   end
 
   def display_page
