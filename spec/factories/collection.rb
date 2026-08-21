@@ -6,6 +6,7 @@ FactoryBot.define do
     owner_user_id { association(:owner).id }
     subjects_disabled { false }
     works { build_list :work_with_pages, 2 }
+    visibility { :public }
 
     trait :with_links do
       works { build_stubbed_list :work_with_links, 2 }

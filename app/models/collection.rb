@@ -372,12 +372,12 @@ class Collection < ApplicationRecord
 
   # For backwards compatibility
   def restricted
-    !visibility_private?
+    visibility_private?
   end
 
   # For backwards compatibility
   def restricted?
-    !visibility_private?
+    visibility_private?
   end
 
   def is_public
