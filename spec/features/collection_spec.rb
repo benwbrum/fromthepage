@@ -60,7 +60,7 @@ describe 'collection settings tasks' do
     expect(page.find('#users-list-blocked')).not_to match_css('.disabled')
     expect(page.find_link('Block Users')).not_to match_css('[disabled]')
 
-    page.click_button('Make Collection Private')
+    page.choose('collection_visibility_private')
     expect(page).to have_content("Collection privacy: Private")
     collection.reload
     expect(collection.is_public).to eq false
@@ -211,7 +211,8 @@ describe 'collection settings tasks' do
     visit collection_path(collection.owner, collection)
     page.find('.tabs').click_link("Settings")
     page.find('.side-tabs').click_link("Privacy & Access")
-    page.click_button("Make Collection Public")
+    page.choose('collection_visibility_public')
+    expect(page).to have_content('Collection has been updated')
   end
 
   context "inactive collection" do

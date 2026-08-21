@@ -242,8 +242,6 @@ es:
       collection_restricted_description: La colección sólo puede ser vista por los propietarios y colaboradores que se enumeran a continuación. Puede hacer que la colección sea legible públicamente.
       edit_collaborators: Editar colaboradores
       edit_owners: Editar propietarios
-      make_collection_private: Hacer Privada la Colección
-      make_collection_public: Hacer Pública la Colección
       open_api: Abrir API
       private: Privado
       public: Público

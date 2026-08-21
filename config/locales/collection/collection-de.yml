@@ -242,8 +242,6 @@ de:
       collection_restricted_description: Die Sammlung kann nur von den unten aufgeführten Eigentümern und Mitarbeitern eingesehen werden. Sie können die Sammlung öffentlich lesbar machen.
       edit_collaborators: Mitarbeitende bearbeiten
       edit_owners: Projektinhaber:innen bearbeiten
-      make_collection_private: Sammlung privat setzen
-      make_collection_public: Sammlung öffentlich setzen
       open_api: API öffnen
       private: Privat
       public: Öffentlich
