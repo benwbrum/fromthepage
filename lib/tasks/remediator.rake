@@ -1,5 +1,18 @@
 namespace :fromthepage do
   namespace :remediator do
+    ORPHAN_SUBJECT_LINK_HEADERS = [
+      'Page ID',
+      'Page Title',
+      'Work ID',
+      'Work Title',
+      'Transcribe URL',
+      'Orphan Subject ID',
+      'Orphan Subject Title',
+      'Suggested Subject ID',
+      'Suggested Subject Title',
+      'Suggestion Source'
+    ].freeze
+
     desc 'Fixes deleted subjects and update references'
     task :fix_subjects, [:collection_id] => :environment do |t, args|
       Current.user = User.find(2)
@@ -103,10 +116,11 @@ namespace :fromthepage do
 
               entry = missing_article_hash[title]
               if entry.nil?
-                entry={ ids: [], new_article: nil, pages: [] }
+                entry={ ids: [], new_article: nil, pages: [], references: [] }
               end
               entry[:ids] << id.to_i
               entry[:pages] << page
+              entry[:references] << { page: page, target_id: id.to_i, target_title: title }
               entry[:new_article] = new_article if new_article
               if old_article_version
                 entry[:old_article] = old_article_version.article
@@ -117,6 +131,43 @@ namespace :fromthepage do
         end
       end
       missing_article_hash
+    end
+
+    desc 'Writes a CSV report of transcript links to missing subjects'
+    task :report_orphan_subject_links, [:collection_id, :output_file] => :environment do |_task, args|
+      collection = Collection.find(args.collection_id.to_i)
+      output_file = args.output_file.presence || "orphan_subject_links_#{collection.slug}.csv"
+      missing_article_hash = find_deleted_articles_and_references(collection)
+
+      CSV.open(output_file, 'wb') do |csv|
+        csv << ORPHAN_SUBJECT_LINK_HEADERS
+
+        missing_article_hash.each_value do |entry|
+          suggested_article = entry[:old_article] || entry[:new_article]
+          suggestion_source = 'Article title history' if entry[:old_article]
+          suggestion_source ||= 'Current article with matching title' if entry[:new_article]
+
+          entry[:references].each do |reference|
+            page = reference[:page]
+            csv << [
+              page.id,
+              page.title,
+              page.work_id,
+              page.work.title,
+              Rails.application.routes.url_helpers.collection_transcribe_page_url(
+                collection.owner, collection, page.work, page
+              ),
+              reference[:target_id],
+              reference[:target_title],
+              suggested_article&.id,
+              suggested_article&.title,
+              suggestion_source
+            ]
+          end
+        end
+      end
+
+      puts "Wrote #{missing_article_hash.values.sum { |entry| entry[:references].size }} orphan subject links to #{output_file}"
     end
 
     desc 'Fixes failed article rename jobs'
