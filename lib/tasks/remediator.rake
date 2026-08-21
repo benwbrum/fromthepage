@@ -112,7 +112,10 @@ namespace :fromthepage do
               # this is a reference to a missing article
               new_article = collection.articles.where(title: title).first
               # now we have a reference to a missing article, including title and id, as well as (possibly) the new article that replaced it
-              old_article_version = ArticleVersion.where(title: title, article_id: collection.articles.pluck(:id)).first
+              old_article_version = ArticleVersion.joins(:article)
+                                                  .where(title: title, article_id: collection.articles.select(:id))
+                                                  .where.not(articles: { title: title })
+                                                  .first
 
               entry = missing_article_hash[title]
               if entry.nil?
