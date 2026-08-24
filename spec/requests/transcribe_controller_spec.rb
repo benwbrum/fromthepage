@@ -176,6 +176,14 @@ describe TranscribeController do
       expect(response).to have_http_status(:ok)
       expect(response).to render_template(:display_page)
     end
+
+    it 'starts with AI draft use disabled' do
+      login_as owner
+      subject
+
+      ai_draft_field = response.parsed_body.at_css('input[name="ai_draft_used"]')
+      expect(ai_draft_field['value']).to eq('false')
+    end
   end
 
   describe '#save_transcription' do
@@ -273,6 +281,86 @@ describe TranscribeController do
     let(:params) { {} }
 
     let(:subject) { patch action_path, params: params }
+
+    context 'when an AI draft is used' do
+      let(:draft_text) { 'Text copied from an AI draft' }
+      let(:base_params) do
+        {
+          page_id: page.id,
+          ai_draft_used: 'true',
+          page: {
+            mark_blank: '0',
+            needs_review: '0',
+            source_text: draft_text
+          }
+        }
+      end
+
+      before { login_as owner }
+
+      def preserved_ai_draft_value
+        response.parsed_body.at_css('input[name="ai_draft_used"]')['value']
+      end
+
+      def expect_ai_draft_tracking
+        ai_deeds = Deed.where(page_id: page.id, user_id: owner.id, deed_type: DeedType::AI_DRAFT)
+        changed_version = page.reload.page_versions.find_by(transcription: draft_text)
+
+        expect(ai_deeds.count).to eq(1)
+        expect(changed_version).to be_present
+        expect(changed_version.ai_draft_used).to be(true)
+      end
+
+      it 'tracks an AI draft saved immediately' do
+        patch action_path, params: base_params.merge(save_to_incomplete: 'Save')
+
+        expect(response).to have_http_status(:redirect)
+        expect_ai_draft_tracking
+      end
+
+      it 'preserves AI draft use through preview and edit before saving' do
+        patch action_path, params: base_params.merge(preview: 'Preview')
+        expect(response).to have_http_status(:ok)
+        expect(preserved_ai_draft_value).to eq('true')
+
+        patch action_path, params: base_params.merge(ai_draft_used: preserved_ai_draft_value, edit: 'Edit')
+        expect(response).to have_http_status(:ok)
+        expect(preserved_ai_draft_value).to eq('true')
+
+        patch action_path,
+              params: base_params.merge(ai_draft_used: preserved_ai_draft_value, save_to_incomplete: 'Save')
+
+        expect(response).to have_http_status(:redirect)
+        expect_ai_draft_tracking
+      end
+
+      it 'preserves AI draft use through autolinking before saving' do
+        patch action_path, params: base_params.merge(autolink: 'Autolink')
+        expect(response).to have_http_status(:ok)
+        expect(preserved_ai_draft_value).to eq('true')
+
+        patch action_path,
+              params: base_params.merge(ai_draft_used: preserved_ai_draft_value, save_to_incomplete: 'Save')
+
+        expect(response).to have_http_status(:redirect)
+        expect_ai_draft_tracking
+      end
+
+      it 'preserves AI draft use through a failed submission and corrected save' do
+        invalid_params = base_params.deep_merge(page: { source_text: '<hi rend="bold">Unclosed' })
+        patch action_path, params: invalid_params.merge(save_to_incomplete: 'Save')
+
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(preserved_ai_draft_value).to eq('true')
+        expect(Deed.where(page_id: page.id, deed_type: DeedType::AI_DRAFT)).to be_empty
+
+        patch action_path,
+              params: base_params.merge(ai_draft_used: preserved_ai_draft_value, save_to_incomplete: 'Save')
+
+        expect(response).to have_http_status(:redirect)
+        expect_ai_draft_tracking
+      end
+    end
 
     context 'mark_blank_logic' do
       let!(:search_attempt) do
