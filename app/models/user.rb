@@ -311,24 +311,21 @@ class User < ApplicationRecord
 
   def can_transcribe?(work, collection = nil)
     return true if like_owner?(collection)
+
     collection ||= work.access_object(self) || work.collection
 
-    if collection.is_a? DocumentSet
-      return true if like_owner?(work)
+    return true if collection.is_a?(DocumentSet) && like_owner?(work)
 
-      has_access = collection.visibility_public? ||
-                   collection.collaborators.find_by(id: id).present? ||
-                   collection.collection.collaborators.find_by(id: id).present? ||
-                   work&.scribes&.include?(self)
+    has_collection_access =
+      collection.visibility_public? ||
+      collection.collaborators.exists?(id: id) ||
+      (collection.collection&.collaborators&.exists?(id: id) if collection.is_a?(DocumentSet))
 
-      has_access && (!work&.restrict_scribes || work&.scribes&.include?(self))
-    else
-      has_access = collection.visibility_public? ||
-                   collection.collaborators.find_by(id: id).present? ||
-                   work&.scribes&.include?(self)
+    has_scribe_access = work&.scribes&.include?(self)
 
-      has_access && (!work&.restrict_scribes || like_owner?(work))
-    end
+    return false unless has_collection_access || has_scribe_access
+
+    !work&.restrict_scribes || has_scribe_access || like_owner?(work)
   end
 
   def can_review?(obj)
