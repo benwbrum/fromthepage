@@ -18,7 +18,7 @@
 #  server         :string(255)
 #  sponsor        :string(255)
 #  subject        :string(255)
-#  title          :string(255)
+#  title          :string(1028)
 #  title_leaf     :integer
 #  use_ocr        :boolean          default(FALSE)
 #  zip_file       :string(255)

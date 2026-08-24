@@ -32,7 +32,7 @@
 #  source_collection_name          :string(255)
 #  source_location                 :string(255)
 #  supports_translation            :boolean          default(FALSE)
-#  title                           :string(255)
+#  title                           :string(1028)
 #  transcription_conventions       :text(16777215)
 #  transcription_version           :integer          default(0)
 #  translation_instructions        :text(65535)
