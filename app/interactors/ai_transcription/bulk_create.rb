@@ -50,9 +50,17 @@ class AiTranscription::BulkCreate < ApplicationInteractor
 
     return @pages if @scope.nil?
 
-    work_ids = @scope[:work_ids] || []
+    if @scope.key?(:work_ids)
+      work_ids = @scope[:work_ids] || []
 
-    @pages = @pages.where(work_id: work_ids)
+      @pages = @pages.where(work_id: work_ids)
+    end
+
+    if @scope.key?(:page_ids)
+      page_ids = @scope[:page_ids] || []
+
+      @pages = @pages.where(id: page_ids)
+    end
 
     @pages
   end

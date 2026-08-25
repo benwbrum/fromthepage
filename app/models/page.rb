@@ -7,6 +7,7 @@
 #  base_height             :integer
 #  base_image              :string(255)
 #  base_width              :integer
+#  cached_ai_status        :string(255)      default("not_started"), not null
 #  created_on              :datetime
 #  edit_started_at         :datetime
 #  last_note_updated_at    :datetime
@@ -88,6 +89,9 @@ class Page < ApplicationRecord
   has_many :deeds, dependent: :destroy
   has_many :external_api_requests, dependent: :destroy
 
+  has_many :ai_batch_generation_pages
+  has_many :ai_batch_generation, through: :ai_batch_generation_pages
+
   after_save :create_version
   after_save :update_sections_and_tables
   after_save :update_tex_figures
@@ -139,6 +143,14 @@ class Page < ApplicationRecord
     needs_review: 'review',
     translated: 'translated'
   }, prefix: :translation_status
+
+  enum :cached_ai_status, {
+    not_started: 'not_started',
+    new: 'new',
+    processing: 'processing',
+    finished: 'finished',
+    error: 'error'
+  }, prefix: :cached_ai_status
 
   scope :review, -> { where(status: :needs_review) }
   scope :incomplete, -> { where(status: :incomplete) }

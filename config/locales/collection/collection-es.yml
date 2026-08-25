@@ -6,6 +6,7 @@ es:
         success: Se lanzó el trabajo de transcripción de IA.
       form:
         ai_transcription: Transcripción de IA
+        calculating_tokens: Calculando fichas...
         contact_us: Comuníquese con %{email} para actualizar a un plan que incluya borradores de IA.
         description: Iniciar un trabajo de transcripción de IA para las páginas de esta colección.
         description_complete: Todas las páginas de esta colección tienen transcripciones de IA.
@@ -19,6 +20,7 @@ es:
         pages: Páginas
         queued: En cola
         retry: Reintentar trabajos fallidos
+      token:
         total_tokens_used: Total de tokens utilizados
       update:
         success: Reintentando el trabajo de transcripción de IA.

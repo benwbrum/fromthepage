@@ -6,6 +6,7 @@ pt:
         success: Vaga de transcrição por IA aberta.
       form:
         ai_transcription: Transcrição por IA
+        calculating_tokens: Calculando fichas...
         contact_us: Entre em contato com %{email} para atualizar para um plano que inclua rascunhos de IA.
         description: Inicie uma transcrição por IA para páginas nesta obra.
         description_complete: Todas as páginas desta obra possuem transcrições feitas por IA.
@@ -19,6 +20,7 @@ pt:
         pages: Páginas
         queued: Em fila
         retry: Tentar novamente trabalhos com falha
+      token:
         total_tokens_used: Total de fichas utilizadas
       update:
         success: Tentando novamente a tarefa de transcrição por IA.

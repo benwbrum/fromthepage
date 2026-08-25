@@ -5,6 +5,18 @@ GIT
     gravatar_image_tag (1.2.0)
 
 GIT
+  remote: https://github.com/WillNigel23/gemini-ai.git
+  revision: 356a1635986e5f9d6b2eea549c9fd4531897eabe
+  branch: feature/batch-generate-content
+  specs:
+    gemini-ai (4.3.0)
+      event_stream_parser (~> 1.0)
+      faraday (~> 2.13, >= 2.13.2)
+      faraday-typhoeus (~> 1.1)
+      googleauth (~> 1.8)
+      typhoeus (~> 1.4, >= 1.4.1)
+
+GIT
   remote: https://github.com/bentonow/bento-ruby-sdk.git
   revision: 40147a64c6d6d195a4fe21666da9d0f7811b9672
   branch: master
@@ -324,12 +336,6 @@ GEM
     fugit (1.12.1)
       et-orbi (~> 1.4)
       raabro (~> 1.4)
-    gemini-ai (4.3.0)
-      event_stream_parser (~> 1.0)
-      faraday (~> 2.13, >= 2.13.2)
-      faraday-typhoeus (~> 1.1)
-      googleauth (~> 1.8)
-      typhoeus (~> 1.4, >= 1.4.1)
     geo_coord (0.2.0)
     get_process_mem (1.0.0)
       bigdecimal (>= 2.0)
@@ -982,7 +988,7 @@ DEPENDENCIES
   flamegraph
   forty_facets
   friendly_id
-  gemini-ai
+  gemini-ai!
   get_process_mem
   gravatar_image_tag!
   grover

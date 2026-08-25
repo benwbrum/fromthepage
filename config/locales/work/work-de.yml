@@ -6,6 +6,7 @@ de:
         success: KI-Transkriptionsauftrag gestartet.
       form:
         ai_transcription: KI-Transkription
+        calculating_tokens: Token werden berechnet...
         contact_us: Wenden Sie sich an %{email}, um auf einen Tarif mit KI-Entwürfen aufzurüsten.
         description: Starten Sie einen KI-Transkriptionsauftrag für die Seiten dieses Werkes.
         description_complete: Alle Seiten dieses Werkes enthalten KI-Transkriptionen.
@@ -19,6 +20,7 @@ de:
         pages: Seiten
         queued: In der Warteschlange
         retry: Fehlgeschlagene Aufträge erneut versuchen
+      token:
         total_tokens_used: Insgesamt verwendete Token
       update:
         success: KI-Transkriptionsauftrag wird wiederholt.
