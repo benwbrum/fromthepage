@@ -272,8 +272,22 @@ module ApplicationHelper
   end
 
   def timeago(time, options = {})
+    return if time.blank?
+
     options[:class] ||= 'timeago'
-    content_tag(:time, time.to_s, options.merge(datetime: time.getutc.iso8601)) if time
+    options[:datetime] ||= time.getutc.iso8601
+    options[:title] ||= l(time.localtime, format: :long)
+    content_tag(:time, time.to_s, options)
+  end
+
+  def relative_time_tag(time, options = {})
+    return if time.blank?
+
+    options[:datetime] ||= time.getutc.iso8601
+    options[:title] ||= l(time.localtime, format: :long)
+    time_tag(time, options) do
+      I18n.t('time_ago_in_words', time: time_ago_in_words(time))
+    end
   end
 
   def mobile_device?

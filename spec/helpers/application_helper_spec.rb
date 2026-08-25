@@ -1,6 +1,31 @@
 require 'spec_helper'
 
 RSpec.describe ApplicationHelper, type: :helper do
+  describe '#relative_time_tag' do
+    it 'renders a time tag with datetime, title, and relative text' do
+      time = Time.utc(2026, 1, 1, 12, 0, 0)
+
+      html = helper.relative_time_tag(time, class: 'small fglight')
+
+      expect(html).to include('class="small fglight"')
+      expect(html).to include('datetime="2026-01-01T12:00:00Z"')
+      expect(html).to include('title=')
+      expect(html).to match(%r{<time[^>]*>.+</time>})
+    end
+  end
+
+  describe '#timeago' do
+    it 'renders a time tag with datetime and title attributes' do
+      time = Time.utc(2026, 1, 1, 12, 0, 0)
+
+      html = helper.timeago(time)
+
+      expect(html).to include('class="timeago"')
+      expect(html).to include('datetime="2026-01-01T12:00:00Z"')
+      expect(html).to include('title=')
+    end
+  end
+
   describe '#file_to_url' do
     context 'with nil filename' do
       it 'returns empty string' do

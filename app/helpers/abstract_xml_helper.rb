@@ -205,9 +205,10 @@ module AbstractXmlHelper
 
     doc.elements.each('//date') do |e|
       when_value = e.attributes['when']
+      datetime_value = when_value.presence || html5_date_value(e.text)
       time = REXML::Element.new('time')
-      time.add_attribute('datetime', when_value)
-      e.children.each { |e| time.add(e) }
+      time.add_attribute('datetime', datetime_value) if datetime_value.present?
+      e.children.each { |child| time.add(child) }
       e.replace_with(time)
     end
 
@@ -561,5 +562,14 @@ module AbstractXmlHelper
 
   def cached_article_xml_to_html(article, preserve_lb: true, collection: nil)
     cached_record_xml_to_html(article, :xml_text, preserve_lb: preserve_lb, collection: collection)
+  end
+
+  private
+
+  def html5_date_value(raw_text)
+    text = raw_text.to_s.strip
+    return text if text.match?(/\A\d{4}\z|\A\d{4}-\d{2}\z|\A\d{4}-\d{2}-\d{2}\z/)
+
+    nil
   end
 end

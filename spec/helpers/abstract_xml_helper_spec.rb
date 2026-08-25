@@ -270,5 +270,27 @@ RSpec.describe AbstractXmlHelper, type: :helper do
         ).to eq('<p>Highlighted text</p>')
       end
     end
+
+    describe 'date element conversion' do
+      it 'converts date tags with when attributes to time tags with datetime' do
+        xml = "<?xml version='1.0' encoding='UTF-8'?><page><p><date when='2020-12-09'>December 9, 2020</date></p></page>"
+
+        expect(xml_to_html(xml, true, true)).to include('<time datetime="2020-12-09">December 9, 2020</time>')
+      end
+
+      it 'adds datetime from unambiguous date text when when attribute is missing' do
+        xml = "<?xml version='1.0' encoding='UTF-8'?><page><p><date>1866</date></p></page>"
+
+        expect(xml_to_html(xml, true, true)).to include('<time datetime="1866">1866</time>')
+      end
+
+      it 'does not add datetime for fuzzy date text when when attribute is missing' do
+        xml = "<?xml version='1.0' encoding='UTF-8'?><page><p><date>1866?</date></p></page>"
+        result = xml_to_html(xml, true, true)
+
+        expect(result).to include('<time>1866?</time>')
+        expect(result).not_to include('datetime=')
+      end
+    end
   end
 end

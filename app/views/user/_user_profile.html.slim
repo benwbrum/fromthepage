@@ -39,8 +39,7 @@ table.datagrid.striped
       td
         small.label(class="deed-type-#{d.deed_type}") =t(d.deed_type_name)
       td.nowrap
-        =time_tag(d.created_at, class: 'small fglight')
-          =t('time_ago_in_words', time: time_ago_in_words(d.created_at))
+        =relative_time_tag(d.created_at, class: 'small fglight')
 
 br
 small.legend
