@@ -40,11 +40,11 @@ RSpec.describe IaWork, type: :model do
 
   describe '#truncate_title' do
     it 'truncates titles to the database limit' do
-      work = described_class.new(title: 'a' * 300)
+      work = described_class.new(title: 'a' * 1100)
 
       work.truncate_title
 
-      expect(work.title.length).to eq(255)
+      expect(work.title.length).to eq(1028)
       expect(work.title).to end_with('...')
     end
   end

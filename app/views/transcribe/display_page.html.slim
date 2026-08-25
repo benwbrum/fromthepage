@@ -20,7 +20,7 @@
   =hidden_field_tag(:page_id, @page.id)
   =hidden_field_tag(:flow, params[:flow])
   =hidden_field_tag(:quality_sampling_id, params[:quality_sampling_id])
-  =hidden_field_tag(:ai_draft_used, false)
+  =hidden_field_tag(:ai_draft_used, @ai_draft_used)
   =validation_summary @page.errors
 
   .page-toolbar

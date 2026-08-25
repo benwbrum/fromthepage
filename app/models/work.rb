@@ -127,7 +127,7 @@ class Work < ApplicationRecord
 
   after_create :alert_bento
 
-  validates :title, presence: true, length: { minimum: 3, maximum: 255 }
+  validates :title, presence: true, length: { minimum: 3, maximum: 1028 }
   validates :slug,
             uniqueness: {
               case_sensitive: true

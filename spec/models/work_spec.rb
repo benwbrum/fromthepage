@@ -49,6 +49,21 @@ describe Work do
     end
   end
 
+  describe 'title validation' do
+    it 'allows titles up to the expanded database limit' do
+      work = build(:work, title: 'a' * 1028)
+
+      expect(work).to be_valid
+    end
+
+    it 'rejects titles longer than the expanded database limit' do
+      work = build(:work, title: 'a' * 1029)
+
+      expect(work).not_to be_valid
+      expect(work.errors[:title]).to include('is too long (maximum is 1028 characters)')
+    end
+  end
+
   context 'es_search' do
     let(:identifier) { 'pneumonoultramicroscopicsilicovolcanoconiosis' }
 
