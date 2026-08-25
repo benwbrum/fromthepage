@@ -308,37 +308,39 @@ class ArticleController < ApplicationController
       end
     end
 
-    dot_source = render_to_string(
-      partial: 'graph',
-      layout: false,
-      locals: {
-        article_links: article_links,
-        link_total: link_total,
-        link_max: link_max,
-        min_rank: min_rank
-      },
-      formats: [:dot]
-    )
+    unless @article.graph_attachment.attached?
+      dot_source = render_to_string(
+        partial: 'graph',
+        layout: false,
+        locals: {
+          article_links: article_links,
+          link_total: link_total,
+          link_max: link_max,
+          min_rank: min_rank
+        },
+        formats: [:dot]
+      )
 
-    dot_file = Tempfile.new(["#{@article.id}-", '.dot'])
-    dot_file.write(dot_source)
-    dot_file.close
+      dot_file = Tempfile.new(["#{@article.id}-", '.dot'])
+      dot_file.write(dot_source)
+      dot_file.close
 
-    dot_out = Tempfile.new(["#{@article.id}-", '.png'])
-    dot_out.close
+      dot_out = Tempfile.new(["#{@article.id}-", '.png'])
+      dot_out.close
 
-    dot_out_map = Tempfile.new(["#{@article.id}-", '.map'])
-    dot_out_map.close
+      dot_out_map = Tempfile.new(["#{@article.id}-", '.map'])
+      dot_out_map.close
 
-    system "#{Rails.application.config.neato} -Tcmapx -o#{dot_out_map.path} -Tpng #{dot_file.path} -o #{dot_out.path}"
+      system "#{Rails.application.config.neato} -Tcmapx -o#{dot_out_map.path} -Tpng #{dot_file.path} -o #{dot_out.path}"
 
-    @map = File.read(dot_out_map.path)
-    @article.graph_attachment.attach(
-      io: File.open(dot_out.path),
-      filename: "#{@article.id}.png",
-      content_type: 'image/png'
-    )
-    @article.save!
+      @map = File.read(dot_out_map.path)
+      @article.graph_attachment.attach(
+        io: File.open(dot_out.path),
+        filename: "#{@article.id}.png",
+        content_type: 'image/png'
+      )
+    end
+
     session[:col_id] = @collection.slug
   end
 
