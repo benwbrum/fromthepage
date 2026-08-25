@@ -19,9 +19,9 @@ de:
       url_description: Bitte verwenden Sie zwischen den Wörtern Kleinbuchstaben und Bindestriche.
     edit_privacy:
       document_set_collaborators: Erlaubte Mitarbeiter
-      document_set_privacy_private: 'Datenschutz für Dokumentensätze: <i>Privat</i>'
-      document_set_privacy_public: 'Datenschutz für Dokumentensätze: <i>Öffentlich</i>'
-      document_set_privacy_read_only: 'Datenschutz für Dokumentsätze: <i>Nur Lesen</i>'
+      document_set_privacy_private: 'Datenschutz für Dokumentensets: <i>Privat</i>'
+      document_set_privacy_public: 'Datenschutz für Dokumentensets: <i>Öffentlich</i>'
+      document_set_privacy_read_only: 'Datenschutz für Dokumentensets: <i>Nur Lesen</i>'
       document_set_restricted_description: Das Dokumentenset kann nur von den unterhalb angeführten Mitarbeitenden eingesehen werden. Sie können die Sammlung öffentlich einsehbar machen.
       document_set_unrestricted_description: Das Dokumentenset kann von jedem im Internet eingesehen werden. Alle Werke, die einem öffentlichen Dokumentenset zugeordnet sind, sind einsehbar, auch wenn die übergeordnete Sammlung privat ist. Sie können das Dokumentenset auf privat setzen, um die Sichtbarkeit nur auf Mitarbeitende einzuschränken.
       edit_collaborators: Mitarbeiter bearbeiten
