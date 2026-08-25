@@ -38,6 +38,17 @@ set :keep_releases, 20
 set :assets_roles, [:web, :app]
 
 namespace :deploy do
+  desc 'Install Node dependencies'
+  task :npm_install do
+    on roles(:app) do
+      within release_path do
+        execute :npm, 'ci', '--omit=dev'
+      end
+    end
+  end
+
+  after :updated, :npm_install
+  
   desc 'Restart application'
   task :restart do
     on roles(:app), in: :sequence, wait: 5 do
