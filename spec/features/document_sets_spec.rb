@@ -94,6 +94,20 @@ describe 'document sets' do
       expect(checkbox).to be_checked
     end
 
+    # Each checkbox toggle above submits the works form in the background (see
+    # data-action="change->form#requestSubmit" in _works_table.html.slim), which persists
+    # via DocumentSetsController#update_works on its own DB connection. Wait for that
+    # in-flight request to land before reassigning work_ids directly below — otherwise the
+    # async request and this test's own ActiveRecord calls can race to insert the same
+    # document_sets_works row and raise ActiveRecord::RecordNotUnique.
+    Timeout.timeout(Capybara.default_max_wait_time) do
+      loop do
+        break if doc_set.reload.work_ids.sort == works.map(&:id).sort
+
+        sleep 0.1
+      end
+    end
+
     work_ids += doc_set.work_ids
 
     doc_set.work_ids = []
