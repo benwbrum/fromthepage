@@ -484,8 +484,8 @@ describe Page do
             allow(collection).to receive_message_chain(:transcription_fields, :where, :exists?).and_return(true)
           end
 
-          it 'returns false' do
-            expect(page.field_ai_draft_available?).to be false
+          it 'returns true' do
+            expect(page.field_ai_draft_available?).to be true
           end
         end
 

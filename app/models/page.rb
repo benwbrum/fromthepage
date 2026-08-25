@@ -276,8 +276,7 @@ class Page < ApplicationRecord
 
   def field_ai_draft_available?
     field_based &&
-      finished_ai_transcription.present? &&
-      !collection.transcription_fields.where(input_type: 'spreadsheet').exists?
+      finished_ai_transcription.present?
   end
 
   # Latest finished, non-ALTO AiTranscription per engine (e.g. "gemini", "claude"),
