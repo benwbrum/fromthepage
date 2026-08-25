@@ -149,7 +149,7 @@ class ArticleController < ApplicationController
   end
 
   def relationship_graph
-    unless File.exist? @article.d3js_file
+    if !@article.d3js_attachment.attached?
       article_links=[]
       article_nodes=[]
       # get all the source article links
@@ -162,8 +162,7 @@ class ArticleController < ApplicationController
         article_nodes << link.source_article
         article_links << link.source_article_id
       end
-      document_nodes=[]
-      work_nodes=[]
+      document_nodes = []
       center_article_to_document_links=[]
       second_document_to_article_links=[]
       # get all the pages and works linking to this article
@@ -221,7 +220,7 @@ class ArticleController < ApplicationController
         end
       end
 
-      links=[]
+      links = []
       article_links.tally.each do |article_id, link_count|
         links << {
           'source'=>"S#{@article.id}",
@@ -248,12 +247,16 @@ class ArticleController < ApplicationController
         }
       end
 
-      doc={ 'nodes' => nodes, 'links' => links }
-      File.write(@article.d3js_file, doc.to_json)
+      doc = { 'nodes' => nodes, 'links' => links }
+
+      @article.d3js_attachment.attach(
+        io: StringIO.new(doc.to_json),
+        filename: "#{@article.id}.d3.js",
+        content_type: 'application/javascript'
+      )
     end
 
-    # now render the d3js file
-    render file: @article.d3js_file, type: 'application/javascript; charset=utf-8', layout: false
+    render file: @article.d3js_attachment.download, type: 'application/javascript; charset=utf-8', layout: false
   end
 
   def show
@@ -317,17 +320,24 @@ class ArticleController < ApplicationController
       formats: [:dot]
     )
 
-    dot_file = "#{Rails.root}/public/images/working/dot/#{@article.id}.dot"
-    File.open(dot_file, 'w') do |f|
-      f.write(dot_source)
-    end
-    dot_out = "#{Rails.root}/public/images/working/dot/#{@article.id}.png"
-    dot_out_map = "#{Rails.root}/public/images/working/dot/#{@article.id}.map"
+    dot_file = Tempfile.new(["#{@article.id}-", '.dot'])
+    dot_file.write(dot_source)
+    dot_file.close
 
-    system "#{Rails.application.config.neato} -Tcmapx -o#{dot_out_map} -Tpng #{dot_file} -o #{dot_out}"
+    dot_out = Tempfile.new(["#{@article.id}-", '.png'])
+    dot_out.close
 
-    @map = File.read(dot_out_map)
-    @article.graph_image = dot_out
+    dot_out_map = Tempfile.new(["#{@article.id}-", '.map'])
+    dot_out_map.close
+
+    system "#{Rails.application.config.neato} -Tcmapx -o#{dot_out_map.path} -Tpng #{dot_file.path} -o #{dot_out.path}"
+
+    @map = File.read(dot_out_map.path)
+    @article.graph_attachment.attach(
+      io: File.open(dot_out.path),
+      filename: "#{@article.id}.png",
+      content_type: 'image/png'
+    )
     @article.save!
     session[:col_id] = @collection.slug
   end

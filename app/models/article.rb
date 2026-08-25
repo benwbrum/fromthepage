@@ -85,6 +85,9 @@ class Article < ApplicationRecord
   update_index('articles', if: -> { ELASTIC_ENABLED && !destroyed? }) { self }
   after_destroy :handle_index_deletion
 
+  has_one_attached :graph_attachment
+  has_one_attached :d3js_attachment
+
   def self.es_search(query:, user: nil, is_public: true)
     blocked_collections = []
     collection_collabs = []
@@ -187,15 +190,6 @@ class Article < ApplicationRecord
   def org_fields_enabled?
     self.categories.where(org_fields_enabled: true).present?
   end
-
-  def clear_relationship_graph
-    File.unlink(d3js_file) if File.exist?(d3js_file)
-  end
-
-  def d3js_file
-    "#{Rails.root}/public/images/working/dot/#{self.id}.d3.js"
-  end
-
 
   #######################
   # De-Dup Support

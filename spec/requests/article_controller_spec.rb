@@ -445,7 +445,7 @@ describe ArticleController do
     before do
       create(:article_article_link, source_article: article, target_article: linked_article)
       linked_article.pages << page
-      FileUtils.rm_f(article.d3js_file)
+      article.d3js_attachment.purge
     end
 
     let(:action_path) { collection_article_relationship_graph_path(owner, collection, article) }
@@ -459,7 +459,7 @@ describe ArticleController do
       node_ids = json['nodes'].map { |n| n['id'] }
       expect(node_ids).to include("S#{article.id}", "S#{linked_article.id}", "D#{page.id}")
       expect(json['links']).to include(a_hash_including('source' => "S#{article.id}", 'target' => "S#{linked_article.id}", 'group' => 'direct'))
-      expect(File).to exist(article.d3js_file)
+      expect(article.d3js_attachment.attached?).to be_truthy
     end
 
     it 'excludes bio field from article nodes in JSON response' do
@@ -501,7 +501,7 @@ describe ArticleController do
 
       before do
         create(:page_article_link, article: article_in_work, work: work_not_meaningful, page: page_not_meaningful)
-        FileUtils.rm_f(article_in_work.d3js_file)
+        article_in_work.d3js_attachmment.purge
       end
 
       it 'includes identifier in work-based document nodes' do
