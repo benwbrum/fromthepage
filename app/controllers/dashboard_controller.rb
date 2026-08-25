@@ -129,11 +129,9 @@ class DashboardController < ApplicationController
 
     # Stats
     owner_collections = current_user.all_owner_collections.map { |c| c.id }
-    contributor_ids_for_dates = AhoyActivitySummary
-        .where(collection_id: owner_collections)
-        .where('date BETWEEN ? AND ?', @start_date, @end_date).distinct.pluck(:user_id)
+    contributor_ids_for_range = contributor_ids_for_dates(owner_collections, @start_date, @end_date)
 
-    @contributors = User.where(id: contributor_ids_for_dates).order(:display_name)
+    @contributors = User.where(id: contributor_ids_for_range).order(:display_name)
 
     @activity = AhoyActivitySummary
         .where(collection_id: owner_collections)
@@ -272,11 +270,13 @@ class DashboardController < ApplicationController
     # Get Row Data (Users)
     owner_collections = current_user.all_owner_collections.map { |c| c.id }
 
-    contributor_ids_for_dates = AhoyActivitySummary
-      .where(collection_id: owner_collections)
-      .where('date BETWEEN ? AND ?', start_date, end_date).distinct.pluck(:user_id)
+    contributor_ids_for_range = contributor_ids_for_dates(
+      owner_collections,
+      start_date,
+      end_date
+    )
 
-    contributors = User.where(id: contributor_ids_for_dates).order(:display_name)
+    contributors = User.where(id: contributor_ids_for_range).order(:display_name)
 
     csv = CSV.generate(headers: true) do |records|
       records << headers

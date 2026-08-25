@@ -35,4 +35,39 @@ RSpec.describe OwnerExporter do
       expect(csv.third).to eq(['user-two', 'User Two', 'two@example.com', 'false', '0', '3'])
     end
   end
+
+  describe '#contributor_ids_for_dates' do
+    let(:owner) { create(:unique_user, :owner) }
+    let(:collection) { create(:collection, owner_user_id: owner.id) }
+    let(:work) { create(:work, collection: collection, owner_user_id: owner.id) }
+    let(:start_date) { 2.days.ago.beginning_of_day }
+    let(:end_date) { 1.day.ago.end_of_day }
+    let(:contributor) { create(:unique_user) }
+    let(:joined_only_user) { create(:unique_user) }
+
+    before do
+      create(
+        :deed,
+        user: contributor,
+        collection: collection,
+        work: work,
+        deed_type: DeedType::PAGE_TRANSCRIPTION,
+        created_at: start_date + 2.hours
+      )
+      create(
+        :deed,
+        user: joined_only_user,
+        collection: collection,
+        work: work,
+        deed_type: DeedType::COLLECTION_JOINED,
+        created_at: start_date + 3.hours
+      )
+    end
+
+    it 'excludes non-contribution collection join deeds' do
+      contributor_ids = exporter.contributor_ids_for_dates([collection.id], start_date, end_date)
+
+      expect(contributor_ids).to contain_exactly(contributor.id)
+    end
+  end
 end

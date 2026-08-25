@@ -245,6 +245,44 @@ describe DashboardController do
         expect(response).to render_template(:summary)
       end
     end
+
+    context 'with contributor and collection join deeds in range' do
+      let(:start_date) { 2.days.ago.to_date }
+      let(:end_date) { 1.day.ago.to_date }
+      let(:params) { { start_date: start_date.to_s, end_date: end_date.to_s } }
+      let!(:work) { create(:work, collection: collection, owner_user_id: owner.id) }
+      let!(:contributor) { create(:unique_user, login: "active-#{SecureRandom.hex(3)}") }
+      let!(:joined_only_user) { create(:unique_user, login: "joined-#{SecureRandom.hex(3)}") }
+
+      before do
+        create(
+          :deed,
+          user: contributor,
+          collection: collection,
+          work: work,
+          deed_type: DeedType::PAGE_TRANSCRIPTION,
+          created_at: start_date.beginning_of_day + 2.hours
+        )
+        create(
+          :deed,
+          user: joined_only_user,
+          collection: collection,
+          work: work,
+          deed_type: DeedType::COLLECTION_JOINED,
+          created_at: start_date.beginning_of_day + 3.hours
+        )
+        create(:ahoy_activity_summary, user_id: contributor.id, collection_id: collection.id, date: start_date, minutes: 10)
+        create(:ahoy_activity_summary, user_id: joined_only_user.id, collection_id: collection.id, date: start_date, minutes: 10)
+      end
+
+      it 'shows only contributing collaborators in the owner summary list' do
+        login_as owner
+        subject
+
+        expect(response.body).to include(contributor.display_name)
+        expect(response.body).not_to include(joined_only_user.display_name)
+      end
+    end
   end
 
   describe '#watchlist' do

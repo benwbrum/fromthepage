@@ -5,7 +5,7 @@ source 'https://rubygems.org'
 ruby '3.3.5'
 
 gem 'rails', '~> 7.2.1'
-gem 'puma'
+gem 'puma', '~> 7.2', '>= 7.2.1'
 gem 'bootsnap', require: false
 
 # Core / Models / Business logic
@@ -28,11 +28,11 @@ gem 'get_process_mem'
 # Authentication / Security
 gem 'devise'
 gem 'devise-encryptable'
-gem 'devise_masquerade', '~> 1.2.0'
-gem 'omniauth', '~> 1.9'
+gem 'devise_masquerade', '~> 1.3', '>= 1.3.1'
+gem 'omniauth', '~> 2.1', '>= 2.1.4'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-multi-provider', '~> 0.2.1'
-gem 'omniauth-saml', '~> 1.10.6'
+gem 'omniauth-saml', '~> 2.2', '>= 2.2.3'
 gem 'rack-attack'
 gem 'recaptcha', require: 'recaptcha/rails'
 
@@ -43,8 +43,8 @@ gem 'rmagick'
 gem 'rubyzip'
 
 # HTTP / API / External SDKs
-gem 'httparty'
-gem 'savon', '~> 2.15', '>= 2.15.1'
+gem 'httparty', '~> 0.24', '>= 0.24.0'
+gem 'savon', '~> 2.17', '>= 2.17.2'
 gem 'ruby-openai'
 gem 'gemini-ai'
 gem 'anthropic'
@@ -55,7 +55,7 @@ gem 'iiif-presentation'
 gem 'riiif'
 
 # Data / Parsing / Search
-gem 'nokogiri'
+gem 'nokogiri', '~> 1.19', '>= 1.19.3'
 gem 'roo'
 gem 'charlock_holmes'
 gem 'nkf'

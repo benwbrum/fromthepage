@@ -97,7 +97,7 @@ class RegistrationsController < Devise::RegistrationsController
 
   def set_saml
     institution = saml_provider_param
-    redirect_to user_omniauth_authorize_path(institution)  # go to users/auth/saml/instution_name
+    redirect_to user_omniauth_authorize_path(institution), status: :temporary_redirect # go to users/auth/saml/institution_name
   end
 
   def choose_saml

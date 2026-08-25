@@ -13,11 +13,9 @@ module OwnerExporter
     owner_collections = owner.all_owner_collections.map { |c| c.id }
 
 
-    contributor_ids_for_dates = AhoyActivitySummary
-      .where(collection_id: owner_collections)
-      .where('date BETWEEN ? AND ?', start_date, end_date).distinct.pluck(:user_id)
+    contributor_ids_for_range = contributor_ids_for_dates(owner_collections, start_date, end_date)
 
-    contributors = User.where(id: contributor_ids_for_dates).order(:display_name)
+    contributors = User.where(id: contributor_ids_for_range).order(:display_name)
 
     csv = CSV.generate(headers: true) do |records|
       records << headers
@@ -41,6 +39,19 @@ module OwnerExporter
     end
 
     csv
+  end
+
+  def contributor_ids_for_dates(owner_collections, start_date, end_date)
+    range_start = start_date.respond_to?(:hour) ? start_date : start_date.beginning_of_day
+    range_end = end_date.respond_to?(:hour) ? end_date : end_date.end_of_day
+
+    Deed
+      .where(collection_id: owner_collections)
+      .where.not(deed_type: DeedType::COLLECTION_JOINED)
+      .where.not(user_id: nil)
+      .where(created_at: range_start..range_end)
+      .distinct
+      .pluck(:user_id)
   end
 
   def get_data
