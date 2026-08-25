@@ -25,9 +25,9 @@ en:
       document_set_restricted_description: The document set can only be viewed by the collaborators listed below. You may make the collection publicly readable.
       document_set_unrestricted_description: The document set can be viewed by anyone on the internet. Any works put within a public document set will be readable, even if the parent collection is private.  You may make the document set private to restrict its visiblity to collaborators.
       edit_collaborators: Edit Collaborators
-      parent_collection_visibility_private: The parent collection is private. This does not make the document set private, as the document set's visibility is configured independently.
-      parent_collection_visibility_public: The parent collection is public. This does not affect the document set's visibility, which is configured independently.
-      parent_collection_visibility_read_only: The parent collection is read-only. This does not affect the document set's visibility, which is configured independently.
+      parent_collection_visibility_private: The parent collection is private.
+      parent_collection_visibility_public: The parent collection is public. Anyone will be able to see and edit works in this document set through the collection.
+      parent_collection_visibility_read_only: The parent collection is read-only. Anyone will be able to see works in this document set through the collection.
       private: Private
       public: Public
       read_only: Read-only
