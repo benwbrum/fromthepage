@@ -517,11 +517,13 @@ Fromthepage::Application.routes.draw do
       get 'search', to: 'collection#search', as: 'search'
 
       get 'edit', on: :member
+      get 'edit/clone_settings', on: :member, to: 'collection#edit_clone_settings'
       get 'edit/tasks', on: :member, to: 'collection#edit_tasks'
       get 'edit/look', on: :member, to: 'collection#edit_look'
       get 'edit/privacy', on: :member, to: 'collection#edit_privacy'
       get 'edit/help', on: :member, to: 'collection#edit_help'
       get 'edit/quality_control', on: :member, to: 'collection#edit_quality_control'
+      post 'clone_settings', on: :member, to: 'collection#clone_settings'
 
       scope module: :collection do
         resource :ai_transcriptions, only: [:edit, :create, :update]

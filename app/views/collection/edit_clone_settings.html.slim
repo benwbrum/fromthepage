@@ -1,0 +1,17 @@
+.litebox-embed(style="width:550px")
+  h3 = t('.heading')
+  p.fglight = t('.description')
+
+  -if @source_collections.any?
+    =form_tag(clone_settings_collection_path(@collection.owner, @collection), method: :post) do
+      p
+        = label_tag :source_collection_id, t('.source_collection')
+      p
+        = select_tag :source_collection_id, options_from_collection_for_select(@source_collections, :id, :title), include_blank: true
+      = button_tag t('.clone_button'), type: :submit, data: { confirm: t('.confirm') }
+  -else
+    p = t('.no_source_collections')
+
+  .toolbar
+    .toolbar_group.aright
+      = link_to t('collection.edit.done'), edit_collection_path(@collection.owner, @collection), class: 'button'

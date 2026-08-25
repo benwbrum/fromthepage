@@ -82,8 +82,14 @@ en:
       notice: Collection deleted successfully.
     disable_ocr:
       notice: OCR correction has been disabled for all works.
+    clone_settings:
+      alert: Invalid source collection selected.
+      notice: Collection settings were cloned.
+      update_failed: Unable to clone collection settings.
     edit:
       add_button: Add
+      clone_settings: Clone Settings from Another Collection
+      clone_settings_action: Clone settings
       collection_findable_instruction: For collections to be findable in FromThePage, please ensure they have tags, an image, and a description.
       collection_image: Collection image
       collection_image_description: A picture to be used to illustrate the collection description.
@@ -163,6 +169,13 @@ en:
       u_label: Underline
       unclear_description: Marks unclear text. <br><i>Recommended</i>
       unclear_label: Unclear
+    edit_clone_settings:
+      clone_button: Clone Settings
+      confirm: This will overwrite owners and transcription conventions on this collection. Continue?
+      description: Copy staff owners and transcription conventions from another collection in this organization.
+      heading: Clone Settings from Another Collection
+      no_source_collections: There are no other collections available to clone from.
+      source_collection: Source collection
     edit_danger:
       active: Active
       blank_collection: Blank Collection

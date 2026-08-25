@@ -13,18 +13,20 @@ class CollectionController < ApplicationController
     :set_collection_footer_block
   ]
 
-  edit_actions = [:edit, :edit_tasks, :edit_look, :edit_privacy, :edit_help, :edit_quality_control, :edit_danger]
+  edit_actions = [:edit, :edit_clone_settings, :edit_tasks, :edit_look, :edit_privacy, :edit_help, :edit_quality_control, :edit_danger]
 
-  before_action :set_collection, only: edit_actions + [:show, :update, :contributors, :new_work, :works_list, :needs_transcription_pages, :needs_review_pages, :start_transcribing]
+  before_action :set_collection, only: edit_actions + [:show, :update, :clone_settings, :contributors, :new_work, :works_list, :needs_transcription_pages, :needs_review_pages, :start_transcribing]
   before_action :authorized?, only: [
     :new,
     :edit,
+    :edit_clone_settings,
     :edit_tasks,
     :edit_look,
     :edit_privacy,
     :edit_help,
     :edit_quality_control,
     :edit_danger,
+    :clone_settings,
     :update,
     :blank_collection,
     :delete,
@@ -529,6 +531,10 @@ class CollectionController < ApplicationController
     @selected_tags = @collection.tags.pluck(:id)
   end
 
+  def edit_clone_settings
+    @source_collections = source_collections_scope.reorder(:title)
+  end
+
   def edit_tasks
     @has_finished_ai_transcription =
       @collection.pages
@@ -610,6 +616,20 @@ class CollectionController < ApplicationController
       end
 
       format.turbo_stream { render template }
+    end
+  end
+
+  def clone_settings
+    source_collection = source_collections_scope.find_by(id: params[:source_collection_id])
+    return redirect_to(edit_collection_path(@collection.owner, @collection), alert: t('.alert')) unless source_collection
+
+    if @collection.update(
+      owner_ids: source_collection.owner_ids,
+      transcription_conventions: source_collection.transcription_conventions
+    )
+      redirect_to edit_collection_path(@collection.owner, @collection), notice: t('.notice')
+    else
+      redirect_to edit_collection_path(@collection.owner, @collection), alert: t('.update_failed')
     end
   end
 
@@ -810,6 +830,10 @@ class CollectionController < ApplicationController
 
   def updated_fields_hash
     @collection.changed.to_h { |field| [field, @collection.send(field)] }
+  end
+
+  def source_collections_scope
+    Collection.where(owner_user_id: @collection.owner_user_id).where.not(id: @collection.id)
   end
 
   def collection_params

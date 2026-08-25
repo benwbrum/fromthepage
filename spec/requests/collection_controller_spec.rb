@@ -138,6 +138,118 @@ describe CollectionController do
     end
   end
 
+  describe '#edit_clone_settings' do
+    let!(:source_collection) { create(:collection, owner_user_id: owner.id, title: 'Source Collection') }
+    let(:action_path) { edit_clone_settings_collection_path(owner, collection) }
+
+    let(:subject) { get action_path }
+
+    it 'renders status and template when accessed by owner' do
+      login_as owner
+      subject
+
+      expect(response).to have_http_status(:ok)
+      expect(response).to render_template(:edit_clone_settings)
+      expect(response.body).to include(source_collection.title)
+    end
+
+    context 'when accessed by non-owner user' do
+      it 'redirects to collection show page' do
+        login_as user
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(collection_path(owner, collection))
+      end
+    end
+
+    context 'when accessed by unauthenticated user' do
+      it 'redirects to dashboard' do
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(dashboard_path)
+      end
+    end
+  end
+
+  describe '#clone_settings' do
+    let!(:staff_owner) { create(:unique_user) }
+    let!(:source_collection) do
+      create(:collection, owner_user_id: owner.id, transcription_conventions: 'Source conventions').tap do |source|
+        source.owners << staff_owner
+      end
+    end
+    let(:action_path) { clone_settings_collection_path(owner, collection) }
+
+    let(:subject) { post action_path, params: { source_collection_id: source_collection.id } }
+
+    it 'clones settings when accessed by owner' do
+      login_as owner
+      subject
+
+      expect(response).to have_http_status(:redirect)
+      expect(response).to redirect_to(edit_collection_path(owner, collection))
+
+      collection.reload
+      expect(collection.owner_ids).to eq(source_collection.owner_ids)
+      expect(collection.transcription_conventions).to eq(source_collection.transcription_conventions)
+    end
+
+    context 'when source collection is invalid' do
+      it 'redirects without changing settings' do
+        login_as owner
+        original_owner_ids = collection.owner_ids
+        original_conventions = collection.transcription_conventions
+
+        post action_path, params: { source_collection_id: collection.id }
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(edit_collection_path(owner, collection))
+
+        collection.reload
+        expect(collection.owner_ids).to eq(original_owner_ids)
+        expect(collection.transcription_conventions).to eq(original_conventions)
+      end
+
+      it 'does not clone from another owner collection' do
+        login_as owner
+        external_owner = create(:unique_user, :owner)
+        external_collection = create(:collection, owner_user_id: external_owner.id, transcription_conventions: 'External')
+        original_owner_ids = collection.owner_ids
+        original_conventions = collection.transcription_conventions
+
+        post action_path, params: { source_collection_id: external_collection.id }
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(edit_collection_path(owner, collection))
+
+        collection.reload
+        expect(collection.owner_ids).to eq(original_owner_ids)
+        expect(collection.transcription_conventions).to eq(original_conventions)
+      end
+    end
+
+    context 'when accessed by non-owner user' do
+      it 'redirects to collection show page' do
+        login_as user
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(collection_path(owner, collection))
+      end
+    end
+
+    context 'when accessed by unauthenticated user' do
+      it 'redirects to dashboard' do
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(dashboard_path)
+      end
+    end
+  end
+
   describe '#edit_tasks' do
     let!(:collection) { create(:collection, owner_user_id: owner.id, field_based: true, transcription_fields: []) }
     let(:action_path) { edit_tasks_collection_path(owner, collection) }

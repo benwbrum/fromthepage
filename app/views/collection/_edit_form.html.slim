@@ -21,6 +21,12 @@ tr
       =svg_symbol '#icon-copy', class: 'icon'
 
 tr
+  th
+    h3 = t('collection.edit.clone_settings')
+  td
+    = link_to t('collection.edit.clone_settings_action'), edit_clone_settings_collection_path(collection.owner, collection), class: 'button', data: { controller: 'litebox', litebox: { hash: 'clone-settings' } }
+
+tr
   td[colspan='2' style='padding: 30px 0 0 0;'] = t('collection.edit.collection_findable_instruction')
 tr
   th
