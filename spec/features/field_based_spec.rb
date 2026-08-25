@@ -161,7 +161,7 @@ describe 'collection field-based transcription settings' do
       updateHandler.call($destinationLine[0], $.Event('sortupdate'), { item: $movedField });
     JS
 
-    moved_field_label = page.find("input[value='Moved unsaved field']", visible: :all)
+    moved_field_label = page.find_field(with: 'Moved unsaved field', type: 'text', visible: :all)
     moved_field_row = moved_field_label.find(:xpath, './ancestor::tr[1]')
 
     expect(moved_field_row).to have_selector(
