@@ -61,9 +61,10 @@ div.fields-preview
         forcePlaceholderSize: true,
         update: function(e, ui) {
           var line = $(this).index() + 1;
+          var isPersistedField = /^field_\d+$/.test(ui.item.attr('id'));
           var data = $(this).sortable('serialize');
-          ui.item.find('input[id=transcription_fields__line_number]').val(line);
-          if (data) {
+          ui.item.closest('tbody').find('input[id=transcription_fields__line_number]').val(line);
+          if (isPersistedField && data) {
             $.ajax({
               url: "#{transcription_field_reorder_path(collection_id: @collection.id)}",
               type: "PATCH",

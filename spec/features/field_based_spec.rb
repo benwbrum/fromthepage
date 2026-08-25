@@ -121,6 +121,57 @@ describe 'collection field-based transcription settings' do
     expect(collection.transcription_fields.count).to eq(3)
   end
 
+  it 'keeps unsaved fields visible when moved to another line', js: true do
+    visit transcription_field_edit_fields_path(collection_id: collection)
+
+    click_button 'Add Additional Line'
+    expect(page).to have_selector('#new-fields tbody', minimum: 2)
+
+    line_two_fields = page.all('#new-fields tbody').last.all('tr.sortable-field')
+    line_two_fields.first.fill_in('transcription_fields__label', with: 'Spreadsheet field')
+    line_two_fields.first.select('spreadsheet', from: 'transcription_fields__input_type')
+
+    click_button 'Add Additional Field'
+    page
+      .all('#new-fields tbody')
+      .last
+      .all('tr.sortable-field')
+      .last
+      .fill_in('transcription_fields__label', with: 'Moved unsaved field')
+
+    page.execute_script(<<~JS)
+      window.__reorderAjaxCallCount = 0;
+      window.__fieldEditorReloadCalled = false;
+      var originalAjax = $.ajax;
+      $.ajax = function() {
+        window.__reorderAjaxCallCount += 1;
+        return originalAjax.apply($, arguments);
+      };
+      window.location.reload = function() {
+        window.__fieldEditorReloadCalled = true;
+      };
+    JS
+
+    page.execute_script(<<~JS)
+      var $sourceLine = $('#new-fields tbody').eq(1);
+      var $destinationLine = $('#new-fields tbody').eq(0);
+      var $movedField = $sourceLine.find('tr.sortable-field').last();
+      $destinationLine.append($movedField);
+      var updateHandler = $destinationLine.sortable('option', 'update');
+      updateHandler.call($destinationLine[0], $.Event('sortupdate'), { item: $movedField });
+    JS
+
+    moved_field_label = page.find("input[value='Moved unsaved field']", visible: :all)
+    moved_field_row = moved_field_label.find(:xpath, './ancestor::tr[1]')
+
+    expect(moved_field_row).to have_selector(
+      "input#transcription_fields__line_number[value='1']",
+      visible: :all
+    )
+    expect(page.evaluate_script('window.__reorderAjaxCallCount')).to eq(0)
+    expect(page.evaluate_script('window.__fieldEditorReloadCalled')).to be(false)
+  end
+
   it 'transcribes field-based works' do
     create_transcription_fields
     field_page = work_pages.first
