@@ -33,14 +33,16 @@ class PageVersionController < ApplicationController
     end
 
     Current.user = current_user
-    @page.update!(
+    page_attributes = {
       source_text: version.transcription,
       xml_text: version.xml_transcription,
       title: version.title,
       source_translation: version.source_translation,
-      xml_translation: version.xml_translation,
-      status: version.status
-    )
+      xml_translation: version.xml_translation
+    }
+    page_attributes[:status] = version.status if version.status.present?
+
+    @page.update!(page_attributes)
 
     flash[:notice] = t('.reverted')
     redirect_to collection_transcribe_page_path(@collection.owner, @collection, @work, @page)

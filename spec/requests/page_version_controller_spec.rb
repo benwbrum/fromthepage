@@ -89,6 +89,13 @@ RSpec.describe PageVersionController do
 
         expect(flash[:notice]).to be_present
       end
+
+      it 'keeps the current status when the selected version has no status' do
+        post page_version_revert_path, params: { page_version_id: first_version.id }
+
+        page.reload
+        expect(page.status).to eq('new')
+      end
     end
 
     context 'when logged in as a non-owner transcriber' do
