@@ -419,7 +419,7 @@ class Page < ApplicationRecord
     self.work.increment!(:transcription_version)
 
     previous_version = PageVersion.where('page_id = ?', self.id).order('page_version DESC').first
-    version.page_version = previous_version.page_version + 1 if previous_version
+    version.page_version = previous_version.page_version.to_i + 1 if previous_version
     version.save!
 
     self.update_column(:page_version_id, version.id)
