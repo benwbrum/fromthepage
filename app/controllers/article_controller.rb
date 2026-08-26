@@ -256,7 +256,9 @@ class ArticleController < ApplicationController
       )
     end
 
-    render file: @article.d3js_attachment.download, type: 'application/javascript; charset=utf-8', layout: false
+    send_data @article.d3js_attachment.download,
+              type: 'application/javascript; charset=utf-8',
+              disposition: 'inline'
   end
 
   def show
@@ -266,49 +268,49 @@ class ArticleController < ApplicationController
       return
     end
 
-    sql =
-      'SELECT count(*) as link_count, '+
-      'a.title as title, '+
-      'a.id as article_id '+
-      'FROM page_article_links to_links '+
-      'INNER JOIN page_article_links from_links '+
-      '  ON to_links.page_id = from_links.page_id '+
-      'INNER JOIN articles a '+
-      '  ON from_links.article_id = a.id '+
-      "WHERE to_links.article_id = #{@article.id} "+
-      " AND from_links.article_id != #{@article.id} "
-    sql += 'GROUP BY a.title, a.id '
-    logger.debug(sql)
-    article_links = Article.connection.select_all(sql)
-    link_total = 0
-    link_max = 0
-    count_per_rank = { 0 => 0 }
-    article_links.each do |l|
-      link_count = l['link_count'].to_i
-      link_total += link_count
-      link_max = [link_count, link_max].max
-
-      count_per_rank[link_count] ||= 0
-      count_per_rank[link_count] += 1
-    end
-
-    min_rank = 0
-    # now we know how many articles each link count has, as well as the size
-    if params[:min_rank]
-      # use the min rank from the params
-      min_rank = params[:min_rank].to_i
-    else
-      # calculate whether we should reduce the rank
-      num_articles = article_links.count
-      while num_articles > DEFAULT_ARTICLES_PER_GRAPH && min_rank < link_max
-        # remove the outer rank
-        num_articles -= count_per_rank[min_rank] || 0 # hash is sparse
-        min_rank += 1
-        logger.debug("DEBUG: \tnum articles now #{num_articles}\n")
-      end
-    end
-
     unless @article.graph_attachment.attached?
+      sql =
+        'SELECT count(*) as link_count, '+
+        'a.title as title, '+
+        'a.id as article_id '+
+        'FROM page_article_links to_links '+
+        'INNER JOIN page_article_links from_links '+
+        '  ON to_links.page_id = from_links.page_id '+
+        'INNER JOIN articles a '+
+        '  ON from_links.article_id = a.id '+
+        "WHERE to_links.article_id = #{@article.id} "+
+        " AND from_links.article_id != #{@article.id} "
+      sql += 'GROUP BY a.title, a.id '
+      logger.debug(sql)
+      article_links = Article.connection.select_all(sql)
+      link_total = 0
+      link_max = 0
+      count_per_rank = { 0 => 0 }
+      article_links.each do |l|
+        link_count = l['link_count'].to_i
+        link_total += link_count
+        link_max = [link_count, link_max].max
+
+        count_per_rank[link_count] ||= 0
+        count_per_rank[link_count] += 1
+      end
+
+      min_rank = 0
+      # now we know how many articles each link count has, as well as the size
+      if params[:min_rank]
+        # use the min rank from the params
+        min_rank = params[:min_rank].to_i
+      else
+        # calculate whether we should reduce the rank
+        num_articles = article_links.count
+        while num_articles > DEFAULT_ARTICLES_PER_GRAPH && min_rank < link_max
+          # remove the outer rank
+          num_articles -= count_per_rank[min_rank] || 0 # hash is sparse
+          min_rank += 1
+          logger.debug("DEBUG: \tnum articles now #{num_articles}\n")
+        end
+      end
+
       dot_source = render_to_string(
         partial: 'graph',
         layout: false,
@@ -321,24 +323,38 @@ class ArticleController < ApplicationController
         formats: [:dot]
       )
 
-      dot_file = Tempfile.new(["#{@article.id}-", '.dot'])
-      dot_file.write(dot_source)
-      dot_file.close
-
-      dot_out = Tempfile.new(["#{@article.id}-", '.png'])
-      dot_out.close
-
+      dot_file    = Tempfile.new(["#{@article.id}-", '.dot'])
+      dot_out     = Tempfile.new(["#{@article.id}-", '.png'])
       dot_out_map = Tempfile.new(["#{@article.id}-", '.map'])
-      dot_out_map.close
 
-      system "#{Rails.application.config.neato} -Tcmapx -o#{dot_out_map.path} -Tpng #{dot_file.path} -o #{dot_out.path}"
+      begin
+        dot_file.write(dot_source)
+        dot_file.close
+        dot_out.close
+        dot_out_map.close
 
-      @map = File.read(dot_out_map.path)
-      @article.graph_attachment.attach(
-        io: File.open(dot_out.path),
-        filename: "#{@article.id}.png",
-        content_type: 'image/png'
-      )
+        system "#{Rails.application.config.neato} -Tcmapx -o#{dot_out_map.path} -Tpng #{dot_file.path} -o #{dot_out.path}"
+
+        File.open(dot_out.path, 'rb') do |f|
+          @article.graph_attachment.attach(
+            io: f,
+            filename: "#{@article.id}.png",
+            content_type: 'image/png'
+          )
+        end
+
+        File.open(dot_out_map.path, 'r') do |f|
+          @article.map_attachment.attach(
+            io: f,
+            filename: "#{@article.id}.map",
+            content_type: 'text/html'
+          )
+        end
+      ensure
+        dot_file.unlink
+        dot_out.unlink
+        dot_out_map.unlink
+      end
     end
 
     session[:col_id] = @collection.slug

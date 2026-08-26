@@ -86,6 +86,7 @@ class Article < ApplicationRecord
   after_destroy :handle_index_deletion
 
   has_one_attached :graph_attachment
+  has_one_attached :map_attachment
   has_one_attached :d3js_attachment
 
   def self.es_search(query:, user: nil, is_public: true)
