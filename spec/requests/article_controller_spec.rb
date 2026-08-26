@@ -174,6 +174,22 @@ describe ArticleController do
         expect(response).to render_template(:_items)
       end
     end
+
+    context 'when collection is a document set' do
+      let!(:document_set) { create(:document_set, collection_id: collection.id, owner_user_id: owner.id, works: [work]) }
+      let(:action_path) { article_items_path(collection_id: document_set.slug) }
+
+      it 'renders subject titles without lazy page count frames' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:_items)
+        expect(response.body).to include(categorized_article.title)
+        expect(response.body).not_to include('turbo-frame')
+        expect(response.body).not_to include('page_counts')
+      end
+    end
   end
 
   describe '#page_counts' do
