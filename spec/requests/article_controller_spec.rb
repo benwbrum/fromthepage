@@ -501,7 +501,7 @@ describe ArticleController do
 
       before do
         create(:page_article_link, article: article_in_work, work: work_not_meaningful, page: page_not_meaningful)
-        article_in_work.d3js_attachmment.purge
+        article_in_work.d3js_attachment.purge
       end
 
       it 'includes identifier in work-based document nodes' do
