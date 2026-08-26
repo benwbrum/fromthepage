@@ -104,4 +104,7 @@ Rails.application.configure do
   # BILLING_HOST_DEVELOPMENT = 'billing.fromthepage.com'
   # Disable IIIF search while Pontiiif is down
   # config.pontiiif_server = 'http://pontiiif.brumfieldlabs.com/'
+
+  config.active_job.queue_adapter = :solid_queue
+  config.solid_queue.logger = ActiveSupport::Logger.new(Rails.root.join('log/queue.log'))
 end
