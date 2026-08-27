@@ -960,6 +960,11 @@
     display: flex;
     gap: 0.5rem;
   }
+
+  // programmatic focus target for the success state — no focus ring
+  &[tabindex]:focus {
+    outline: none;
+  }
 }
 
 // Shared: title label/input used by both the popover (1a) and the
@@ -981,14 +986,13 @@
   margin: 0.5rem 0;
 }
 
-// Segmentation: human-in-the-loop split control (1b)
+// Segmentation: human-in-the-loop split control (1b).
+// Plain display toggling — no opacity/visibility/animation gating, so there is
+// never a focusable-but-invisible in-between state.
 .segmentation-split-strip {
   display: none;
 
-  &.open {
-    display: block;
-    animation: segmentation-split-strip-in 0.15s ease-out;
-  }
+  &.open { display: block; }
 
   .segmentation-banner-actions {
     justify-content: flex-end;
@@ -998,11 +1002,6 @@
   }
 }
 
-@keyframes segmentation-split-strip-in {
-  from { opacity: 0; transform: translateY(-4px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
 // Segmentation: AI confirm popover (1a)
 .segmentation-popover-anchor {
   position: relative;
@@ -1010,6 +1009,7 @@
 }
 
 .segmentation-popover {
+  display: none;
   position: fixed;
   z-index: 1000;
   width: 300px;
@@ -1019,16 +1019,8 @@
   border-radius: 6px;
   border: 1px solid rgba(#000, 0.15);
   box-shadow: 0 8px 24px rgba(#000, 0.2);
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-4px);
-  transition: opacity 0.15s, visibility 0.15s, transform 0.15s;
 
-  &.open {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-  }
+  &.open { display: block; }
 
   form { margin: 0; }
 

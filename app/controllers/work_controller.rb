@@ -327,7 +327,7 @@ class WorkController < ApplicationController
   public
 
   def split_page
-    unless user_signed_in? && current_user.can_transcribe?(@work, @collection)
+    unless user_signed_in? && current_user.can_transcribe?(@work, @collection) && @work.page_segmentation_enabled?
       redirect_to dashboard_path, alert: t('work.split_page.unauthorized')
       return
     end
@@ -347,6 +347,7 @@ class WorkController < ApplicationController
       title: new_work_title,
       collection_id: @work.collection_id,
       owner_user_id: @work.owner_user_id,
+      split_from_work_id: @work.id,
       supports_translation: @work.supports_translation,
       restrict_scribes: @work.restrict_scribes,
       scribes_can_edit_titles: @work.scribes_can_edit_titles,
@@ -376,11 +377,14 @@ class WorkController < ApplicationController
     @new_work       = new_work
     @new_work_title = new_work_title
     @split_count    = pages_to_move.count
+    @edit_metadata_after_split = @work.edit_metadata_after_split? &&
+      @collection.metadata_entry? &&
+      @collection.metadata_fields.exists?
     render :split_page
   end
 
   def dismiss_segmentation
-    unless user_signed_in? && current_user.can_transcribe?(@work, @collection)
+    unless user_signed_in? && current_user.can_transcribe?(@work, @collection) && @work.page_segmentation_enabled?
       head :forbidden
       return
     end
@@ -395,6 +399,12 @@ class WorkController < ApplicationController
   end
 
   private
+
+  def require_segmentation_feature
+    return if @collection&.segmentation_feature_enabled?
+
+    redirect_to dashboard_path, alert: t('work.split_page.unauthorized')
+  end
 
   def authorized?
     if !user_signed_in? || !current_user.owner

@@ -276,6 +276,12 @@ de:
       ai_draft_disabled: KI-Entwürfe deaktivieren
       ai_draft_disabled_description: Deaktivieren Sie AI Drafts für alle Benutzer außer dem Sammlungsinhaber.
       alert: Bitte passen Sie die Felder an oder wählen Sie unter Transkriptionstyp die dokumentbasierte Transkription aus.
+      allow_transcriber_segmentation: Transkribierenden das Aufteilen von Werken erlauben
+      allow_transcriber_segmentation_ai_hint: Sollen wahrscheinliche erste Seiten lieber von der KI markiert werden? Führen Sie die Segmentierung über die %{link} des Werks aus.
+      allow_transcriber_segmentation_ai_hint_plain: Sollen wahrscheinliche erste Seiten lieber von der KI markiert werden? Öffnen Sie die Einstellungen eines Werks und führen Sie die Segmentierung über dessen KI-Tab aus.
+      allow_transcriber_segmentation_ai_link: KI-Einstellungen
+      allow_transcriber_segmentation_description: 'Zeigt auf jeder Seite ein Scheren-Symbol. Transkribierende können ein Werk an jeder Seite aufteilen: Die Seiten vor dieser Seite werden in ein neues Werk verschoben, der Rest bleibt im aktuellen Werk.'
+      allow_transcriber_segmentation_unavailable: Diese Einstellung ist für aktive, textbasierte Sammlungen in Organisationstarifen verfügbar.
       disable_ocr: OCR deaktivieren
       document_based_transcription: Dokumentbasierte Transkription
       document_based_transcription_description: Jede Seite in der Sammlung verfügt über einen einzigen Freiform-Texteingabebereich für die Transkription. Auch als „dokumentbasierte Transkription“ bekannt.

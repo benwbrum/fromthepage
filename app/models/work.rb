@@ -9,6 +9,7 @@
 #  description_status              :string(255)      default("undescribed")
 #  document_date                   :string(255)
 #  document_history                :text(16777215)
+#  edit_metadata_after_split       :boolean          default(FALSE), not null
 #  editorial_notes                 :text(65535)
 #  featured_page                   :integer
 #  genre                           :string(255)
@@ -41,6 +42,7 @@
 #  metadata_description_version_id :integer
 #  next_untranscribed_page_id      :integer
 #  owner_user_id                   :integer
+#  split_from_work_id              :integer
 #
 # Indexes
 #
@@ -48,6 +50,7 @@
 #  index_works_on_metadata_description_version_id  (metadata_description_version_id)
 #  index_works_on_owner_user_id                    (owner_user_id)
 #  index_works_on_slug                             (slug) UNIQUE
+#  index_works_on_split_from_work_id               (split_from_work_id)
 #
 # Foreign Keys
 #
@@ -95,6 +98,15 @@ class Work < ApplicationRecord
              class_name: 'Page',
              optional: true
   has_many :untranscribed_pages, -> { needs_transcription }, class_name: 'Page'
+
+  belongs_to :split_from_work,
+             class_name: 'Work',
+             optional: true
+  has_many :split_works,
+           class_name: 'Work',
+           foreign_key: 'split_from_work_id',
+           dependent: :nullify,
+           inverse_of: :split_from_work
 
   belongs_to :collection, counter_cache: :works_count, optional: true
   has_many :deeds, -> { order(created_at: :desc) }, dependent: :destroy
@@ -504,6 +516,15 @@ class Work < ApplicationRecord
 
   def segmentation_candidates?
     pages.where(is_first_page_candidate: true).exists?
+  end
+
+  # Show the per-page split control when AI has flagged first-page candidates in
+  # this work, or when the collection lets transcribers split works freely.
+  # Gated behind the per-owner segmentation feature flag.
+  def page_segmentation_enabled?
+    return false unless collection&.segmentation_feature_enabled?
+
+    segmentation_candidates? || collection.transcriber_segmentation_enabled?
   end
 
   def process_fields(field_cells)

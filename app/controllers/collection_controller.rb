@@ -840,6 +840,7 @@ class CollectionController < ApplicationController
       :api_access,
       :data_entry_type,
       :field_based,
+      :allow_transcriber_segmentation,
       :is_active,
       :search_attempt_id,
       :alphabetize_works,
