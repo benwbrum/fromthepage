@@ -93,8 +93,6 @@ en:
       facing_pdf_export_description: Download a PDF version of this work including images and text on facing pages.
       html: HTML
       html_export_description: Export transcripts as a zip file containing one HTML file per page.
-      human_only: Only Export Human Edited Transcripts
-      hybrid: Export Human Transcripts where available, otherwise export AI Drafts
       iiif: IIIF
       iiif_manifest: IIIF Manifest
       iiif_manifest_description: IIIF Manifest URI for use in any IIIF client.

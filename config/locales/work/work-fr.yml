@@ -82,6 +82,7 @@ fr:
       configurable_printout: Impression configurable
       configurable_printout_button: Configurer
       configurable_printout_description: Export PDF ou MS Word avec contenu et mise en forme configurables
+      configure: Configure
       docx_download_description: Télécharger une version DOCX de ce œuvre.
       download: Télécharger
       expanded_plaintext: Texte brut étendu

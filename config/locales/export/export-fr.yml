@@ -41,6 +41,14 @@ fr:
       table_csv: Tableau CSV
       tei: TEI
       work_title: Titre d'œuvre
+    new_grover_export:
+      ai_warning: 'Avertissement : Cette transcription est générée par l''IA (%{model} %{created_at}).'
+      contents: Contenu
+      download: Télécharger
+      heading: Configuration PDF accessible
+      human_and_ai: Exporter les transcriptions humaines lorsqu'elles sont disponibles, sinon exporter les brouillons de l'IA.
+      human_only: Exporter uniquement les transcriptions éditées par des humains
+      prepend_ai_warnings: 'Avertissement à ajouter en haut de la transcription : Cette transcription est générée par une IA.'
     show:
       bibliography: Bibliographie
       categories: 'Catégories :'
