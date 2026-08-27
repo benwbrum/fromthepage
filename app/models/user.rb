@@ -36,6 +36,7 @@
 #  remember_token_expires_at   :datetime
 #  reset_password_sent_at      :datetime
 #  reset_password_token        :string(255)
+#  segmentation_enabled        :boolean          default(FALSE)
 #  sign_in_count               :integer          default(0), not null
 #  slug                        :string(255)
 #  sso_issuer                  :string(255)

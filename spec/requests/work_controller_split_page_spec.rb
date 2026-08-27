@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe WorkController do
   describe '#split_page' do
-    let(:owner) { create(:unique_user, :owner) }
+    let(:owner) { create(:unique_user, :owner, segmentation_enabled: true) }
     let(:collection) { create(:collection, owner_user_id: owner.id, works: [], data_entry_type: 'text_and_metadata', allow_transcriber_segmentation: true) }
     let(:work) { create(:work, collection: collection, owner_user_id: owner.id, restrict_scribes: false) }
     let!(:first_page) { create(:page, work: work, position: 1, title: 'Letter one') }
@@ -93,7 +93,7 @@ describe WorkController do
   end
 
   describe '#describe navigation for a work split off another work' do
-    let(:owner) { create(:unique_user, :owner) }
+    let(:owner) { create(:unique_user, :owner, segmentation_enabled: true) }
     let(:collection) { create(:collection, owner_user_id: owner.id, works: [], data_entry_type: 'text_and_metadata') }
     let(:original_work) { create(:work, collection: collection, owner_user_id: owner.id) }
     let(:new_work) { create(:work, collection: collection, owner_user_id: owner.id, split_from_work: original_work) }

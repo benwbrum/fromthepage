@@ -384,7 +384,7 @@ class WorkController < ApplicationController
   end
 
   def dismiss_segmentation
-    unless user_signed_in? && current_user.can_transcribe?(@work, @collection)
+    unless user_signed_in? && current_user.can_transcribe?(@work, @collection) && @work.page_segmentation_enabled?
       head :forbidden
       return
     end
@@ -399,6 +399,12 @@ class WorkController < ApplicationController
   end
 
   private
+
+  def require_segmentation_feature
+    return if @collection&.segmentation_feature_enabled?
+
+    redirect_to dashboard_path, alert: t('work.split_page.unauthorized')
+  end
 
   def authorized?
     if !user_signed_in? || !current_user.owner

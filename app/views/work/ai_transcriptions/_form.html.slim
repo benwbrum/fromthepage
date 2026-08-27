@@ -50,20 +50,21 @@
               .counter [data-prefix=@total_token_count]
                 =t('.total_tokens_used')
 
-      tr
-        td(colspan="2")
-          h3 =t('.segmentation')
-          p =t('.segmentation_description')
-          =link_to(segment_collection_work_ai_transcriptions_path(collection.owner, collection, work), class: 'button action-btn', data: { turbo: true, turbo_method: :post })
-            span =t('.segment_collection')
-          =form_for :work, url: segmentation_setting_collection_work_ai_transcriptions_path(collection.owner, collection, work), method: :patch, html: { style: 'margin-top: 10px;', data: { controller: 'form', action: 'change->form#requestSubmit', turbo: true } } do |f|
-            =f.check_box :edit_metadata_after_split, checked: work.edit_metadata_after_split?, disabled: !collection.metadata_entry? || !collection.metadata_fields.exists?
-            =f.label :edit_metadata_after_split
-              =t('.edit_metadata_after_split')
-            p =t('.edit_metadata_after_split_description')
-            -unless collection.metadata_entry? && collection.metadata_fields.exists?
-              -task_configuration_link = link_to(t('.edit_metadata_after_split_disabled_link'), edit_tasks_collection_path(collection.owner, collection))
-              p.fglight =t('.edit_metadata_after_split_disabled', link: task_configuration_link).html_safe
+      -if collection.segmentation_feature_enabled?
+        tr
+          td(colspan="2")
+            h3 =t('.segmentation')
+            p =t('.segmentation_description')
+            =link_to(segment_collection_work_ai_transcriptions_path(collection.owner, collection, work), class: 'button action-btn', data: { turbo: true, turbo_method: :post })
+              span =t('.segment_collection')
+            =form_for :work, url: segmentation_setting_collection_work_ai_transcriptions_path(collection.owner, collection, work), method: :patch, html: { style: 'margin-top: 10px;', data: { controller: 'form', action: 'change->form#requestSubmit', turbo: true } } do |f|
+              =f.check_box :edit_metadata_after_split, checked: work.edit_metadata_after_split?, disabled: !collection.metadata_entry? || !collection.metadata_fields.exists?
+              =f.label :edit_metadata_after_split
+                =t('.edit_metadata_after_split')
+              p =t('.edit_metadata_after_split_description')
+              -unless collection.metadata_entry? && collection.metadata_fields.exists?
+                -task_configuration_link = link_to(t('.edit_metadata_after_split_disabled_link'), edit_tasks_collection_path(collection.owner, collection))
+                p.fglight =t('.edit_metadata_after_split_disabled', link: task_configuration_link).html_safe
       -if @failed_ai_transcriptions.present?
         tr
           td(colspan="2")

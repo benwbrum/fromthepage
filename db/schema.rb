@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_08_27_010000) do
+ActiveRecord::Schema[7.2].define(version: 2026_08_27_020000) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -1236,6 +1236,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_27_010000) do
     t.text "footer_block", size: :medium
     t.text "help"
     t.boolean "document_sets_on_owner_page", default: false
+    t.boolean "segmentation_enabled", default: false
     t.index ["login"], name: "index_users_on_login"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["slug"], name: "index_users_on_slug", unique: true

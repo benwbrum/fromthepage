@@ -377,11 +377,17 @@ class Collection < ApplicationRecord
     self.is_active
   end
 
+  # Feature flag: the work-splitting / segmentation feature is enabled per owner
+  # account (set in the console, like document_sets_on_owner_page).
+  def segmentation_feature_enabled?
+    owner&.segmentation_enabled? || false
+  end
+
   # Whether the collection is eligible to let transcribers split works themselves.
   # The setting is only offered for active collections owned by a paid plan, so
   # runtime checks fall back to this even if the flag is stale.
   def transcriber_segmentation_available?
-    text_entry? && active? && !owner&.individual_researcher?
+    segmentation_feature_enabled? && text_entry? && active? && !owner&.individual_researcher?
   end
 
   # Whether transcribers should see the per-page split control on every page,

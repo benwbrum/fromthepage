@@ -520,8 +520,11 @@ class Work < ApplicationRecord
 
   # Show the per-page split control when AI has flagged first-page candidates in
   # this work, or when the collection lets transcribers split works freely.
+  # Gated behind the per-owner segmentation feature flag.
   def page_segmentation_enabled?
-    segmentation_candidates? || collection&.transcriber_segmentation_enabled? || false
+    return false unless collection&.segmentation_feature_enabled?
+
+    segmentation_candidates? || collection.transcriber_segmentation_enabled?
   end
 
   def process_fields(field_cells)

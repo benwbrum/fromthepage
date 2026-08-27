@@ -6,7 +6,7 @@ describe Work::AiTranscriptionsController do
   end
 
   let!(:user) { create(:unique_user) }
-  let!(:owner) { create(:unique_user, :owner) }
+  let!(:owner) { create(:unique_user, :owner, segmentation_enabled: true) }
   let!(:admin) { create(:unique_user, :admin) }
   let!(:user) { create(:unique_user) }
   let!(:collection) { create(:collection, owner_user_id: owner.id, works: []) }
@@ -39,6 +39,24 @@ describe Work::AiTranscriptionsController do
 
         expect(response).to have_http_status(:ok)
         expect(response).to render_template(:edit)
+      end
+
+      it 'shows the segmentation section' do
+        login_as owner
+        subject
+
+        expect(response.body).to include('name="work[edit_metadata_after_split]"')
+      end
+
+      context 'when the owner account is not opted into segmentation' do
+        before { owner.update!(segmentation_enabled: false) }
+
+        it 'hides the segmentation section entirely' do
+          login_as owner
+          subject
+
+          expect(response.body).not_to include('name="work[edit_metadata_after_split]"')
+        end
       end
 
       context 'with more than 1 result' do
@@ -189,6 +207,42 @@ describe Work::AiTranscriptionsController do
         subject
 
         expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(dashboard_path)
+      end
+    end
+
+    context 'when the owner account is not opted into segmentation' do
+      before { owner.update!(segmentation_enabled: false) }
+
+      it 'redirects to the dashboard and does not persist' do
+        login_as owner
+
+        expect { subject }.not_to change { work.reload.edit_metadata_after_split? }
+        expect(response).to redirect_to(dashboard_path)
+      end
+    end
+  end
+
+  describe '#segment' do
+    let(:action_path) { segment_collection_work_ai_transcriptions_path(owner, collection, work) }
+    let(:subject) { post action_path, as: :turbo_stream }
+
+    it 'enqueues a bulk segment job for the work' do
+      login_as owner
+
+      expect(Segmentation::BulkSegmentJob).to receive(:perform_later).with(hash_including(work_id: work.id))
+      subject
+    end
+
+    context 'when the owner account is not opted into segmentation' do
+      before { owner.update!(segmentation_enabled: false) }
+
+      it 'redirects to the dashboard without enqueuing' do
+        login_as owner
+
+        expect(Segmentation::BulkSegmentJob).not_to receive(:perform_later)
+        subject
+
         expect(response).to redirect_to(dashboard_path)
       end
     end

@@ -1,5 +1,6 @@
 =javascript_include_tag "transcribe"
-=render partial: 'transcribe/segmentation_banner', locals: { page: @page, work: @work, collection: @collection }
+-if @work.page_segmentation_enabled?
+  =render partial: 'transcribe/segmentation_banner', locals: { page: @page, work: @work, collection: @collection }
 -if current_page?(collection_oneoff_review_page_path(@collection.owner, @collection, @page)) || @quality_sampling || @user
   =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 12, :collection_id => @collection.id }})
   .review-breadcrumbs

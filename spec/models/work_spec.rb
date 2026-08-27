@@ -41,7 +41,7 @@ describe Work do
   end
 
   describe '#page_segmentation_enabled?' do
-    let(:owner) { create(:unique_user, :owner) }
+    let(:owner) { create(:unique_user, :owner, segmentation_enabled: true) }
     let(:collection) do
       create(:collection, owner_user_id: owner.id, data_entry_type: 'text', works: [])
     end
@@ -65,6 +65,14 @@ describe Work do
       create(:page, work_id: work.id, position: 1)
 
       expect(work.page_segmentation_enabled?).to be false
+    end
+
+    it 'is false when the owner account is not opted into segmentation' do
+      owner.update!(segmentation_enabled: false)
+      create(:page, work_id: work.id, position: 1)
+      create(:page, work_id: work.id, position: 2, is_first_page_candidate: true)
+
+      expect(work.reload.page_segmentation_enabled?).to be false
     end
   end
 

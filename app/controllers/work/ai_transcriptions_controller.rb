@@ -1,5 +1,6 @@
 class Work::AiTranscriptionsController < WorkController
   before_action :authorized?
+  before_action :require_segmentation_feature, only: %i[segment segmentation_setting]
 
   def edit
     calculate_counts

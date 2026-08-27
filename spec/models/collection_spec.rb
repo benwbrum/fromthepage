@@ -276,8 +276,19 @@ describe Collection do
     end
   end
 
-  describe '#transcriber_segmentation_enabled?' do
+  describe '#segmentation_feature_enabled?' do
     let(:owner) { create(:unique_user, :owner) }
+    let(:collection) { create(:collection, owner_user_id: owner.id) }
+
+    it 'follows the owner account flag' do
+      expect(collection.segmentation_feature_enabled?).to be(false)
+      owner.update!(segmentation_enabled: true)
+      expect(collection.reload.segmentation_feature_enabled?).to be(true)
+    end
+  end
+
+  describe '#transcriber_segmentation_enabled?' do
+    let(:owner) { create(:unique_user, :owner, segmentation_enabled: true) }
     let(:collection) do
       create(:collection, owner_user_id: owner.id, data_entry_type: 'text',
                           is_active: true, allow_transcriber_segmentation: true)
@@ -285,6 +296,11 @@ describe Collection do
 
     it 'is true for an active text collection with the flag on' do
       expect(collection.transcriber_segmentation_enabled?).to be(true)
+    end
+
+    it 'is false when the owner account is not opted into segmentation' do
+      owner.update!(segmentation_enabled: false)
+      expect(collection.reload.transcriber_segmentation_enabled?).to be(false)
     end
 
     it 'is false when the flag is off' do
