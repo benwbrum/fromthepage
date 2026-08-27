@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_08_21_230000) do
+ActiveRecord::Schema[7.2].define(version: 2026_08_27_201247) do
   create_table "active_storage_attachments", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -184,6 +184,8 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_21_230000) do
     t.boolean "page_details_csv_work", default: false
     t.boolean "page_details_csv_collection", default: false
     t.boolean "accessible_pdf_work"
+    t.string "accessible_pdf_source", default: "human_only"
+    t.boolean "accessible_pdf_prepend_ai_warnings", default: false
     t.index ["collection_id"], name: "index_bulk_exports_on_collection_id"
     t.index ["document_set_id"], name: "index_bulk_exports_on_document_set_id"
     t.index ["user_id"], name: "index_bulk_exports_on_user_id"

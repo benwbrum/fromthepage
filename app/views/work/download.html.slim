@@ -22,8 +22,9 @@
         .bulk-export_format
           h5= t('.accessible_pdf')
           p.nomargin= t('.accessible_pdf_download_description')
+
         .bulk-export_options
-          span =button_to t('.download'), export_grover_printable_path(@collection, @work), class: 'btnExport', params: { edition: 'text', method: :post }
+          span =link_to(t('.configure'), export_new_grover_export_path(@collection.slug, @work), class: 'button', data: { controller: 'litebox', litebox: { hash: 'new-grover-export', noscroll: false  } })
 
     h2.nomargin= t('.experiment')
     ul.bulk-export

@@ -125,6 +125,8 @@ class BulkExportController < ApplicationController
       :work_metadata_csv,
       :facing_edition_work,
       :accessible_pdf_work,
+      :accessible_pdf_source,
+      :accessible_pdf_prepend_ai_warnings,
       :text_docx_work,
       :text_pdf_work,
       :text_only_pdf_work,
