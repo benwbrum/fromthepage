@@ -277,8 +277,8 @@ es:
       ai_draft_disabled_description: Deshabilitar la función de borradores de IA para todos los usuarios, excepto para el propietario de la colección.
       alert: Configure los campos o elija la transcripción basada en documentos en Tipo de transcripción.
       allow_transcriber_segmentation: Permitir que los transcriptores dividan obras
-      allow_transcriber_segmentation_ai_hint: "¿Prefiere que la IA marque las probables primeras páginas? Ejecute la segmentación desde %{link} de esta colección."
-      allow_transcriber_segmentation_ai_hint_plain: "¿Prefiere que la IA marque las probables primeras páginas? Abra una sola obra y ejecute la segmentación desde su configuración de IA."
+      allow_transcriber_segmentation_ai_hint: "¿Prefiere que la IA marque las probables primeras páginas? Ejecute la segmentación desde %{link} de la obra."
+      allow_transcriber_segmentation_ai_hint_plain: "¿Prefiere que la IA marque las probables primeras páginas? Abra la configuración de una obra y ejecute la segmentación desde su pestaña de IA."
       allow_transcriber_segmentation_ai_link: la configuración de IA
       allow_transcriber_segmentation_description: 'Muestra un control de tijeras en cada página. Los transcriptores pueden dividir una obra en cualquier página: las páginas anteriores a esa página pasan a una obra nueva y el resto permanece en la obra actual.'
       allow_transcriber_segmentation_unavailable: Esta configuración está disponible para colecciones activas basadas en texto en planes organizacionales.
