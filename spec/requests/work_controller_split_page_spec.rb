@@ -29,7 +29,7 @@ describe WorkController do
 
         new_work = collection.works.find_by!(title: 'Letter one')
         expect(response.body).to include(%(href="#{collection_read_work_path(owner, collection, new_work)}"))
-        expect(response.body).not_to include(%(href="#{edit_metadata_collection_work_path(owner, collection, new_work)}"))
+        expect(response.body).not_to include(%(href="#{describe_collection_work_path(owner, collection, new_work)}"))
       end
 
       context 'when the work has edit_metadata_after_split enabled and metadata is configured' do
@@ -39,7 +39,7 @@ describe WorkController do
           perform_split
 
           new_work = collection.works.find_by!(title: 'Letter one')
-          expect(response.body).to include(%(href="#{edit_metadata_collection_work_path(owner, collection, new_work)}"))
+          expect(response.body).to include(%(href="#{describe_collection_work_path(owner, collection, new_work)}"))
           expect(response.body).not_to include(%(href="#{collection_read_work_path(owner, collection, new_work)}"))
         end
       end
@@ -55,7 +55,7 @@ describe WorkController do
 
           new_work = collection.works.find_by!(title: 'Letter one')
           expect(response.body).to include(%(href="#{collection_read_work_path(owner, collection, new_work)}"))
-          expect(response.body).not_to include(%(href="#{edit_metadata_collection_work_path(owner, collection, new_work)}"))
+          expect(response.body).not_to include(%(href="#{describe_collection_work_path(owner, collection, new_work)}"))
         end
       end
     end
@@ -68,12 +68,12 @@ describe WorkController do
         login_as(scribe, scope: :user)
       end
 
-      it 'ignores the edit_metadata_after_split setting' do
+      it 'links to the new work metadata form, the same as the owner' do
         perform_split
 
         new_work = collection.works.find_by!(title: 'Letter one')
-        expect(response.body).to include(%(href="#{collection_read_work_path(owner, collection, new_work)}"))
-        expect(response.body).not_to include(%(href="#{edit_metadata_collection_work_path(owner, collection, new_work)}"))
+        expect(response.body).to include(%(href="#{describe_collection_work_path(owner, collection, new_work)}"))
+        expect(response.body).not_to include(%(href="#{collection_read_work_path(owner, collection, new_work)}"))
       end
     end
   end

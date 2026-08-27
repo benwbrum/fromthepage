@@ -63,7 +63,7 @@ describe 'work segmentation UI' do
 
         new_work = collection.works.find_by!(title: 'Letters to Rosannah, part one')
         click_link 'Edit new work metadata'
-        expect(page).to have_current_path(edit_metadata_collection_work_path(owner, collection, new_work))
+        expect(page).to have_current_path(describe_collection_work_path(owner, collection, new_work))
       end
     end
   end
@@ -140,7 +140,7 @@ describe 'work segmentation UI' do
 
         new_work = collection.works.find_by!(title: 'Letter one')
         click_link 'Edit new work metadata'
-        expect(page).to have_current_path(edit_metadata_collection_work_path(owner, collection, new_work))
+        expect(page).to have_current_path(describe_collection_work_path(owner, collection, new_work))
       end
     end
   end

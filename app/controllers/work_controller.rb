@@ -377,7 +377,6 @@ class WorkController < ApplicationController
     @new_work_title = new_work_title
     @split_count    = pages_to_move.count
     @edit_metadata_after_split = @work.edit_metadata_after_split? &&
-      current_user.like_owner?(@work) &&
       @collection.metadata_entry? &&
       @collection.metadata_fields.exists?
     render :split_page
