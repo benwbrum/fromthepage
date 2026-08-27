@@ -48,6 +48,7 @@ es:
       suspicious_behaviors: Comportamientos sospechosos
       works_list: Lista de Obras
     description_tabs:
+      back_to_original_work: Volver a la obra original
       describe: Metadatos
       help: Ayuda
       metadata: metadatos

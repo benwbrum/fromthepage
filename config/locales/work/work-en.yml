@@ -9,6 +9,10 @@ en:
         contact_us: Contact %{email} to upgrade to a plan that includes AI drafts.
         description: Launch AI transcription job for pages in this work.
         description_complete: All pages in this work have AI transcriptions.
+        edit_metadata_after_split: Edit metadata after splitting
+        edit_metadata_after_split_description: After the inline split confirmation, go straight to the new work's metadata form.
+        edit_metadata_after_split_disabled: Please enable and configure metadata creation under %{link}.
+        edit_metadata_after_split_disabled_link: Task Configuration
         failed: Failed
         failed_transcription_errors: Failed transcription errors
         failed_transcription_errors_hidden: "%{count} additional failed transcription errors are not shown."
@@ -19,7 +23,14 @@ en:
         pages: Pages
         queued: Queued
         retry: Retry failed jobs
+        segment_collection: Segment Collection
+        segmentation: Segment Collection
+        segmentation_description: By uploading a set of images (i.e. a folder) and then segmenting it, we'll suggest places where documents should be split into individual works.
         total_tokens_used: Total tokens used
+      segment:
+        success: Segmentation job launched. You will receive an email when it is complete.
+      segmentation_setting:
+        success: Segmentation setting saved.
       update:
         success: Retrying AI transcription job.
     configurable_printout:
@@ -245,6 +256,10 @@ en:
       source_collection_name: Source Collection Name
       source_location: Source Location
       uploaded_by: Uploaded by
+    split_page:
+      create_failed: 'Could not create the new work: %{errors}'
+      no_previous_pages: There are no pages before this one to split into a new work.
+      unauthorized: You do not have permission to split this work.
     undescribed: No metadata.
     update:
       work_updated: Work updated successfully

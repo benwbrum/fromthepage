@@ -275,6 +275,12 @@ pt:
       ai_draft_disabled: Desativar rascunhos de IA
       ai_draft_disabled_description: Desative os rascunhos de IA para todos os usuários, exceto o proprietário da coleção.
       alert: Configure os campos ou escolha a transcrição baseada em documento em Tipo de transcrição.
+      allow_transcriber_segmentation: Permitir que transcritores dividam obras
+      allow_transcriber_segmentation_ai_hint: Prefere que a IA sinalize as prováveis primeiras páginas? Execute a segmentação a partir de %{link} da obra.
+      allow_transcriber_segmentation_ai_hint_plain: Prefere que a IA sinalize as prováveis primeiras páginas? Abra as configurações de uma obra e execute a segmentação a partir da aba de IA dela.
+      allow_transcriber_segmentation_ai_link: configurações de IA
+      allow_transcriber_segmentation_description: 'Mostra um controle de tesoura em todas as páginas. Os transcritores podem dividir uma obra em qualquer página: as páginas anteriores a essa página passam para uma nova obra e o restante permanece na obra atual.'
+      allow_transcriber_segmentation_unavailable: Esta configuração está disponível para coleções ativas baseadas em texto em planos organizacionais.
       disable_ocr: Desativar OCR
       document_based_transcription: Transcrição baseada em documento
       document_based_transcription_description: Cada página da coleção terá uma única área de entrada de texto de formato livre para transcrição. Também conhecida como "transcrição baseada em documento".
