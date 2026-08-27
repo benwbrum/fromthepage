@@ -242,11 +242,10 @@ de:
       collection_restricted_description: Die Sammlung kann nur von den unten aufgeführten Eigentümern und Mitarbeitern eingesehen werden. Sie können die Sammlung öffentlich lesbar machen.
       edit_collaborators: Mitarbeitende bearbeiten
       edit_owners: Projektinhaber:innen bearbeiten
-      make_collection_private: Sammlung privat setzen
-      make_collection_public: Sammlung öffentlich setzen
       open_api: API öffnen
       private: Privat
       public: Öffentlich
+      read_only: Nur lesbar
       restrict_completed_works: Sperren Sie die Bearbeitung abgeschlossener Werke
       restrict_editing: Bearbeitung einschränken
       restricted_completed_works_description: Dieser Button schränkt die Bearbeitung von %{work_count} Werken ein, die abgeschlossen sind, aber derzeit nicht auf Projektinhaber:innen oder bestimmte Mitarbeitende beschränkt sind. Sie können diese Einstellung ändern und in den Werk-Einstellungen Mitarbeitende hinzufügen.

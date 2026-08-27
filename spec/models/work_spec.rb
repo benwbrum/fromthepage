@@ -69,7 +69,7 @@ describe Work do
 
     let!(:owner) { create(:unique_user, :owner) }
     let!(:collection) { create(:collection, owner_user_id: owner.id) }
-    let!(:restricted_collection) { create(:collection, owner_user_id: owner.id, restricted: true) }
+    let!(:restricted_collection) { create(:collection, owner_user_id: owner.id, visibility: :private) }
     let!(:docset) { create(:document_set, collection_id: restricted_collection.id, owner_user_id: owner.id, visibility: :public) }
     let!(:restricted_docset) { create(:document_set, collection_id: restricted_collection.id, owner_user_id: owner.id, visibility: :private) }
 
@@ -81,7 +81,7 @@ describe Work do
 
     let!(:other_user) { create(:unique_user, :owner) }
     let!(:other_collection) { create(:collection, owner_user_id: other_user.id) }
-    let!(:other_restricted_collection) { create(:collection, owner_user_id: other_user.id, restricted: true) }
+    let!(:other_restricted_collection) { create(:collection, owner_user_id: other_user.id, visibility: :private) }
 
     let!(:other_public_work) { create(:work, title: identifier, collection_id: other_collection.id, owner_user_id: other_user.id) }
     let!(:other_restricted_work) { create(:work, title: identifier, collection_id: other_restricted_collection.id, owner_user_id: other_user.id) }

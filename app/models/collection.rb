@@ -30,7 +30,6 @@
 #  most_recent_deed_created_at    :datetime
 #  pct_completed                  :integer
 #  picture                        :string(255)
-#  restricted                     :boolean          default(FALSE)
 #  review_type                    :string(255)      default("optional")
 #  slug                           :string(255)
 #  subjects_disabled              :boolean          default(TRUE)
@@ -39,6 +38,7 @@
 #  title                          :string(255)
 #  transcription_conventions      :text(65535)
 #  user_download                  :boolean          default(FALSE)
+#  visibility                     :string(255)      default("public")
 #  voice_recognition              :boolean          default(FALSE)
 #  works_count                    :integer          default(0)
 #  next_untranscribed_page_id     :integer
@@ -48,9 +48,9 @@
 # Indexes
 #
 #  index_collections_on_owner_user_id                   (owner_user_id)
-#  index_collections_on_restricted                      (restricted)
 #  index_collections_on_slug                            (slug) UNIQUE
 #  index_collections_on_thredded_messageboard_group_id  (thredded_messageboard_group_id)
+#  index_collections_on_visibility                      (visibility)
 #
 # Foreign Keys
 #
@@ -120,10 +120,10 @@ class Collection < ApplicationRecord
   mount_uploader :picture, PictureUploader
 
   scope :order_by_recent_activity, -> { order(most_recent_deed_created_at: :desc) }
-  scope :unrestricted, -> { where(restricted: false) }
-  scope :restricted, -> { where(restricted: true) }
+  scope :unrestricted, -> { where(visibility: [:public, :read_only]) }
+  scope :restricted, -> { where(visibility: :private) }
   scope :order_by_incomplete, -> { joins(works: :work_statistic).reorder('work_statistics.complete ASC') }
-  scope :carousel, -> { where(pct_completed: [nil, 0..90]).where.not(picture: nil).where.not(intro_block: [nil, '']).where(restricted: false).reorder(Arel.sql('RAND()')) }
+  scope :carousel, -> { where(pct_completed: [nil, 0..90]).where.not(picture: nil).where.not(intro_block: [nil, '']).where(visibility: [:public, :read_only]).reorder(Arel.sql('RAND()')) }
   scope :has_intro_block, -> { where.not(intro_block: [nil, '']) }
   scope :has_picture, -> { where.not(picture: nil) }
   scope :not_near_complete, -> { where(pct_completed: [nil, 0..90]) }
@@ -144,6 +144,12 @@ class Collection < ApplicationRecord
     required: 'required',
     restricted: 'restricted'
   }, prefix: :review_type
+
+  enum :visibility, {
+    private: 'private',
+    public: 'public',
+    read_only: 'read_only'
+  }, prefix: :visibility
 
   update_index('collections', if: -> { ELASTIC_ENABLED && !destroyed? }) { self }
   after_destroy :handle_index_deletion
@@ -364,12 +370,18 @@ class Collection < ApplicationRecord
     end
   end
 
-  def is_public
-    !restricted
+  # For backwards compatibility
+  def restricted
+    visibility_private?
   end
 
-  def visibility_read_only?
-    false
+  # For backwards compatibility
+  def restricted?
+    visibility_private?
+  end
+
+  def is_public
+    !restricted
   end
 
   def active?

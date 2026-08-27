@@ -144,7 +144,7 @@ describe 'document sets' do
 
   it "views document sets - regular user" do
     # need to restrict collection to test user view
-    collection.restricted = true
+    collection.visibility = :private
     collection.save!
     # user with no privileges first
     login_as(user, scope: :user)
@@ -247,7 +247,7 @@ describe 'document sets' do
   end
 
   it "checks notes on a public doc set/private collection", js: true do
-    collection.update!(restricted: true)
+    collection.update!(visibility: :private)
     login_as(user, scope: :user)
     visit collection_transcribe_page_path(document_set.owner, document_set, document_set.works.first, document_set.works.first.pages.first)
     fill_in 'Write a new note or ask a question...', with: "Test private note"

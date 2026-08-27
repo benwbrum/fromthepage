@@ -73,7 +73,7 @@ describe Api::V1::BulkExportController do
 
     context 'when collection cannot show to user' do
       let!(:other_owner) { create(:unique_user, :with_api_key, :owner) }
-      let!(:collection) { create(:collection, owner_user_id: other_owner.id, restricted: true) }
+      let!(:collection) { create(:collection, owner_user_id: other_owner.id, visibility: :private) }
 
       it 'renders status and json' do
         subject

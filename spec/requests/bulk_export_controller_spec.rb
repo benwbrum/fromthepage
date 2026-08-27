@@ -4,7 +4,7 @@ describe BulkExportController do
   let!(:admin) { create(:unique_user, :admin) }
   let!(:owner) { create(:unique_user, :owner) }
   let!(:user) { create(:unique_user) }
-  let!(:collection) { create(:collection, owner_user_id: owner.id, restricted: true) }
+  let!(:collection) { create(:collection, owner_user_id: owner.id, visibility: :private) }
   let!(:bulk_export) { create(:bulk_export, collection_id: collection.id, user_id: owner.id) }
 
   describe '#index' do
@@ -58,7 +58,7 @@ describe BulkExportController do
   end
 
   describe '#new' do
-    let!(:public_collection) { create(:collection, owner_user_id: owner.id, restricted: false) }
+    let!(:public_collection) { create(:collection, owner_user_id: owner.id, visibility: :public) }
     let!(:public_work) { create(:work, collection: public_collection, owner_user_id: owner.id) }
     let(:action_path) { bulk_export_new_path(public_collection) }
     let(:subject) { get action_path }
