@@ -2,13 +2,13 @@
   -if page.is_first_page_candidate? && page.position > 1
     .segmentation-banner
       .segmentation-banner-content
-        p.segmentation-banner-message =t('transcribe.display_page.segmentation_candidate')
+        p.segmentation-banner-message id="segmentation-candidate-msg-#{page.id}" =t('transcribe.display_page.segmentation_candidate')
 
         .segmentation-banner-actions
           .segmentation-popover-anchor
             button.button.action-btn(type='button' data-segmentation-toggle)
               =t('transcribe.display_page.segmentation_yes')
-            .segmentation-popover(data-segmentation-popover)
+            .segmentation-popover(data-segmentation-popover id="segmentation-popover-#{page.id}" role='group' aria-labelledby="segmentation-candidate-msg-#{page.id}")
               =form_with(url: split_page_collection_work_path(collection.owner, collection, work), method: :post) do |f|
                 =hidden_field_tag :page_id, page.id
                 =label_tag :new_work_title, t('transcribe.display_page.previous_work_title', n: page.position - 1), class: 'segmentation-title-label'

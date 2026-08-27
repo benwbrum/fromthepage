@@ -151,93 +151,105 @@ window.addEventListener('DOMContentLoaded', function() {
   }
 });
 
-// Segmentation banner dismiss (success state)
+// Segmentation: when the split success state swaps into a turbo frame, move
+// focus into it so keyboard users land on it and screen readers pick up the
+// live region.
+document.addEventListener('turbo:frame-load', function(e) {
+  var banner = e.target.querySelector('.segmentation-banner[role="status"]');
+  if (banner) {
+    window.setTimeout(function() { banner.focus(); }, 100);
+  }
+});
+
+// Segmentation: "Dismiss" removes the success banner; send focus somewhere
+// sane so it isn't stranded on the removed element.
 document.addEventListener('click', function(e) {
   if (e.target.closest('[data-segmentation-dismiss]')) {
     var banner = e.target.closest('.segmentation-banner');
     if (banner) { banner.remove(); }
+    var heading = document.querySelector('h1');
+    if (heading) { heading.setAttribute('tabindex', '-1'); heading.focus(); }
   }
 });
 
-// Segmentation: AI-detected confirm popover (1a)
-window.addEventListener('DOMContentLoaded', function() {
-  var toggleBtn = document.querySelector('[data-segmentation-toggle]');
-  var popover = document.querySelector('[data-segmentation-popover]');
-  var cancelBtn = document.querySelector('[data-segmentation-cancel]');
+// Segmentation: disclosure wiring shared by the AI confirm popover (1a) and the
+// human-in-the-loop split strip (1b). A toggle button shows/hides a region,
+// with aria-expanded, Escape-to-close, click-outside-to-close, focus moved into
+// the region on open and back to the toggle on close.
+function setupSegmentationDisclosure(toggle, region, beforeOpen) {
+  if (!toggle || !region) { return; }
 
-  if (!toggleBtn || !popover) { return; }
+  toggle.setAttribute('aria-expanded', 'false');
+  if (region.id) { toggle.setAttribute('aria-controls', region.id); }
 
-  function handleOutsideClick(e) {
-    if (!popover.contains(e.target) && e.target !== toggleBtn) { closePopover(); }
+  function isOpen() { return region.classList.contains('open'); }
+
+  function onOutsideClick(e) {
+    if (!region.contains(e.target) && !toggle.contains(e.target)) { close(); }
   }
 
-  function handleEscape(e) {
-    if (e.key === 'Escape') { closePopover(); }
-  }
-
-  function positionPopover() {
-    var rect = toggleBtn.getBoundingClientRect();
-    var width = popover.offsetWidth || 300;
-    popover.style.top = (rect.bottom + 8) + 'px';
-    popover.style.left = Math.max(8, rect.right - width) + 'px';
-  }
-
-  function openPopover() {
-    positionPopover();
-    popover.classList.add('open');
-    document.addEventListener('click', handleOutsideClick);
-    document.addEventListener('keydown', handleEscape);
-  }
-
-  function closePopover() {
-    popover.classList.remove('open');
-    document.removeEventListener('click', handleOutsideClick);
-    document.removeEventListener('keydown', handleEscape);
-  }
-
-  toggleBtn.addEventListener('click', function(e) {
-    e.stopPropagation();
-    if (popover.classList.contains('open')) {
-      closePopover();
-    } else {
-      openPopover();
+  function onKeydown(e) {
+    if (e.key === 'Escape' && isOpen()) {
+      close();
+      toggle.focus();
     }
+  }
+
+  function open() {
+    if (beforeOpen) { beforeOpen(); }
+    region.classList.add('open');
+    toggle.setAttribute('aria-expanded', 'true');
+    document.addEventListener('click', onOutsideClick);
+    document.addEventListener('keydown', onKeydown);
+    var field = region.querySelector('input:not([type="hidden"]), textarea, select, button, a[href]');
+    if (field) { field.focus(); }
+  }
+
+  function close() {
+    region.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+    document.removeEventListener('click', onOutsideClick);
+    document.removeEventListener('keydown', onKeydown);
+  }
+
+  toggle.addEventListener('click', function(e) {
+    e.stopPropagation();
+    if (isOpen()) { close(); toggle.focus(); } else { open(); }
   });
 
-  if (cancelBtn) {
-    cancelBtn.addEventListener('click', closePopover);
-  }
-});
+  region.querySelectorAll('[data-segmentation-cancel], [data-segmentation-split-cancel]').forEach(function(btn) {
+    btn.addEventListener('click', function() { close(); toggle.focus(); });
+  });
+}
 
-// Segmentation: human-in-the-loop split control (1b)
 window.addEventListener('DOMContentLoaded', function() {
-  var splitToggleBtn = document.querySelector('[data-segmentation-split-toggle]');
-  var splitStrip = document.querySelector('[data-segmentation-split-strip]');
-  var splitCancelBtn = document.querySelector('[data-segmentation-split-cancel]');
-  var splitTitleInput = document.querySelector('[data-segmentation-split-title]');
-  var splitLink = document.querySelector('[data-segmentation-split-link]');
-
-  if (!splitToggleBtn || !splitStrip) { return; }
-
-  function syncSplitLinkTitle() {
-    if (!splitLink || !splitTitleInput) { return; }
-    var url = new URL(splitLink.href, window.location.origin);
-    url.searchParams.set('new_work_title', splitTitleInput.value);
-    splitLink.href = url.toString();
-  }
-
-  splitToggleBtn.addEventListener('click', function() {
-    splitStrip.classList.toggle('open');
-  });
-
-  if (splitCancelBtn) {
-    splitCancelBtn.addEventListener('click', function() {
-      splitStrip.classList.remove('open');
+  var popoverToggle = document.querySelector('[data-segmentation-toggle]');
+  var popover = document.querySelector('[data-segmentation-popover]');
+  if (popoverToggle && popover) {
+    setupSegmentationDisclosure(popoverToggle, popover, function() {
+      var rect = popoverToggle.getBoundingClientRect();
+      var width = popover.offsetWidth || 300;
+      popover.style.top = (rect.bottom + 8) + 'px';
+      popover.style.left = Math.max(8, rect.right - width) + 'px';
     });
   }
 
-  if (splitTitleInput) {
-    syncSplitLinkTitle();
-    splitTitleInput.addEventListener('input', syncSplitLinkTitle);
+  var splitToggle = document.querySelector('[data-segmentation-split-toggle]');
+  var splitStrip = document.querySelector('[data-segmentation-split-strip]');
+  if (splitToggle && splitStrip) {
+    setupSegmentationDisclosure(splitToggle, splitStrip);
+
+    // Keep the confirm link's new_work_title query param in sync with the field.
+    var splitTitleInput = splitStrip.querySelector('[data-segmentation-split-title]');
+    var splitLink = splitStrip.querySelector('[data-segmentation-split-link]');
+    if (splitTitleInput && splitLink) {
+      var syncSplitLinkTitle = function() {
+        var url = new URL(splitLink.href, window.location.origin);
+        url.searchParams.set('new_work_title', splitTitleInput.value);
+        splitLink.href = url.toString();
+      };
+      syncSplitLinkTitle();
+      splitTitleInput.addEventListener('input', syncSplitLinkTitle);
+    }
   }
 });

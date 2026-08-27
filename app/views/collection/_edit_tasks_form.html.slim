@@ -43,17 +43,18 @@ tr
       p =t('collection.edit_tasks.subjects_enabled_description')
 tr
   td(colspan="2")
-    =f.check_box :allow_transcriber_segmentation, disabled: !collection.transcriber_segmentation_available?
+    =f.check_box :allow_transcriber_segmentation, disabled: !collection.transcriber_segmentation_available?, 'aria-describedby': 'allow-transcriber-segmentation-desc'
     =f.label :allow_transcriber_segmentation
       h3 =t('collection.edit_tasks.allow_transcriber_segmentation')
+    #allow-transcriber-segmentation-desc
       p =t('collection.edit_tasks.allow_transcriber_segmentation_description')
-    -unless collection.transcriber_segmentation_available?
-      p.fglight =t('collection.edit_tasks.allow_transcriber_segmentation_unavailable')
-    -if collection.works_count == 1
-      -ai_settings_link = link_to(t('collection.edit_tasks.allow_transcriber_segmentation_ai_link'), edit_collection_work_ai_transcriptions_path(collection.owner, collection, collection.works.first))
-      p.fglight =t('collection.edit_tasks.allow_transcriber_segmentation_ai_hint', link: ai_settings_link).html_safe
-    -else
-      p.fglight =t('collection.edit_tasks.allow_transcriber_segmentation_ai_hint_plain')
+      -unless collection.transcriber_segmentation_available?
+        p.fglight =t('collection.edit_tasks.allow_transcriber_segmentation_unavailable')
+      -if collection.works_count == 1
+        -ai_settings_link = link_to(t('collection.edit_tasks.allow_transcriber_segmentation_ai_link'), edit_collection_work_ai_transcriptions_path(collection.owner, collection, collection.works.first))
+        p.fglight =t('collection.edit_tasks.allow_transcriber_segmentation_ai_hint', link: ai_settings_link).html_safe
+      -else
+        p.fglight =t('collection.edit_tasks.allow_transcriber_segmentation_ai_hint_plain')
 tr
   td(colspan="2")
     h3 =t('collection.edit_tasks.ocr_correction')
