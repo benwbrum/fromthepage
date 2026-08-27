@@ -24,6 +24,9 @@
               h4.collection-work_title =link_to doc_set.title, collection_path(doc_set.owner, doc_set)
               -unless doc_set.intro_block.blank?
                 p.collection-work_snippet ==doc_set.intro_block
+              -if doc_set.has_untranscribed_pages? && doc_set.active? && doc_set.text_entry?
+                p
+                  =link_to t('.start_transcribing'), collection_start_transcribing_path(doc_set.owner, doc_set), class: 'button'
     -else
       div.collection-work-list
         h2 =t('.works')
