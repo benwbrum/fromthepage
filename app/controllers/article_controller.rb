@@ -112,6 +112,9 @@ class ArticleController < ApplicationController
         redirect_to collection_article_edit_path(@collection.owner, @collection, @article)
       else
         @article = result.article
+        @duplicate_article = result.duplicate_article
+        @original_title = result.original_title
+        @article.errors.delete(:title) if @duplicate_article
         render :edit, status: :unprocessable_entity
       end
     elsif params[:autolink]

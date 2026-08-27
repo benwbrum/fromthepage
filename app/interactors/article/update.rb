@@ -1,5 +1,5 @@
 class Article::Update < ApplicationInteractor
-  attr_accessor :article, :notice
+  attr_accessor :article, :duplicate_article, :notice, :original_title
 
   def initialize(article:, article_params:, user:)
     @article        = article
@@ -11,6 +11,7 @@ class Article::Update < ApplicationInteractor
 
   def perform
     old_title = @article.title
+    @original_title = old_title
     @article.attributes = @article_params.except(:category_ids)
     categories = Category.where(id: @article_params[:category_ids])
     @article.categories = categories
@@ -33,6 +34,9 @@ class Article::Update < ApplicationInteractor
                                                                       count: GIS_DECIMAL_PRECISION)
       end
     else
+      if @article.errors.of_kind?(:title, :taken)
+        @duplicate_article = @article.collection.articles.where.not(id: @article.id).find_by(title: @article.title)
+      end
       context.fail!
     end
   end

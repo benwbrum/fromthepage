@@ -25,10 +25,12 @@ en:
       death_date: Death Date
       delete_subject: Delete Subject
       description: Description
+      duplicate_title_merge_prompt: A subject titled "%{new_title}" already exists. Would you like to merge the "%{old_title}" subject into "%{new_title}"?
       ended: Ended
       latitude: Latitude
       longitude: Longitude
       microphone: Microphone
+      merge_subjects: Merge Subjects
       n_pages:
         one: 1 page
         other: "%{count} pages"

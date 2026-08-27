@@ -126,6 +126,8 @@ describe Article::Update do
 
       expect(result.success?).to be_falsey
       expect(result.article.errors[:title]).to include('has already been used in this collection')
+      expect(result.duplicate_article).to eq(other_article)
+      expect(result.original_title).to eq('Original')
       expect(article.reload).to have_attributes(title: 'Original', uri: nil)
       expect(other_article.reload.title).to eq('Existing Subject')
     end

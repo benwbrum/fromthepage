@@ -6,6 +6,14 @@
 
 .article-columns.columns
   article.maincol
+    -if @duplicate_article
+      .flash.flash-info role="status"
+        span.flash_message
+          =t('.duplicate_title_merge_prompt', old_title: @original_title, new_title: @duplicate_article.title)
+        =form_tag(article_combine_duplicate_path(article_id: @duplicate_article.id), method: :post) do
+          =hidden_field_tag 'from_article_ids[]', @article.id
+          =button_tag t('.merge_subjects'), class: 'button'
+
     =form_for(@article, url: collection_article_update_path(@collection.owner, @collection, @article)) do |f|
       =hidden_field_tag(:article_id, @article.id)
       =validation_summary @article.errors

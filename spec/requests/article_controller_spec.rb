@@ -281,6 +281,28 @@ describe ArticleController do
       end
     end
 
+    context 'when the title already exists in the collection' do
+      let!(:existing_article) { create(:article, title: 'Existing Subject', collection: collection) }
+      let(:params) do
+        {
+          article: { title: 'existing subject' },
+          save: '1'
+        }
+      end
+
+      it 'offers to merge the edited subject into the existing subject' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response.body).to include(
+          'A subject titled &quot;Existing Subject&quot; already exists. Would you like to merge the '
+        )
+        expect(response.body).to include(article_combine_duplicate_path(article_id: existing_article.id))
+        expect(response.body).to include(%(name="from_article_ids[]" value="#{article.id}"))
+      end
+    end
+
     context 'when successful save' do
       let(:params) do
         {
