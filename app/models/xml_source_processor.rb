@@ -426,11 +426,22 @@ EOF
 
       # create new blank articles if they don't exist already
       if article.nil?
-        article = Article.new
-        article.title = title
-        article.collection = collection
+        article = collection.articles.find_by(title: title)
+      end
+
+      if article.nil?
+        article = collection.articles.build(title: title)
         article.created_by_id = Current.user.id if Current.user.present?
-        article.save! unless preview_mode
+        unless preview_mode
+          begin
+            article.save!
+          rescue ActiveRecord::RecordNotUnique, ActiveRecord::RecordInvalid => error
+            raise if error.is_a?(ActiveRecord::RecordInvalid) && !error.record.errors.of_kind?(:title, :taken)
+
+            # Another page may have created this subject after our lookup.
+            article = collection.articles.find_by!(title: title)
+          end
+        end
         # add the new article to the hash
         articles_by_title[title] = article
       end

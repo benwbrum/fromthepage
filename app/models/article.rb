@@ -50,6 +50,12 @@ class Article < ApplicationRecord
   before_save :process_source
 
   validates_presence_of :title
+  validates :title,
+            uniqueness: {
+              scope: :collection_id,
+              case_sensitive: false,
+              message: 'has already been used in this collection'
+            }
 
   validates :latitude, allow_blank: true, numericality: { less_than_or_equal_to: 90, greater_than_or_equal_to: -90 }
   validates :longitude, allow_blank: true, numericality: { less_than_or_equal_to: 180, greater_than_or_equal_to: -180 }

@@ -57,12 +57,28 @@ class Article::ImportCsv < ApplicationInteractor
       end
 
       category_title = row_hash['category'].to_s.strip
-      if category_title.present?
-        category = @collection.categories.find_or_create_by!(title: category_title)
-        article.categories << category
-      end
+      category = @collection.categories.find_or_create_by!(title: category_title) if category_title.present?
 
-      article.save!
+      save_article(article, title, category)
     end
+  end
+
+  private
+
+  # The unique database index is the final arbiter if two imports create the
+  # same subject concurrently. In that case, apply this row's data to the
+  # winner rather than leaking RecordNotUnique from the import.
+  def save_article(article, title, category)
+    imported_attributes = article.attributes.except('id', 'created_on', 'lock_version')
+    article.save!
+    article.categories << category if category && !article.categories.exists?(category.id)
+  rescue ActiveRecord::RecordNotUnique, ActiveRecord::RecordInvalid => error
+    raise if error.is_a?(ActiveRecord::RecordInvalid) && !error.record.errors.of_kind?(:title, :taken)
+
+    article = @collection.articles.find_by!(title: title)
+    imported_attributes['provenance'] = article.provenance || imported_attributes['provenance']
+    article.assign_attributes(imported_attributes)
+    article.save!
+    article.categories << category if category && !article.categories.exists?(category.id)
   end
 end

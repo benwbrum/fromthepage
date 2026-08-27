@@ -116,4 +116,29 @@ describe Article::Update do
       expect(result.success?).to be_falsey
     end
   end
+
+  context 'when the title belongs to another article in the collection' do
+    let!(:other_article) { create(:article, title: 'Existing Subject', collection: collection) }
+    let(:article_title) { 'existing subject' }
+
+    it 'fails without changing either article or enqueueing a rename' do
+      expect(Article::RenameJob).not_to receive(:perform_later)
+
+      expect(result.success?).to be_falsey
+      expect(result.article.errors[:title]).to include('has already been used in this collection')
+      expect(article.reload).to have_attributes(title: 'Original', uri: nil)
+      expect(other_article.reload.title).to eq('Existing Subject')
+    end
+  end
+
+  context 'when the title belongs to an article in a different collection' do
+    let!(:other_article) { create(:article, title: 'Shared Subject', collection: create(:collection)) }
+    let(:article_title) { 'shared subject' }
+
+    it 'allows the scoped title' do
+      expect(result.success?).to be_truthy
+      expect(article.reload.title).to eq('shared subject')
+      expect(other_article.reload.title).to eq('Shared Subject')
+    end
+  end
 end
