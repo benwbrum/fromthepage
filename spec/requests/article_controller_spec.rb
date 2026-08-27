@@ -459,7 +459,7 @@ describe ArticleController do
       node_ids = json['nodes'].map { |n| n['id'] }
       expect(node_ids).to include("S#{article.id}", "S#{linked_article.id}", "D#{page.id}")
       expect(json['links']).to include(a_hash_including('source' => "S#{article.id}", 'target' => "S#{linked_article.id}", 'group' => 'direct'))
-      expect(article.d3js_attachment.attached?).to be_truthy
+      expect(article.reload.d3js_attachment.attached?).to be_truthy
     end
 
     it 'excludes bio field from article nodes in JSON response' do
