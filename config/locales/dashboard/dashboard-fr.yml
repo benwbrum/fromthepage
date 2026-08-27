@@ -106,6 +106,7 @@ fr:
         other: "%{count} fonctionne :"
       private: " (Privé)"
       public: " (Public)"
+      read_only: "(Lecture seule)"
       start_a_project: Démarrer un projet
       there_are_no_works: Il n'y a pas encore d'œuvres dans cette collection
       you_can_new_collection: Vous pouvez %{new_collection}

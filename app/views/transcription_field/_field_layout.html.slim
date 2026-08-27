@@ -12,6 +12,7 @@
       var aiDraftBothAgreeText = #{{t('.ai_both_agree').to_json}};
       var aiDraftDisagreeHeaderText = #{{t('.ai_disagree_header').to_json}};
       var aiDraftOptionPlaceholder = #{{t('.ai_option_placeholder').to_json}};
+      var aiDraftSpreadsheetOptionText = #{{t('.ai_spreadsheet_option').to_json}};
 
       document.getElementById('ai-draft-fields').addEventListener('click', function() {
         var engineKeys = Object.keys(aiDraftByEngine).sort();
@@ -124,6 +125,66 @@
             });
           });
 
+          // Spreadsheet fields aren't plain .field-input elements — they're a Handsontable
+          // grid backed by a hidden field. Rows are objects keyed by spreadsheet column id
+          // (the same shape the field's saved transcription_json uses), so we hand them to
+          // the grid's own Stimulus controller rather than setting a value directly.
+          $row.find('.field-wrapper [data-controller~="handsontable"]').each(function() {
+            var $spreadsheet = $(this);
+            var fieldId = String($spreadsheet.data('fieldId'));
+            var $wrapper = $spreadsheet.closest('.field-wrapper');
+            var controller = window.Stimulus && window.Stimulus.getControllerForElementAndIdentifier(this, 'handsontable');
+            if (!controller) return;
+
+            function rowsBlank(rows) {
+              return rows.every(function(row) {
+                if (!row || typeof row !== 'object') return true;
+                return Object.keys(row).every(function(key) {
+                  var v = row[key];
+                  return v === null || v === undefined || v === '';
+                });
+              });
+            }
+
+            var rowsByEngine = {};
+            engineKeys.forEach(function(engine) {
+              var rows = aiDraftByEngine[engine][fieldId];
+              if (Array.isArray(rows) && rows.length > 0 && !rowsBlank(rows)) {
+                rowsByEngine[engine] = rows;
+              }
+            });
+
+            var presentEngines = Object.keys(rowsByEngine);
+            if (presentEngines.length === 0) return;
+
+            controller.applyAiDraftRows(rowsByEngine[presentEngines[0]]);
+
+            if (presentEngines.length === 1) return;
+
+            var gridsByEngine = {};
+            presentEngines.forEach(function(engine) {
+              gridsByEngine[engine] = JSON.stringify(controller.buildGridData(rowsByEngine[engine]));
+            });
+
+            var firstGrid = gridsByEngine[presentEngines[0]];
+            var allAgree = presentEngines.every(function(engine) {
+              return gridsByEngine[engine] === firstGrid;
+            });
+
+            if (allAgree) {
+              notes.push({ kind: 'agree', wrapper: $wrapper });
+              return;
+            }
+
+            notes.push({
+              kind: 'spreadsheet-disagree',
+              wrapper: $wrapper,
+              controller: controller,
+              rowsByEngine: rowsByEngine,
+              presentEngines: presentEngines
+            });
+          });
+
           if (notes.length === 0) return;
 
           var $notesRow = $('<div class="ai-draft-notes-row"></div>');
@@ -137,6 +198,37 @@
               var $status = $('<div class="ai-draft-status ai-draft-status-agree">&#10003; ' + escapeHtml(aiDraftBothAgreeText) + '</div>');
               $status.css({ left: left, width: width });
               $notesRow.append($status);
+              return;
+            }
+
+            if (entry.kind === 'spreadsheet-disagree') {
+              var $shPanel = $('<div class="ai-draft-disagree ai-draft-disagree-spreadsheet"></div>');
+              $shPanel.css({ left: left, width: width });
+              $shPanel.append(
+                '<div class="ai-draft-disagree-header">&#9888; ' + escapeHtml(aiDraftDisagreeHeaderText) + '</div>'
+              );
+
+              entry.presentEngines.forEach(function(engine, idx) {
+                var modelName = aiDraftModelNames[engine] || engine;
+                var $shOption = $('<div class="ai-draft-option" tabindex="0" role="button"></div>');
+                $shOption.append('<span class="ai-draft-option-text">' + escapeHtml(aiDraftSpreadsheetOptionText) + '</span>');
+                $shOption.append('<span class="ai-draft-option-label">' + escapeHtml(modelName) + '</span>');
+                if (idx === 0) { $shOption.addClass('selected'); }
+                $shOption.on('click', function() {
+                  entry.controller.applyAiDraftRows(entry.rowsByEngine[engine]);
+                  $shPanel.find('.ai-draft-option').removeClass('selected');
+                  $shOption.addClass('selected');
+                });
+                $shOption.on('keydown', function(e) {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    $shOption.trigger('click');
+                  }
+                });
+                $shPanel.append($shOption);
+              });
+
+              $notesRow.append($shPanel);
               return;
             }
 

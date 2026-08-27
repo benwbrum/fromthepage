@@ -86,6 +86,9 @@ fr:
       help_description: Afficher et comparer les modifications apportées dans chaque révision aux métadonnées de œuvre. La colonne de gauche montre les métadonnées dans la révision sélectionnée, la colonne de droite montre ce qui a été modifié. Le texte inchangé est <span>surligné en blanc</span>, le texte supprimé est <del>surligné en rouge</del> et le texte inséré est <ins>surligné en vert</ins>.
       revision: révision
     download:
+      accessible_pdf: PDF accessible
+      accessible_pdf_download_description: Téléchargez une version PDF de cet ouvrage optimisée pour les lecteurs d'écran et les technologies d'assistance.
+      accessible_pdf_export_description: Téléchargez une version PDF de cet ouvrage optimisée pour les lecteurs d'écran et les technologies d'assistance.
       analyze: Analyser
       configurable_printout: Impression configurable
       configurable_printout_button: Configurer

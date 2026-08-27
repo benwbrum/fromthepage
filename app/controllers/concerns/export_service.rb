@@ -48,6 +48,31 @@ module ExportService
     )
   end
 
+  def export_grover_printable_to_zip(work, path, by_work, original_filenames, preserve_lb, include_metadata, include_contributors, include_notes)
+    return if work.pages.count == 0
+
+    dirname = path_from_work(work)
+    relative = File.join dirname, 'printable', 'accessible_pdf.pdf'
+
+    # NOTE: We only support text editions for grover
+    result = Work::Export::GroverPrintable.new(
+      work: work,
+      edition: 'text',
+      include_metadata: include_metadata,
+      include_contributors: include_contributors,
+      include_notes: include_notes,
+      preserve_lb: preserve_lb
+    ).call
+
+    if result.success?
+      destination_path = File.join(path, relative)
+      FileUtils.mkdir_p(File.dirname(destination_path))
+      File.binwrite(destination_path, result.file)
+    else
+      raise result.full_errors
+    end
+  end
+
   def export_collection_activity_csv(path:, collection:, report_arguments:)
     write_artifact(
       base: path,

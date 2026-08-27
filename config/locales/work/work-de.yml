@@ -86,6 +86,9 @@ de:
       help_description: Anzeige und Vergleich der Änderungen, die in jeder Revision an dem Metadaten des Werkes vorgenommen wurden. Die linke Spalte zeigt die Metadaten in der ausgewählten Revision, die rechte Spalte zeigt, was geändert wurde. Unveränderter Text wird <span>weiß hervorgehoben</span>, gelöschter Text wird <del>rot hervorgehoben</del> und eingefügter Text wird <ins>grün hervorgehoben</ins>.
       revision: Revision
     download:
+      accessible_pdf: Barrierefreies PDF
+      accessible_pdf_download_description: Laden Sie eine für Bildschirmleseprogramme und assistive Technologien optimierte PDF-Version dieses Werkes herunter.
+      accessible_pdf_export_description: Laden Sie eine für Bildschirmleseprogramme und assistive Technologien optimierte PDF-Version dieses Werkes herunter.
       analyze: Analysieren
       configurable_printout: Konfigurierbarer Ausdruck
       configurable_printout_button: Konfigurieren

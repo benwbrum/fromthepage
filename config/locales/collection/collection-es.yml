@@ -242,11 +242,10 @@ es:
       collection_restricted_description: La colección sólo puede ser vista por los propietarios y colaboradores que se enumeran a continuación. Puede hacer que la colección sea legible públicamente.
       edit_collaborators: Editar colaboradores
       edit_owners: Editar propietarios
-      make_collection_private: Hacer Privada la Colección
-      make_collection_public: Hacer Pública la Colección
       open_api: Abrir API
       private: Privado
       public: Público
+      read_only: Solo lectura
       restrict_completed_works: Restringir obras terminadas
       restrict_editing: Restringir edición
       restricted_completed_works_description: Este botón restringirá las %{work_count} obras que se completaron pero que actualmente no están restringidos a los propietarios del proyecto o colaboradores designados. Puede cambiar esta configuración y agregar colaboradores en la página de configuración de cada obra.

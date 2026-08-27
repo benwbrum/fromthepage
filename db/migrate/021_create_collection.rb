@@ -8,6 +8,7 @@ class CreateCollection < ActiveRecord::Migration[5.0]
 
       # Backsupport for CI
       t.string :review_type
+      t.string :visibility
     end
     # work fk
     add_column :works, :collection_id, :integer

@@ -119,5 +119,65 @@ describe 'spreadsheet' do
       expect(row_data.first.first).to eq 'Row 1'
       expect(row_data.last.first).to be_nil
     end
+
+    context 'AI draft' do
+      let!(:work) { create(:work, :with_pages, collection: collection, owner_user_id: owner.id) }
+      let!(:field_page) { work.pages.first }
+
+      it 'fills the spreadsheet grid from a single AI engine draft', js: true do
+        create(:ai_transcription,
+               page: field_page,
+               model: 'gemini-3.1-pro-preview',
+               status: 'finished',
+               transcription_json: { spreadsheet_field.id.to_s => [{ spreadsheet_column.id.to_s => 'AI drafted value' }] })
+
+        visit collection_transcribe_page_path(collection.owner, collection, work, field_page)
+
+        find('#ai-draft-fields').click
+
+        Timeout.timeout(Capybara.default_max_wait_time) do
+          loop do
+            break if page.evaluate_script(handsontable_expression('getDataAtCell(0, 0)')) == 'AI drafted value'
+
+            sleep 0.1
+          end
+        end
+
+        expect(find('#ai-draft-fields')).to be_disabled
+      end
+
+      it 'shows a disagreement panel and lets the user switch AI engines', js: true do
+        create(:ai_transcription,
+               page: field_page,
+               model: 'gemini-3.1-pro-preview',
+               status: 'finished',
+               transcription_json: { spreadsheet_field.id.to_s => [{ spreadsheet_column.id.to_s => 'Gemini value' }] })
+        create(:ai_transcription,
+               page: field_page,
+               model: 'claude-opus-4',
+               status: 'finished',
+               transcription_json: { spreadsheet_field.id.to_s => [{ spreadsheet_column.id.to_s => 'Claude value' }] })
+
+        visit collection_transcribe_page_path(collection.owner, collection, work, field_page)
+
+        find('#ai-draft-fields').click
+
+        disagree_panel = find('.ai-draft-disagree-spreadsheet')
+        expect(disagree_panel).to have_content('claude-opus-4')
+        expect(disagree_panel).to have_content('gemini-3.1-pro-preview')
+
+        expect(page.evaluate_script(handsontable_expression('getDataAtCell(0, 0)'))).to eq 'Claude value'
+
+        disagree_panel.find('.ai-draft-option', text: 'gemini-3.1-pro-preview').click
+
+        Timeout.timeout(Capybara.default_max_wait_time) do
+          loop do
+            break if page.evaluate_script(handsontable_expression('getDataAtCell(0, 0)')) == 'Gemini value'
+
+            sleep 0.1
+          end
+        end
+      end
+    end
   end
 end

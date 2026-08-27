@@ -232,6 +232,20 @@ describe ExportController do
     end
   end
 
+  describe '#grover_printable' do
+    let(:action_path) { export_grover_printable_path(collection, work) }
+    let(:params) { { edition: 'text' } }
+
+    let(:subject) { post action_path, params: params }
+
+    it 'renders status' do
+      login_as owner
+      subject
+
+      expect(response).to have_http_status(:ok)
+    end
+  end
+
   describe '#tei' do
     let(:action_path) { export_tei_path(work.slug) }
 
@@ -729,6 +743,17 @@ describe ExportController do
     let(:params) { {} }
 
     let(:subject) { get action_path, params: params }
+
+    it 'redirects when not logged in' do
+      subject
+      expect(response).to redirect_to(dashboard_path)
+    end
+
+    it 'redirects a non-owner' do
+      login_as user
+      subject
+      expect(response).to redirect_to(dashboard_path)
+    end
 
     it 'renders status' do
       login_as owner

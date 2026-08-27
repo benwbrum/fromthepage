@@ -189,7 +189,7 @@ module AbstractXmlHelper
               anchor.add_attribute('aria-describedby', "tooltip-#{id}")
               anchor.add_attribute('tabindex', '0')
             end
-            anchor.add_attribute('href', url_for(controller: 'article', action: 'show', article_id: id))
+            anchor.add_attribute('href', url_for(controller: 'article', action: 'show', article_id: id, only_path: false))
             if highlight_article_id && id == highlight_article_id
               anchor.add_attribute('class', 'highlighted')  # Add the class attribute for highlighting
             end

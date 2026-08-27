@@ -951,4 +951,24 @@ describe CollectionController do
       end
     end
   end
+
+  describe '#deeds' do
+    let(:action_path) { collection_deeds_path(owner, collection) }
+    let(:subject) { get action_path, params: params, as: :turbo_stream }
+
+    let(:params) do
+      {
+        types: DeedType.collection_edits,
+        limit: 20,
+        long_view: true
+      }
+    end
+
+    it 'renders status and template' do
+      subject
+
+      expect(response).to have_http_status(:ok)
+      expect(response).to render_template(:_deeds)
+    end
+  end
 end

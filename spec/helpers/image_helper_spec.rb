@@ -265,6 +265,15 @@ describe ImageHelper do
       expect(File.exist?(test_write_file)).to be true
     end
 
+    it 'rejects entries that escape the extraction directory' do
+      Zip::File.open(zip_file_path, create: true) do |zipfile|
+        zipfile.get_output_stream('../escaped.txt') { |stream| stream.write('unsafe') }
+      end
+
+      expect { ImageHelper.unzip_file(zip_file_path, extraction_path) }.to raise_error(Zip::EntryNameError)
+      expect(File.exist?(File.join(test_dir, 'escaped.txt'))).to be false
+    end
+
     it 'handles nested directories with restricted permissions' do
       # Create a zip with nested restricted directories
       nested_zip_path = File.join(test_dir, 'nested_restricted.zip')

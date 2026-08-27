@@ -24,12 +24,15 @@
               h4.collection-work_title =link_to doc_set.title, collection_path(doc_set.owner, doc_set)
               -unless doc_set.intro_block.blank?
                 p.collection-work_snippet ==doc_set.intro_block
+              -if doc_set.has_untranscribed_pages? && doc_set.active? && doc_set.text_entry?
+                p
+                  =link_to t('.start_transcribing'), collection_start_transcribing_path(doc_set.owner, doc_set), class: 'button'
     -else
       div.collection-work-list
         h2 =t('.works')
 
         .start_link
-          -if @collection.is_a?(Collection) || current_user&.can_transcribe?(nil, @collection)
+          -if (@collection.is_a?(Collection) || current_user&.can_transcribe?(nil, @collection)) && !@collection.visibility_read_only?
             -if @collection.has_untranscribed_pages? && @collection.active? && @collection.text_entry?
               p
               -if user_signed_in?
@@ -185,8 +188,8 @@
 
     -if notes_visible?(@collection, current_user)
       h3 =t('.recent_edits')
-      -cache [@collection.id, @collection.most_recent_deed_created_at, :collection_show] do
-        =deeds_for({ collection: @collection, limit: 20, types: DeedType.collection_edits, long_view: true })
+      turbo-frame id="lazy_deeds" src=collection_deeds_path(@collection.owner, @collection, types: DeedType.collection_edits, limit: 20, long_view: true) loading="lazy"
+        = render partial: 'shared/components/loading'
 
 =link_to(collection_new_mobile_user_path(collection_id: @collection.slug), data: { controller: 'litebox', litebox: { hash: 'new-mobile-user' }}, id: 'new_mobile_user_link', style: "display: none")
   span =""

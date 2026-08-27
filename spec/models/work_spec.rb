@@ -103,12 +103,27 @@ describe Work do
     end
   end
 
+  describe 'title validation' do
+    it 'allows titles up to the expanded database limit' do
+      work = build(:work, title: 'a' * 1028)
+
+      expect(work).to be_valid
+    end
+
+    it 'rejects titles longer than the expanded database limit' do
+      work = build(:work, title: 'a' * 1029)
+
+      expect(work).not_to be_valid
+      expect(work.errors[:title]).to include('is too long (maximum is 1028 characters)')
+    end
+  end
+
   context 'es_search' do
     let(:identifier) { 'pneumonoultramicroscopicsilicovolcanoconiosis' }
 
     let!(:owner) { create(:unique_user, :owner) }
     let!(:collection) { create(:collection, owner_user_id: owner.id) }
-    let!(:restricted_collection) { create(:collection, owner_user_id: owner.id, restricted: true) }
+    let!(:restricted_collection) { create(:collection, owner_user_id: owner.id, visibility: :private) }
     let!(:docset) { create(:document_set, collection_id: restricted_collection.id, owner_user_id: owner.id, visibility: :public) }
     let!(:restricted_docset) { create(:document_set, collection_id: restricted_collection.id, owner_user_id: owner.id, visibility: :private) }
 
@@ -120,7 +135,7 @@ describe Work do
 
     let!(:other_user) { create(:unique_user, :owner) }
     let!(:other_collection) { create(:collection, owner_user_id: other_user.id) }
-    let!(:other_restricted_collection) { create(:collection, owner_user_id: other_user.id, restricted: true) }
+    let!(:other_restricted_collection) { create(:collection, owner_user_id: other_user.id, visibility: :private) }
 
     let!(:other_public_work) { create(:work, title: identifier, collection_id: other_collection.id, owner_user_id: other_user.id) }
     let!(:other_restricted_work) { create(:work, title: identifier, collection_id: other_restricted_collection.id, owner_user_id: other_user.id) }

@@ -10,8 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_08_27_020000) do
-  create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+ActiveRecord::Schema[7.2].define(version: 2026_08_21_230000) do
+  create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
     t.bigint "record_id", null: false
@@ -21,7 +21,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_27_020000) do
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
 
-  create_table "active_storage_blobs", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "active_storage_blobs", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "key", null: false
     t.string "filename", null: false
     t.string "content_type"
@@ -33,7 +33,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_27_020000) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
-  create_table "active_storage_variant_records", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "active_storage_variant_records", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
@@ -61,7 +61,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_27_020000) do
     t.index ["visit_id", "name"], name: "index_ahoy_events_on_visit_id_and_name"
   end
 
-  create_table "ai_transcriptions", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "ai_transcriptions", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.integer "page_id", null: false
     t.text "source_text", size: :long
     t.text "prompt", size: :long
@@ -85,6 +85,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_27_020000) do
     t.decimal "text_wer_distance", precision: 10
     t.decimal "text_wer_length", precision: 10
     t.decimal "verbatim_non_stopword_accuracy", precision: 10
+    t.index ["created_at", "model", "status"], name: "idx_ai_transcriptions_dashboard"
     t.index ["page_id", "id"], name: "index_ai_transcriptions_on_page_id_and_id"
     t.index ["page_id"], name: "index_ai_transcriptions_on_page_id"
     t.index ["status", "updated_at"], name: "index_ai_transcriptions_on_status_and_updated_at"
@@ -181,8 +182,10 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_27_020000) do
     t.boolean "plaintext_verbatim_zero_index_page", default: false
     t.boolean "admin_searches"
     t.boolean "notes_csv"
+    t.boolean "admin_searches"
     t.boolean "page_details_csv_work", default: false
     t.boolean "page_details_csv_collection", default: false
+    t.boolean "accessible_pdf_work"
     t.index ["collection_id"], name: "index_bulk_exports_on_collection_id"
     t.index ["document_set_id"], name: "index_bulk_exports_on_document_set_id"
     t.index ["user_id"], name: "index_bulk_exports_on_user_id"
@@ -212,7 +215,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_27_020000) do
     t.index ["user_id"], name: "index_cdm_bulk_imports_on_user_id"
   end
 
-  create_table "cdm_export_settings", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "cdm_export_settings", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.integer "collection_id", null: false
     t.string "transcript_source", default: "human_only", null: false
     t.string "fulltext_field"
@@ -312,9 +315,11 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_27_020000) do
     t.boolean "hide_notes", default: false
     t.boolean "ai_draft_disabled", default: false
     t.boolean "allow_transcriber_segmentation", default: false, null: false
+    t.string "visibility", default: "public"
     t.index ["owner_user_id"], name: "index_collections_on_owner_user_id"
     t.index ["slug"], name: "index_collections_on_slug", unique: true
     t.index ["thredded_messageboard_group_id"], name: "index_collections_on_thredded_messageboard_group_id"
+    t.index ["visibility"], name: "index_collections_on_visibility"
   end
 
   create_table "collections_tags", id: false, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
@@ -487,7 +492,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_27_020000) do
     t.string "server"
     t.string "ia_path"
     t.string "book_id"
-    t.string "title"
+    t.string "title", limit: 1028
     t.string "creator"
     t.string "collection"
     t.string "description", limit: 1024
@@ -639,7 +644,12 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_27_020000) do
     t.index ["section_id", "page_id"], name: "index_pages_sections_on_section_id_and_page_id"
   end
 
-  create_table "privacy_preferences", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "plugin_schema_info", id: false, charset: "utf8mb3", collation: "utf8mb3_general_ci", options: "ENGINE=MyISAM", force: :cascade do |t|
+    t.string "plugin_name"
+    t.integer "version"
+  end
+
+  create_table "privacy_preferences", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.integer "user_id", null: false
     t.boolean "recorded", default: false, null: false
     t.boolean "analytics", default: false, null: false
@@ -745,7 +755,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_27_020000) do
     t.index ["updated_at"], name: "index_sessions_on_updated_at"
   end
 
-  create_table "solid_cache_entries", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "solid_cache_entries", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.binary "key", limit: 1024, null: false
     t.binary "value", size: :long, null: false
     t.datetime "created_at", null: false
@@ -888,7 +898,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_27_020000) do
     t.index ["transcription_field_id"], name: "index_spreadsheet_columns_on_transcription_field_id"
   end
 
-  create_table "suspicious_behaviors", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "suspicious_behaviors", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "page_id"
     t.integer "collection_id"
@@ -1237,6 +1247,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_27_020000) do
     t.text "help"
     t.boolean "document_sets_on_owner_page", default: false
     t.boolean "segmentation_enabled", default: false
+    t.index ["deleted"], name: "index_users_on_deleted"
     t.index ["login"], name: "index_users_on_login"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["slug"], name: "index_users_on_slug", unique: true
@@ -1318,8 +1329,8 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_27_020000) do
   end
 
   create_table "works", id: :integer, charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
-    t.string "title"
-    t.string "description", limit: 4000
+    t.string "title", limit: 1028
+    t.text "description", size: :medium
     t.datetime "created_on", precision: nil
     t.integer "owner_user_id"
     t.boolean "restrict_scribes", default: false

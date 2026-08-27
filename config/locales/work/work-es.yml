@@ -86,6 +86,9 @@ es:
       help_description: Vea y compara los cambios que se han realizado en cada revisión a los metadatos de obra. La columna de la izquierda muestra los metadatos en la revisión seleccionada, la columna de la derecha muestra lo que se ha cambiado. El texto que no ha cambiado está <span>resaltado en blanco</span>, el texto eliminado está <del>resaltado en rojo</del> y el texto insertado está <ins>resaltado en color verde</ins>.
       revision: revisión
     download:
+      accessible_pdf: PDF accesible
+      accessible_pdf_download_description: Descargue una versión en PDF de esta obra optimizada para lectores de pantalla y tecnologías de asistencia.
+      accessible_pdf_export_description: Descargue una versión en PDF de esta obra optimizada para lectores de pantalla y tecnologías de asistencia.
       analyze: Analizar
       configurable_printout: Impresión configurable
       configurable_printout_button: Configurar

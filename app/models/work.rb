@@ -33,7 +33,7 @@
 #  source_collection_name          :string(255)
 #  source_location                 :string(255)
 #  supports_translation            :boolean          default(FALSE)
-#  title                           :string(255)
+#  title                           :string(1028)
 #  transcription_conventions       :text(16777215)
 #  transcription_version           :integer          default(0)
 #  translation_instructions        :text(65535)
@@ -139,7 +139,7 @@ class Work < ApplicationRecord
 
   after_create :alert_bento
 
-  validates :title, presence: true, length: { minimum: 3, maximum: 255 }
+  validates :title, presence: true, length: { minimum: 3, maximum: 1028 }
   validates :slug,
             uniqueness: {
               case_sensitive: true
@@ -648,7 +648,7 @@ class Work < ApplicationRecord
   end
 
   def is_public?
-    return true if collection.nil? || !collection.restricted?
+    return true if collection.nil? || !collection.restricted
 
     document_sets.unrestricted.any?
   end
