@@ -40,6 +40,34 @@ describe Work do
     end
   end
 
+  describe '#page_segmentation_enabled?' do
+    let(:owner) { create(:unique_user, :owner) }
+    let(:collection) do
+      create(:collection, owner_user_id: owner.id, data_entry_type: 'text', works: [])
+    end
+    let(:work) { create(:work, collection: collection, owner_user_id: owner.id) }
+
+    it 'is true when AI has flagged a first-page candidate' do
+      create(:page, work_id: work.id, position: 1)
+      create(:page, work_id: work.id, position: 2, is_first_page_candidate: true)
+
+      expect(work.page_segmentation_enabled?).to be true
+    end
+
+    it 'is true when the collection lets transcribers split works' do
+      collection.update!(allow_transcriber_segmentation: true)
+      create(:page, work_id: work.id, position: 1)
+
+      expect(work.page_segmentation_enabled?).to be true
+    end
+
+    it 'is false with no candidates and the collection setting off' do
+      create(:page, work_id: work.id, position: 1)
+
+      expect(work.page_segmentation_enabled?).to be false
+    end
+  end
+
   describe '#set/update_next_untranscribed_page' do
     let(:work) { create(:work, owner_user_id: 1) }
     it "sets nil with no pages" do

@@ -144,4 +144,33 @@ describe 'work segmentation UI' do
       end
     end
   end
+
+  describe 'collection-level "let transcribers split works" setting (1c)', js: true do
+    let!(:first_page) { create(:page, work: work, position: 1, title: 'Letter one') }
+    let!(:second_page) { create(:page, work: work, position: 2) }
+
+    context 'when the collection lets transcribers split works' do
+      before { collection.update!(allow_transcriber_segmentation: true) }
+
+      it 'shows the scissors control on a page AI never flagged and splits from there' do
+        visit collection_transcribe_page_path(owner, collection, work, second_page)
+
+        expect(page).to have_css('[data-segmentation-split-toggle]')
+
+        page.find('[data-segmentation-split-toggle]').click
+        within('.segmentation-split-strip') { click_link 'Split' }
+
+        expect(page).to have_content('Created "Letter one" with 1 pages.')
+        expect(work.reload.pages.count).to eq(1)
+      end
+    end
+
+    context 'when the setting is off and nothing is AI-flagged' do
+      it 'does not show the scissors control' do
+        visit collection_transcribe_page_path(owner, collection, work, second_page)
+
+        expect(page).to have_no_css('[data-segmentation-split-toggle]')
+      end
+    end
+  end
 end

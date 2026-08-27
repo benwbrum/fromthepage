@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_08_27_000000) do
+ActiveRecord::Schema[7.2].define(version: 2026_08_27_010000) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -311,6 +311,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_27_000000) do
     t.string "default_overview_orientation"
     t.boolean "hide_notes", default: false
     t.boolean "ai_draft_disabled", default: false
+    t.boolean "allow_transcriber_segmentation", default: false, null: false
     t.index ["owner_user_id"], name: "index_collections_on_owner_user_id"
     t.index ["slug"], name: "index_collections_on_slug", unique: true
     t.index ["thredded_messageboard_group_id"], name: "index_collections_on_thredded_messageboard_group_id"

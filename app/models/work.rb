@@ -518,6 +518,12 @@ class Work < ApplicationRecord
     pages.where(is_first_page_candidate: true).exists?
   end
 
+  # Show the per-page split control when AI has flagged first-page candidates in
+  # this work, or when the collection lets transcribers split works freely.
+  def page_segmentation_enabled?
+    segmentation_candidates? || collection&.transcriber_segmentation_enabled? || false
+  end
+
   def process_fields(field_cells)
     metadata_fields = []
     # new_table_cells = []

@@ -3,7 +3,7 @@ require 'spec_helper'
 describe WorkController do
   describe '#split_page' do
     let(:owner) { create(:unique_user, :owner) }
-    let(:collection) { create(:collection, owner_user_id: owner.id, works: [], data_entry_type: 'text_and_metadata') }
+    let(:collection) { create(:collection, owner_user_id: owner.id, works: [], data_entry_type: 'text_and_metadata', allow_transcriber_segmentation: true) }
     let(:work) { create(:work, collection: collection, owner_user_id: owner.id, restrict_scribes: false) }
     let!(:first_page) { create(:page, work: work, position: 1, title: 'Letter one') }
     let!(:second_page) { create(:page, work: work, position: 2) }
@@ -29,6 +29,13 @@ describe WorkController do
 
         new_work = collection.works.find_by!(title: 'Letter one')
         expect(new_work.split_from_work).to eq(work)
+      end
+
+      it 'refuses the split when segmentation is not enabled for the work' do
+        collection.update!(allow_transcriber_segmentation: false)
+
+        expect { perform_split }.not_to change(Work, :count)
+        expect(response).to redirect_to(dashboard_path)
       end
 
       it 'links to the work overview when edit_metadata_after_split is not set' do

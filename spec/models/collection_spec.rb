@@ -275,4 +275,36 @@ describe Collection do
       end
     end
   end
+
+  describe '#transcriber_segmentation_enabled?' do
+    let(:owner) { create(:unique_user, :owner) }
+    let(:collection) do
+      create(:collection, owner_user_id: owner.id, data_entry_type: 'text',
+                          is_active: true, allow_transcriber_segmentation: true)
+    end
+
+    it 'is true for an active text collection with the flag on' do
+      expect(collection.transcriber_segmentation_enabled?).to be(true)
+    end
+
+    it 'is false when the flag is off' do
+      collection.update!(allow_transcriber_segmentation: false)
+      expect(collection.transcriber_segmentation_enabled?).to be(false)
+    end
+
+    it 'is false for an inactive collection' do
+      collection.update!(is_active: false)
+      expect(collection.transcriber_segmentation_enabled?).to be(false)
+    end
+
+    it 'is false for a metadata-only collection' do
+      collection.update!(data_entry_type: 'metadata')
+      expect(collection.transcriber_segmentation_enabled?).to be(false)
+    end
+
+    it 'is false when the owner is on the individual researcher plan' do
+      owner.update!(account_type: 'Individual Researcher')
+      expect(collection.reload.transcriber_segmentation_enabled?).to be(false)
+    end
+  end
 end

@@ -4,6 +4,7 @@
 #
 #  id                             :integer          not null, primary key
 #  ai_draft_disabled              :boolean          default(FALSE)
+#  allow_transcriber_segmentation :boolean          default(FALSE), not null
 #  alphabetize_works              :boolean          default(TRUE)
 #  api_access                     :boolean          default(FALSE)
 #  created_on                     :datetime
@@ -374,6 +375,19 @@ class Collection < ApplicationRecord
 
   def active?
     self.is_active
+  end
+
+  # Whether the collection is eligible to let transcribers split works themselves.
+  # The setting is only offered for active collections owned by a paid plan, so
+  # runtime checks fall back to this even if the flag is stale.
+  def transcriber_segmentation_available?
+    text_entry? && active? && !owner&.individual_researcher?
+  end
+
+  # Whether transcribers should see the per-page split control on every page,
+  # independent of AI-flagged first-page candidates.
+  def transcriber_segmentation_enabled?
+    allow_transcriber_segmentation? && transcriber_segmentation_available?
   end
 
   def set_next_untranscribed_page

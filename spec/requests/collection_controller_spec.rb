@@ -488,6 +488,13 @@ describe CollectionController do
         expect(response).to have_http_status(:ok)
         expect(response).to render_template(:update_tasks)
       end
+
+      it 'persists the allow_transcriber_segmentation setting' do
+        login_as owner
+        post action_path, params: { collection: { allow_transcriber_segmentation: '1' } }, as: :turbo_stream
+
+        expect(collection.reload.allow_transcriber_segmentation?).to be(true)
+      end
     end
 
     context 'when scope edit_look' do

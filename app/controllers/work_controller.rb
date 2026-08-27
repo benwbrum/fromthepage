@@ -327,7 +327,7 @@ class WorkController < ApplicationController
   public
 
   def split_page
-    unless user_signed_in? && current_user.can_transcribe?(@work, @collection)
+    unless user_signed_in? && current_user.can_transcribe?(@work, @collection) && @work.page_segmentation_enabled?
       redirect_to dashboard_path, alert: t('work.split_page.unauthorized')
       return
     end
