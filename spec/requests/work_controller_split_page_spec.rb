@@ -24,6 +24,13 @@ describe WorkController do
         expect(response).to render_template(:split_page)
       end
 
+      it 'records the work the new work was split from' do
+        perform_split
+
+        new_work = collection.works.find_by!(title: 'Letter one')
+        expect(new_work.split_from_work).to eq(work)
+      end
+
       it 'links to the work overview when edit_metadata_after_split is not set' do
         perform_split
 
@@ -75,6 +82,29 @@ describe WorkController do
         expect(response.body).to include(%(href="#{describe_collection_work_path(owner, collection, new_work)}"))
         expect(response.body).not_to include(%(href="#{collection_read_work_path(owner, collection, new_work)}"))
       end
+    end
+  end
+
+  describe '#describe navigation for a work split off another work' do
+    let(:owner) { create(:unique_user, :owner) }
+    let(:collection) { create(:collection, owner_user_id: owner.id, works: [], data_entry_type: 'text_and_metadata') }
+    let(:original_work) { create(:work, collection: collection, owner_user_id: owner.id) }
+    let(:new_work) { create(:work, collection: collection, owner_user_id: owner.id, split_from_work: original_work) }
+    let!(:original_first_page) { create(:page, work: original_work, position: 1) }
+    let!(:new_work_page) { create(:page, work: new_work, position: 1) }
+    let!(:metadata_field) { create(:transcription_field, :as_metadata, collection: collection) }
+
+    before { login_as(owner, scope: :user) }
+
+    it 'points the "next" arrow back to the first page of the original work' do
+      get describe_collection_work_path(owner, collection, new_work)
+
+      expect(response).to have_http_status(:ok)
+      back_link = Nokogiri::HTML(response.body).at_css('a.page-nav_next')
+      expect(back_link).to be_present
+      expect(back_link['href']).to eq(
+        collection_transcribe_page_path(owner, collection, original_work, original_first_page.id)
+      )
     end
   end
 end

@@ -347,6 +347,7 @@ class WorkController < ApplicationController
       title: new_work_title,
       collection_id: @work.collection_id,
       owner_user_id: @work.owner_user_id,
+      split_from_work_id: @work.id,
       supports_translation: @work.supports_translation,
       restrict_scribes: @work.restrict_scribes,
       scribes_can_edit_titles: @work.scribes_can_edit_titles,

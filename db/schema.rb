@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_08_20_000000) do
+ActiveRecord::Schema[7.2].define(version: 2026_08_27_000000) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -1355,10 +1355,12 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_20_000000) do
     t.string "recipient"
     t.datetime "most_recent_deed_created_at", precision: nil
     t.boolean "edit_metadata_after_split", default: false, null: false
+    t.integer "split_from_work_id"
     t.index ["collection_id"], name: "index_works_on_collection_id"
     t.index ["metadata_description_version_id"], name: "index_works_on_metadata_description_version_id"
     t.index ["owner_user_id"], name: "index_works_on_owner_user_id"
     t.index ["slug"], name: "index_works_on_slug", unique: true
+    t.index ["split_from_work_id"], name: "index_works_on_split_from_work_id"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

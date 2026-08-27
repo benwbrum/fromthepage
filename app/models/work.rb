@@ -42,6 +42,7 @@
 #  metadata_description_version_id :integer
 #  next_untranscribed_page_id      :integer
 #  owner_user_id                   :integer
+#  split_from_work_id              :integer
 #
 # Indexes
 #
@@ -49,6 +50,7 @@
 #  index_works_on_metadata_description_version_id  (metadata_description_version_id)
 #  index_works_on_owner_user_id                    (owner_user_id)
 #  index_works_on_slug                             (slug) UNIQUE
+#  index_works_on_split_from_work_id               (split_from_work_id)
 #
 # Foreign Keys
 #
@@ -96,6 +98,15 @@ class Work < ApplicationRecord
              class_name: 'Page',
              optional: true
   has_many :untranscribed_pages, -> { needs_transcription }, class_name: 'Page'
+
+  belongs_to :split_from_work,
+             class_name: 'Work',
+             optional: true
+  has_many :split_works,
+           class_name: 'Work',
+           foreign_key: 'split_from_work_id',
+           dependent: :nullify,
+           inverse_of: :split_from_work
 
   belongs_to :collection, counter_cache: :works_count, optional: true
   has_many :deeds, -> { order(created_at: :desc) }, dependent: :destroy
