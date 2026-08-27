@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_08_26_000000) do
+ActiveRecord::Schema[7.2].define(version: 2026_08_21_230000) do
   create_table "active_storage_attachments", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -135,7 +135,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_26_000000) do
     t.string "begun"
     t.string "ended"
     t.index ["collection_id"], name: "index_articles_on_collection_id"
-    t.index ["collection_id", "title"], name: "index_articles_on_collection_id_and_title_unique", unique: true
     t.index ["created_by_id"], name: "fk_rails_35e2f292e3"
   end
 

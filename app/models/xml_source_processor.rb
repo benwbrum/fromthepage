@@ -424,22 +424,17 @@ EOF
         end
       end
 
-      # create new blank articles if they don't exist already
+      # The earlier lookup is intentionally repeated while holding a collection
+      # row lock. Another page can create the title between lookup and insert;
+      # serializing this small critical section closes that race even before a
+      # database unique index can safely be introduced.
       if article.nil?
-        article = collection.articles.find_by(title: title)
-      end
-
-      if article.nil?
-        article = collection.articles.build(title: title)
-        article.created_by_id = Current.user.id if Current.user.present?
-        unless preview_mode
-          begin
-            article.save!
-          rescue ActiveRecord::RecordNotUnique, ActiveRecord::RecordInvalid => error
-            raise if error.is_a?(ActiveRecord::RecordInvalid) && !error.record.errors.of_kind?(:title, :taken)
-
-            # Another page may have created this subject after our lookup.
-            article = collection.articles.find_by!(title: title)
+        attributes = { title: title, created_by_id: Current.user&.id }
+        if preview_mode
+          article = collection.articles.build(attributes)
+        else
+          collection.with_lock do
+            article = collection.articles.find_by(title: title) || collection.articles.create!(attributes)
           end
         end
         # add the new article to the hash

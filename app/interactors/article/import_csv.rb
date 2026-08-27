@@ -65,20 +65,22 @@ class Article::ImportCsv < ApplicationInteractor
 
   private
 
-  # The unique database index is the final arbiter if two imports create the
-  # same subject concurrently. In that case, apply this row's data to the
-  # winner rather than leaking RecordNotUnique from the import.
+  # Serialize subject creation within a collection so concurrent imports do not
+  # both pass the model validation before inserting. If another process won the
+  # race, keep its attributes intact; only add this row's category below.
   def save_article(article, title, category)
-    imported_attributes = article.attributes.except('id', 'created_on', 'lock_version')
-    article.save!
+    if article.new_record?
+      @collection.with_lock do
+        article = @collection.articles.find_by(title: title) || article.tap(&:save!)
+      end
+    else
+      article.save!
+    end
     article.categories << category if category && !article.categories.exists?(category.id)
   rescue ActiveRecord::RecordNotUnique, ActiveRecord::RecordInvalid => error
     raise if error.is_a?(ActiveRecord::RecordInvalid) && !error.record.errors.of_kind?(:title, :taken)
 
     article = @collection.articles.find_by!(title: title)
-    imported_attributes['provenance'] = article.provenance || imported_attributes['provenance']
-    article.assign_attributes(imported_attributes)
-    article.save!
     article.categories << category if category && !article.categories.exists?(category.id)
   end
 end
