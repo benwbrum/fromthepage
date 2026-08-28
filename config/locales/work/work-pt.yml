@@ -9,6 +9,10 @@ pt:
         contact_us: Entre em contato com %{email} para atualizar para um plano que inclua rascunhos de IA.
         description: Inicie uma transcrição por IA para páginas nesta obra.
         description_complete: Todas as páginas desta obra possuem transcrições feitas por IA.
+        edit_metadata_after_split: Editar metadados após dividir
+        edit_metadata_after_split_description: Após a confirmação em linha da divisão, ir direto para o formulário de metadados da nova obra.
+        edit_metadata_after_split_disabled: Habilite e configure a criação de metadados em %{link}.
+        edit_metadata_after_split_disabled_link: Configuração da tarefa
         failed: Fracassado
         failed_transcription_errors: Erros de transcrição
         failed_transcription_errors_hidden: "%{count} erros adicionais de transcrição não são exibidos."
@@ -19,7 +23,14 @@ pt:
         pages: Páginas
         queued: Em fila
         retry: Tentar novamente trabalhos com falha
+        segment_collection: Segmentar Coleção
+        segmentation: Segmentar Coleção
+        segmentation_description: Ao enviar um conjunto de imagens (por exemplo, uma pasta) e depois segmentá-lo, sugeriremos os locais onde os documentos devem ser divididos em obras individuais.
         total_tokens_used: Total de fichas utilizadas
+      segment:
+        success: O trabalho de segmentação foi iniciado. Você receberá um e-mail quando ele for concluído.
+      segmentation_setting:
+        success: Configuração de segmentação salva.
       update:
         success: Tentando novamente a tarefa de transcrição por IA.
     configurable_printout:
@@ -82,6 +93,7 @@ pt:
       configurable_printout: Impressão Configurável
       configurable_printout_button: configurar
       configurable_printout_description: Exportação para PDF ou MS Word com conteúdo e formatação configuráveis
+      configure: Configurar
       docx_download_description: Baixe uma versão DOCX desta obra.
       download: Download
       expanded_plaintext: Texto simples expandido
@@ -245,6 +257,10 @@ pt:
       source_collection_name: Nome de coleção fonte
       source_location: Localização de fonte
       uploaded_by: Enviado por
+    split_page:
+      create_failed: 'Não foi possível criar a nova obra: %{errors}'
+      no_previous_pages: Não há páginas antes desta para dividir em uma nova obra.
+      unauthorized: Você não tem permissão para dividir esta obra.
     undescribed: Sem metadados.
     update:
       work_updated: Obra atualizada com sucesso

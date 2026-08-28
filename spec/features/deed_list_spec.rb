@@ -11,7 +11,7 @@ describe 'deed list' do
       :collection,
       owner_user_id: owner.id,
       works: [],
-      restricted: restricted
+      visibility: restricted ? :private : :public
     )
   end
   let(:work) { create(:work, owner: owner, collection: collection) }

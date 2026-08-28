@@ -106,6 +106,7 @@ pt:
         other: "%{count} obras:"
       private: " (Privado)"
       public: " (Público)"
+      read_only: "(Somente leitura)"
       start_a_project: Iniciar um Projeto
       there_are_no_works: Ainda não há obras nesta coleção
       you_can_new_collection: Você pode %{new_collection}

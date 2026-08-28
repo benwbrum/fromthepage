@@ -27,6 +27,9 @@ class TranscribeController  < ApplicationController
   end
 
   def guest
+    return if @collection.visibility_public?
+
+    redirect_to collection_display_page_path(@collection.owner, @collection, @work, @page)
   end
 
   def mark_page_blank

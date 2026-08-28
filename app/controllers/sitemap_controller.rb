@@ -8,7 +8,7 @@ class SitemapController < ApplicationController
   def index
     respond_to do |format|
       format.xml do
-        @collections = Collection.where(restricted: false)
+        @collections = Collection.where(visibility: [:public, :read_only])
                                 .includes(:owner, works: [:pages])
                                 .limit(10000)
 
@@ -21,7 +21,7 @@ class SitemapController < ApplicationController
     respond_to do |format|
       format.xml do
         offset = params[:offset].to_i
-        @collections = Collection.where(restricted: false)
+        @collections = Collection.where(visibility: [:public, :read_only])
                                 .includes(:owner)
                                 .order(:id)
                                 .offset(offset)
@@ -37,7 +37,7 @@ class SitemapController < ApplicationController
       format.xml do
         offset = params[:offset].to_i
         @works = Work.joins(:collection)
-                     .where(collections: { restricted: false })
+                     .where(collections: { visibility: [:public, :read_only] })
                      .includes(collection: :owner)
                      .order(:id)
                      .offset(offset)
@@ -53,7 +53,7 @@ class SitemapController < ApplicationController
       format.xml do
         offset = params[:offset].to_i
         @pages = Page.joins(work: :collection)
-                     .where(collections: { restricted: false })
+                     .where(collections: { visibility: [:public, :read_only] })
                      .where.not(status: ['blank', 'new'])
                      .includes(work: { collection: :owner })
                      .order(:id)

@@ -22,6 +22,60 @@ describe Work do
       expect(work.supports_indexing?).to be false
     end
   end
+  describe '#segmentation_candidates?' do
+    let(:work) { create(:work, owner_user_id: 1) }
+
+    it "returns false when no pages have been flagged as first-page candidates" do
+      create(:page, work_id: work.id, position: 1, is_first_page_candidate: false)
+      create(:page, work_id: work.id, position: 2, is_first_page_candidate: nil)
+
+      expect(work.segmentation_candidates?).to be false
+    end
+
+    it "returns true when at least one page is flagged as a first-page candidate" do
+      create(:page, work_id: work.id, position: 1, is_first_page_candidate: false)
+      create(:page, work_id: work.id, position: 2, is_first_page_candidate: true)
+
+      expect(work.segmentation_candidates?).to be true
+    end
+  end
+
+  describe '#page_segmentation_enabled?' do
+    let(:owner) { create(:unique_user, :owner, segmentation_enabled: true) }
+    let(:collection) do
+      create(:collection, owner_user_id: owner.id, data_entry_type: 'text', works: [])
+    end
+    let(:work) { create(:work, collection: collection, owner_user_id: owner.id) }
+
+    it 'is true when AI has flagged a first-page candidate' do
+      create(:page, work_id: work.id, position: 1)
+      create(:page, work_id: work.id, position: 2, is_first_page_candidate: true)
+
+      expect(work.page_segmentation_enabled?).to be true
+    end
+
+    it 'is true when the collection lets transcribers split works' do
+      collection.update!(allow_transcriber_segmentation: true)
+      create(:page, work_id: work.id, position: 1)
+
+      expect(work.page_segmentation_enabled?).to be true
+    end
+
+    it 'is false with no candidates and the collection setting off' do
+      create(:page, work_id: work.id, position: 1)
+
+      expect(work.page_segmentation_enabled?).to be false
+    end
+
+    it 'is false when the owner account is not opted into segmentation' do
+      owner.update!(segmentation_enabled: false)
+      create(:page, work_id: work.id, position: 1)
+      create(:page, work_id: work.id, position: 2, is_first_page_candidate: true)
+
+      expect(work.reload.page_segmentation_enabled?).to be false
+    end
+  end
+
   describe '#set/update_next_untranscribed_page' do
     let(:work) { create(:work, owner_user_id: 1) }
     it "sets nil with no pages" do
@@ -69,7 +123,7 @@ describe Work do
 
     let!(:owner) { create(:unique_user, :owner) }
     let!(:collection) { create(:collection, owner_user_id: owner.id) }
-    let!(:restricted_collection) { create(:collection, owner_user_id: owner.id, restricted: true) }
+    let!(:restricted_collection) { create(:collection, owner_user_id: owner.id, visibility: :private) }
     let!(:docset) { create(:document_set, collection_id: restricted_collection.id, owner_user_id: owner.id, visibility: :public) }
     let!(:restricted_docset) { create(:document_set, collection_id: restricted_collection.id, owner_user_id: owner.id, visibility: :private) }
 
@@ -81,7 +135,7 @@ describe Work do
 
     let!(:other_user) { create(:unique_user, :owner) }
     let!(:other_collection) { create(:collection, owner_user_id: other_user.id) }
-    let!(:other_restricted_collection) { create(:collection, owner_user_id: other_user.id, restricted: true) }
+    let!(:other_restricted_collection) { create(:collection, owner_user_id: other_user.id, visibility: :private) }
 
     let!(:other_public_work) { create(:work, title: identifier, collection_id: other_collection.id, owner_user_id: other_user.id) }
     let!(:other_restricted_work) { create(:work, title: identifier, collection_id: other_restricted_collection.id, owner_user_id: other_user.id) }

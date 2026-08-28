@@ -41,6 +41,14 @@ en:
       table_csv: Table CSV
       tei: TEI
       work_title: Work Title
+    new_grover_export:
+      ai_warning: 'Warning: This transcript is AI-generated (%{model} %{created_at}).'
+      contents: Contents
+      download: Download
+      heading: Accessible PDF Configuration
+      human_and_ai: Export Human Transcripts where available, otherwise export AI Drafts
+      human_only: Only Export Human Edited Transcripts
+      prepend_ai_warnings: 'Prepend Warning: This transcript is AI-generated to the top of the transcript.'
     show:
       bibliography: Bibliography
       categories: 'Categories:'

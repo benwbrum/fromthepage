@@ -39,6 +39,8 @@ en:
       format_options: Format Options
       html: HTML
       html_description: This may be useful for preservation in other systems or as a starting point for display on another website.
+      human_and_ai: Export Human Transcripts where available, otherwise export AI Drafts
+      human_only: Only Export Human Edited Transcripts
       notes_csv: Notes CSV
       notes_csv_description: A spreadsheet listing each note in the collection.
       one_file_per_collection: One file per collection
@@ -51,6 +53,7 @@ en:
       organization_work: Work folders
       page_details_csv: Page Details CSV
       page_details_csv_description: A spreadsheet with one row per page, including page information and parent work metadata.
+      prepend_ai_warnings: 'Prepend Warning: This transcript is AI-generated to the top of the transcript.'
       preserve_linebreaks: Preserve Linebreaks
       previous_exports: Previous Exports
       search_optimized_plaintext: Search-optimized Plaintext
