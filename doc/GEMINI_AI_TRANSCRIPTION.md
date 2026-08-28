@@ -38,7 +38,7 @@ Available models include:
 - `gemini-1.5-pro` (stable, more accurate, slower)
 - `gemini-pro-vision` (older model with vision capabilities)
 - `gemini-2.5-pro`
-- `gemini-3.7-flash` (default model with reasoning capabilities)
+- `gemini-3.7-flash` (default model, optimized for speed)
 - `gemini-3-flash-preview` (optional, available via rake task model argument)
 
 ## Usage
