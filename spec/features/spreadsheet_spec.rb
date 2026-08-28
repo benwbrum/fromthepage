@@ -127,7 +127,7 @@ describe 'spreadsheet' do
       it 'fills the spreadsheet grid from a single AI engine draft', js: true do
         create(:ai_transcription,
                page: field_page,
-               model: 'gemini-3.1-pro-preview',
+               model: 'gemini-3.7-flash',
                status: 'finished',
                transcription_json: { spreadsheet_field.id.to_s => [{ spreadsheet_column.id.to_s => 'AI drafted value' }] })
 
@@ -149,7 +149,7 @@ describe 'spreadsheet' do
       it 'shows a disagreement panel and lets the user switch AI engines', js: true do
         create(:ai_transcription,
                page: field_page,
-               model: 'gemini-3.1-pro-preview',
+               model: 'gemini-3.7-flash',
                status: 'finished',
                transcription_json: { spreadsheet_field.id.to_s => [{ spreadsheet_column.id.to_s => 'Gemini value' }] })
         create(:ai_transcription,
@@ -164,11 +164,11 @@ describe 'spreadsheet' do
 
         disagree_panel = find('.ai-draft-disagree-spreadsheet')
         expect(disagree_panel).to have_content('claude-opus-4')
-        expect(disagree_panel).to have_content('gemini-3.1-pro-preview')
+        expect(disagree_panel).to have_content('gemini-3.7-flash')
 
         expect(page.evaluate_script(handsontable_expression('getDataAtCell(0, 0)'))).to eq 'Claude value'
 
-        disagree_panel.find('.ai-draft-option', text: 'gemini-3.1-pro-preview').click
+        disagree_panel.find('.ai-draft-option', text: 'gemini-3.7-flash').click
 
         Timeout.timeout(Capybara.default_max_wait_time) do
           loop do
