@@ -574,10 +574,15 @@ Fromthepage::Application.routes.draw do
         get 'metadata_overview', on: :member
         get 'metadata_overview_monitor', on: :member
         get ':page_id/active_editing', on: :member, to: 'transcribe#active_editing', as: 'active_editing'
+        post 'split_page', on: :member, to: 'work#split_page'
+        patch 'dismiss_segmentation', on: :member, to: 'work#dismiss_segmentation'
       end
 
       resources :work, path: '', only: [] do
-        resource :ai_transcriptions, only: [:edit, :create, :update], controller: 'work/ai_transcriptions'
+        resource :ai_transcriptions, only: [:edit, :create, :update], controller: 'work/ai_transcriptions' do
+          post 'segment', on: :member
+          patch 'segmentation_setting', on: :member
+        end
         resources :ai_transcriptions, only: [:show], controller: 'work/ai_transcriptions'
       end
 

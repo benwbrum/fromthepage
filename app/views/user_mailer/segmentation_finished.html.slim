@@ -1,0 +1,8 @@
+h2[style="color:#453939; margin:0; font-weight:normal;"] =t('.heading', work: @work.title)
+p =t('.greeting', user: @user.display_name)
+p =t('.body', work: @work.title, collection: @collection.title)
+p
+  ' #{t('.candidate_count_label')}
+  strong =@work.pages.where(is_first_page_candidate: true).count
+p
+  =link_to t('.view_work'), collection_read_work_url(@collection.owner, @collection, @work)

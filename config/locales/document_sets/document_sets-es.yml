@@ -25,6 +25,9 @@ es:
       document_set_restricted_description: El conjunto de documentos solo puede ser visto por los colaboradores enumerados a continuación. Es posible hacer que la colección sea legible públicamente.
       document_set_unrestricted_description: El conjunto de documentos puede ser visto por cualquier persona en el Internet. Cualquier obra colocada dentro de un conjunto de documentos público será legible, incluso si la colección principal es privada. Puedes hacer que el conjunto de documentos sea privado para restringir su visibilidad a los colaboradores.
       edit_collaborators: Editar colaboradores
+      parent_collection_visibility_private: La colección principal es privada.
+      parent_collection_visibility_public: La colección principal es pública. Cualquiera podrá ver y editar las obras de este conjunto de documentos a través de la colección.
+      parent_collection_visibility_read_only: La colección principal es de solo lectura. Cualquiera podrá ver las obras de este conjunto de documentos a través de la colección.
       private: Privado
       public: Público
       read_only: Sólo lectura

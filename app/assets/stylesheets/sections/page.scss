@@ -933,3 +933,103 @@
     color: $bodyFg;
   }
 }
+
+
+// Segmentation banner
+.segmentation-banner {
+  background: #fff8e1;
+  border: 1px solid #f0c040;
+  border-radius: 4px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+
+  .segmentation-banner-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .segmentation-banner-message {
+    margin: 0;
+    flex: 1;
+    font-weight: bold;
+  }
+
+  .segmentation-banner-actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  // programmatic focus target for the success state — no focus ring
+  &[tabindex]:focus {
+    outline: none;
+  }
+}
+
+// Shared: title label/input used by both the popover (1a) and the
+// human-in-the-loop split strip (1b)
+.segmentation-title-label {
+  display: block;
+  margin-bottom: 0.375rem;
+  font-weight: bold;
+  font-size: 0.85em;
+  color: $bodyFgDark;
+}
+
+.segmentation-title-input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.segmentation-title-field {
+  margin: 0.5rem 0;
+}
+
+// Segmentation: human-in-the-loop split control (1b).
+// Plain display toggling — no opacity/visibility/animation gating, so there is
+// never a focusable-but-invisible in-between state.
+.segmentation-split-strip {
+  display: none;
+
+  &.open { display: block; }
+
+  .segmentation-banner-actions {
+    justify-content: flex-end;
+    margin-top: 0.625rem;
+
+    button, a { flex-shrink: 0; width: auto; padding: 0 1.25em; }
+  }
+}
+
+// Segmentation: AI confirm popover (1a)
+.segmentation-popover-anchor {
+  position: relative;
+  display: inline-block;
+}
+
+.segmentation-popover {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  width: 300px;
+  max-width: calc(100vw - 1rem);
+  padding: 0.875rem;
+  background: #fff;
+  border-radius: 6px;
+  border: 1px solid rgba(#000, 0.15);
+  box-shadow: 0 8px 24px rgba(#000, 0.2);
+
+  &.open { display: block; }
+
+  form { margin: 0; }
+
+  .segmentation-popover-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 0.625rem;
+
+    button, input[type="submit"] { flex-shrink: 0; width: auto; padding: 0 1.25em; }
+  }
+}

@@ -32,7 +32,7 @@
         h2 =t('.works')
 
         .start_link
-          -if @collection.is_a?(Collection) || current_user&.can_transcribe?(nil, @collection)
+          -if (@collection.is_a?(Collection) || current_user&.can_transcribe?(nil, @collection)) && !@collection.visibility_read_only?
             -if @collection.has_untranscribed_pages? && @collection.active? && @collection.text_entry?
               p
               -if user_signed_in?

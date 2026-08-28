@@ -9,6 +9,10 @@ de:
         contact_us: Wenden Sie sich an %{email}, um auf einen Tarif mit KI-Entwürfen aufzurüsten.
         description: Starten Sie einen KI-Transkriptionsauftrag für die Seiten dieses Werkes.
         description_complete: Alle Seiten dieses Werkes enthalten KI-Transkriptionen.
+        edit_metadata_after_split: Metadaten nach dem Teilen bearbeiten
+        edit_metadata_after_split_description: Gehen Sie nach der Inline-Bestätigung der Teilung direkt zum Metadatenformular des neuen Werkes.
+        edit_metadata_after_split_disabled: Bitte aktivieren und konfigurieren Sie die Metadatenerstellung unter %{link}.
+        edit_metadata_after_split_disabled_link: Aufgabenkonfiguration
         failed: Fehlgeschlagen
         failed_transcription_errors: Fehlgeschlagene Transkriptionsfehler
         failed_transcription_errors_hidden: "%{count} zusätzliche Transkriptionsfehler werden nicht angezeigt."
@@ -19,7 +23,14 @@ de:
         pages: Seiten
         queued: In der Warteschlange
         retry: Fehlgeschlagene Aufträge erneut versuchen
+        segment_collection: Sammlung segmentieren
+        segmentation: Sammlung segmentieren
+        segmentation_description: Wenn Sie eine Reihe von Bildern (z. B. einen Ordner) hochladen und anschließend segmentieren, schlagen wir Stellen vor, an denen die Dokumente in einzelne Werke aufgeteilt werden sollten.
         total_tokens_used: Insgesamt verwendete Token
+      segment:
+        success: Der Segmentierungsauftrag wurde gestartet. Sie erhalten eine E-Mail, sobald er abgeschlossen ist.
+      segmentation_setting:
+        success: Segmentierungseinstellung gespeichert.
       update:
         success: KI-Transkriptionsauftrag wird wiederholt.
     configurable_printout:
@@ -246,6 +257,10 @@ de:
       source_collection_name: Name der ursprünglichen Sammlung der Quelle
       source_location: Ort der Quelle
       uploaded_by: hochgeladen von
+    split_page:
+      create_failed: 'Das neue Werk konnte nicht erstellt werden: %{errors}'
+      no_previous_pages: Es gibt keine Seiten vor dieser, die in ein neues Werk aufgeteilt werden könnten.
+      unauthorized: Sie sind nicht berechtigt, dieses Werk zu teilen.
     undescribed: Keine Metadaten.
     update:
       work_updated: Werk erfolgreich aktualisiert

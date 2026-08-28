@@ -324,7 +324,87 @@ class WorkController < ApplicationController
     end
   end
 
+  public
+
+  def split_page
+    unless user_signed_in? && current_user.can_transcribe?(@work, @collection) && @work.page_segmentation_enabled?
+      redirect_to dashboard_path, alert: t('work.split_page.unauthorized')
+      return
+    end
+
+    page = @work.pages.find(params[:page_id])
+    new_work_title = params[:new_work_title].presence || default_split_title
+
+    pages_to_move = @work.pages.where('position < ?', page.position).order(:position).to_a
+
+    if pages_to_move.empty?
+      redirect_to collection_transcribe_page_path(@collection.owner, @collection, @work, page),
+        alert: t('work.split_page.no_previous_pages')
+      return
+    end
+
+    new_work = Work.new(
+      title: new_work_title,
+      collection_id: @work.collection_id,
+      owner_user_id: @work.owner_user_id,
+      split_from_work_id: @work.id,
+      supports_translation: @work.supports_translation,
+      restrict_scribes: @work.restrict_scribes,
+      scribes_can_edit_titles: @work.scribes_can_edit_titles,
+      pages_are_meaningful: @work.pages_are_meaningful
+    )
+
+    unless new_work.save
+      redirect_to collection_transcribe_page_path(@collection.owner, @collection, @work, page),
+        alert: t('work.split_page.create_failed', errors: new_work.errors.full_messages.join(', '))
+      return
+    end
+
+    pages_to_move.each_with_index do |p, idx|
+      p.update_columns(work_id: new_work.id, position: idx + 1)
+    end
+
+    @work.pages.reload.order(:position).each_with_index do |p, idx|
+      p.update_column(:position, idx + 1)
+    end
+
+    page.update_column(:is_first_page_candidate, false)
+
+    new_work.update_statistic
+    @work.update_statistic
+
+    @split_page     = page
+    @new_work       = new_work
+    @new_work_title = new_work_title
+    @split_count    = pages_to_move.count
+    @edit_metadata_after_split = @work.edit_metadata_after_split? &&
+      @collection.metadata_entry? &&
+      @collection.metadata_fields.exists?
+    render :split_page
+  end
+
+  def dismiss_segmentation
+    unless user_signed_in? && current_user.can_transcribe?(@work, @collection) && @work.page_segmentation_enabled?
+      head :forbidden
+      return
+    end
+
+    page = @work.pages.find(params[:page_id])
+    page.update_column(:is_first_page_candidate, false)
+
+    respond_to do |format|
+      format.turbo_stream { render turbo_stream: turbo_stream.remove("segmentation-banner-#{page.id}") }
+      format.html { redirect_back fallback_location: collection_transcribe_page_path(@collection.owner, @collection, @work, page) }
+    end
+  end
+
   private
+
+  def require_segmentation_feature
+    return if @collection&.segmentation_feature_enabled?
+
+    redirect_to dashboard_path, alert: t('work.split_page.unauthorized')
+  end
 
   def authorized?
     if !user_signed_in? || !current_user.owner
@@ -332,6 +412,18 @@ class WorkController < ApplicationController
     elsif @work && !current_user.like_owner?(@work)
       ajax_redirect_to dashboard_path
     end
+  end
+
+  def default_split_title
+    first_page = @work.pages.order(:position).first
+    if first_page&.title.present? &&
+       first_page.title !~ /\A(Untitled Page )?\d+\z/ &&
+       first_page.title != @work.title
+      return first_page.title
+    end
+    base = @work.title
+    existing_count = @work.collection.works.where('title LIKE ?', "#{ActiveRecord::Base.sanitize_sql_like(base)} %").count
+    "#{base} #{existing_count + 1}"
   end
 
   def search_params
