@@ -39,6 +39,8 @@ de:
       format_options: Formatoptionen
       html: HTML
       html_description: Dies kann für die Aufbewahrung in anderen Systemen oder als Ausgangspunkt für die Anzeige auf einer anderen Website nützlich sein.
+      human_and_ai: Sofern verfügbar, menschliche Transkripte exportieren, andernfalls KI-Entwürfe exportieren.
+      human_only: Nur von Menschen bearbeitete Transkripte exportieren
       notes_csv: Notizen CSV
       notes_csv_description: Eine Tabelle, in der jede Notiz in der Sammlung aufgeführt ist.
       one_file_per_collection: Eine Datei pro Sammlung
@@ -51,6 +53,7 @@ de:
       organization_work: Ordner nach Werken
       page_details_csv: Seitendetails CSV
       page_details_csv_description: Eine Tabelle mit einer Zeile pro Seite, einschließlich Seiteninformationen und übergeordneten Werkmetadaten.
+      prepend_ai_warnings: 'Vorangestellter Warnhinweis: Dieses Transkript wurde von einer KI generiert und oben im Transkript eingefügt.'
       preserve_linebreaks: Zeilenumbrüche beibehalten
       previous_exports: Frühere Exporte
       search_optimized_plaintext: Suchoptimierter Plaintext

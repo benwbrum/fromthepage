@@ -175,6 +175,7 @@ Fromthepage::Application.routes.draw do
     get 'export_work', to: 'export#export_work'
     get 'export_all_works', to: 'export#export_all_works'
     post ':collection_id/:work_id/printable', to: 'export#printable', as: 'printable'
+    get ':collection_id/:work_id/grover', to: 'export#new_grover_export', as: 'new_grover_export'
     post ':collection_id/:work_id/grover_printable', to: 'export#grover_printable', as: 'grover_printable'
     get 'show', to: 'export#show'
     get ':work_id/tei', to: 'export#tei', as: 'tei'

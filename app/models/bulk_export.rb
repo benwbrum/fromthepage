@@ -3,6 +3,8 @@
 # Table name: bulk_exports
 #
 #  id                                 :integer          not null, primary key
+#  accessible_pdf_prepend_ai_warnings :boolean          default(FALSE)
+#  accessible_pdf_source              :string(255)      default("human_only")
 #  accessible_pdf_work                :boolean
 #  admin_searches                     :boolean
 #  collection_activity                :boolean

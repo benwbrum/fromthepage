@@ -93,6 +93,7 @@ en:
       configurable_printout: Configurable Printout
       configurable_printout_button: Configure
       configurable_printout_description: PDF or MS Word export with configurable contents and formatting
+      configure: Configure
       docx_download_description: Download a DOCX version of this work.
       download: Download
       expanded_plaintext: Expanded Plaintext

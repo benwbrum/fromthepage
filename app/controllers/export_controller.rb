@@ -50,6 +50,9 @@ class ExportController < ApplicationController
     end
   end
 
+  def new_grover_export
+  end
+
   def grover_printable
     result = Work::Export::GroverPrintable.new(
       work: @work,
@@ -57,7 +60,9 @@ class ExportController < ApplicationController
       include_metadata: true,
       include_contributors: true,
       include_notes: false,
-      preserve_lb: false
+      preserve_lb: false,
+      source: params[:source]&.to_sym || :human_only,
+      prepend_ai_warnings: ActiveRecord::Type::Boolean.new.cast(params[:prepend_ai_warnings])
     ).call
 
     if result.success?
