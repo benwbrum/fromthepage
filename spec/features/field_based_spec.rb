@@ -121,6 +121,32 @@ describe 'collection field-based transcription settings' do
     expect(collection.transcription_fields.count).to eq(3)
   end
 
+  it 'persists line order when a full line block is moved', js: true do
+    first_field
+    second_field.update!(line_number: 2, position: 1)
+
+    visit transcription_field_edit_fields_path(collection_id: collection)
+    click_button 'Add Additional Line'
+    expect(page).to have_selector('#new-fields > tbody', count: 3)
+
+    within '#new-fields > tbody:last-child' do
+      fill_in 'transcription_fields__label', with: 'Instruction line'
+      fill_in 'transcription_fields__percentage', with: 20
+    end
+
+    page.execute_script(<<~JS)
+      const table = $('#new-fields');
+      const bodies = table.children('tbody');
+      bodies.last().insertAfter(bodies.first());
+    JS
+
+    click_button 'Save'
+
+    expect(collection.transcription_fields.reload.find_by(label: 'First field').line_number).to eq(1)
+    expect(collection.transcription_fields.reload.find_by(label: 'Instruction line').line_number).to eq(2)
+    expect(collection.transcription_fields.reload.find_by(label: 'Second field').line_number).to eq(3)
+  end
+
   it 'transcribes field-based works' do
     create_transcription_fields
     field_page = work_pages.first
