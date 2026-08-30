@@ -20,7 +20,7 @@
             td(colspan="1")
               =label_tag :description_instructions, t('.description_instructions_label'), class: "above"
               =text_area_tag :description_instructions, @collection.description_instructions, :rows => 4
-    table.field-form#new-fields
+    table.field-form#new-fields data-line-label=t('.line')
       -unless @current_fields.blank?
         -@current_fields.group_by(&:line_number).each do |line, field|
           tbody
@@ -53,6 +53,15 @@ div.fields-preview
 -content_for :javascript
   javascript:
     $(function() {
+      function renumberLines() {
+        var lineLabel = $('#new-fields').data('line-label');
+        $('#new-fields > tbody').each(function(index) {
+          var line = index + 1;
+          $(this).find("input[name='transcription_fields[][line_number]']").val(line);
+          $(this).find('th.field-form_line > span').first().text(`${lineLabel} ${line}`);
+        });
+      }
+
       var sortableConfig = {
         axis: 'y',
         items: 'tr.sortable-field',
@@ -60,23 +69,25 @@ div.fields-preview
         forceHelperSize: true,
         forcePlaceholderSize: true,
         update: function(e, ui) {
-          var line = $(this).index() + 1;
+          renumberLines();
           var data = $(this).sortable('serialize');
-          ui.item.find('input[id=transcription_fields__line_number]').val(line);
           if (data) {
             $.ajax({
               url: "#{transcription_field_reorder_path(collection_id: @collection.id)}",
               type: "PATCH",
-              data: `${data}&line=${line}`,
-              success: function(response) {
-                window.location.reload();
-              }
+              data: `${data}&line=${ui.item.closest('tbody').index() + 1}`,
             });
           }
         },
       };
 
       $('#new-fields tbody').sortable(sortableConfig);
+      $('#new-fields').sortable({
+        axis: 'y',
+        items: '> tbody',
+        handle: '.line-reorder-handle',
+        update: renumberLines,
+      });
 
       $('#new-fields').on('click', '[data-delete-field]', function() {
         var lineCount = $(this).closest('table').find('tbody').length;
@@ -87,6 +98,7 @@ div.fields-preview
         } else if (fieldCount > 1) {
           $(this).closest('tr').remove();
         }
+        renumberLines();
       });
 
       $('#add-field').click(function(e) {
@@ -101,8 +113,13 @@ div.fields-preview
           data: {line_count: lineCount, field_type: "#{field_type}"},
           complete: function() {
             $('#new-fields tbody').sortable(sortableConfig);
+            renumberLines();
           }
         });
+      });
+
+      $('#new-fields').closest('form').on('submit', function() {
+        renumberLines();
       });
 
       $(document).on('change', '.input_type', function() {
@@ -116,4 +133,6 @@ div.fields-preview
           $(optionsObj).prop('disabled', false);
         };
       })
+
+      renumberLines();
     });
