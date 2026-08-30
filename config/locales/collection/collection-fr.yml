@@ -242,11 +242,10 @@ fr:
       collection_restricted_description: La collection ne peut être consultée que par les propriétaires et collaborateurs répertoriés ci-dessous. Vous pouvez rendre la collection lisible publiquement.
       edit_collaborators: Modifier les collaborateurs
       edit_owners: Modifier les propriétaires
-      make_collection_private: Rendre la collection privée
-      make_collection_public: Rendre la collection publique
       open_api: Ouvrir l'API
       private: Privé
       public: Publique
+      read_only: Lecture seule
       restrict_completed_works: Restreindre les œuvres terminés
       restrict_editing: Restreindre la modification
       restricted_completed_works_description: Ce bouton limitera les œuvres %{work_count} qui sont terminés mais non actuellement restreints aux maîtres d'ouvrage ou collaborateurs désignés. Vous pouvez modifier ce paramètre et ajouter des collaborateurs dans la page des paramètres de chaque œuvre.
@@ -276,6 +275,12 @@ fr:
       ai_draft_disabled: Désactiver les brouillons IA
       ai_draft_disabled_description: Désactiver les brouillons IA pour tous les utilisateurs, sauf le propriétaire de la collection.
       alert: Veuillez configurer les champs ou choisir la transcription basée sur le document sous Type de transcription.
+      allow_transcriber_segmentation: Autoriser les transcripteurs à diviser les œuvres
+      allow_transcriber_segmentation_ai_hint: Vous préférez que l'IA repère les premières pages probables ? Lancez la segmentation depuis %{link} de l'œuvre.
+      allow_transcriber_segmentation_ai_hint_plain: Vous préférez que l'IA repère les premières pages probables ? Ouvrez les paramètres d'une œuvre et lancez la segmentation depuis son onglet IA.
+      allow_transcriber_segmentation_ai_link: les paramètres d'IA
+      allow_transcriber_segmentation_description: 'Affiche un outil ciseaux sur chaque page. Les transcripteurs peuvent diviser une œuvre à n''importe quelle page : les pages situées avant cette page sont déplacées dans une nouvelle œuvre, et les autres restent dans l''œuvre actuelle.'
+      allow_transcriber_segmentation_unavailable: Ce paramètre est disponible pour les collections actives basées sur du texte dans les forfaits organisationnels.
       disable_ocr: Désactiver la OCR
       document_based_transcription: Transcription basée sur des documents
       document_based_transcription_description: Chaque page de la collection comportera une seule zone de saisie de texte libre pour la transcription. Également connue sous le nom de « transcription basée sur des documents ».

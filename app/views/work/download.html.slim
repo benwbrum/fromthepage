@@ -11,14 +11,20 @@
           h5= t('.pdf')
           p.nomargin= t('.pdf_download_description')
         .bulk-export_options
-          span =button_to t('.download'), export_printable_path(@collection, @work), class: 'btnExport', params: { edition: 'text', format: 'pdf', method: :get}
+          span =button_to t('.download'), export_printable_path(@collection, @work), class: 'btnExport', params: { edition: 'text', format: 'pdf', method: :post }
       li
         .bulk-export_format
           h5= t('.ms_word')
           p.nomargin= t('.docx_download_description')
         .bulk-export_options
-          span =button_to t('.download'), export_printable_path(@collection, @work), class: 'btnExport', params: { edition: 'text', format: 'doc', method: :get}
+          span =button_to t('.download'), export_printable_path(@collection, @work), class: 'btnExport', params: { edition: 'text', format: 'doc', method: :post }
+      li
+        .bulk-export_format
+          h5= t('.accessible_pdf')
+          p.nomargin= t('.accessible_pdf_download_description')
 
+        .bulk-export_options
+          span =link_to(t('.configure'), export_new_grover_export_path(@collection.slug, @work), class: 'button', data: { controller: 'litebox', litebox: { hash: 'new-grover-export', noscroll: false  } })
 
     h2.nomargin= t('.experiment')
     ul.bulk-export
@@ -45,6 +51,7 @@
           =link_to iiif_manifest_path(@work.id)
             =svg_symbol '#icon-export', class: 'icon'
             span= t('.iiif')
+
       -if current_user.like_owner?(@collection)
         li
           .bulk-export_format
@@ -58,7 +65,7 @@
               =f.submit t('.export')
 
 
-    -if current_user.like_owner?(@collection)
+    -if current_user.like_owner?(@collection) || current_user.admin? || user_masquerade?
       h2.nomargin= t('.export')
       p= t('.zip_export_only_project_owners')
       ul.bulk-export
@@ -80,6 +87,18 @@
               =hidden_field_tag :work_id, @work.id
               =f.hidden_field :facing_edition_work, value: true
               =f.submit t('.export')
+
+        li
+          .bulk-export_format
+            h5= t('.accessible_pdf')
+            p.nomargin= t('.accessible_pdf_export_description')
+          .bulk-export_options
+            =form_for :bulk_export, url: bulk_export_create_for_work_path do |f|
+              =f.hidden_field :collection_id, value: @collection.slug
+              =hidden_field_tag :work_id, @work.id
+              =f.hidden_field :accessible_pdf_work, value: true
+              =f.submit t('.export')
+
         li
           .bulk-export_format
             h5= t('.verbatim_plaintext')

@@ -136,6 +136,32 @@
   }
 }
 
+// ---------------------------
+// LOCAL BUSY INDICATOR
+// ---------------------------
+
+.busy-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .busy {
+    display: inline-block;
+
+    &::before {
+      content: '';
+      display: block;
+      width: 48px;
+      height: 48px;
+
+      @include background-svg(48, 48, svg-spinner(#231d1d));
+
+      animation: spinner 1s steps(12) infinite;
+      transform-origin: center;
+    }
+  }
+}
 
 // ---------------------------
 // IMAGE UPLOAD FORM
@@ -701,6 +727,44 @@ button, .button, .dropdown dd a {
     text-decoration: none;
     color: rgba(#000, 0.4);
     &:hover { color: #000; }
+  }
+}
+
+.info-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 12px;
+  margin: 12px 0;
+  line-height: $lineHeight;
+
+  .icon {
+    flex: 0 0 auto;
+    margin-top: 2px;
+  }
+
+  span {
+    flex: 1;
+  }
+
+  &.info-info {
+    color: $fgBlue;
+    background: rgba($bgBlue, 0.9);
+  }
+
+  &.info-alert {
+    color: $fgOrange;
+    background: rgba($bgOrange, 0.9);
+  }
+
+  &.info-error {
+    color: $fgRed;
+    background: rgba($bgRed, 0.9);
+  }
+
+  &.info-notice {
+    color: $fgGreen;
+    background: rgba($bgGreen, 0.9);
   }
 }
 

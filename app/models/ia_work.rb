@@ -18,7 +18,7 @@
 #  server         :string(255)
 #  sponsor        :string(255)
 #  subject        :string(255)
-#  title          :string(255)
+#  title          :string(1028)
 #  title_leaf     :integer
 #  use_ocr        :boolean          default(FALSE)
 #  zip_file       :string(255)
@@ -38,7 +38,7 @@ class IaWork < ApplicationRecord
   before_create :truncate_title
 
   def truncate_title
-    self.title = self.title.truncate(255, omission: '...')
+    self.title = self.title.truncate(1028, omission: '...')
   end
 
   def display_page
@@ -246,7 +246,10 @@ class IaWork < ApplicationRecord
   private
 
   def open_doc(url)
-    doc = Nokogiri::XML(URI.open(url).read.force_encoding('utf-8'), nil, 'utf-8')
+    uri = URI.parse(url)
+    raise ArgumentError, 'document URL must use HTTP or HTTPS' unless uri.is_a?(URI::HTTP)
+
+    doc = Nokogiri::XML(uri.open.read.force_encoding('utf-8'), nil, 'utf-8')
 
     doc
   end

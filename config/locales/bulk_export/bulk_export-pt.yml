@@ -23,6 +23,8 @@ pt:
       upload_details: Detalhes do upload
       user: Do utilizador
     new:
+      accessible_pdf: PDF acessível
+      accessible_pdf_description: Um arquivo PDF otimizado para leitores de tela e tecnologias assistivas.
       download: Download
       expanded_plaintext: Texto simples expandido
       expanded_plaintext_description: Como o texto simples literal, este arquivo de texto simples representará quebras de linha com uma nova linha única, quebras de parágrafo com uma nova linha dupla e quebras de página com uma nova linha tripla. Ele difere do texto literal, pois a normalização será aplicada a todos os assuntos mencionados, de modo que, enquanto o texto literal pode ser "Cumprimentei o Sr. Jones e sua esposa esta manhã.", o texto simples corrigido será "Cumprimentei James Jones e Elizabeth Smith Jones esta manhã”. Este texto artificial é útil para análise programática, mas não deve ser lido por humanos.
@@ -37,6 +39,8 @@ pt:
       format_options: Opções de formato
       html: HTML
       html_description: Isso pode ser útil para preservação em outros sistemas ou como ponto de partida para exibição em outro site.
+      human_and_ai: Exportar transcrições humanas quando disponíveis; caso contrário, exportar rascunhos de IA.
+      human_only: Exportar somente transcrições revisadas por humanos
       notes_csv: Notas CSV
       notes_csv_description: Uma planilha listando cada nota na coleção.
       one_file_per_collection: Um arquivo por coleção
@@ -49,6 +53,7 @@ pt:
       organization_work: Pastas de obras
       page_details_csv: Detalhes da página CSV
       page_details_csv_description: Uma planilha com uma linha por página, incluindo informações da página e metadados da obra principal.
+      prepend_ai_warnings: 'Aviso: Este texto foi gerado por IA e adicionado ao início da transcrição.'
       preserve_linebreaks: Preservar quebras de linha
       previous_exports: Exportações anteriores
       search_optimized_plaintext: Texto simples otimizado para pesquisa

@@ -56,6 +56,7 @@ de:
       ai_both_agree: Beide KI-Modelle stimmen überein
       ai_disagree_header: KI-Modelle stimmen nicht überein — prüfen und auswählen
       ai_option_placeholder: Klicken Sie unten auf einen Vorschlag, oder geben Sie Ihre Transkription ein…
+      ai_spreadsheet_option: Diesen Entwurf verwenden
       instructions: Anweisungen
     line_form:
       field_options: Feldoptionen (mit Semikolon trennen)

@@ -9,7 +9,7 @@ class ExportController < ApplicationController
 
   DEFAULT_WORKS_PER_PAGE = 15
 
-  before_action :require_owner, only: [:index]
+  before_action :require_owner, only: [:index, :work_metadata_csv]
 
   def index
     filtered_data
@@ -42,6 +42,34 @@ class ExportController < ApplicationController
         File.read(result.file),
         filename: result.filename,
         content_type: result.content_type
+      )
+
+      cookies['download_finished'] = 'true'
+    else
+      head :internal_server_error
+    end
+  end
+
+  def new_grover_export
+  end
+
+  def grover_printable
+    result = Work::Export::GroverPrintable.new(
+      work: @work,
+      edition: params[:edition],
+      include_metadata: true,
+      include_contributors: true,
+      include_notes: false,
+      preserve_lb: false,
+      source: params[:source]&.to_sym || :human_only,
+      prepend_ai_warnings: ActiveRecord::Type::Boolean.new.cast(params[:prepend_ai_warnings])
+    ).call
+
+    if result.success?
+      send_data(
+        result.file,
+        filename: result.filename,
+        content_type: 'application/pdf'
       )
 
       cookies['download_finished'] = 'true'

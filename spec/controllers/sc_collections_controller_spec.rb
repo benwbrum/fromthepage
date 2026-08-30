@@ -20,18 +20,23 @@ describe ScCollectionsController, type: :controller do
         ssl_verify_mode: OpenSSL::SSL::VERIFY_PEER
       }
 
-      # Mock URI.open to verify it's called with the right parameters
-      allow(URI).to receive(:open).with(
-        manifest_url,
-        expected_options
-      ).and_return(double(read: mock_manifest_content))
+      uri = URI.parse(manifest_url)
+      allow(URI).to receive(:parse).with(manifest_url).and_return(uri)
+      allow(uri).to receive(:open).with(expected_options).and_return(double(read: mock_manifest_content))
 
       result = controller.send(:fetch_manifest, manifest_url)
       expect(result).to eq(mock_manifest_content)
     end
 
+    it 'rejects non-HTTP URLs before opening them' do
+      expect { controller.send(:fetch_manifest, '|touch /tmp/pwned') }.to raise_error(URI::InvalidURIError)
+      expect { controller.send(:fetch_manifest, 'file:///etc/passwd') }
+        .to raise_error(ArgumentError, 'manifest URL must use HTTP or HTTPS')
+    end
+
     it 'caches manifest content to avoid repeated requests' do
-      allow(URI).to receive(:open).and_return(double(read: mock_manifest_content))
+      uri = URI.parse(manifest_url).tap { |parsed| allow(parsed).to receive(:open).and_return(double(read: mock_manifest_content)) }
+      allow(URI).to receive(:parse).and_return(uri)
 
       # First call
       result1 = controller.send(:fetch_manifest, manifest_url)
@@ -40,12 +45,14 @@ describe ScCollectionsController, type: :controller do
 
       expect(result1).to eq(mock_manifest_content)
       expect(result2).to eq(mock_manifest_content)
-      expect(URI).to have_received(:open).once
+      expect(uri).to have_received(:open).once
     end
 
     it 'retries on SSL errors up to 2 attempts' do
       call_count = 0
-      allow(URI).to receive(:open) do
+      uri = URI.parse(manifest_url)
+      allow(URI).to receive(:parse).and_return(uri)
+      allow(uri).to receive(:open) do
         call_count += 1
         raise OpenSSL::SSL::SSLError.new('SSL_read: unexpected eof while reading') if call_count <= 1
 
@@ -54,12 +61,14 @@ describe ScCollectionsController, type: :controller do
 
       result = controller.send(:fetch_manifest, manifest_url)
       expect(result).to eq(mock_manifest_content)
-      expect(URI).to have_received(:open).twice
+      expect(uri).to have_received(:open).twice
     end
 
     it 'retries on EOF errors up to 2 attempts' do
       call_count = 0
-      allow(URI).to receive(:open) do
+      uri = URI.parse(manifest_url)
+      allow(URI).to receive(:parse).and_return(uri)
+      allow(uri).to receive(:open) do
         call_count += 1
         raise EOFError.new('unexpected end of file') if call_count <= 1
 
@@ -68,27 +77,31 @@ describe ScCollectionsController, type: :controller do
 
       result = controller.send(:fetch_manifest, manifest_url)
       expect(result).to eq(mock_manifest_content)
-      expect(URI).to have_received(:open).twice
+      expect(uri).to have_received(:open).twice
     end
 
     it 'raises error after 2 failed attempts' do
-      allow(URI).to receive(:open).and_raise(OpenSSL::SSL::SSLError.new('SSL_read: unexpected eof while reading'))
+      uri = URI.parse(manifest_url)
+      allow(URI).to receive(:parse).and_return(uri)
+      allow(uri).to receive(:open).and_raise(OpenSSL::SSL::SSLError.new('SSL_read: unexpected eof while reading'))
 
       expect do
         controller.send(:fetch_manifest, manifest_url)
       end.to raise_error(OpenSSL::SSL::SSLError)
 
-      expect(URI).to have_received(:open).twice
+      expect(uri).to have_received(:open).twice
     end
 
     it 'does not retry on other types of errors' do
-      allow(URI).to receive(:open).and_raise(StandardError.new('Some other error'))
+      uri = URI.parse(manifest_url)
+      allow(URI).to receive(:parse).and_return(uri)
+      allow(uri).to receive(:open).and_raise(StandardError.new('Some other error'))
 
       expect do
         controller.send(:fetch_manifest, manifest_url)
       end.to raise_error(StandardError, 'Some other error')
 
-      expect(URI).to have_received(:open).once
+      expect(uri).to have_received(:open).once
     end
 
     it 'sets OpenSSL flag to ignore unexpected EOF when available' do
@@ -103,8 +116,9 @@ describe ScCollectionsController, type: :controller do
       allow(OpenSSL::SSL).to receive(:const_defined?).and_call_original
       allow(OpenSSL::SSL).to receive(:const_defined?).with(:OP_IGNORE_UNEXPECTED_EOF).and_return(true)
 
-      # Mock URI.open
-      allow(URI).to receive(:open).and_return(double(read: mock_manifest_content))
+      uri = URI.parse(manifest_url)
+      allow(uri).to receive(:open).and_return(double(read: mock_manifest_content))
+      allow(URI).to receive(:parse).and_return(uri)
 
       controller.send(:fetch_manifest, manifest_url)
 
@@ -121,8 +135,9 @@ describe ScCollectionsController, type: :controller do
       allow(OpenSSL::SSL).to receive(:const_defined?).and_call_original
       allow(OpenSSL::SSL).to receive(:const_defined?).with(:OP_IGNORE_UNEXPECTED_EOF).and_return(false)
 
-      # Mock URI.open
-      allow(URI).to receive(:open).and_return(double(read: mock_manifest_content))
+      uri = URI.parse(manifest_url)
+      allow(uri).to receive(:open).and_return(double(read: mock_manifest_content))
+      allow(URI).to receive(:parse).and_return(uri)
 
       controller.send(:fetch_manifest, manifest_url)
 
