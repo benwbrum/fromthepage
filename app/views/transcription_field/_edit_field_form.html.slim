@@ -70,8 +70,9 @@ div.fields-preview
         forcePlaceholderSize: true,
         update: function(e, ui) {
           renumberLines();
+          var isPersistedField = /^field_\d+$/.test(ui.item.attr('id'));
           var data = $(this).sortable('serialize');
-          if (data) {
+          if (isPersistedField && data) {
             $.ajax({
               url: "#{transcription_field_reorder_path(collection_id: @collection.id)}",
               type: "PATCH",
