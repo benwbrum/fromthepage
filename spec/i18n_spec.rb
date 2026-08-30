@@ -59,7 +59,7 @@ RSpec.describe I18n do
     # Words that should be "work of literature" not "labor"
     let(:incorrect_translations) do
       {
-        'de' => ['arbeit', 'arbeiten', 'dokumentensatz'],
+        'de' => ['arbeit', 'arbeiten', 'dokumentensatz', 'dokumentensätze', 'dokumentsätze'],
         'es' => ['trabajo', 'trabajos'],
         'fr' => ['travail', 'travaux'],
         'pt' => ['trabalho', 'trabalhos']
