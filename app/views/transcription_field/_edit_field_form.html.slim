@@ -71,15 +71,11 @@ div.fields-preview
         update: function(e, ui) {
           renumberLines();
           var data = $(this).sortable('serialize');
-          var line = ui.item.closest('tbody').index() + 1;
           if (data) {
             $.ajax({
               url: "#{transcription_field_reorder_path(collection_id: @collection.id)}",
               type: "PATCH",
-              data: `${data}&line=${line}`,
-              success: function(response) {
-                window.location.reload();
-              }
+              data: `${data}&line=${ui.item.closest('tbody').index() + 1}`,
             });
           }
         },

@@ -123,7 +123,7 @@ describe 'collection field-based transcription settings' do
 
   it 'persists line order when a full line block is moved', js: true do
     first_field
-    second_field.update!(line_number: 2, position: 1)
+    second_field.update!(line_number: 2)
 
     visit transcription_field_edit_fields_path(collection_id: collection)
     click_button 'Add Additional Line'
