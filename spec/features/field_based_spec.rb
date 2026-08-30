@@ -113,11 +113,13 @@ describe 'collection field-based transcription settings' do
     visit transcription_field_edit_fields_path(collection_id: collection)
     count = page.all('#new-fields tr').count
     line_count = page.all('#new-fields tr th.field-form_line').count
+    expect(page).to have_selector('#new-fields .line-reorder-handle', count: line_count)
 
     click_button 'Add Additional Line'
 
     expect(page).to have_selector('#new-fields tr', count: count + 3)
     expect(page).to have_selector('#new-fields tr th.field-form_line', count: line_count + 1)
+    expect(page).to have_selector('#new-fields .line-reorder-handle', count: line_count + 1)
     expect(collection.transcription_fields.count).to eq(3)
   end
 

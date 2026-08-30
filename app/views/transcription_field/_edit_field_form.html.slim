@@ -58,7 +58,7 @@ div.fields-preview
         $('#new-fields > tbody').each(function(index) {
           var line = index + 1;
           $(this).find("input[name='transcription_fields[][line_number]']").val(line);
-          $(this).find('th.field-form_line').text(`${lineLabel} ${line}`);
+          $(this).find('th.field-form_line > span').first().text(`${lineLabel} ${line}`);
         });
       }
 
@@ -85,7 +85,7 @@ div.fields-preview
       $('#new-fields').sortable({
         axis: 'y',
         items: '> tbody',
-        handle: 'th.field-form_line',
+        handle: '.line-reorder-handle',
         update: renumberLines,
       });
 
