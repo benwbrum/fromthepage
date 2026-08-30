@@ -70,9 +70,8 @@ div.fields-preview
         forcePlaceholderSize: true,
         update: function(e, ui) {
           renumberLines();
-          var line = $(this).index() + 1;
           var data = $(this).sortable('serialize');
-          ui.item.find("input[name='transcription_fields[][line_number]']").val(line);
+          var line = ui.item.closest('tbody').index() + 1;
           if (data) {
             $.ajax({
               url: "#{transcription_field_reorder_path(collection_id: @collection.id)}",
