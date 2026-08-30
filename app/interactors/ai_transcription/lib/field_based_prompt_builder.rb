@@ -3,7 +3,7 @@ class AiTranscription::Lib::FieldBasedPromptBuilder
 
   def initialize(collection:)
     @collection = collection
-    ordered_fields = collection.transcription_fields.order(:position)
+    ordered_fields = collection.transcription_fields.order(:line_number, :position)
     @prompt_fields = ordered_fields.reject { |field| field.input_type == 'description' }
     @fields = ordered_fields.reject { |field| SKIP_TYPES.include?(field.input_type) }
   end

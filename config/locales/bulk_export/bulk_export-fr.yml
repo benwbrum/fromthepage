@@ -39,6 +39,8 @@ fr:
       format_options: Options de mise en forme
       html: HTML
       html_description: Cela peut être utile pour la conservation dans d'autres systèmes ou comme point de départ pour l'affichage sur un autre site Web.
+      human_and_ai: Exporter les transcriptions humaines lorsqu'elles sont disponibles, sinon exporter les brouillons de l'IA.
+      human_only: Exporter uniquement les transcriptions éditées par des humains
       notes_csv: Notes CSV
       notes_csv_description: Une feuille de calcul répertoriant chaque note de la collection.
       one_file_per_collection: Un fichier par collection
@@ -51,6 +53,7 @@ fr:
       organization_work: Dossiers d'œuvre
       page_details_csv: Détails de la page CSV
       page_details_csv_description: Une feuille de calcul avec une ligne par page, comprenant les informations de page et les métadonnées de l'œuvre parent.
+      prepend_ai_warnings: 'Avertissement à ajouter en haut de la transcription : Cette transcription est générée par une IA.'
       preserve_linebreaks: Conserver les sauts de ligne
       previous_exports: Exportations précédentes
       search_optimized_plaintext: Texte brut optimisé pour la recherche

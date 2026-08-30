@@ -92,6 +92,21 @@ describe AiTranscription::Lib::FieldBasedPromptBuilder do
     end
   end
 
+  context 'when field positions repeat across lines' do
+    before do
+      text_field.update!(position: 2, line_number: 1)
+      select_field.update!(position: 1, line_number: 2)
+      date_field.update!(position: 1, line_number: 1)
+    end
+
+    it 'lists fields in line order, then position order within each line' do
+      field_section = prompt[/Fields to extract:\n(.*?)\n\nRules:/m, 1]
+
+      expect(field_section.index('Birth Date')).to be < field_section.index('Name')
+      expect(field_section.index('Name')).to be < field_section.index('County')
+    end
+  end
+
   context 'with a spreadsheet field' do
     let!(:spreadsheet_field) do
       create(:transcription_field, :spreadsheet_field,

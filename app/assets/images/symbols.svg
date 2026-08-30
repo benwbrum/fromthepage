@@ -133,6 +133,10 @@
     <polygon fill="currentColor" points="14,7 5.41,7 9.71,2.71 8.29,1.29 1.59,8 8.29,14.71 9.71,13.29 5.41,9 14,9"/>
   </symbol>
 
+  <symbol id="icon-scissors" viewBox="0 0 24 24" fill="none">
+    <g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g > <circle cx="6" cy="6" r="3" stroke="currentColor" stroke-width="2"></circle><circle cx="6" cy="18" r="3" stroke="currentColor" stroke-width="2"></circle><line x1="20" y1="4" x2="8.12" y2="15.88" stroke="currentColor" stroke-width="2" stroke-linecap="round"></line><line x1="14.47" y1="14.48" x2="20" y2="20" stroke="currentColor" stroke-width="2" stroke-linecap="round"></line><line x1="8.12" y1="8.12" x2="12" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></line> </g>
+  </symbol>
+
   <symbol id="icon-arrow-undo" viewBox="0 0 24 24" fill="none">
     <g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g > <path d="M4 7H15C16.8692 7 17.8039 7 18.5 7.40193C18.9561 7.66523 19.3348 8.04394 19.5981 8.49999C20 9.19615 20 10.1308 20 12C20 13.8692 20 14.8038 19.5981 15.5C19.3348 15.9561 18.9561 16.3348 18.5 16.5981C17.8039 17 16.8692 17 15 17H8.00001M4 7L7 4M4 7L7 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g>
   </symbol>

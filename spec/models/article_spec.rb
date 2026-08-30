@@ -8,7 +8,7 @@ describe Article do
 
     let!(:owner) { create(:unique_user, :owner) }
     let!(:public_collection) { create(:collection, owner_user_id: owner.id) }
-    let!(:restricted_collection) { create(:collection, owner_user_id: owner.id, restricted: true) }
+    let!(:restricted_collection) { create(:collection, owner_user_id: owner.id, visibility: :private) }
 
     let!(:work_1) { create(:work, collection: public_collection) }
     let!(:page_1) { create(:page, work: work_1) }
@@ -64,7 +64,7 @@ describe Article do
 
     let!(:other_user) { create(:unique_user, :owner) }
     let!(:other_public_collection) { create(:collection, owner_user_id: other_user.id) }
-    let!(:other_restricted_collection) { create(:collection, owner_user_id: other_user.id, restricted: true) }
+    let!(:other_restricted_collection) { create(:collection, owner_user_id: other_user.id, visibility: :private) }
 
     let!(:work_4) { create(:work, collection: other_public_collection) }
     let!(:page_4) { create(:page, work: work_4) }

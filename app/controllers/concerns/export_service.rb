@@ -48,7 +48,7 @@ module ExportService
     )
   end
 
-  def export_grover_printable_to_zip(work, path, by_work, original_filenames, preserve_lb, include_metadata, include_contributors, include_notes)
+  def export_grover_printable_to_zip(work, path, by_work, original_filenames, preserve_lb, include_metadata, include_contributors, include_notes, source, prepend_ai_warnings)
     return if work.pages.count == 0
 
     dirname = path_from_work(work)
@@ -61,7 +61,9 @@ module ExportService
       include_metadata: include_metadata,
       include_contributors: include_contributors,
       include_notes: include_notes,
-      preserve_lb: preserve_lb
+      preserve_lb: preserve_lb,
+      source: source&.to_sym || :human_only,
+      prepend_ai_warnings: prepend_ai_warnings
     ).call
 
     if result.success?

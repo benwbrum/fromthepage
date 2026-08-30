@@ -12,11 +12,7 @@ FactoryBot.define do
       sequence(:login) { |n| "owner_#{n}_login" }
     end
 
-    factory :owner do
-      owner { true }
-      sequence(:display_name) { |n| "owner_#{n}_login" }
-      sequence(:login) { |n| "owner_#{n}_login" }
-    end
+    factory :owner, traits: [:owner]
 
     factory :admin do
       admin { true }
