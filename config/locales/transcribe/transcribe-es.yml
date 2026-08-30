@@ -31,6 +31,18 @@ es:
       more_help: Más ayuda....
       needs_review: Necesita Revisión
       notes_and_questions: Notas y Preguntas
+      previous_work_title: Título para las páginas 1–%{n}
+      segmentation_cancel: Cancelar
+      segmentation_candidate: Esto parece un documento nuevo. ¿Separarlo en una obra nueva?
+      segmentation_confirm: Dividir
+      segmentation_dismiss: Descartar
+      segmentation_edit_work_metadata: Editar metadatos de la nueva obra
+      segmentation_no: 'No'
+      segmentation_split_confirm_message: "¿Dividir esto en una obra nueva a partir de aquí?"
+      segmentation_success: Se creó "%{title}" con %{count} páginas.
+      segmentation_view_work: Ver la nueva obra
+      segmentation_yes: Sí, dividir aquí
+      split_into_new_work: Dividir en una obra nueva
       this_page_marked_blank: Esta página está en blanco
       this_page_marked_needs_review: Esta página ha sido marcada como "necesita revisión". Puedes mejorar esta página corrigiéndola con el original y agregando o corrigiendo texto. Cuando hayas terminado, desmarca "necesita revisión" y guarda la página.
       this_page_marked_needs_review_workflow_version: Esta página necesita revisión. Puedes mejorar esta página revisándola con el original y añadiendo o corrigiendo el texto y. Después, aprueba el texto.

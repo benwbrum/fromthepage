@@ -9,6 +9,10 @@ fr:
         contact_us: Contactez %{email} pour passer à un forfait incluant les brouillons IA.
         description: Lancer une tâche de transcription IA pour les pages de ce document.
         description_complete: Toutes les pages de cet ouvrage comportent des transcriptions réalisées par IA.
+        edit_metadata_after_split: Modifier les métadonnées après la séparation
+        edit_metadata_after_split_description: Après la confirmation en ligne de la séparation, aller directement au formulaire de métadonnées de la nouvelle œuvre.
+        edit_metadata_after_split_disabled: Veuillez activer et configurer la création de métadonnées sous %{link}.
+        edit_metadata_after_split_disabled_link: Configuration des tâches
         failed: Échoué
         failed_transcription_errors: Erreurs de transcription échouées
         failed_transcription_errors_hidden: Les erreurs de transcription supplémentaires %{count} ne sont pas affichées.
@@ -19,7 +23,14 @@ fr:
         pages: Pages
         queued: File d'attente
         retry: Réessayer les tâches ayant échoué
+        segment_collection: Segmenter la collection
+        segmentation: Segmenter la collection
+        segmentation_description: En téléversant un ensemble d'images (par exemple, un dossier) puis en le segmentant, nous suggérerons les endroits où les documents doivent être séparés en œuvres individuelles.
         total_tokens_used: Nombre total de jetons utilisés
+      segment:
+        success: La tâche de segmentation a été lancée. Vous recevrez un e-mail lorsqu'elle sera terminée.
+      segmentation_setting:
+        success: Paramètre de segmentation enregistré.
       update:
         success: Nouvelle tentative de transcription par IA.
     configurable_printout:
@@ -82,6 +93,7 @@ fr:
       configurable_printout: Impression configurable
       configurable_printout_button: Configurer
       configurable_printout_description: Export PDF ou MS Word avec contenu et mise en forme configurables
+      configure: Configure
       docx_download_description: Télécharger une version DOCX de ce œuvre.
       download: Télécharger
       expanded_plaintext: Texte brut étendu
@@ -245,6 +257,10 @@ fr:
       source_collection_name: Nom de la collection source
       source_location: Emplacement de la source
       uploaded_by: Téléversé par
+    split_page:
+      create_failed: 'Impossible de créer la nouvelle œuvre : %{errors}'
+      no_previous_pages: Il n'y a pas de pages avant celle-ci à séparer dans une nouvelle œuvre.
+      unauthorized: Vous n'avez pas la permission de séparer cette œuvre.
     undescribed: Aucune métadonnée.
     update:
       work_updated: Œuvre mis à jour avec succès

@@ -12,7 +12,7 @@ describe Elasticsearch::MultiQuery do
       :collection,
       owner_user_id: owner.id,
       title: identifier,
-      restricted: true,
+      visibility: :private
     )
   end
   let!(:work_1) do
@@ -133,7 +133,7 @@ describe Elasticsearch::MultiQuery do
           :collection,
           owner_user_id: owner.id,
           title: identifier,
-          restricted: false
+          visibility: :public
         )
       end
 
@@ -162,7 +162,7 @@ describe Elasticsearch::MultiQuery do
       end
 
       it 'performs multiquery excluding newly restricted collection' do
-        collection.update!(restricted: true)
+        collection.update!(visibility: :private)
         collection.reload.works.each(&:save!)
         collection.reload.pages.each(&:save!)
 
@@ -229,7 +229,7 @@ describe Elasticsearch::MultiQuery do
           :collection,
           owner_user_id: owner.id,
           title: identifier,
-          restricted: false
+          visibility: :public
         )
       end
 

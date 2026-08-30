@@ -13,10 +13,7 @@
             h4.collection_title
               =link_to c.title, collection_path(c.owner, c) unless c.owner.nil?
               span.visibility
-                -if c.is_public
-                  =t('.public')
-                -else
-                  =t('.private')
+                =t(".#{c.visibility}")
             -unless c.works.empty?
               -collection_stats(c)
               .collection-work_stats

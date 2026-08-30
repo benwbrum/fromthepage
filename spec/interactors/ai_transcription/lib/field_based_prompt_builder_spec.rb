@@ -70,25 +70,40 @@ describe AiTranscription::Lib::FieldBasedPromptBuilder do
   end
 
   context 'with multiple instructions' do
-    let!(:second_line_instruction) do
+    let!(:earlier_instruction) do
       create(:transcription_field, :instruction_field,
              label: 'Transcribe the location exactly', collection: collection,
              position: 2, line_number: 2)
     end
 
-    let!(:first_line_instruction) do
+    let!(:later_instruction) do
       create(:transcription_field, :instruction_field,
              label: 'Preserve original spelling', collection: collection,
-             position: 7, line_number: 1)
+             position: 7, line_number: 7)
     end
 
-    it 'interleaves instructions with extractable fields in line and field order' do
+    it 'interleaves instructions with extractable fields in transcription-field order' do
       field_section = prompt[/Fields to extract:\n(.*?)\n\nRules:/m, 1]
 
-      expect(field_section.index('Name')).to be < field_section.index('Preserve original spelling')
-      expect(field_section.index('Preserve original spelling')).to be < field_section.index('Transcribe the location exactly')
+      expect(field_section.index('Name')).to be < field_section.index('Transcribe the location exactly')
       expect(field_section.index('Transcribe the location exactly')).to be < field_section.index('County')
       expect(field_section.index('Birth Date')).to be < field_section.index('Enter county name')
+      expect(field_section.index('Enter county name')).to be < field_section.index('Preserve original spelling')
+    end
+  end
+
+  context 'when field positions repeat across lines' do
+    before do
+      text_field.update!(position: 2, line_number: 1)
+      select_field.update!(position: 1, line_number: 2)
+      date_field.update!(position: 1, line_number: 1)
+    end
+
+    it 'lists fields in line order, then position order within each line' do
+      field_section = prompt[/Fields to extract:\n(.*?)\n\nRules:/m, 1]
+
+      expect(field_section.index('Birth Date')).to be < field_section.index('Name')
+      expect(field_section.index('Name')).to be < field_section.index('County')
     end
   end
 

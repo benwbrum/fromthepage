@@ -551,7 +551,7 @@ describe ArticleController do
     end
 
     context 'when no access' do
-      let!(:collection) { create(:collection, owner_user_id: owner.id, restricted: true) }
+      let!(:collection) { create(:collection, owner_user_id: owner.id, visibility: :private) }
       let!(:non_owner) { create(:unique_user) }
 
       it 'redirects' do
@@ -596,7 +596,7 @@ describe ArticleController do
     end
 
     context 'when no access' do
-      let!(:collection) { create(:collection, owner_user_id: owner.id, restricted: true) }
+      let!(:collection) { create(:collection, owner_user_id: owner.id, visibility: :private) }
       let!(:non_owner) { create(:unique_user) }
 
       it 'redirects' do

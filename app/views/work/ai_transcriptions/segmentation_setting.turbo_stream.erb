@@ -1,0 +1,2 @@
+<%= turbo_flash(t('.success'), :notice) %>
+<%= turbo_stream.update('collection-settings', partial: 'work/ai_transcriptions/form', locals: { collection: @collection, work: @work }) %>

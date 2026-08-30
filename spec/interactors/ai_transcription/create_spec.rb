@@ -261,7 +261,7 @@ describe AiTranscription::Create do
 
   context 'when user has no permission' do
     let!(:user) { create(:unique_user) }
-    let!(:collection) { create(:collection, owner_user_id: owner.id, restricted: true, blocked_users: [user]) }
+    let!(:collection) { create(:collection, owner_user_id: owner.id, visibility: :private, blocked_users: [user]) }
 
     it 'blocks user from creating ai_transcription' do
       expect(result.success?).to be_falsey

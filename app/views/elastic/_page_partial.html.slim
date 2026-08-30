@@ -54,7 +54,7 @@
 
       -else
         -if (current_user && current_user.can_transcribe?(page.work)) || (!page.work.restrict_scribes)
-          -if collection.active?
+          -if collection.active? && !collection.visibility_read_only?
             -if page.work.ocr_correction
               -status = t('display.pages_view.corrected')
               -help = link_to(t('display.pages_view.help_correct'), action, onclick: "resultClicked();")

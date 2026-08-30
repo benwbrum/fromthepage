@@ -1,13 +1,15 @@
 class Work::Export::GroverPrintable < ApplicationInteractor
   attr_accessor :file
 
-  def initialize(work:, edition:, include_metadata:, include_contributors:, include_notes:, preserve_lb:, page_ids: :all, time: Time.now)
+  def initialize(work:, edition:, include_metadata:, include_contributors:, include_notes:, preserve_lb:, source: :human_only, prepend_ai_warnings: false, page_ids: :all, time: Time.now)
     @work = work
     @edition = edition
     @include_metadata = include_metadata
     @include_contributors = include_contributors
     @include_notes = include_notes
     @preserve_lb = preserve_lb
+    @source = source
+    @prepend_ai_warnings = prepend_ai_warnings
     @page_ids = page_ids
     @time = time
 
@@ -38,6 +40,8 @@ class Work::Export::GroverPrintable < ApplicationInteractor
         include_contributors: @include_contributors,
         include_notes: @include_notes,
         preserve_lb: @preserve_lb,
+        source: @source,
+        prepend_ai_warnings: @prepend_ai_warnings,
         time: @time,
         flatten_links: false
       }
@@ -51,7 +55,10 @@ class Work::Export::GroverPrintable < ApplicationInteractor
   def pages
     return @pages if defined?(@pages)
 
-    @pages = @work.pages.includes(:notes, :ia_leaf, :sc_canvas)
+    includes = [:notes, :ia_leaf, :sc_canvas]
+    includes << :ai_transcription if @source == :human_and_ai
+
+    @pages = @work.pages.includes(includes)
 
     @pages = @pages.where(id: @page_ids) unless @page_ids == :all
 
