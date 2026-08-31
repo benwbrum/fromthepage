@@ -33,6 +33,22 @@ fr:
         success: Paramètre de segmentation enregistré.
       update:
         success: Nouvelle tentative de transcription par IA.
+    ai_work_metadata:
+      create:
+        success: Tâche de brouillon de métadonnées par IA lancée.
+      form:
+        description: Générer des brouillons de métadonnées de cette œuvre par IA avec Gemini et Claude.
+        drafts_heading: Brouillons
+        generate: Générer un brouillon de métadonnées par IA
+        heading: Brouillon de métadonnées par IA
+        no_metadata_fields: Veuillez configurer les champs de métadonnées dans la configuration des tâches avant de générer des brouillons de métadonnées par IA.
+      show:
+        back: Retour aux paramètres IA
+        fields_heading: Champs du brouillon
+        heading: Brouillon de métadonnées par IA (%{model})
+        reasoning_heading: Raisonnement
+        status: 'Statut : %{status}'
+        tokens_used: 'Jetons utilisés : %{count}'
     configurable_printout:
       description: Exportez cette œuvre dans un format imprimable
       export: Exporter

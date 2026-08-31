@@ -33,6 +33,22 @@ en:
         success: Segmentation setting saved.
       update:
         success: Retrying AI transcription job.
+    ai_work_metadata:
+      create:
+        success: AI metadata draft job launched.
+      form:
+        description: Generate AI drafts of this work's metadata using Gemini and Claude.
+        drafts_heading: Drafts
+        generate: Generate AI metadata draft
+        heading: AI Metadata Draft
+        no_metadata_fields: Please configure metadata fields under Task Configuration before generating AI metadata drafts.
+      show:
+        back: Back to AI Settings
+        fields_heading: Draft fields
+        heading: AI Metadata Draft (%{model})
+        reasoning_heading: Reasoning
+        status: 'Status: %{status}'
+        tokens_used: 'Tokens used: %{count}'
     configurable_printout:
       description: Export this work in a printable format
       export: Export

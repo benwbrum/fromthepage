@@ -33,6 +33,22 @@ de:
         success: Segmentierungseinstellung gespeichert.
       update:
         success: KI-Transkriptionsauftrag wird wiederholt.
+    ai_work_metadata:
+      create:
+        success: KI-Metadaten-Entwurfsauftrag gestartet.
+      form:
+        description: Erstellen Sie KI-Entwürfe der Metadaten dieses Werks mit Gemini und Claude.
+        drafts_heading: Entwürfe
+        generate: KI-Metadatenentwurf erstellen
+        heading: KI-Metadatenentwurf
+        no_metadata_fields: Bitte konfigurieren Sie Metadatenfelder unter Aufgabenkonfiguration, bevor Sie KI-Metadatenentwürfe erstellen.
+      show:
+        back: Zurück zu KI-Einstellungen
+        fields_heading: Entwurfsfelder
+        heading: KI-Metadatenentwurf (%{model})
+        reasoning_heading: Begründung
+        status: 'Status: %{status}'
+        tokens_used: 'Verwendete Token: %{count}'
     configurable_printout:
       description: Exportieren Sie diese Werk in einem druckbaren Format
       export: Export

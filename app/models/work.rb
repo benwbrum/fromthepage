@@ -131,6 +131,8 @@ class Work < ApplicationRecord
            -> { order(version_number: :desc) },
            dependent: :destroy
 
+  has_many :ai_work_metadata, class_name: 'AiWorkMetadata'
+
   before_save :update_derivatives
 
   after_save :create_version

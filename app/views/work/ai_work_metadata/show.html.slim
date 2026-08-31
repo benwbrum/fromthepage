@@ -1,0 +1,37 @@
+=render partial: '/shared/work_tabs', locals: { selected: 6, work_id: @work.id }
+.collection-meta-wrapper
+  =render partial: 'work/edit_tabs', locals: { selected: 5 }
+  #collection-settings
+    .collection-settings-wrapper
+      table.form.collection-settings
+        tr
+          td(colspan="2")
+            h3 =t('.heading', model: @ai_work_metadata.model)
+            p =t('.status', status: @ai_work_metadata.status)
+        -if @ai_work_metadata.status_error?
+          tr
+            td(colspan="2")
+              p.fgerror =@ai_work_metadata.short_error_message
+        -elsif @ai_work_metadata.metadata_json.present?
+          tr
+            td(colspan="2")
+              h4 =t('.fields_heading')
+              table
+                -@collection.metadata_fields.order(:line_number, :position).each do |field|
+                  -value = @ai_work_metadata.metadata_json[field.id.to_s]
+                  -next if value.nil?
+                  tr
+                    th =field.label
+                    td =value.is_a?(Array) ? value.join(', ') : value
+        -if @ai_work_metadata.reasoning.present?
+          tr
+            td(colspan="2")
+              h4 =t('.reasoning_heading')
+              p ==simple_format(@ai_work_metadata.reasoning)
+        -if @ai_work_metadata.metadata.is_a?(Hash) && @ai_work_metadata.metadata['total_token_count'].present?
+          tr
+            td(colspan="2")
+              p =t('.tokens_used', count: @ai_work_metadata.metadata['total_token_count'])
+        tr
+          td(colspan="2")
+            =link_to t('.back'), edit_collection_work_ai_transcriptions_path(@collection.owner, @collection, @work)

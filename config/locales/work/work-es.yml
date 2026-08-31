@@ -33,6 +33,22 @@ es:
         success: Configuración de segmentación guardada.
       update:
         success: Reintentando la tarea de transcripción de IA.
+    ai_work_metadata:
+      create:
+        success: Se ha lanzado un trabajo de borrador de metadatos con IA.
+      form:
+        description: Genera borradores de IA de los metadatos de esta obra usando Gemini y Claude.
+        drafts_heading: Borradores
+        generate: Generar borrador de metadatos con IA
+        heading: Borrador de metadatos con IA
+        no_metadata_fields: Configure los campos de metadatos en Configuración de tareas antes de generar borradores de metadatos con IA.
+      show:
+        back: Volver a la configuración de IA
+        fields_heading: Campos del borrador
+        heading: Borrador de metadatos con IA (%{model})
+        reasoning_heading: Razonamiento
+        status: 'Estado: %{status}'
+        tokens_used: 'Tokens utilizados: %{count}'
     configurable_printout:
       description: Exportar esta obra en un formato imprimible
       export: Exportar

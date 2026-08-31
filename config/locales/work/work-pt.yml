@@ -33,6 +33,22 @@ pt:
         success: Configuração de segmentação salva.
       update:
         success: Tentando novamente a tarefa de transcrição por IA.
+    ai_work_metadata:
+      create:
+        success: Trabalho de rascunho de metadados por IA iniciado.
+      form:
+        description: Gere rascunhos de metadados desta obra usando IA com Gemini e Claude.
+        drafts_heading: Rascunhos
+        generate: Gerar rascunho de metadados com IA
+        heading: Rascunho de metadados com IA
+        no_metadata_fields: Configure os campos de metadados em Configuração de tarefas antes de gerar rascunhos de metadados com IA.
+      show:
+        back: Voltar às configurações de IA
+        fields_heading: Campos do rascunho
+        heading: Rascunho de metadados com IA (%{model})
+        reasoning_heading: Raciocínio
+        status: 'Status: %{status}'
+        tokens_used: 'Fichas utilizadas: %{count}'
     configurable_printout:
       description: Exporte esta obra em um formato para impressão
       export: Exportar

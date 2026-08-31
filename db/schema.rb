@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_08_27_201247) do
+ActiveRecord::Schema[7.2].define(version: 2026_08_31_000000) do
   create_table "active_storage_attachments", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -90,6 +90,21 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_27_201247) do
     t.index ["page_id"], name: "index_ai_transcriptions_on_page_id"
     t.index ["status", "updated_at"], name: "index_ai_transcriptions_on_status_and_updated_at"
     t.index ["status"], name: "index_ai_transcriptions_on_status"
+    t.check_constraint "json_valid(`metadata`)", name: "metadata"
+  end
+
+  create_table "ai_work_metadata", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.integer "work_id", null: false
+    t.text "metadata_json", size: :long
+    t.text "prompt", size: :long
+    t.string "model", null: false
+    t.text "reasoning", size: :long
+    t.text "metadata", size: :long, collation: "utf8mb4_bin"
+    t.string "status", default: "new"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["status"], name: "index_ai_work_metadata_on_status"
+    t.index ["work_id"], name: "index_ai_work_metadata_on_work_id"
     t.check_constraint "json_valid(`metadata`)", name: "metadata"
   end
 
@@ -1381,6 +1396,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_27_201247) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "ai_transcriptions", "pages", on_delete: :cascade
+  add_foreign_key "ai_work_metadata", "works", on_delete: :cascade
   add_foreign_key "bulk_exports", "collections"
   add_foreign_key "bulk_exports", "document_sets"
   add_foreign_key "bulk_exports", "users"

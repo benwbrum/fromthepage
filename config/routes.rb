@@ -584,6 +584,8 @@ Fromthepage::Application.routes.draw do
           patch 'segmentation_setting', on: :member
         end
         resources :ai_transcriptions, only: [:show], controller: 'work/ai_transcriptions'
+        resource :ai_work_metadata, only: [:create], controller: 'work/ai_work_metadata'
+        resources :ai_work_metadata, only: [:show], controller: 'work/ai_work_metadata'
       end
 
       get ':work_id/about', param: :work_id, as: :work_about, to: 'work#show'
