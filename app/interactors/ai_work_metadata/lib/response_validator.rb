@@ -64,7 +64,7 @@ class AiWorkMetadata::Lib::ResponseValidator
   def validate_select(field, value)
     return unless field.options.present?
 
-    valid_options = parse_options(field.options)
+    valid_options = AiWorkMetadata::Lib::FieldOptionParser.parse(field.options)
     return if valid_options.include?(value.to_s)
 
     @errors << "Field \"#{field.label}\" (#{field.id}): invalid select value \"#{value}\", " \
@@ -79,18 +79,11 @@ class AiWorkMetadata::Lib::ResponseValidator
 
     return unless field.options.present?
 
-    valid_options = parse_options(field.options)
+    valid_options = AiWorkMetadata::Lib::FieldOptionParser.parse(field.options)
     invalid_values = value.map(&:to_s) - valid_options
     return if invalid_values.empty?
 
     @errors << "Field \"#{field.label}\" (#{field.id}): invalid multiselect value(s) \"#{invalid_values.join(', ')}\", " \
                "expected one of: #{valid_options.join(', ')}"
-  end
-
-  def parse_options(options_text)
-    return [] if options_text.blank?
-    JSON.parse(options_text)
-  rescue JSON::ParserError
-    options_text.split(/[;,\n]/).map(&:strip).reject(&:blank?)
   end
 end

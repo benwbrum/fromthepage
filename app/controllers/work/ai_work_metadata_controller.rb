@@ -2,7 +2,7 @@ class Work::AiWorkMetadataController < WorkController
   before_action :authorized?
 
   def show
-    @ai_work_metadata = AiWorkMetadata.where(work_id: @work.id).find(params[:id])
+    @ai_work_metadata = @work.ai_work_metadata.find(params[:id])
   end
 
   def create

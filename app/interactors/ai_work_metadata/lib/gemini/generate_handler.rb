@@ -14,7 +14,7 @@ class AiWorkMetadata::Lib::Gemini::GenerateHandler
 
   REASONING_MAP = {
     'gemini-3.1-pro-preview' => true
-  }
+  }.freeze
 
   def initialize(prompt:, model:)
     @prompt = prompt
@@ -51,9 +51,6 @@ class AiWorkMetadata::Lib::Gemini::GenerateHandler
         raise e
       end
     end
-  rescue => e
-    Rails.logger.error("Gemini API error: #{sanitized_message(e)}")
-    raise e
   end
 
   private

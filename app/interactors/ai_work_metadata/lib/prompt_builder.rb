@@ -55,7 +55,7 @@ class AiWorkMetadata::Lib::PromptBuilder
   def format_field(field)
     desc = "- #{field.id} \"#{field.label}\" (#{field.input_type})"
     if %w[select multiselect].include?(field.input_type)
-      opts = parse_options(field.options)
+      opts = AiWorkMetadata::Lib::FieldOptionParser.parse(field.options)
       desc += ", options: [#{opts.join(', ')}]" if opts.any?
     end
     desc
@@ -70,20 +70,13 @@ class AiWorkMetadata::Lib::PromptBuilder
     case field.input_type
     when 'date' then 'YYYY-MM-DD'
     when 'select'
-      opts = parse_options(field.options)
+      opts = AiWorkMetadata::Lib::FieldOptionParser.parse(field.options)
       opts.first || 'option_value'
     when 'multiselect'
-      opts = parse_options(field.options)
+      opts = AiWorkMetadata::Lib::FieldOptionParser.parse(field.options)
       opts.first(1).presence || ['option_value']
     else
       'extracted text'
     end
-  end
-
-  def parse_options(options_text)
-    return [] if options_text.blank?
-    JSON.parse(options_text)
-  rescue JSON::ParserError
-    options_text.split(/[;,\n]/).map(&:strip).reject(&:blank?)
   end
 end
