@@ -161,7 +161,7 @@ describe 'owner actions' do
     visit collection_path(collection.owner, collection)
     page.find('.tabs').click_link('Subjects')
     expect(page).to have_content('Places')
-    page.find('a.tree-item', text: 'Places').click
+    page.find('a.tree-item', text: 'Places', wait: 10, match: :first).click
 
     page.find(category_selector).find('dl.dropdown.right dt.h5', text: 'Actions', match: :first).click
     page.find(category_selector).find('a', text: 'Enable GIS').click
@@ -172,7 +172,7 @@ describe 'owner actions' do
     fill_in 'category_title', with: 'Child GIS'
     click_button('Create Category')
 
-    page.find('a.tree-item', text: 'Places').click
+    page.find('a.tree-item', text: 'Places', wait: 10, match: :first).click
     page.find(category_selector).find('dl.dropdown.right dt.h5', text: 'Actions', match: :first).click
     page.find(category_selector).find('a', text: 'Disable GIS').click
     expect(page.find('.flash_message')).to have_content('GIS disabled for Places and 1 child category')
@@ -182,7 +182,7 @@ describe 'owner actions' do
     fill_in 'category_title', with: 'Child GIS-2'
     click_button('Create Category')
 
-    page.find('a.tree-item', text: 'Places').click
+    page.find('a.tree-item', text: 'Places', wait: 10, match: :first).click
     page.find(category_selector).find('dl.dropdown.right dt.h5', text: 'Actions', match: :first).click
     page.find(category_selector).find('a', text: 'Enable GIS').click
     expect(page.find('.flash_message')).to have_content('GIS enabled for Places and 2 child categories')
