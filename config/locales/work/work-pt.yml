@@ -1,6 +1,9 @@
 ---
 pt:
   work:
+    ai_metadata:
+      description: Esta obra tem metadados rascunhados por IA abaixo. Os proprietários do projeto podem revisar e usar esses rascunhos na aba Configurações.
+      heading: Rascunho de Metadados de IA
     ai_transcriptions:
       create:
         success: Vaga de transcrição por IA aberta.

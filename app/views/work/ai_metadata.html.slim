@@ -1,0 +1,7 @@
+=render partial: '/shared/work_tabs', locals: { selected: 10 }
+
+.collection-meta-wrapper
+  #work-ai-metadata
+    h2 =t('.heading')
+    p.fgfaded =t('.description')
+    =render partial: 'work/ai_metadata_draft_engines', locals: { engines: @finished_ai_work_metadata_by_engine, collection: @collection }

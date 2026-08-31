@@ -75,6 +75,17 @@ class WorkController < ApplicationController
     @metadata_array = JSON.parse(@work.metadata_description || '[]')
   end
 
+  def ai_metadata
+    if !@work.ai_metadata_draft_available? ||
+      (@collection.ai_draft_disabled && !(user_signed_in? && current_user.like_owner?(@collection)))
+      redirect_to collection_work_about_path(@collection.owner, @collection, @work)
+
+      return
+    end
+
+    @finished_ai_work_metadata_by_engine = @work.finished_ai_work_metadata_by_engine
+  end
+
   def needs_review_checkbox_checked
     params[:work] && params[:work]['needs_review'] == '1'
   end

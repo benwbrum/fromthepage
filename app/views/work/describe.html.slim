@@ -94,22 +94,7 @@
         -if @work.ai_metadata_draft_available?
           .page-ai
             h5= t('.ai_metadata_draft')
-            -@work.finished_ai_work_metadata_by_engine.each do |engine, ai_work_metadata|
-              .page-ai_engine
-                h6= t('.ai_model', model: ai_work_metadata.model)
-                -if ai_work_metadata.metadata_json.present?
-                  -@collection.metadata_fields.order(:line_number, :position).each do |field|
-                    -value = ai_work_metadata.metadata_json[field.id.to_s]
-                    -next if value.nil?
-                    p
-                      b ="#{field.label}: "
-                      =value.is_a?(Array) ? value.join(', ') : value
-                -if ai_work_metadata.reasoning.present?
-                  details
-                    summary =t('.ai_reasoning')
-                    p ==simple_format(ai_work_metadata.reasoning)
-                -if ai_work_metadata.metadata.is_a?(Hash) && ai_work_metadata.metadata['total_token_count'].present?
-                  p.fgfaded =t('.ai_tokens_used', count: ai_work_metadata.metadata['total_token_count'])
+            =render partial: 'work/ai_metadata_draft_engines', locals: { engines: @work.finished_ai_work_metadata_by_engine, collection: @collection }
 
 
       .splitter(id="splitter")

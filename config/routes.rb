@@ -593,6 +593,7 @@ Fromthepage::Application.routes.draw do
       get ':work_id/about', param: :work_id, as: :work_about, to: 'work#show'
       get ':work_id/contents', param: :work_id, as: :work_contents, to: 'display#list_pages'
       get ':work_id/help', param: :work_id, as: :work_help, to: 'static#transcribe_help'
+      get ':work_id/ai_metadata', param: :work_id, as: :work_ai_metadata, to: 'work#ai_metadata'
       get ':work_id/export/plaintext/searchable', as: 'work_export_plaintext_searchable', to: 'export#work_plaintext_searchable'
       get ':work_id/export/plaintext/verbatim', as: 'work_export_plaintext_verbatim', to: 'export#work_plaintext_verbatim'
       get ':work_id/export/plaintext/emended', as: 'work_export_plaintext_emended', to: 'export#work_plaintext_emended'

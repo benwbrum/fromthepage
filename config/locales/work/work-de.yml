@@ -1,6 +1,9 @@
 ---
 de:
   work:
+    ai_metadata:
+      description: Für dieses Werk liegen unten von KI erstellte Metadatenentwürfe vor. Projektinhaber können diese Entwürfe im Reiter Einstellungen überprüfen und verwenden.
+      heading: KI-Metadatenentwurf
     ai_transcriptions:
       create:
         success: KI-Transkriptionsauftrag gestartet.

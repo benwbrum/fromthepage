@@ -1,6 +1,9 @@
 ---
 es:
   work:
+    ai_metadata:
+      description: Esta obra tiene metadatos redactados por IA a continuación. Los propietarios del proyecto pueden revisar y usar estos borradores desde la pestaña Configuración.
+      heading: Borrador de Metadatos de IA
     ai_transcriptions:
       create:
         success: Se ha lanzado un servicio de transcripción con IA.

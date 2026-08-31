@@ -1,6 +1,9 @@
 ---
 en:
   work:
+    ai_metadata:
+      description: This work has AI-drafted metadata below. Project owners can review and use these drafts from the Settings tab.
+      heading: AI Metadata Draft
     ai_transcriptions:
       create:
         success: AI transcription job launched.
