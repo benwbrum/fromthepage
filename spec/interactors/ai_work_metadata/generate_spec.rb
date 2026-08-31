@@ -24,6 +24,7 @@ describe AiWorkMetadata::Generate do
     Current.user = owner
     allow_any_instance_of(AiWorkMetadata::Lib::Gemini::GenerateHandler).to receive(:perform).and_return(handler_response)
     allow_any_instance_of(AiWorkMetadata::Lib::Claude::GenerateHandler).to receive(:perform).and_return(handler_response)
+    allow_any_instance_of(AiWorkMetadata::Lib::OpenAi::GenerateHandler).to receive(:perform).and_return(handler_response)
   end
 
   context 'when the response is valid JSON matching the expected fields' do
@@ -40,6 +41,16 @@ describe AiWorkMetadata::Generate do
     let(:model) { 'claude-sonnet-4-6' }
 
     it 'uses the claude handler' do
+      expect(result.success?).to be_truthy
+      ai_work_metadata.reload
+      expect(ai_work_metadata.metadata_json).to eq({ text_field.id.to_s => 'A great title' })
+    end
+  end
+
+  context 'when the model is an openai model' do
+    let(:model) { 'gpt-4o' }
+
+    it 'uses the openai handler' do
       expect(result.success?).to be_truthy
       ai_work_metadata.reload
       expect(ai_work_metadata.metadata_json).to eq({ text_field.id.to_s => 'A great title' })

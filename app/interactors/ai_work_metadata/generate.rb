@@ -53,8 +53,11 @@ class AiWorkMetadata::Generate < ApplicationInteractor
   end
 
   def handler_class
-    if @ai_work_metadata.model.start_with?('claude')
+    case @ai_work_metadata.engine
+    when 'claude'
       AiWorkMetadata::Lib::Claude::GenerateHandler
+    when 'openai'
+      AiWorkMetadata::Lib::OpenAi::GenerateHandler
     else
       AiWorkMetadata::Lib::Gemini::GenerateHandler
     end

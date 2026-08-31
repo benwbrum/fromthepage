@@ -63,7 +63,12 @@ class AiWorkMetadata < ApplicationRecord
   end
 
   def self.engine_for_model(model)
-    model.to_s.start_with?('claude') ? 'claude' : 'gemini'
+    model_name = model.to_s
+
+    return 'claude' if model_name.start_with?('claude')
+    return 'openai' if model_name.start_with?('gpt', 'o1', 'o3', 'o4', 'chatgpt')
+
+    'gemini'
   end
 
   CollectionStats = Struct.new(

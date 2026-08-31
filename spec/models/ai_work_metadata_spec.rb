@@ -13,15 +13,32 @@ RSpec.describe AiWorkMetadata, type: :model do
       ai_work_metadata.model = 'claude-sonnet-4-6'
       expect(ai_work_metadata.engine).to eq('claude')
     end
+
+    it 'returns openai for openai models' do
+      ai_work_metadata.model = 'gpt-4o'
+      expect(ai_work_metadata.engine).to eq('openai')
+    end
   end
 
   describe '.engine_for_model' do
-    it 'returns gemini for non-claude models' do
-      expect(described_class.engine_for_model('gpt-4')).to eq('gemini')
+    it 'returns gemini for unrecognized models' do
+      expect(described_class.engine_for_model('some-unknown-model')).to eq('gemini')
     end
 
     it 'returns claude for claude-prefixed models' do
       expect(described_class.engine_for_model('claude-opus-4-6')).to eq('claude')
+    end
+
+    it 'returns openai for gpt-prefixed models' do
+      expect(described_class.engine_for_model('gpt-4o')).to eq('openai')
+    end
+
+    it 'returns openai for o-series reasoning models' do
+      expect(described_class.engine_for_model('o3-mini')).to eq('openai')
+    end
+
+    it 'returns openai for chatgpt-prefixed models' do
+      expect(described_class.engine_for_model('chatgpt-4o-latest')).to eq('openai')
     end
   end
 
