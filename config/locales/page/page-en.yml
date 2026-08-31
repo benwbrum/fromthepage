@@ -1,6 +1,9 @@
 ---
 en:
   page:
+    create_ai_transcription:
+      ai_draft_queued: AI Draft has been queued for this page
+      ai_draft_failed: Failed to queue AI Draft for this page
     create:
       page_created: Page created successfully
     destroy:
@@ -40,6 +43,7 @@ en:
       page_translation_status: Page Translation Status
       rotate_clockwise: Rotate Clockwise
       rotate_counterclockwise: Rotate Counterclockwise
+      run_ai_draft: Run AI Draft
       save_changes: Save Changes
     new:
       add_new_page: Add New Page
