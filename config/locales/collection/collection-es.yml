@@ -22,6 +22,31 @@ es:
         total_tokens_used: Total de tokens utilizados
       update:
         success: Reintentando el trabajo de transcripción de IA.
+    ai_work_metadata:
+      create:
+        success: Se ha lanzado un trabajo de borrador de metadatos con IA.
+      form:
+        description: Inicia trabajos de borrador de metadatos con IA para las obras que no los tengan.
+        description_complete: Todas las obras de esta colección tienen borradores de metadatos con IA.
+        failed: Fallido
+        failed_work_metadata_errors: Errores de borrador de metadatos fallidos
+        failed_work_metadata_errors_hidden: No se muestran los errores de borrador de metadatos adicionales %{count}.
+        finished: Finalizado
+        generate: Crea borradores de metadatos con IA para las obras que no los tengan.
+        heading: Borrador de metadatos con IA
+        in_progress: En curso
+        no_metadata_fields: Configure los campos de metadatos en Configuración de tareas antes de generar borradores de metadatos con IA.
+        not_started: No iniciado
+        queued: En cola
+        total_tokens_used: Total de tokens utilizados
+        works: Obras
+      show:
+        back: Volver a la configuración de IA
+        fields_heading: Campos del borrador
+        heading: 'Borrador de metadatos con IA (%{model}): %{work}'
+        reasoning_heading: Razonamiento
+        status: 'Estado: %{status}'
+        tokens_used: 'Tokens utilizados: %{count}'
     approve_all:
       approved_n_pages: "%{page_count} páginas aprobadas."
     blank_collection:

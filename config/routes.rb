@@ -531,6 +531,8 @@ Fromthepage::Application.routes.draw do
       scope module: :collection do
         resource :ai_transcriptions, only: [:edit, :create, :update]
         resources :ai_transcriptions, only: [:show], controller: 'ai_transcriptions'
+        resource :ai_work_metadata, only: [:create], controller: 'ai_work_metadata'
+        resources :ai_work_metadata, only: [:show], controller: 'ai_work_metadata'
       end
 
       get 'edit/danger', on: :member, to: 'collection#edit_danger'
@@ -584,11 +586,14 @@ Fromthepage::Application.routes.draw do
           patch 'segmentation_setting', on: :member
         end
         resources :ai_transcriptions, only: [:show], controller: 'work/ai_transcriptions'
+        resource :ai_work_metadata, only: [:create], controller: 'work/ai_work_metadata'
+        resources :ai_work_metadata, only: [:show], controller: 'work/ai_work_metadata'
       end
 
       get ':work_id/about', param: :work_id, as: :work_about, to: 'work#show'
       get ':work_id/contents', param: :work_id, as: :work_contents, to: 'display#list_pages'
       get ':work_id/help', param: :work_id, as: :work_help, to: 'static#transcribe_help'
+      get ':work_id/ai_metadata', param: :work_id, as: :work_ai_metadata, to: 'work#ai_metadata'
       get ':work_id/export/plaintext/searchable', as: 'work_export_plaintext_searchable', to: 'export#work_plaintext_searchable'
       get ':work_id/export/plaintext/verbatim', as: 'work_export_plaintext_verbatim', to: 'export#work_plaintext_verbatim'
       get ':work_id/export/plaintext/emended', as: 'work_export_plaintext_emended', to: 'export#work_plaintext_emended'

@@ -1,6 +1,9 @@
 ---
 es:
   work:
+    ai_metadata:
+      description: Esta obra tiene metadatos redactados por IA a continuación. Los propietarios del proyecto pueden revisar y usar estos borradores desde la pestaña Configuración.
+      heading: Borrador de Metadatos de IA
     ai_transcriptions:
       create:
         success: Se ha lanzado un servicio de transcripción con IA.
@@ -33,6 +36,22 @@ es:
         success: Configuración de segmentación guardada.
       update:
         success: Reintentando la tarea de transcripción de IA.
+    ai_work_metadata:
+      create:
+        success: Se ha lanzado un trabajo de borrador de metadatos con IA.
+      form:
+        description: Genera borradores de IA de los metadatos de esta obra usando Gemini y Claude.
+        drafts_heading: Borradores
+        generate: Generar borrador de metadatos con IA
+        heading: Borrador de metadatos con IA
+        no_metadata_fields: Configure los campos de metadatos en Configuración de tareas antes de generar borradores de metadatos con IA.
+      show:
+        back: Volver a la configuración de IA
+        fields_heading: Campos del borrador
+        heading: Borrador de metadatos con IA (%{model})
+        reasoning_heading: Razonamiento
+        status: 'Estado: %{status}'
+        tokens_used: 'Tokens utilizados: %{count}'
     configurable_printout:
       description: Exportar esta obra en un formato imprimible
       export: Exportar
@@ -55,6 +74,13 @@ es:
     delete:
       success: Obra eliminado correctamente
     describe:
+      ai: IA
+      ai_draft_fields: Borrador de IA
+      ai_draft_fields_tooltip: Copiar metadatos generados por IA en los campos
+      ai_metadata_draft: Borrador de metadatos de IA
+      ai_model: "%{model}"
+      ai_reasoning: Razonamiento
+      ai_tokens_used: "%{count} tokens usados"
       always_show_fullscreen: Mostrar siempre pantalla completa
       approve: Aprobar
       approve_to_transcribed_tooltip: Guardar y aprobar estos metadatos

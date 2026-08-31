@@ -1,0 +1,6 @@
+<% if @result.success? %>
+  <%= turbo_flash(t('.success'), :notice) %>
+<% else %>
+  <%= turbo_flash(t('errors.error'), :error) %>
+<% end %>
+<%= turbo_stream.update('ai-work-metadata-settings', partial: 'work/ai_work_metadata/form', locals: { collection: @collection, work: @work }) %>

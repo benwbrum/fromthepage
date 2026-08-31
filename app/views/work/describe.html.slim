@@ -28,6 +28,7 @@
                   =svg_symbol "#icon-layout-#{mode}", class: 'icon'
                   span =text
           -view_modes = { 'image' => t('.page_images'), 'transcript' => t('.text'), 'metadata' => t('.metadata') }
+          -view_modes['ai'] = t('.ai') if @work.ai_metadata_draft_available?
           dl.dropdown.page-columns-layout(data-controller='dropdown' data-dropdown-selectable-value='true')
             dt.button.outline
               span.hide-l =t('.view_original')
@@ -35,6 +36,8 @@
               -view_modes.each do |mode, text|
                 a(data-view-set="#{mode}")
                   span =text
+          -if @work.ai_metadata_draft_available? && (!@collection.ai_draft_disabled || current_user.like_owner?(@collection))
+            =button_tag t('.ai_draft_fields'), type: 'button', id: 'ai-draft-metadata-fields', class: 'button outline', title: "#{t('.ai_draft_fields_tooltip')}"
 
         .flex-toolbar_group.hide-m
           label.auto-fullscreen
@@ -88,6 +91,10 @@
         .page-original
           h5= t('.original_metadata')
           .big =raw(html_metadata_from_work(@work))
+        -if @work.ai_metadata_draft_available?
+          .page-ai
+            h5= t('.ai_metadata_draft')
+            =render partial: 'work/ai_metadata_draft_engines', locals: { engines: @work.finished_ai_work_metadata_by_engine, collection: @collection }
 
 
       .splitter(id="splitter")
@@ -194,16 +201,25 @@ h2.legend =t('.notes_and_questions')
             $('.page-image').toggle(true);
             $('.page-preview').toggle(false);
             $('.page-original').toggle(false);
+            $('.page-ai').toggle(false);
             break;
           case 'metadata':
             $('.page-image').toggle(false);
             $('.page-preview').toggle(false);
             $('.page-original').toggle(true);
+            $('.page-ai').toggle(false);
             break;
           case 'transcript':
             $('.page-image').toggle(false);
             $('.page-preview').toggle(true);
             $('.page-original').toggle(false);
+            $('.page-ai').toggle(false);
+            break;
+          case 'ai':
+            $('.page-image').toggle(false);
+            $('.page-preview').toggle(false);
+            $('.page-original').toggle(false);
+            $('.page-ai').toggle(true);
             break;
         };
 
@@ -228,5 +244,6 @@ h2.legend =t('.notes_and_questions')
     $(window).on('load', function() {
       $('.page-preview').toggle(false);
       $('.page-original').toggle(false);
+      $('.page-ai').toggle(false);
     })
 

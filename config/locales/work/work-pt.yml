@@ -1,6 +1,9 @@
 ---
 pt:
   work:
+    ai_metadata:
+      description: Esta obra tem metadados rascunhados por IA abaixo. Os proprietários do projeto podem revisar e usar esses rascunhos na aba Configurações.
+      heading: Rascunho de Metadados de IA
     ai_transcriptions:
       create:
         success: Vaga de transcrição por IA aberta.
@@ -33,6 +36,22 @@ pt:
         success: Configuração de segmentação salva.
       update:
         success: Tentando novamente a tarefa de transcrição por IA.
+    ai_work_metadata:
+      create:
+        success: Trabalho de rascunho de metadados por IA iniciado.
+      form:
+        description: Gere rascunhos de metadados desta obra usando IA com Gemini e Claude.
+        drafts_heading: Rascunhos
+        generate: Gerar rascunho de metadados com IA
+        heading: Rascunho de metadados com IA
+        no_metadata_fields: Configure os campos de metadados em Configuração de tarefas antes de gerar rascunhos de metadados com IA.
+      show:
+        back: Voltar às configurações de IA
+        fields_heading: Campos do rascunho
+        heading: Rascunho de metadados com IA (%{model})
+        reasoning_heading: Raciocínio
+        status: 'Status: %{status}'
+        tokens_used: 'Fichas utilizadas: %{count}'
     configurable_printout:
       description: Exporte esta obra em um formato para impressão
       export: Exportar
@@ -55,6 +74,13 @@ pt:
     delete:
       success: Obra excluído com sucesso
     describe:
+      ai: IA
+      ai_draft_fields: Rascunho de IA
+      ai_draft_fields_tooltip: Copiar metadados gerados por IA para os campos
+      ai_metadata_draft: Rascunho de metadados de IA
+      ai_model: "%{model}"
+      ai_reasoning: Raciocínio
+      ai_tokens_used: "%{count} tokens usados"
       always_show_fullscreen: Sempre mostrar tela cheia
       approve: Aprovar
       approve_to_transcribed_tooltip: Salve e aprove estes metadados

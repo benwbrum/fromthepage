@@ -1,6 +1,9 @@
 ---
 fr:
   work:
+    ai_metadata:
+      description: Cette œuvre dispose ci-dessous de métadonnées rédigées par IA. Les propriétaires du projet peuvent consulter et utiliser ces brouillons depuis l'onglet Réglages.
+      heading: Brouillon de métadonnées par IA
     ai_transcriptions:
       create:
         success: Lancement d'un projet de transcription par IA.
@@ -33,6 +36,22 @@ fr:
         success: Paramètre de segmentation enregistré.
       update:
         success: Nouvelle tentative de transcription par IA.
+    ai_work_metadata:
+      create:
+        success: Tâche de brouillon de métadonnées par IA lancée.
+      form:
+        description: Générer des brouillons de métadonnées de cette œuvre par IA avec Gemini et Claude.
+        drafts_heading: Brouillons
+        generate: Générer un brouillon de métadonnées par IA
+        heading: Brouillon de métadonnées par IA
+        no_metadata_fields: Veuillez configurer les champs de métadonnées dans la configuration des tâches avant de générer des brouillons de métadonnées par IA.
+      show:
+        back: Retour aux paramètres IA
+        fields_heading: Champs du brouillon
+        heading: Brouillon de métadonnées par IA (%{model})
+        reasoning_heading: Raisonnement
+        status: 'Statut : %{status}'
+        tokens_used: 'Jetons utilisés : %{count}'
     configurable_printout:
       description: Exportez cette œuvre dans un format imprimable
       export: Exporter
@@ -55,6 +74,13 @@ fr:
     delete:
       success: Œuvre supprimée avec succès
     describe:
+      ai: IA
+      ai_draft_fields: Brouillon IA
+      ai_draft_fields_tooltip: Copier les métadonnées générées par l'IA dans les champs
+      ai_metadata_draft: Brouillon de métadonnées IA
+      ai_model: "%{model}"
+      ai_reasoning: Raisonnement
+      ai_tokens_used: "%{count} jetons utilisés"
       always_show_fullscreen: Toujours afficher en plein écran
       approve: Approuver
       approve_to_transcribed_tooltip: Enregistrer et approuver ces métadonnées

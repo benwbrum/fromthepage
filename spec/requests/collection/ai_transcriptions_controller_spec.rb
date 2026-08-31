@@ -72,6 +72,21 @@ describe Collection::AiTranscriptionsController do
           expect(response.body).to include(collection_display_page_path(owner, collection, work_2, failed_page))
         end
       end
+
+      context 'with failed ai work metadata' do
+        let!(:metadata_field) { create(:transcription_field, :as_metadata, :text_field, collection_id: collection.id) }
+        let!(:failed_ai_work_metadata) do
+          create(:ai_work_metadata, work_id: work.id, status: :error, metadata: { error_message: 'RECITATION' })
+        end
+
+        it 'renders failed work metadata draft details alongside the transcription section' do
+          login_as owner
+          subject
+
+          expect(response.body).to include('Failed metadata draft errors')
+          expect(response.body).to include('RECITATION')
+        end
+      end
     end
 
     context 'when accessed by non-owner user' do

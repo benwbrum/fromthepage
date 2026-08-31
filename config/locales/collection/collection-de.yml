@@ -22,6 +22,31 @@ de:
         total_tokens_used: Gesamte verwendete Tokens
       update:
         success: KI-Transkriptionsauftrag wird wiederholt.
+    ai_work_metadata:
+      create:
+        success: KI-Metadaten-Entwurfsauftrag gestartet.
+      form:
+        description: Starten Sie KI-Metadatenentwurfsaufträge für Werke ohne diese.
+        description_complete: Alle Werke dieser Sammlung enthalten KI-Metadatenentwürfe.
+        failed: Fehlgeschlagen
+        failed_work_metadata_errors: Fehlgeschlagene Metadatenentwurfsfehler
+        failed_work_metadata_errors_hidden: "%{count} zusätzliche Metadatenentwurfsfehler werden nicht angezeigt."
+        finished: Fertig
+        generate: Erstellen Sie KI-Metadatenentwürfe für Werke ohne diese.
+        heading: KI-Metadatenentwurf
+        in_progress: Im Gange
+        no_metadata_fields: Bitte konfigurieren Sie Metadatenfelder unter Aufgabenkonfiguration, bevor Sie KI-Metadatenentwürfe erstellen.
+        not_started: Nicht gestartet
+        queued: In der Warteschlange
+        total_tokens_used: Gesamte verwendete Tokens
+        works: Werke
+      show:
+        back: Zurück zu KI-Einstellungen
+        fields_heading: Entwurfsfelder
+        heading: 'KI-Metadatenentwurf (%{model}): %{work}'
+        reasoning_heading: Begründung
+        status: 'Status: %{status}'
+        tokens_used: 'Verwendete Token: %{count}'
     approve_all:
       approved_n_pages: Freigegebene %{page_count} Seiten.
     blank_collection:
