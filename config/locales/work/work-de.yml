@@ -71,6 +71,11 @@ de:
     delete:
       success: Werk erfolgreich gelöscht
     describe:
+      ai: KI
+      ai_metadata_draft: KI-Metadatenentwurf
+      ai_model: "%{model}"
+      ai_reasoning: Begründung
+      ai_tokens_used: "%{count} Tokens verwendet"
       always_show_fullscreen: Immer Vollbild anzeigen
       approve: Freigeben
       approve_to_transcribed_tooltip: Diese Metadaten speichern und freigeben

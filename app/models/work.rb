@@ -330,6 +330,20 @@ class Work < ApplicationRecord
       .join("\n\n\n")
   end
 
+  def ai_metadata_draft_available?
+    finished_ai_work_metadata_by_engine.any?
+  end
+
+  # Latest finished AiWorkMetadata per engine (e.g. "gemini", "claude"),
+  # used to display AI-drafted metadata alongside the OSD/text/metadata views.
+  def finished_ai_work_metadata_by_engine
+    @finished_ai_work_metadata_by_engine ||= ai_work_metadata
+      .status_finished
+      .order(created_at: :desc)
+      .group_by(&:engine)
+      .transform_values(&:first)
+  end
+
   def verbatim_translation_plaintext
     self.pages.map { |page| page.verbatim_translation_plaintext }.join("\n\n\n")
   end

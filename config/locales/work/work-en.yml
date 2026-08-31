@@ -71,6 +71,11 @@ en:
     delete:
       success: Work deleted successfully
     describe:
+      ai: AI
+      ai_metadata_draft: AI Metadata Draft
+      ai_model: "%{model}"
+      ai_reasoning: Reasoning
+      ai_tokens_used: "%{count} tokens used"
       always_show_fullscreen: Always show fullscreen
       approve: Approve
       approve_to_transcribed_tooltip: Save and approve this metadata

@@ -71,6 +71,11 @@ pt:
     delete:
       success: Obra excluído com sucesso
     describe:
+      ai: IA
+      ai_metadata_draft: Rascunho de metadados de IA
+      ai_model: "%{model}"
+      ai_reasoning: Raciocínio
+      ai_tokens_used: "%{count} tokens usados"
       always_show_fullscreen: Sempre mostrar tela cheia
       approve: Aprovar
       approve_to_transcribed_tooltip: Salve e aprove estes metadados

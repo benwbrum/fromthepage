@@ -71,6 +71,11 @@ es:
     delete:
       success: Obra eliminado correctamente
     describe:
+      ai: IA
+      ai_metadata_draft: Borrador de metadatos de IA
+      ai_model: "%{model}"
+      ai_reasoning: Razonamiento
+      ai_tokens_used: "%{count} tokens usados"
       always_show_fullscreen: Mostrar siempre pantalla completa
       approve: Aprobar
       approve_to_transcribed_tooltip: Guardar y aprobar estos metadatos

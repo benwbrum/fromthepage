@@ -40,6 +40,48 @@ describe Work do
     end
   end
 
+  describe '#finished_ai_work_metadata_by_engine' do
+    let(:work) { create(:work, owner_user_id: 1) }
+
+    it 'returns an empty hash when there are no finished ai work metadata drafts' do
+      create(:ai_work_metadata, work_id: work.id, status: :new)
+
+      expect(work.finished_ai_work_metadata_by_engine).to eq({})
+      expect(work.ai_metadata_draft_available?).to be false
+    end
+
+    it 'groups the most recent finished draft per engine' do
+      create(
+        :ai_work_metadata,
+        work_id: work.id,
+        model: 'gemini-3.7-flash',
+        status: :finished,
+        created_at: 1.day.ago
+      )
+      latest_gemini = create(
+        :ai_work_metadata,
+        work_id: work.id,
+        model: 'gemini-3.7-flash',
+        status: :finished,
+        created_at: 1.hour.ago
+      )
+      claude_draft = create(
+        :ai_work_metadata,
+        work_id: work.id,
+        model: 'claude-3-5-sonnet',
+        status: :finished
+      )
+      create(:ai_work_metadata, work_id: work.id, model: 'gemini-3.7-flash', status: :error)
+
+      by_engine = work.finished_ai_work_metadata_by_engine
+
+      expect(by_engine.keys).to contain_exactly('gemini', 'claude')
+      expect(by_engine['gemini']).to eq(latest_gemini)
+      expect(by_engine['claude']).to eq(claude_draft)
+      expect(work.ai_metadata_draft_available?).to be true
+    end
+  end
+
   describe '#page_segmentation_enabled?' do
     let(:owner) { create(:unique_user, :owner, segmentation_enabled: true) }
     let(:collection) do
