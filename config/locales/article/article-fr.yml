@@ -22,6 +22,7 @@ fr:
       categories: Catégories
       combine_selected: Combiner la sélection
       confirm_delete_subject: Voulez-vous vraiment supprimer ce sujet ? Après la suppression, vous ne pourrez pas le récupérer !
+      confirm_merge_with_duplicate: Voulez-vous vraiment fusionner ce sujet avec « %{duplicate} » ? Tous les liens seront mis à jour et ce sujet sera supprimé.
       death_date: Date de décès
       delete_subject: Supprimer le sujet
       description: Description
@@ -29,6 +30,8 @@ fr:
       latitude: Latitude
       longitude: Longitude
       microphone: Microphone
+      merge_with_duplicate: Fusionner avec « %{duplicate} »
+      merge_with_duplicate_description: Un sujet nommé « %{duplicate} » existe déjà. Fusionnez ce sujet avec celui-ci pour conserver le sujet existant et réaffecter les liens de ce sujet.
       n_pages:
         one: 1 page
         other: "%{count}pages"

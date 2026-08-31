@@ -22,6 +22,7 @@ pt:
       categories: Categorias
       combine_selected: Combinar selecionado
       confirm_delete_subject: Tem certeza de que deseja excluir este assunto? Após a exclusão, você não poderá recuperá-lo!
+      confirm_merge_with_duplicate: Tem certeza de que deseja mesclar este assunto com “%{duplicate}”? Todos os links serão atualizados e este assunto será excluído.
       death_date: Data da morte
       delete_subject: Excluir assunto
       description: Descrição
@@ -29,6 +30,8 @@ pt:
       latitude: Latitude
       longitude: Longitude
       microphone: Microfone
+      merge_with_duplicate: Mesclar com “%{duplicate}”
+      merge_with_duplicate_description: Já existe um assunto chamado “%{duplicate}”. Mescle este assunto com ele para preservar o assunto existente e remapear os links deste assunto.
       n_pages:
         one: 1 página
         other: "%{count} páginas"

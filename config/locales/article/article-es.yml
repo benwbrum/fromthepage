@@ -22,6 +22,7 @@ es:
       categories: Categorías
       combine_selected: Combinar seleccionado
       confirm_delete_subject: "¿Está seguro de que desea eliminar este asunto? ¡Después de borrar no podrás recuperarlo!"
+      confirm_merge_with_duplicate: ¿Está seguro de que desea combinar este tema con «%{duplicate}»? Todos los enlaces se actualizarán y este tema se eliminará.
       death_date: Fecha de fallecimiento
       delete_subject: Eliminar asunto
       description: Descripción
@@ -29,6 +30,8 @@ es:
       latitude: Latitud
       longitude: Longitud
       microphone: Micrófono
+      merge_with_duplicate: Combinar con «%{duplicate}»
+      merge_with_duplicate_description: Ya existe un tema llamado «%{duplicate}». Combine este tema con él para conservar el tema existente y reasignar los enlaces de este tema.
       n_pages:
         one: 1 página
         other: "%{count} páginas"
