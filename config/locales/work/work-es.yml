@@ -72,6 +72,8 @@ es:
       success: Obra eliminado correctamente
     describe:
       ai: IA
+      ai_draft_fields: Borrador de IA
+      ai_draft_fields_tooltip: Copiar metadatos generados por IA en los campos
       ai_metadata_draft: Borrador de metadatos de IA
       ai_model: "%{model}"
       ai_reasoning: Razonamiento

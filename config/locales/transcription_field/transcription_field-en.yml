@@ -68,6 +68,9 @@ en:
       percentage_title: Percentage of the line width to use for this field.
       percentage_width: Width %
     metadata_field_layout:
+      ai_both_agree: Both AI models agree
+      ai_disagree_header: AI models disagree — review and choose one
+      ai_option_placeholder: Click a suggestion below, or type your own value…
       instructions: Instructions
     multiselect_form:
       options_form_description: Enter options for the multi select metadata field, with each option on a separate line

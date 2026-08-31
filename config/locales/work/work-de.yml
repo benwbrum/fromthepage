@@ -72,6 +72,8 @@ de:
       success: Werk erfolgreich gelöscht
     describe:
       ai: KI
+      ai_draft_fields: KI-Entwurf
+      ai_draft_fields_tooltip: KI-generierte Metadaten in die Felder kopieren
       ai_metadata_draft: KI-Metadatenentwurf
       ai_model: "%{model}"
       ai_reasoning: Begründung

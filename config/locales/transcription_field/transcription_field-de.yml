@@ -68,6 +68,9 @@ de:
       percentage_title: Prozentueller Anteil der zu verwendenden Zeilenbreite für dieses Feld.
       percentage_width: Breite %
     metadata_field_layout:
+      ai_both_agree: Beide KI-Modelle stimmen überein
+      ai_disagree_header: KI-Modelle stimmen nicht überein — prüfen und auswählen
+      ai_option_placeholder: Klicken Sie unten auf einen Vorschlag, oder geben Sie Ihren eigenen Wert ein…
       instructions: Anweisungen
     multiselect_form:
       options_form_description: Geben Sie Optionen für die Mehrfachauswahl dieses Metadatenfeldes ein, wobei jede Option in einer separaten Zeile stehen muss

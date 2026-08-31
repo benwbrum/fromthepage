@@ -68,6 +68,9 @@ pt:
       percentage_title: Percentagem da largura da linha a usar para este campo.
       percentage_width: Largura %
     metadata_field_layout:
+      ai_both_agree: Ambos os modelos de IA concordam
+      ai_disagree_header: Os modelos de IA discordam — revise e escolha um
+      ai_option_placeholder: Clique em uma sugestão abaixo, ou digite seu próprio valor…
       instructions: Instruções
     multiselect_form:
       options_form_description: Insira opções para o campo de metadados de seleção múltipla, com cada opção em uma linha separada

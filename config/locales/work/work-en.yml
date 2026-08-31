@@ -72,6 +72,8 @@ en:
       success: Work deleted successfully
     describe:
       ai: AI
+      ai_draft_fields: AI Draft
+      ai_draft_fields_tooltip: Copy AI-generated metadata into the fields
       ai_metadata_draft: AI Metadata Draft
       ai_model: "%{model}"
       ai_reasoning: Reasoning

@@ -36,6 +36,8 @@
               -view_modes.each do |mode, text|
                 a(data-view-set="#{mode}")
                   span =text
+          -if @work.ai_metadata_draft_available? && (!@collection.ai_draft_disabled || current_user.like_owner?(@collection))
+            =button_tag t('.ai_draft_fields'), type: 'button', id: 'ai-draft-metadata-fields', class: 'button outline', title: "#{t('.ai_draft_fields_tooltip')}"
 
         .flex-toolbar_group.hide-m
           label.auto-fullscreen

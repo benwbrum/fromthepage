@@ -72,6 +72,8 @@ pt:
       success: Obra excluído com sucesso
     describe:
       ai: IA
+      ai_draft_fields: Rascunho de IA
+      ai_draft_fields_tooltip: Copiar metadados gerados por IA para os campos
       ai_metadata_draft: Rascunho de metadados de IA
       ai_model: "%{model}"
       ai_reasoning: Raciocínio

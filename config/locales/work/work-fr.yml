@@ -72,6 +72,8 @@ fr:
       success: Œuvre supprimée avec succès
     describe:
       ai: IA
+      ai_draft_fields: Brouillon IA
+      ai_draft_fields_tooltip: Copier les métadonnées générées par l'IA dans les champs
       ai_metadata_draft: Brouillon de métadonnées IA
       ai_model: "%{model}"
       ai_reasoning: Raisonnement
