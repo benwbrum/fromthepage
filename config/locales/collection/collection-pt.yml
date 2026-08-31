@@ -22,6 +22,31 @@ pt:
         total_tokens_used: Total de tokens utilizados
       update:
         success: Tentando novamente a tarefa de transcrição por IA.
+    ai_work_metadata:
+      create:
+        success: Trabalho de rascunho de metadados por IA iniciado.
+      form:
+        description: Inicie trabalhos de rascunho de metadados com IA para obras que não os possuem.
+        description_complete: Todas as obras desta coleção possuem rascunhos de metadados com IA.
+        failed: Fracassado
+        failed_work_metadata_errors: Erros de rascunho de metadados
+        failed_work_metadata_errors_hidden: "%{count} erros adicionais de rascunho de metadados não são exibidos."
+        finished: Finalizado
+        generate: Crie rascunhos de metadados com IA para obras que não os possuem.
+        heading: Rascunho de metadados com IA
+        in_progress: Em andamento
+        no_metadata_fields: Configure os campos de metadados em Configuração de tarefas antes de gerar rascunhos de metadados com IA.
+        not_started: Não iniciado
+        queued: Em fila
+        total_tokens_used: Total de tokens utilizados
+        works: Obras
+      show:
+        back: Voltar às configurações de IA
+        fields_heading: Campos do rascunho
+        heading: 'Rascunho de metadados com IA (%{model}): %{work}'
+        reasoning_heading: Raciocínio
+        status: 'Status: %{status}'
+        tokens_used: 'Fichas utilizadas: %{count}'
     approve_all:
       approved_n_pages: Páginas %{page_count} aprovadas.
     blank_collection:

@@ -83,7 +83,9 @@ RSpec.describe I18n do
         'collection.ai_transcriptions.update.success', # "AI transcription job",
         'work.ai_transcriptions.form.retry', # "retry failed jobs"
         'work.ai_transcriptions.segment.success', # "segmentation job" (background job, not literary work)
-        'work.ai_work_metadata.create.success' # "AI metadata draft job" (background job, not literary work)
+        'work.ai_work_metadata.create.success', # "AI metadata draft job" (background job, not literary work)
+        'collection.ai_work_metadata.create.success', # "AI metadata draft job" (background job, not literary work)
+        'collection.ai_work_metadata.form.description' # "AI metadata draft job" (background job, not literary work)
       ]
     end
 

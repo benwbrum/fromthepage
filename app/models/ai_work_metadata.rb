@@ -26,6 +26,13 @@ class AiWorkMetadata < ApplicationRecord
   self.table_name = 'ai_work_metadata'
 
   DEFAULT_MODEL = 'gemini-3.7-flash'
+  MAX_FAILED_ERRORS = 100
+  FE_COLOR_STATUSES = {
+    finished: '#6C2',
+    in_progress: '#F0E68C',
+    failed: '#CC4444',
+    not_started: '#FFFFFF'
+  }.freeze
 
   belongs_to :work
   has_one :collection, through: :work
@@ -57,6 +64,58 @@ class AiWorkMetadata < ApplicationRecord
 
   def self.engine_for_model(model)
     model.to_s.start_with?('claude') ? 'claude' : 'gemini'
+  end
+
+  CollectionStats = Struct.new(
+    :works_count, :ai_work_metadata_count, :queued_count, :finished_count,
+    :failed_count, :not_started_count, :failed_records, :failed_hidden_count,
+    :total_token_count,
+    keyword_init: true
+  )
+
+  def self.stats_for_collection(collection)
+    works = collection.works.reorder(nil)
+
+    latest_per_work = where(work_id: works.select(:id))
+      .select('MAX(id) AS id')
+      .group(:work_id)
+
+    latest_ai_work_metadata = joins("INNER JOIN (#{latest_per_work.to_sql}) latest ON latest.id = ai_work_metadata.id")
+
+    ai_work_metadata_count, new_count, processing_count, finished_count, error_count =
+      latest_ai_work_metadata.pick(
+        Arel.sql('COUNT(*)'),
+        Arel.sql("SUM(CASE WHEN ai_work_metadata.status = 'new' THEN 1 ELSE 0 END)"),
+        Arel.sql("SUM(CASE WHEN ai_work_metadata.status = 'processing' THEN 1 ELSE 0 END)"),
+        Arel.sql("SUM(CASE WHEN ai_work_metadata.status = 'finished' THEN 1 ELSE 0 END)"),
+        Arel.sql("SUM(CASE WHEN ai_work_metadata.status = 'error' THEN 1 ELSE 0 END)")
+      )
+
+    works_count = works.count
+    ai_work_metadata_count = ai_work_metadata_count.to_i
+    failed_count = error_count.to_i
+
+    failed_records = latest_ai_work_metadata
+      .where(status: :error)
+      .includes(:work)
+      .order(updated_at: :desc)
+      .limit(MAX_FAILED_ERRORS)
+
+    total_token_count = latest_ai_work_metadata
+      .where(status: :finished)
+      .sum("COALESCE(JSON_EXTRACT(metadata, '$.total_token_count'), 0)")
+
+    CollectionStats.new(
+      works_count: works_count,
+      ai_work_metadata_count: ai_work_metadata_count,
+      queued_count: new_count.to_i + processing_count.to_i,
+      finished_count: finished_count.to_i,
+      failed_count: failed_count,
+      not_started_count: works_count - ai_work_metadata_count,
+      failed_records: failed_records,
+      failed_hidden_count: [0, failed_count - failed_records.size].max,
+      total_token_count: total_token_count
+    )
   end
 
   def error_message

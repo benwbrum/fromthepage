@@ -3,6 +3,7 @@ class Collection::AiTranscriptionsController < CollectionController
 
   def edit
     calculate_counts
+    assign_work_metadata_stats
   end
 
   def show
@@ -48,6 +49,19 @@ class Collection::AiTranscriptionsController < CollectionController
   end
 
   private
+
+  def assign_work_metadata_stats
+    stats = AiWorkMetadata.stats_for_collection(@collection)
+
+    @ai_work_metadata_count = stats.ai_work_metadata_count
+    @queued_work_metadata_count = stats.queued_count
+    @finished_work_metadata_count = stats.finished_count
+    @failed_work_metadata_count = stats.failed_count
+    @not_started_work_metadata_count = stats.not_started_count
+    @failed_ai_work_metadata = stats.failed_records
+    @failed_ai_work_metadata_hidden_count = stats.failed_hidden_count
+    @total_work_metadata_token_count = stats.total_token_count
+  end
 
   def calculate_counts
     collection_pages = Page

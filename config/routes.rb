@@ -531,6 +531,8 @@ Fromthepage::Application.routes.draw do
       scope module: :collection do
         resource :ai_transcriptions, only: [:edit, :create, :update]
         resources :ai_transcriptions, only: [:show], controller: 'ai_transcriptions'
+        resource :ai_work_metadata, only: [:create], controller: 'ai_work_metadata'
+        resources :ai_work_metadata, only: [:show], controller: 'ai_work_metadata'
       end
 
       get 'edit/danger', on: :member, to: 'collection#edit_danger'
