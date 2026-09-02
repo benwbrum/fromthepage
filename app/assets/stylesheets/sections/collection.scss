@@ -470,6 +470,12 @@
   border-left: 1px solid rgba(#000, 0.15);
 }
 
+#ai-work-metadata-settings {
+  margin-top: $gapSize;
+  padding-top: $gapSize;
+  border-top: 2px solid rgba(#000, 0.15);
+}
+
 .collection-settings {
   border-collapse: separate;
   border-spacing: 0.25em 0.5em;
