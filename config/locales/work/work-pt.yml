@@ -2,6 +2,14 @@
 pt:
   work:
     ai_metadata:
+      generated_with: Gerado com %{model}
+      imported_metadata: Metadados importados
+      reasoning: Raciocínio
+      select_model: Selecionar modelo de IA
+      source_material: Material de origem
+      token_usage: Uso de tokens
+      tokens_used: '%{count} tokens usados'
+      view_source: Ver fonte
       description: Esta obra tem metadados rascunhados por IA abaixo. Os proprietários do projeto podem revisar e usar esses rascunhos na aba Configurações.
       heading: Rascunho de Metadados de IA
     ai_transcriptions:

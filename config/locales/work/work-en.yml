@@ -2,6 +2,14 @@
 en:
   work:
     ai_metadata:
+      generated_with: Generated with %{model}
+      imported_metadata: Imported Metadata
+      reasoning: Reasoning
+      select_model: Select AI model
+      source_material: Source Material
+      token_usage: Token Usage
+      tokens_used: '%{count} tokens used'
+      view_source: View source
       description: This work has AI-drafted metadata below. Project owners can review and use these drafts from the Settings tab.
       heading: AI Metadata Draft
     ai_transcriptions:

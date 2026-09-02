@@ -28,7 +28,6 @@
                   =svg_symbol "#icon-layout-#{mode}", class: 'icon'
                   span =text
           -view_modes = { 'image' => t('.page_images'), 'transcript' => t('.text'), 'metadata' => t('.metadata') }
-          -view_modes['ai'] = t('.ai') if @work.ai_metadata_draft_available?
           dl.dropdown.page-columns-layout(data-controller='dropdown' data-dropdown-selectable-value='true')
             dt.button.outline
               span.hide-l =t('.view_original')
@@ -91,12 +90,6 @@
         .page-original
           h5= t('.original_metadata')
           .big =raw(html_metadata_from_work(@work))
-        -if @work.ai_metadata_draft_available?
-          .page-ai
-            h5= t('.ai_metadata_draft')
-            =render partial: 'work/ai_metadata_draft_engines', locals: { engines: @work.finished_ai_work_metadata_by_engine, collection: @collection }
-
-
       .splitter(id="splitter")
       .page-column(id="rightColumn")
         -if @collection.description_instructions.present?
@@ -215,12 +208,6 @@ h2.legend =t('.notes_and_questions')
             $('.page-original').toggle(false);
             $('.page-ai').toggle(false);
             break;
-          case 'ai':
-            $('.page-image').toggle(false);
-            $('.page-preview').toggle(false);
-            $('.page-original').toggle(false);
-            $('.page-ai').toggle(true);
-            break;
         };
 
       });
@@ -244,6 +231,4 @@ h2.legend =t('.notes_and_questions')
     $(window).on('load', function() {
       $('.page-preview').toggle(false);
       $('.page-original').toggle(false);
-      $('.page-ai').toggle(false);
     })
-

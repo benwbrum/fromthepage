@@ -2,6 +2,14 @@
 es:
   work:
     ai_metadata:
+      generated_with: Generado con %{model}
+      imported_metadata: Metadatos importados
+      reasoning: Razonamiento
+      select_model: Seleccionar modelo de IA
+      source_material: Material de origen
+      token_usage: Uso de tokens
+      tokens_used: '%{count} tokens usados'
+      view_source: Ver fuente
       description: Esta obra tiene metadatos redactados por IA a continuación. Los propietarios del proyecto pueden revisar y usar estos borradores desde la pestaña Configuración.
       heading: Borrador de Metadatos de IA
     ai_transcriptions:

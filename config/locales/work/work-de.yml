@@ -2,6 +2,14 @@
 de:
   work:
     ai_metadata:
+      generated_with: Erstellt mit %{model}
+      imported_metadata: Importierte Metadaten
+      reasoning: Begründung
+      select_model: KI-Modell auswählen
+      source_material: Quellmaterial
+      token_usage: Token-Verwendung
+      tokens_used: '%{count} Token verwendet'
+      view_source: Quelle anzeigen
       description: Für dieses Werk liegen unten von KI erstellte Metadatenentwürfe vor. Projektinhaber können diese Entwürfe im Reiter Einstellungen überprüfen und verwenden.
       heading: KI-Metadatenentwurf
     ai_transcriptions:

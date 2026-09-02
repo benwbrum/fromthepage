@@ -2,6 +2,14 @@
 fr:
   work:
     ai_metadata:
+      generated_with: Généré avec %{model}
+      imported_metadata: Métadonnées importées
+      reasoning: Raisonnement
+      select_model: Sélectionner le modèle d’IA
+      source_material: Documents sources
+      token_usage: Utilisation des jetons
+      tokens_used: '%{count} jetons utilisés'
+      view_source: Afficher la source
       description: Cette œuvre dispose ci-dessous de métadonnées rédigées par IA. Les propriétaires du projet peuvent consulter et utiliser ces brouillons depuis l'onglet Réglages.
       heading: Brouillon de métadonnées par IA
     ai_transcriptions:
