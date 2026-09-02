@@ -435,7 +435,7 @@ http_interactions:
   recorded_at: Tue, 21 Oct 2025 19:03:03 GMT
 - request:
     method: get
-    uri: http://ia601909.us.archive.org/8/items/lettertodeargarr00mays/39999066769967_scandata.xml
+    uri: https://archive.org/download/lettertodeargarr00mays/39999066769967_scandata.xml
     body:
       encoding: US-ASCII
       string: ''
@@ -990,7 +990,7 @@ http_interactions:
   recorded_at: Tue, 21 Oct 2025 19:03:05 GMT
 - request:
     method: get
-    uri: http://ia601909.us.archive.org/8/items/lettertodeargarr00mays/39999066769967_djvu.xml
+    uri: https://archive.org/download/lettertodeargarr00mays/39999066769967_djvu.xml
     body:
       encoding: US-ASCII
       string: ''
