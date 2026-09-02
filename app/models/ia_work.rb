@@ -84,8 +84,8 @@ class IaWork < ApplicationRecord
   end
 
   def archive_download_url(filename)
-    identifier_segment = CGI.escape(self[:book_id].to_s).tr('+', '%20')
-    filename_segment = CGI.escape(filename.to_s).tr('+', '%20')
+    identifier_segment = CGI.escape(self[:book_id].to_s).gsub('+', '%20')
+    filename_segment = CGI.escape(filename.to_s).gsub('+', '%20')
 
     "https://archive.org/download/#{identifier_segment}/#{filename_segment}"
   end

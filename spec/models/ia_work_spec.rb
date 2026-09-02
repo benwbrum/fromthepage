@@ -9,6 +9,15 @@ RSpec.describe IaWork, type: :model do
         'https://archive.org/download/book%20id/scan%20data%2F01%20%231.xml'
       )
     end
+
+    it 'encodes spaces as complete percent escapes accepted by URI parsing' do
+      work = described_class.new(book_id: 'ms-500-full')
+
+      url = work.archive_download_url('MS500 Full_scandata.xml')
+
+      expect(url).to eq('https://archive.org/download/ms-500-full/MS500%20Full_scandata.xml')
+      expect { URI.parse(url) }.not_to raise_error
+    end
   end
 
   describe '#ingest_work' do
