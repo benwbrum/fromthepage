@@ -297,10 +297,12 @@ describe ArticleController do
         login_as owner
         subject
 
+        rendered_page = Capybara.string(response.body)
+
         expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.body).to have_css('h1', text: 'Puking')
-        expect(response.body).to have_css('input#article_title[value="vomit"]')
-        expect(response.body).to have_link(
+        expect(rendered_page).to have_css('h1', text: 'Puking')
+        expect(rendered_page).to have_css('input#article_title[value="vomit"]')
+        expect(rendered_page).to have_link(
           'Merge into "vomit"',
           href: article_combine_duplicate_path(
             article_id: duplicate_article.id,

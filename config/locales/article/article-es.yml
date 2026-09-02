@@ -29,9 +29,9 @@ es:
       ended: Terminado
       latitude: Latitud
       longitude: Longitud
-      microphone: Micrófono
       merge_with_duplicate: Combinar con «%{duplicate}»
       merge_with_duplicate_description: Ya existe un tema llamado «%{duplicate}». Combine este tema con él para conservar el tema existente y reasignar los enlaces de este tema.
+      microphone: Micrófono
       n_pages:
         one: 1 página
         other: "%{count} páginas"

@@ -29,9 +29,9 @@ fr:
       ended: Terminé
       latitude: Latitude
       longitude: Longitude
-      microphone: Microphone
       merge_with_duplicate: Fusionner avec « %{duplicate} »
       merge_with_duplicate_description: Un sujet nommé « %{duplicate} » existe déjà. Fusionnez ce sujet avec celui-ci pour conserver le sujet existant et réaffecter les liens de ce sujet.
+      microphone: Microphone
       n_pages:
         one: 1 page
         other: "%{count}pages"

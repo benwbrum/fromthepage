@@ -29,9 +29,9 @@ pt:
       ended: Terminou
       latitude: Latitude
       longitude: Longitude
-      microphone: Microfone
       merge_with_duplicate: Mesclar com “%{duplicate}”
       merge_with_duplicate_description: Já existe um assunto chamado “%{duplicate}”. Mescle este assunto com ele para preservar o assunto existente e remapear os links deste assunto.
+      microphone: Microfone
       n_pages:
         one: 1 página
         other: "%{count} páginas"

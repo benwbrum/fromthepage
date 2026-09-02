@@ -29,9 +29,9 @@ de:
       ended: Beendet
       latitude: Breitengrad
       longitude: Längengrad
-      microphone: Mikrofon
       merge_with_duplicate: Mit „%{duplicate}“ zusammenführen
       merge_with_duplicate_description: Eine Entität namens „%{duplicate}“ ist bereits vorhanden. Führen Sie diese Entität damit zusammen, um die vorhandene Entität beizubehalten und die Links dieser Entität neu zuzuordnen.
+      microphone: Mikrofon
       n_pages:
         one: 1 Seite
         other: "%{count} Seiten"

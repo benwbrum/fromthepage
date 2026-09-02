@@ -29,9 +29,9 @@ en:
       ended: Ended
       latitude: Latitude
       longitude: Longitude
-      microphone: Microphone
       merge_with_duplicate: Merge into "%{duplicate}"
       merge_with_duplicate_description: A subject named "%{duplicate}" already exists. Merge this subject into it to preserve the existing subject and remap this subject's links.
+      microphone: Microphone
       n_pages:
         one: 1 page
         other: "%{count} pages"
