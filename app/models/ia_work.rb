@@ -7,7 +7,7 @@
 #  collection     :string(255)
 #  contributor    :string(255)
 #  creator        :string(255)
-#  description    :string(1024)
+#  description    :text(16777215)
 #  detail_url     :string(255)
 #  djvu_file      :string(255)
 #  ia_path        :string(255)
@@ -31,11 +31,15 @@
 class IaWork < ApplicationRecord
   require 'open-uri'
 
+  DESCRIPTION_MAX_LENGTH = 16.megabytes - 1
+
   belongs_to :user, optional: true
   belongs_to :work, optional: true
   has_many :ia_leaves, class_name: 'IaLeaf'
 
   before_create :truncate_title
+
+  validates :description, html: true, length: { maximum: DESCRIPTION_MAX_LENGTH }
 
   def truncate_title
     self.title = self.title.truncate(1028, omission: '...')
@@ -127,8 +131,6 @@ class IaWork < ApplicationRecord
   end
 
   def ingest_work(id)
-    # find the length of the description column
-    limit = (IaWork.columns_hash['description'].limit)
     loc_doc = fetch_loc_doc(id)
     location = loc_doc.search('results').first
     dir = location['dir']
@@ -143,9 +145,9 @@ class IaWork < ApplicationRecord
     self[:collection] = loc_doc.search('collection').text   # ?
     # description is truncated so it isn't too long for the description column
     if loc_doc.search('abstract').blank?
-      self[:description] = loc_doc.search('description').text.truncate(limit) # description
+      self[:description] = loc_doc.search('description').text.truncate(DESCRIPTION_MAX_LENGTH) # description
     else
-      self[:description] = loc_doc.search('abstract').text.truncate(limit) # description
+      self[:description] = loc_doc.search('abstract').text.truncate(DESCRIPTION_MAX_LENGTH) # description
     end
     self[:notes] = loc_doc.search('notes').text             # physical description
     self[:image_count] = loc_doc.search('imagecount').text
