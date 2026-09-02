@@ -1,21 +1,20 @@
-.collection-settings-wrapper
-  table.form.collection-settings
+table.form.collection-settings
+  tr
+    td(colspan="2")
+      h3 =t('.heading')
+      -if collection.metadata_fields.exists?
+        p =t('.description')
+        div[style='margin: 5px 0']
+          =link_to(collection_work_ai_work_metadata_path(collection.owner, collection, work), class: 'button action-btn', data: { turbo: true, turbo_method: :post })
+            span =t('.generate')
+      -else
+        p =t('.no_metadata_fields')
+
+  -if work.ai_work_metadata.any?
     tr
       td(colspan="2")
-        h3 =t('.heading')
-        -if collection.metadata_fields.exists?
-          p =t('.description')
-          div[style='margin: 5px 0']
-            =link_to(collection_work_ai_work_metadata_path(collection.owner, collection, work), class: 'button action-btn', data: { turbo: true, turbo_method: :post })
-              span =t('.generate')
-        -else
-          p =t('.no_metadata_fields')
-
-      -if work.ai_work_metadata.any?
-        tr
-          td(colspan="2")
-            h4 =t('.drafts_heading')
-            ul
-              -work.ai_work_metadata.order(created_at: :desc).each do |ai_work_metadata|
-                li
-                  =link_to("#{ai_work_metadata.model} (#{ai_work_metadata.status})", collection_work_ai_work_metadatum_path(collection.owner, collection, work, ai_work_metadata))
+        h4 =t('.drafts_heading')
+        ul
+          -work.ai_work_metadata.order(created_at: :desc).each do |ai_work_metadata|
+            li
+              =link_to("#{ai_work_metadata.model} (#{ai_work_metadata.status})", collection_work_ai_work_metadatum_path(collection.owner, collection, work, ai_work_metadata))
