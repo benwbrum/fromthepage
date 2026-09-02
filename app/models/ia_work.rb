@@ -48,19 +48,6 @@ class IaWork < ApplicationRecord
     #  end
   end
 
-  def self.refresh_server(book_id)
-    # first get the call the location API and parse that document
-    api_url = 'http://www.archive.org/services/find_file.php?file='+book_id
-    logger.debug(api_url)
-    loc_doc = Nokogiri::HTML(URI.open(api_url))
-    location = loc_doc.search('results').first
-    server = location['server']
-    dir = location['dir']
-    logger.debug "DEBUG Server=#{server}"
-    logger.debug "DEBUG Dir=#{dir}"
-    { server: server, ia_path: dir }
-  end
-
   def zip_file
     self[:zip_file] || "#{self[:book_id]}_#{self[:image_format]}.#{self[:archive_format]}"
   end
@@ -94,6 +81,13 @@ class IaWork < ApplicationRecord
     else
       "#{scandata_stub}"
     end
+  end
+
+  def archive_download_url(filename)
+    identifier_segment = CGI.escape(self[:book_id].to_s).tr('+', '%20')
+    filename_segment = CGI.escape(filename.to_s).tr('+', '%20')
+
+    "https://archive.org/download/#{identifier_segment}/#{filename_segment}"
   end
 
   # IA importer code refactored from ia_controller.rb
@@ -137,10 +131,11 @@ class IaWork < ApplicationRecord
     limit = (IaWork.columns_hash['description'].limit)
     loc_doc = fetch_loc_doc(id)
     location = loc_doc.search('results').first
-    server = location['server']
     dir = location['dir']
 
-    self.server = server
+    # ia_path is retained only for the legacy archive-layout helpers (book_path
+    # and sub_prefix). Derivatives are always fetched through archive.org's
+    # stable download endpoint rather than a resolved storage server.
     self.ia_path = dir
     self.book_id = loc_doc.search('identifier').text
     self[:title] = loc_doc.search('title').text            # work title
@@ -166,7 +161,7 @@ class IaWork < ApplicationRecord
 
     self.save!
     # now fetch the scandata.xml file and parse it
-    scandata_url = "http://#{server}#{dir}/#{CGI.escape(scandata_file)}" # will not work on new format: we cannot assume filenames are re-named with their content
+    scandata_url = archive_download_url(scandata_file)
 
     sd_doc = open_doc(scandata_url)
 
@@ -281,7 +276,7 @@ class IaWork < ApplicationRecord
     loc_doc = fetch_loc_doc(self.book_id)
     scandata_file, djvu_file = files_from_loc(loc_doc)
 
-    djvu_url =  "http://#{self.server}#{self.ia_path}/#{CGI.escape(djvu_file)}"
+    djvu_url = archive_download_url(djvu_file)
     logger.debug(djvu_url)
     djvu_doc = open_doc(djvu_url)
 
