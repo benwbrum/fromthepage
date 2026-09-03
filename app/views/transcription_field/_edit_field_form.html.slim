@@ -62,15 +62,17 @@ div.fields-preview
         update: function(e, ui) {
           var line = $(this).index() + 1;
           var data = $(this).sortable('serialize');
-          ui.item.find('input[id=transcription_fields__line_number]').val(line);
+          // Keep every form row's line number in sync with the DOM. In
+          // particular, newly added fields do not have IDs and are omitted by
+          // sortable('serialize'), so the form remains their source of truth.
+          $('#new-fields tbody').each(function(index) {
+            $(this).find('input[id=transcription_fields__line_number]').val(index + 1);
+          });
           if (data) {
             $.ajax({
               url: "#{transcription_field_reorder_path(collection_id: @collection.id)}",
               type: "PATCH",
-              data: `${data}&line=${line}`,
-              success: function(response) {
-                window.location.reload();
-              }
+              data: `${data}&line=${line}`
             });
           }
         },
