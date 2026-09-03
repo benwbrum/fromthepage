@@ -53,7 +53,7 @@ class Work::Export::GroverPrintable < ApplicationInteractor
       }
     )
 
-    @html = Work::Export::TableRegularizer.call(@html)
+    @html = Work::Export::AccessiblePdfHtml.call(@html)
   end
 
   private
