@@ -31,8 +31,8 @@
       -if !params['rsg'].blank?
         =render :partial => 'subject_graph_d3'
       .article-graph
-        =image_tag(file_to_url(@article.graph_image), :usemap => '#G', alt: t('.related_subjects_1'))
-        ==@map
+        =image_tag(@article.graph_attachment, usemap: '#G', alt: t('.related_subjects_1'))
+        ==@article.map_attachment.download
       p.fglight ==t('.related_subjects_description', article: @article.title)
 
   aside.sidecol
