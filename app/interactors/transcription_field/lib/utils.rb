@@ -101,6 +101,7 @@ class TranscriptionField::Lib::Utils
 
       spreadsheet_columns.each_with_index do |column, column_index|
         cell_value = row[column_index]
+        row_json[column.id] = cell_value || ''
 
         if cell_value.blank?
           cell_value = ''
@@ -110,7 +111,6 @@ class TranscriptionField::Lib::Utils
 
         cell_value = ActiveRecord::Type::Boolean.new.cast(cell_value) if column.input_type == 'checkbox'
 
-        row_json[column.id] = cell_value
         formatted_row << "<td>#{cell_value}</td>"
       end
       formatted_row << '</tr>'
@@ -128,6 +128,6 @@ class TranscriptionField::Lib::Utils
     REXML::Document.new("<cell>#{value}</cell>")
     value
   rescue REXML::ParseException
-    ERB::Util.html_escape(value)
+    ERB::Util.html_escape(value).gsub('&#39;', "'")
   end
 end
