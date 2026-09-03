@@ -10,6 +10,10 @@ describe 'owner actions' do
 
   after do |example|
     if example.metadata[:js]
+      # Clear Warden's session before destroying the user. Otherwise the next
+      # browser request can try to update Devise tracking fields on the frozen
+      # User instance left behind by destroy!.
+      logout(:user)
       owner.all_owner_collections.each(&:destroy!)
       owner.destroy!
     else
@@ -418,9 +422,9 @@ describe 'owner actions' do
   def work_with_subject_link
     work = create(:work, owner: owner, collection: second_collection, pages: [])
     test_page = create(:page, work: work)
+    # Saving the wikilink creates its subject through XmlSourceProcessor.
     test_page.update!(source_text: '[[Switzerland]]')
-    article = create(:article, title: 'Switzerland', collection: second_collection)
-    create(:page_article_link, page: test_page, article: article, display_text: 'Switzerland')
+    expect(second_collection.articles.find_by(title: 'Switzerland')).to be_present
     [work, test_page]
   end
 end

@@ -112,6 +112,7 @@ class ArticleController < ApplicationController
         redirect_to collection_article_edit_path(@collection.owner, @collection, @article)
       else
         @article = result.article
+        @duplicate_article = exact_title_duplicate(@article)
         render :edit, status: :unprocessable_entity
       end
     elsif params[:autolink]
@@ -372,6 +373,15 @@ class ArticleController < ApplicationController
   end
 
   private
+
+  def exact_title_duplicate(article)
+    return unless article.errors.details[:title].any? { |error| error[:error] == :taken }
+
+    @collection.articles
+               .where.not(id: article.id)
+               .where('LOWER(title) = LOWER(?)', article.title)
+               .first
+  end
 
   def authorized?
     redirect_to dashboard_path unless user_signed_in?
