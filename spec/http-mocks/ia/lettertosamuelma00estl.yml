@@ -438,7 +438,7 @@ http_interactions:
   recorded_at: Tue, 21 Oct 2025 19:02:55 GMT
 - request:
     method: get
-    uri: http://ia601600.us.archive.org/30/items/lettertosamuelma00estl/39999063867541_scandata.xml
+    uri: https://archive.org/download/lettertosamuelma00estl/39999063867541_scandata.xml
     body:
       encoding: US-ASCII
       string: ''
@@ -972,7 +972,7 @@ http_interactions:
   recorded_at: Tue, 21 Oct 2025 19:02:57 GMT
 - request:
     method: get
-    uri: http://ia601600.us.archive.org/30/items/lettertosamuelma00estl/39999063867541_djvu.xml
+    uri: https://archive.org/download/lettertosamuelma00estl/39999063867541_djvu.xml
     body:
       encoding: US-ASCII
       string: ''
