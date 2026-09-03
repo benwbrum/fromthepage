@@ -4,7 +4,7 @@
 .columns
   article.maincol
     h2.nomargin= t('.export_all_works')
-    =form_with(url: bulk_export_create_path, model: @bulk_export, local: true) do |f|
+    =form_with(url: bulk_export_create_path, model: @bulk_export, local: true, data: { controller: 'form', action: 'change->form#toggleLinkedOption' }) do |f|
       =hidden_field_tag :collection_id, @collection.slug
       =validation_summary @bulk_export.errors
       h4 =t('.file_organization')
@@ -127,6 +127,31 @@
             =f.label :facing_edition_work
               =f.check_box :facing_edition_work, value: @bulk_export.facing_edition_work
               span= t('.one_file_per_work')
+
+        li
+          .bulk-export_format
+            h5= t('.accessible_pdf')
+            p.nomargin= t('.accessible_pdf_description')
+          .bulk-export_options
+            =f.label :accessible_pdf_work
+              =f.check_box :accessible_pdf_work, value: @bulk_export.accessible_pdf_work
+              span= t('.one_file_per_work')
+
+            = f.label :accessible_pdf_source_human_only
+              = f.radio_button :accessible_pdf_source, 'human_only', checked: true
+              = f.label :source_human_only, t('.human_only')
+
+            = f.label :accessible_pdf_source_human_and_ai
+              = f.radio_button :accessible_pdf_source, 'human_and_ai',
+                  data: { linked_selector: '.ai-warnings', action: 'change->form#toggleLinkedOption' }
+              = f.label :accessible_pdf_source_human_and_ai, t('.human_and_ai')
+
+            = f.label :accessible_pdf_prepend_ai_warnings, style: 'padding-left: 10px;' do
+              = f.check_box :accessible_pdf_prepend_ai_warnings,
+                  disabled: true,
+                  class: 'ai-warnings'
+              = t('.prepend_ai_warnings')
+
         li
           .bulk-export_format
             h5= t('.table_field_csv')
@@ -138,6 +163,7 @@
             =f.label :table_csv_collection
               =f.check_box :table_csv_collection, value: @bulk_export.table_csv_collection
               span= t('.one_file_per_collection')
+
         li
           .bulk-export_format
             h5= t('.subject_details_csv')

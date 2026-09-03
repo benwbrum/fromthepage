@@ -255,11 +255,10 @@ en:
       collection_restricted_description: The collection can only be viewed by the owners and collaborators listed below. You may make the collection publicly readable.
       edit_collaborators: Edit Collaborators
       edit_owners: Edit Owners
-      make_collection_private: Make Collection Private
-      make_collection_public: Make Collection Public
       open_api: Open API
       private: Private
       public: Public
+      read_only: Read-only
       restrict_completed_works: Restrict Completed Works
       restrict_editing: Restrict editing
       restricted_completed_works_description: This button will restrict the %{work_count} works that are completed but not currently resticted to project owners or designated collaborators.  You may change this setting and add collaborators in each work's settings page.
@@ -289,6 +288,12 @@ en:
       ai_draft_disabled: Disable AI Drafts
       ai_draft_disabled_description: Disable AI Drafts for all users except the collection owner.
       alert: Please configure fields or choose document based transcription under Transcription Type.
+      allow_transcriber_segmentation: Let transcribers split works
+      allow_transcriber_segmentation_ai_hint: Prefer to have AI flag likely first pages? Run segmentation from the work's %{link}.
+      allow_transcriber_segmentation_ai_hint_plain: Prefer to have AI flag likely first pages? Open a work's settings and run segmentation from its AI tab.
+      allow_transcriber_segmentation_ai_link: AI settings
+      allow_transcriber_segmentation_description: 'Shows a scissors control on every page. Transcribers can split a work at any page: the pages before that page move into a new work, and the rest stay in the current one.'
+      allow_transcriber_segmentation_unavailable: This setting is available for active, text-based collections on organizational plans.
       disable_ocr: Disable OCR Correction
       document_based_transcription: Document-based transcription
       document_based_transcription_description: Each page in the collection will have a single free-form text entry area for transcription. Also known as "document based transcription".

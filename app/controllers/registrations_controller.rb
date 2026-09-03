@@ -21,6 +21,15 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
   def create
+    create_registration(trial: false)
+  end
+
+  def create_trial
+    create_registration(trial: true)
+  end
+
+  def create_registration(trial:)
+    @trial_registration = trial
     @owner = User.find_by(slug: params[:owner_slug]) if params[:owner_slug].present?
 
     # Merge the new user information into the guest user id to change into normal user
@@ -31,6 +40,8 @@ class RegistrationsController < Devise::RegistrationsController
     else
       @user = build_resource(sign_up_params)
     end
+
+    set_registration_account_type
 
     @user.build_privacy_preference(recorded: cookies[:cookies_recorded]&.to_sym == :recorded)
 
@@ -60,9 +71,7 @@ class RegistrationsController < Devise::RegistrationsController
         session[:guest_user_id] = nil
       end
 
-      if @user.owner
-        @user.account_type = 'Trial'
-        @user.save
+      if @trial_registration
         alert_bento
       end
 
@@ -73,7 +82,7 @@ class RegistrationsController < Devise::RegistrationsController
         @minimum_password_length = resource_class.password_length.min
       end
 
-      after_failed_sign_up_action_for(params[:registration_type]&.to_sym)
+      after_failed_sign_up_action
     end
   end
 
@@ -130,9 +139,8 @@ class RegistrationsController < Devise::RegistrationsController
     edit_registration_path(resource)
   end
 
-  def after_failed_sign_up_action_for(registration_type)
-    case registration_type
-    when :free_trial
+  def after_failed_sign_up_action
+    if @trial_registration
       render :new_trial
     else
       render :new
@@ -147,7 +155,19 @@ class RegistrationsController < Devise::RegistrationsController
   private
 
   def sign_up_params
-    params.require(:user).permit(:login, :real_name, :owner, :activity_email, :paid_date, :display_name, :email, :password, :password_confirmation)
+    params.require(:user).permit(:login, :real_name, :activity_email, :display_name, :email, :password, :password_confirmation)
+  end
+
+  def set_registration_account_type
+    if @trial_registration
+      @user.owner = true
+      @user.account_type = 'Trial'
+      @user.paid_date = 2.weeks.from_now
+    else
+      @user.owner = false
+      @user.account_type = nil
+      @user.paid_date = nil
+    end
   end
 
   def saml_provider_param

@@ -264,6 +264,21 @@ describe CollectionController do
       expect(response).to render_template(:edit_tasks)
     end
 
+    it 'hides the "let transcribers split works" setting when the owner is not opted into segmentation' do
+      login_as owner
+      get action_path
+
+      expect(response.body).not_to include('name="collection[allow_transcriber_segmentation]"')
+    end
+
+    it 'shows the "let transcribers split works" setting when the owner is opted into segmentation' do
+      owner.update!(segmentation_enabled: true)
+      login_as owner
+      get action_path
+
+      expect(response.body).to include('name="collection[allow_transcriber_segmentation]"')
+    end
+
     context 'when accessed by non-owner user' do
       it 'redirects to collection show page' do
         login_as user
@@ -599,6 +614,13 @@ describe CollectionController do
 
         expect(response).to have_http_status(:ok)
         expect(response).to render_template(:update_tasks)
+      end
+
+      it 'persists the allow_transcriber_segmentation setting' do
+        login_as owner
+        post action_path, params: { collection: { allow_transcriber_segmentation: '1' } }, as: :turbo_stream
+
+        expect(collection.reload.allow_transcriber_segmentation?).to be(true)
       end
     end
 
@@ -1039,6 +1061,26 @@ describe CollectionController do
         expect(response.body).to include(doc_set.title)
         expect(response.body).not_to include(work.title)
       end
+    end
+  end
+
+  describe '#deeds' do
+    let(:action_path) { collection_deeds_path(owner, collection) }
+    let(:subject) { get action_path, params: params, as: :turbo_stream }
+
+    let(:params) do
+      {
+        types: DeedType.collection_edits,
+        limit: 20,
+        long_view: true
+      }
+    end
+
+    it 'renders status and template' do
+      subject
+
+      expect(response).to have_http_status(:ok)
+      expect(response).to render_template(:_deeds)
     end
   end
 end

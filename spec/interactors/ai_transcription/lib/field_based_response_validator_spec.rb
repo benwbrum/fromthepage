@@ -119,6 +119,12 @@ describe AiTranscription::Lib::FieldBasedResponseValidator do
         expect(validator_for(full_json(rows)).valid?).to be true
       end
 
+      it 'fills omitted blank cells with null' do
+        v = validator_for(full_json([{ col1.id.to_s => 'Jane' }]))
+        expect(v.valid?).to be true
+        expect(v.parsed_json[spreadsheet_field.id.to_s].first[col2.id.to_s]).to be_nil
+      end
+
       it 'accepts null for the spreadsheet field' do
         expect(validator_for(full_json(nil)).valid?).to be true
       end

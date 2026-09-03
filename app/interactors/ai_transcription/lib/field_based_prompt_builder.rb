@@ -3,7 +3,9 @@ class AiTranscription::Lib::FieldBasedPromptBuilder
 
   def initialize(collection:)
     @collection = collection
-    @fields = collection.transcription_fields.reject { |f| SKIP_TYPES.include?(f.input_type) }
+    ordered_fields = collection.transcription_fields.order(:line_number, :position)
+    @prompt_fields = ordered_fields.reject { |field| field.input_type == 'description' }
+    @fields = ordered_fields.reject { |field| SKIP_TYPES.include?(field.input_type) }
   end
 
   def build
@@ -18,6 +20,7 @@ class AiTranscription::Lib::FieldBasedPromptBuilder
       Rules:
       - Return ONLY a valid JSON object. Do not include any text, explanation, or markdown outside the JSON.
       - Use the numeric field ID as each key (as a string).
+      - Lines beginning with "Instruction:" are guidance for the fields that follow, not fields to include in the JSON.
       - If a field is not present or legible in the image, use null as the value.
       - For select fields, use one of the listed options exactly as shown, or null if none apply.
       - For spreadsheet fields, return an array of row objects using the column IDs as keys.
@@ -30,7 +33,13 @@ class AiTranscription::Lib::FieldBasedPromptBuilder
   private
 
   def field_list
-    @fields.map { |f| format_field(f) }.join("\n")
+    @prompt_fields.map { |field| format_prompt_field(field) }.join("\n")
+  end
+
+  def format_prompt_field(field)
+    return "- Instruction: #{field.label}" if field.input_type == 'instruction'
+
+    format_field(field)
   end
 
   def format_field(field)

@@ -41,6 +41,14 @@ pt:
       table_csv: Tabela CSV
       tei: TEI
       work_title: Título da obra
+    new_grover_export:
+      ai_warning: 'Aviso: Esta transcrição foi gerada por IA (%{model} %{created_at}).'
+      contents: Conteúdo
+      download: Download
+      heading: Configuração de PDF acessível
+      human_and_ai: Exportar transcrições humanas quando disponíveis; caso contrário, exportar rascunhos de IA.
+      human_only: Exportar somente transcrições revisadas por humanos
+      prepend_ai_warnings: 'Aviso: Este texto foi gerado por IA e adicionado ao início da transcrição.'
     show:
       bibliography: Bibliografia
       categories: 'Categorias:'

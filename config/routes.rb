@@ -22,6 +22,7 @@ Fromthepage::Application.routes.draw do
 
   devise_scope :user do
     get 'users/new_trial' => 'registrations#new_trial'
+    post 'users/new_trial' => 'registrations#create_trial'
     get ':user_slug/sign_up', to: 'registrations#owner_new', as: 'new_for_owner'
     post 'registrations/choose_provider', to: 'registrations#choose_saml'
     post 'registrations/set_provider', to: 'registrations#set_saml'
@@ -174,6 +175,8 @@ Fromthepage::Application.routes.draw do
     get 'export_work', to: 'export#export_work'
     get 'export_all_works', to: 'export#export_all_works'
     post ':collection_id/:work_id/printable', to: 'export#printable', as: 'printable'
+    get ':collection_id/:work_id/grover', to: 'export#new_grover_export', as: 'new_grover_export'
+    post ':collection_id/:work_id/grover_printable', to: 'export#grover_printable', as: 'grover_printable'
     get 'show', to: 'export#show'
     get ':work_id/tei', to: 'export#tei', as: 'tei'
     get 'subject_csv', to: 'export#subject_index_csv'
@@ -220,6 +223,7 @@ Fromthepage::Application.routes.draw do
     get 'exports', to: 'dashboard#exports'
     post 'create_work', to: 'dashboard#create_work'
     get 'your_hours', to: 'dashboard#your_hours'
+    get 'deeds' => 'dashboard#deeds'
     get 'dashboard/download_hours_letter/:start_date/:end_date/:time_duration', to: 'dashboard#download_hours_letter', as: 'download_hours_letter', format: :pdf
     post 'upload', to: 'dashboard#upload'
   end
@@ -515,6 +519,7 @@ Fromthepage::Application.routes.draw do
       get 'facets'
       post 'search', to: 'collection#facet_search', as: 'facet_search'
       get 'search', to: 'collection#search', as: 'search'
+      get :deeds
 
       get 'edit', on: :member
       get 'edit/clone_settings', on: :member, to: 'collection#edit_clone_settings'
@@ -571,10 +576,15 @@ Fromthepage::Application.routes.draw do
         get 'metadata_overview', on: :member
         get 'metadata_overview_monitor', on: :member
         get ':page_id/active_editing', on: :member, to: 'transcribe#active_editing', as: 'active_editing'
+        post 'split_page', on: :member, to: 'work#split_page'
+        patch 'dismiss_segmentation', on: :member, to: 'work#dismiss_segmentation'
       end
 
       resources :work, path: '', only: [] do
-        resource :ai_transcriptions, only: [:edit, :create, :update], controller: 'work/ai_transcriptions'
+        resource :ai_transcriptions, only: [:edit, :create, :update], controller: 'work/ai_transcriptions' do
+          post 'segment', on: :member
+          patch 'segmentation_setting', on: :member
+        end
         resources :ai_transcriptions, only: [:show], controller: 'work/ai_transcriptions'
       end
 

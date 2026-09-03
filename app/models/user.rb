@@ -36,6 +36,7 @@
 #  remember_token_expires_at   :datetime
 #  reset_password_sent_at      :datetime
 #  reset_password_token        :string(255)
+#  segmentation_enabled        :boolean          default(FALSE)
 #  sign_in_count               :integer          default(0), not null
 #  slug                        :string(255)
 #  sso_issuer                  :string(255)
@@ -126,9 +127,8 @@ class User < ApplicationRecord
   scope :with_public_projects, lambda {
     left_outer_joins(:collections, :document_sets)
       .where(
-        'collections.restricted = :unrestricted OR document_sets.visibility IN (:public_visibilities)',
-        unrestricted: false,
-        public_visibilities: [DocumentSet.visibilities[:public], DocumentSet.visibilities[:read_only]]
+        'collections.visibility IN (:public_visibilities) OR document_sets.visibility IN (:public_visibilities)',
+        public_visibilities: [:public, :read_only]
       )
       .distinct
   }
@@ -312,20 +312,21 @@ class User < ApplicationRecord
 
   def can_transcribe?(work, collection = nil)
     return true if like_owner?(collection)
+
     collection ||= work.access_object(self) || work.collection
 
-    if collection.is_a? DocumentSet
-      return true if like_owner?(work)
+    return true if collection.is_a?(DocumentSet) && like_owner?(work)
 
-      has_access = collection.visibility_public? ||
-                   collection.collaborators.find_by(id: id).present? ||
-                   collection.collection.collaborators.find_by(id: id).present? ||
-                   work&.scribes&.include?(self)
+    has_collection_access =
+      collection.visibility_public? ||
+      collection.collaborators.exists?(id: id) ||
+      (collection.collection&.collaborators&.exists?(id: id) if collection.is_a?(DocumentSet))
 
-      has_access && (!work&.restrict_scribes || work&.scribes&.include?(self))
-    else
-      !work&.restrict_scribes || like_owner?(work) || work&.scribes&.include?(self)
-    end
+    has_scribe_access = work&.scribes&.include?(self)
+
+    return false unless has_collection_access || has_scribe_access
+
+    !work&.restrict_scribes || has_scribe_access || like_owner?(work)
   end
 
   def can_review?(obj)
@@ -421,7 +422,7 @@ class User < ApplicationRecord
     public_sets = self.unrestricted_document_sets
 
     if user
-      collaborator_collections = self.all_owner_collections.where(restricted: true).joins(:collaborators).where('collection_collaborators.user_id = ?', user.id)
+      collaborator_collections = self.all_owner_collections.where(visibility: :private).joins(:collaborators).where('collection_collaborators.user_id = ?', user.id)
 
       collaborator_sets = self.document_sets.restricted.joins(:collaborators).where('document_set_collaborators.user_id = ?', user.id)
       parent_collaborator_sets = []
@@ -512,7 +513,7 @@ class User < ApplicationRecord
 
     self.collections.each do |c|
       c.is_active = false
-      c.restricted = true
+      c.visibility = :private
       c.save
     end
 

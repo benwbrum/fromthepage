@@ -15,6 +15,7 @@ class TranscribeController  < ApplicationController
   skip_around_action :switch_locale, only: [:still_editing, :active_editing]
 
   def display_page
+    @ai_draft_used = false
     rollback_article_categories(params[:rollback_delete_ids], params[:rollback_unset_ids])
 
     handle_display_page_data
@@ -26,6 +27,9 @@ class TranscribeController  < ApplicationController
   end
 
   def guest
+    return if @collection.visibility_public?
+
+    redirect_to collection_display_page_path(@collection.owner, @collection, @work, @page)
   end
 
   def mark_page_blank
@@ -46,13 +50,14 @@ class TranscribeController  < ApplicationController
     @quality_sampling = QualitySampling.find(params[:quality_sampling_id]) if params[:quality_sampling_id].present?
 
     @layout_mode = cookies[:transcribe_layout_mode] || @collection.default_orientation
+    @ai_draft_used = ActiveModel::Type::Boolean.new.cast(params[:ai_draft_used])
     @page.attributes = page_params unless page_params.empty?
-    @page.ai_draft_used = params[:ai_draft_used]
 
     if @page.field_based
       @field_cells = request.params[:fields]
       @page = TranscriptionField::Lib::Utils.parse_fields(page: @page, field_cells: @field_cells)
     end
+    @page.ai_draft_used = @ai_draft_used
 
     unless params[:page]['needs_review'] == '1'
       @page = Transcribe::Lib::MarkAsBlankHandler.new(

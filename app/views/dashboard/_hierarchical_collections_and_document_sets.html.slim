@@ -14,7 +14,7 @@
             p.collection_snippet ==snippet
           -else
             p.collection_snippet =snippet
-        -if cds.has_untranscribed_pages? && cds.active? && cds.text_entry?
+        -if cds.has_untranscribed_pages? && cds.active? && cds.text_entry? && !cds.visibility_read_only?
           p
           -if user_signed_in?
             =link_to t('.start_transcribing'), collection_transcribe_page_path(cds.owner, cds, cds.next_untranscribed_page.work, cds.next_untranscribed_page), class: 'button'
@@ -42,10 +42,8 @@
               p.collection_snippet ==snippet
             -else
               p.collection_snippet =snippet
-          -if cds.has_untranscribed_pages? && cds.active? && cds.text_entry?
+          -if cds.has_untranscribed_pages? && cds.active? && cds.text_entry? && !cds.visibility_read_only?
             p
               =link_to t('.start_transcribing'), collection_start_transcribing_path(cds.owner, cds), class: 'button'
           .collection_summary
             span =t('.project_by', author: owner_link).html_safe
-
-

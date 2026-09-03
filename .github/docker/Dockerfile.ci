@@ -26,4 +26,9 @@ RUN apt-get update -qq && \
       fonts-cmu \
     && rm -rf /var/lib/apt/lists/*
 
+ENV PUPPETEER_SKIP_DOWNLOAD=true
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
+ENV NODE_PATH=/usr/local/lib/node_modules
+RUN npm install -g puppeteer@24.42.0 --omit=dev
+
 WORKDIR /app

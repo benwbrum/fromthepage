@@ -23,6 +23,8 @@ en:
       upload_details: Upload details
       user: User
     new:
+      accessible_pdf: Accessible PDF
+      accessible_pdf_description: A PDF file optimized for screen readers and assistive technologies.
       download: Download
       expanded_plaintext: Expanded Plaintext
       expanded_plaintext_description: Like the verbatim plaintext, this plaintext file will represent line breaks with single newline, paragraph breaks with a double newline, and page breaks with a triple newline. It differs from the verbatim text, in that normalization will be applied to all subjects mentioned, so that while the verbatim text may read “I greeted Mr. Jones and his wife this morning.”, the emended plaintext will read “I greeted James Jones and Elizabeth Smith Jones this morning”. This artificial text is useful for programmatic analysis, but is not meant to be read by humans.
@@ -37,6 +39,8 @@ en:
       format_options: Format Options
       html: HTML
       html_description: This may be useful for preservation in other systems or as a starting point for display on another website.
+      human_and_ai: Export Human Transcripts where available, otherwise export AI Drafts
+      human_only: Only Export Human Edited Transcripts
       notes_csv: Notes CSV
       notes_csv_description: A spreadsheet listing each note in the collection.
       one_file_per_collection: One file per collection
@@ -49,6 +53,7 @@ en:
       organization_work: Work folders
       page_details_csv: Page Details CSV
       page_details_csv_description: A spreadsheet with one row per page, including page information and parent work metadata.
+      prepend_ai_warnings: 'Prepend Warning: This transcript is AI-generated to the top of the transcript.'
       preserve_linebreaks: Preserve Linebreaks
       previous_exports: Previous Exports
       search_optimized_plaintext: Search-optimized Plaintext

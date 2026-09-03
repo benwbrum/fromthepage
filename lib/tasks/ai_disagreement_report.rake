@@ -1,8 +1,8 @@
 namespace :fromthepage do
   desc 'Generate a CSV of Claude vs Gemini AI transcription disagreement rates for pages in a work or collection'
-  task :ai_disagreement_report, [:slug] => :environment do |_t, args|
+  task :ai_disagreement_report, [:slug, :ignored_fields] => :environment do |_t, args|
     unless args.slug
-      puts 'Usage: rake fromthepage:ai_disagreement_report[slug]'
+      puts 'Usage: rake fromthepage:ai_disagreement_report[slug,ignored_field_labels_or_ids]'
       puts 'Example: rake fromthepage:ai_disagreement_report[my-work-slug]'
       puts 'Example: rake fromthepage:ai_disagreement_report[my-collection-slug]'
       exit 1
@@ -24,6 +24,15 @@ namespace :fromthepage do
                                      .includes(:spreadsheet_columns)
                                      .order(:line_number, :position)
                                      .reject { |field| %w[description instruction].include?(field.input_type) }
+    ignored_field_identifiers = [args.ignored_fields, *args.extras]
+      .compact
+      .flat_map { |value| value.to_s.split(',') }
+      .map(&:strip)
+      .reject(&:blank?)
+    ignored_fields = report_fields.select do |field|
+      ignored_field_identifiers.include?(field.label) || ignored_field_identifiers.include?(field.id.to_s)
+    end
+    overall_fields = report_fields - ignored_fields
 
     field_value_for_comparison = lambda do |field, json|
       return '' if json.blank?
@@ -43,7 +52,13 @@ namespace :fromthepage do
     end
 
     normalize_text = lambda do |text|
-      text.to_s.gsub(/[[:punct:]]/, ' ').downcase.gsub(/\s+/, ' ').strip
+      text.to_s.gsub(/[[:punct:]]/, '').downcase.gsub(/\s+/, ' ').strip
+    end
+
+    labeled_text_for_comparison = lambda do |fields, transcription|
+      fields.map do |field|
+        "#{field.label}: #{field_value_for_comparison.call(field, transcription.transcription_json)}"
+      end.join("\n")
     end
 
     field_headers = report_fields.flat_map do |field|
@@ -53,7 +68,7 @@ namespace :fromthepage do
     filename = "ai_disagreement_#{slug}.csv"
 
     CSV.open(filename, 'wb') do |csv|
-      csv << ['Work Title', 'Page Title', 'Page ID', 'AI Tab URL', 'Transcribe Tab URL', 'Character Disagreement Rate', 'Misplaced FIelds', 'Case-insensitive CDR', 'Claude Text-only CER', 'Gemini Text-only CER', *field_headers, 'Missing Models']
+      csv << ['Work Title', 'Page Title', 'Page ID', 'Page Status', 'AI Tab URL', 'Transcribe Tab URL', 'Character Disagreement Rate', 'Misplaced FIelds', 'Case-insensitive CDR', 'Claude Text-only CER', 'Gemini Text-only CER', *field_headers, 'Missing Models']
 
       pages.each do |page|
         page_work = page.work
@@ -67,11 +82,11 @@ namespace :fromthepage do
         missing_models << 'Claude' if claude_transcription.nil?
         missing_models << 'Gemini' if gemini_transcription.nil?
 
-        disagreement_rate = if missing_models.empty?
-          page.send(:character_error_rate, claude_transcription.text_for_comparison, gemini_transcription.text_for_comparison)
-        end
-        ci_disagreement_rate = if missing_models.empty?
-          page.send(:character_error_rate, claude_transcription.text_for_comparison.downcase, gemini_transcription.text_for_comparison.downcase)
+        if missing_models.empty?
+          claude_labeled_text = labeled_text_for_comparison.call(overall_fields, claude_transcription)
+          gemini_labeled_text = labeled_text_for_comparison.call(overall_fields, gemini_transcription)
+          disagreement_rate = page.send(:character_error_rate, claude_labeled_text, gemini_labeled_text)
+          ci_disagreement_rate = page.send(:character_error_rate, claude_labeled_text.downcase, gemini_labeled_text.downcase)
         end
 
         field_disagreement_rates = report_fields.flat_map do |field|
@@ -86,12 +101,15 @@ namespace :fromthepage do
             [nil, nil]
           end
         end
-        misplaced_fields = field_disagreement_rates.each_slice(2).any? { |_cdr, text_only_cdr| text_only_cdr == 100.0 } ? 'yes' : 'no'
+        misplaced_fields = report_fields.zip(field_disagreement_rates.each_slice(2)).any? do |field, (_cdr, text_only_cdr)|
+          !ignored_fields.include?(field) && text_only_cdr == 100.0
+        end ? 'yes' : 'no'
 
         csv << [
           page_work.title,
           page.title,
           page.id,
+          page.status,
           Rails.application.routes.url_helpers.collection_ai_text_page_url(page_collection.owner, page_collection, page_work, page),
           "#{Rails.application.routes.url_helpers.collection_transcribe_page_url(page_collection.owner, page_collection, page_work, page)}?ai_draft=1",
           disagreement_rate,

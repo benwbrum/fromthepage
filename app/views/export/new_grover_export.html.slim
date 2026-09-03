@@ -1,0 +1,27 @@
+h2.nomargin = t('.heading')
+p
+= form_with url: export_grover_printable_path(@collection, @work), method: :post, local: true, target: '_blank', data: { controller: 'form', action: 'change->form#toggleLinkedOption submit->form#submit' } do |f|
+  = hidden_field_tag :edition, 'text'
+
+  .bulk-export_format
+    h5 = t('.contents')
+    p.nomargin
+
+  .bulk-export_options
+    = f.label :human_only
+      = f.radio_button :source, 'human_only', checked: true
+      = f.label :source_human_only, t('.human_only')
+
+    = f.label :human_and_ai
+      = f.radio_button :source, 'human_and_ai',
+          data: { linked_selector: '.ai-warnings', action: 'change->form#toggleLinkedOption' }
+      = f.label :source_human_and_ai, t('.human_and_ai')
+
+  .bulk-export_options
+    = f.label :prepend_ai_warnings, style: 'padding-left: 10px;' do
+      = f.check_box :prepend_ai_warnings,
+          disabled: true,
+          class: 'ai-warnings'
+      = t('.prepend_ai_warnings')
+
+  = f.submit t('.download'), style: 'margin-top: 10px;'

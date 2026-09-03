@@ -113,12 +113,91 @@ describe 'collection field-based transcription settings' do
     visit transcription_field_edit_fields_path(collection_id: collection)
     count = page.all('#new-fields tr').count
     line_count = page.all('#new-fields tr th.field-form_line').count
+    expect(page).to have_selector('#new-fields .line-reorder-handle', count: line_count)
 
     click_button 'Add Additional Line'
 
     expect(page).to have_selector('#new-fields tr', count: count + 3)
     expect(page).to have_selector('#new-fields tr th.field-form_line', count: line_count + 1)
+    expect(page).to have_selector('#new-fields .line-reorder-handle', count: line_count + 1)
     expect(collection.transcription_fields.count).to eq(3)
+  end
+
+  it 'keeps unsaved fields visible when moved to another line', js: true do
+    visit transcription_field_edit_fields_path(collection_id: collection)
+
+    click_button 'Add Additional Line'
+    expect(page).to have_selector('#new-fields tbody', minimum: 2)
+
+    line_two_fields = page.all('#new-fields tbody').last.all('tr.sortable-field')
+    line_two_fields.first.fill_in('transcription_fields__label', with: 'Spreadsheet field')
+    line_two_fields.first.select('spreadsheet', from: 'transcription_fields__input_type')
+
+    click_button 'Add Additional Field'
+    page
+      .all('#new-fields tbody')
+      .last
+      .all('tr.sortable-field')
+      .last
+      .fill_in('transcription_fields__label', with: 'Moved unsaved field')
+
+    page.execute_script(<<~JS)
+      window.__reorderAjaxCallCount = 0;
+      window.__fieldEditorReloadCalled = false;
+      var originalAjax = $.ajax;
+      $.ajax = function() {
+        window.__reorderAjaxCallCount += 1;
+        return originalAjax.apply($, arguments);
+      };
+      window.location.reload = function() {
+        window.__fieldEditorReloadCalled = true;
+      };
+    JS
+
+    page.execute_script(<<~JS)
+      var $sourceLine = $('#new-fields tbody').eq(1);
+      var $destinationLine = $('#new-fields tbody').eq(0);
+      var $movedField = $sourceLine.find('tr.sortable-field').last();
+      $destinationLine.append($movedField);
+      var updateHandler = $destinationLine.sortable('option', 'update');
+      updateHandler.call($destinationLine[0], $.Event('sortupdate'), { item: $movedField });
+    JS
+
+    moved_field_label = page.find_field(with: 'Moved unsaved field', type: 'text', visible: :all)
+    moved_field_row = moved_field_label.find(:xpath, './ancestor::tr[1]')
+
+    expect(moved_field_row).to have_selector(
+      "input#transcription_fields__line_number[value='1']",
+      visible: :all
+    )
+    expect(page.evaluate_script('window.__reorderAjaxCallCount')).to eq(0)
+    expect(page.evaluate_script('window.__fieldEditorReloadCalled')).to be(false)
+  end
+
+  it 'persists line order when a full line block is moved', js: true do
+    first_field
+    second_field.update!(line_number: 2)
+
+    visit transcription_field_edit_fields_path(collection_id: collection)
+    click_button 'Add Additional Line'
+    expect(page).to have_selector('#new-fields > tbody', count: 3)
+
+    within '#new-fields > tbody:last-child' do
+      fill_in 'transcription_fields__label', with: 'Instruction line'
+      fill_in 'transcription_fields__percentage', with: 20
+    end
+
+    page.execute_script(<<~JS)
+      const table = $('#new-fields');
+      const bodies = table.children('tbody');
+      bodies.last().insertAfter(bodies.first());
+    JS
+
+    click_button 'Save'
+
+    expect(collection.transcription_fields.reload.find_by(label: 'First field').line_number).to eq(1)
+    expect(collection.transcription_fields.reload.find_by(label: 'Instruction line').line_number).to eq(2)
+    expect(collection.transcription_fields.reload.find_by(label: 'Second field').line_number).to eq(3)
   end
 
   it 'transcribes field-based works' do
@@ -136,7 +215,7 @@ describe 'collection field-based transcription settings' do
     find('#save_button_top').click
     click_button 'Preview', match: :first
 
-    expect(page.find('.page-preview')).to have_content('first-field: Field one')
+    expect(page.find('.page-preview')).to have_content('First field: Field one')
     click_button 'Edit', match: :first
     expect(page.find('.page-editarea')).to have_selector("##{field_input_id(first_field)}")
   end
