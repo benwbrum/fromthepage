@@ -16,8 +16,14 @@ class Work::Export::GroverPrintable < ApplicationInteractor
     super
   end
 
+  # Puppeteer PDF options that make the export pass Acrobat's accessibility
+  # checker: `tagged` emits the PDF structure tree, `outline` generates
+  # bookmarks from the document heading outline (large documents are required
+  # to have bookmarks).
+  PDF_OPTIONS = { tagged: true, outline: true }.freeze
+
   def perform
-    @file = Grover.new(html).to_pdf
+    @file = Grover.new(html, **PDF_OPTIONS).to_pdf
   end
 
   def filename
@@ -47,7 +53,7 @@ class Work::Export::GroverPrintable < ApplicationInteractor
       }
     )
 
-    @html
+    @html = Work::Export::TableRegularizer.call(@html)
   end
 
   private
