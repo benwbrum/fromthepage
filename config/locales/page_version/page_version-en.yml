@@ -16,5 +16,11 @@ en:
       page_version_status_needs_review: needs review
       page_version_status_review: review
       page_version_status_transcribed: transcribed
+      revert_confirm: Are you sure you want to revert to this version? You will be taken to the transcription screen to review and save.
+      revert_to_this_version: Revert to this version
       translation: Translation
       untitled: Untitled
+    revert:
+      not_authorized: You are not authorized to revert this page.
+      reverted: Page has been reverted to the selected version. Please review and save.
+      version_not_found: Version not found.

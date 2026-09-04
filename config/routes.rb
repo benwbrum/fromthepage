@@ -272,6 +272,7 @@ Fromthepage::Application.routes.draw do
   scope 'page_version', as: 'page_version' do
     get 'list', to: 'page_version#list'
     get 'show', to: 'page_version#show'
+    post 'revert', to: 'page_version#revert', as: 'revert'
   end
 
   scope 'article_version', as: 'article_version' do

@@ -55,4 +55,81 @@ RSpec.describe PageVersionController do
       expect(response).to redirect_to(new_user_session_path)
     end
   end
+
+  describe 'POST #revert' do
+    let(:transcriber) { create(:unique_user) }
+
+    context 'when logged in as owner' do
+      before do
+        login_as(owner, scope: :user)
+      end
+
+      it 'reverts the page to the selected version and redirects to transcription screen' do
+        post page_version_revert_path, params: { page_version_id: first_version.id }
+
+        expect(response).to redirect_to(collection_transcribe_page_path(owner, collection, work, page))
+      end
+
+      it 'updates the page source_text to match the reverted version' do
+        post page_version_revert_path, params: { page_version_id: first_version.id }
+
+        page.reload
+        expect(page.source_text).to eq(first_version.transcription)
+      end
+
+      it 'updates the page title to match the reverted version' do
+        post page_version_revert_path, params: { page_version_id: first_version.id }
+
+        page.reload
+        expect(page.title).to eq(first_version.title)
+      end
+
+      it 'sets a success flash notice' do
+        post page_version_revert_path, params: { page_version_id: first_version.id }
+
+        expect(flash[:notice]).to be_present
+      end
+
+      it 'keeps the current status when the selected version has no status' do
+        post page_version_revert_path, params: { page_version_id: first_version.id }
+
+        page.reload
+        expect(page.status).to eq('new')
+      end
+    end
+
+    context 'when logged in as a non-owner transcriber' do
+      before do
+        login_as(transcriber, scope: :user)
+      end
+
+      it 'denies access and redirects to the versions tab' do
+        post page_version_revert_path, params: { page_version_id: first_version.id }
+
+        expect(response).to redirect_to(collection_page_version_path(owner, collection, work, page))
+      end
+
+      it 'sets an error flash message' do
+        post page_version_revert_path, params: { page_version_id: first_version.id }
+
+        expect(flash[:error]).to be_present
+      end
+
+      it 'does not change the page content' do
+        original_source_text = page.source_text
+        post page_version_revert_path, params: { page_version_id: first_version.id }
+
+        page.reload
+        expect(page.source_text).to eq(original_source_text)
+      end
+    end
+
+    context 'when logged out' do
+      it 'redirects to sign in' do
+        post page_version_revert_path, params: { page_version_id: first_version.id }
+
+        expect(response).to redirect_to(new_user_session_path)
+      end
+    end
+  end
 end
