@@ -9,6 +9,14 @@
     =form_for(@article, url: collection_article_update_path(@collection.owner, @collection, @article)) do |f|
       =hidden_field_tag(:article_id, @article.id)
       =validation_summary @article.errors
+      -if @duplicate_article.present?
+        .validation.validation_duplicate_action
+          p =t('.merge_with_duplicate_description', duplicate: @duplicate_article.title)
+          =link_to t('.merge_with_duplicate', duplicate: @duplicate_article.title), \
+            article_combine_duplicate_path(article_id: @duplicate_article.id, from_article_ids: [@article.id]), \
+            method: :post, \
+            data: { confirm: t('.confirm_merge_with_duplicate', duplicate: @duplicate_article.title) }, \
+            class: 'button'
       table.form
         tr.big
           th =f.label :title, t('.title')

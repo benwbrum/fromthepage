@@ -112,6 +112,7 @@ class ArticleController < ApplicationController
         redirect_to collection_article_edit_path(@collection.owner, @collection, @article)
       else
         @article = result.article
+        @duplicate_article = exact_title_duplicate(@article)
         render :edit, status: :unprocessable_entity
       end
     elsif params[:autolink]
@@ -149,7 +150,7 @@ class ArticleController < ApplicationController
   end
 
   def relationship_graph
-    unless File.exist? @article.d3js_file
+    if !@article.d3js_attachment.attached?
       article_links=[]
       article_nodes=[]
       # get all the source article links
@@ -162,8 +163,7 @@ class ArticleController < ApplicationController
         article_nodes << link.source_article
         article_links << link.source_article_id
       end
-      document_nodes=[]
-      work_nodes=[]
+      document_nodes = []
       center_article_to_document_links=[]
       second_document_to_article_links=[]
       # get all the pages and works linking to this article
@@ -221,7 +221,7 @@ class ArticleController < ApplicationController
         end
       end
 
-      links=[]
+      links = []
       article_links.tally.each do |article_id, link_count|
         links << {
           'source'=>"S#{@article.id}",
@@ -248,12 +248,18 @@ class ArticleController < ApplicationController
         }
       end
 
-      doc={ 'nodes' => nodes, 'links' => links }
-      File.write(@article.d3js_file, doc.to_json)
+      doc = { 'nodes' => nodes, 'links' => links }
+
+      @article.d3js_attachment.attach(
+        io: StringIO.new(doc.to_json),
+        filename: "#{@article.id}.d3.js",
+        content_type: 'application/javascript'
+      )
     end
 
-    # now render the d3js file
-    render file: @article.d3js_file, type: 'application/javascript; charset=utf-8', layout: false
+    send_data @article.d3js_attachment.download,
+              type: 'application/javascript; charset=utf-8',
+              disposition: 'inline'
   end
 
   def show
@@ -263,72 +269,95 @@ class ArticleController < ApplicationController
       return
     end
 
-    sql =
-      'SELECT count(*) as link_count, '+
-      'a.title as title, '+
-      'a.id as article_id '+
-      'FROM page_article_links to_links '+
-      'INNER JOIN page_article_links from_links '+
-      '  ON to_links.page_id = from_links.page_id '+
-      'INNER JOIN articles a '+
-      '  ON from_links.article_id = a.id '+
-      "WHERE to_links.article_id = #{@article.id} "+
-      " AND from_links.article_id != #{@article.id} "
-    sql += 'GROUP BY a.title, a.id '
-    logger.debug(sql)
-    article_links = Article.connection.select_all(sql)
-    link_total = 0
-    link_max = 0
-    count_per_rank = { 0 => 0 }
-    article_links.each do |l|
-      link_count = l['link_count'].to_i
-      link_total += link_count
-      link_max = [link_count, link_max].max
+    unless @article.graph_attachment.attached?
+      sql =
+        'SELECT count(*) as link_count, '+
+        'a.title as title, '+
+        'a.id as article_id '+
+        'FROM page_article_links to_links '+
+        'INNER JOIN page_article_links from_links '+
+        '  ON to_links.page_id = from_links.page_id '+
+        'INNER JOIN articles a '+
+        '  ON from_links.article_id = a.id '+
+        "WHERE to_links.article_id = #{@article.id} "+
+        " AND from_links.article_id != #{@article.id} "
+      sql += 'GROUP BY a.title, a.id '
+      logger.debug(sql)
+      article_links = Article.connection.select_all(sql)
+      link_total = 0
+      link_max = 0
+      count_per_rank = { 0 => 0 }
+      article_links.each do |l|
+        link_count = l['link_count'].to_i
+        link_total += link_count
+        link_max = [link_count, link_max].max
 
-      count_per_rank[link_count] ||= 0
-      count_per_rank[link_count] += 1
-    end
+        count_per_rank[link_count] ||= 0
+        count_per_rank[link_count] += 1
+      end
 
-    min_rank = 0
-    # now we know how many articles each link count has, as well as the size
-    if params[:min_rank]
-      # use the min rank from the params
-      min_rank = params[:min_rank].to_i
-    else
-      # calculate whether we should reduce the rank
-      num_articles = article_links.count
-      while num_articles > DEFAULT_ARTICLES_PER_GRAPH && min_rank < link_max
-        # remove the outer rank
-        num_articles -= count_per_rank[min_rank] || 0 # hash is sparse
-        min_rank += 1
-        logger.debug("DEBUG: \tnum articles now #{num_articles}\n")
+      min_rank = 0
+      # now we know how many articles each link count has, as well as the size
+      if params[:min_rank]
+        # use the min rank from the params
+        min_rank = params[:min_rank].to_i
+      else
+        # calculate whether we should reduce the rank
+        num_articles = article_links.count
+        while num_articles > DEFAULT_ARTICLES_PER_GRAPH && min_rank < link_max
+          # remove the outer rank
+          num_articles -= count_per_rank[min_rank] || 0 # hash is sparse
+          min_rank += 1
+          logger.debug("DEBUG: \tnum articles now #{num_articles}\n")
+        end
+      end
+
+      dot_source = render_to_string(
+        partial: 'graph',
+        layout: false,
+        locals: {
+          article_links: article_links,
+          link_total: link_total,
+          link_max: link_max,
+          min_rank: min_rank
+        },
+        formats: [:dot]
+      )
+
+      dot_file    = Tempfile.new(["#{@article.id}-", '.dot'])
+      dot_out     = Tempfile.new(["#{@article.id}-", '.png'])
+      dot_out_map = Tempfile.new(["#{@article.id}-", '.map'])
+
+      begin
+        dot_file.write(dot_source)
+        dot_file.close
+        dot_out.close
+        dot_out_map.close
+
+        system "#{Rails.application.config.neato} -Tcmapx -o#{dot_out_map.path} -Tpng #{dot_file.path} -o #{dot_out.path}"
+
+        File.open(dot_out.path, 'rb') do |f|
+          @article.graph_attachment.attach(
+            io: f,
+            filename: "#{@article.id}.png",
+            content_type: 'image/png'
+          )
+        end
+
+        File.open(dot_out_map.path, 'r') do |f|
+          @article.map_attachment.attach(
+            io: f,
+            filename: "#{@article.id}.map",
+            content_type: 'text/html'
+          )
+        end
+      ensure
+        dot_file.unlink
+        dot_out.unlink
+        dot_out_map.unlink
       end
     end
 
-    dot_source = render_to_string(
-      partial: 'graph',
-      layout: false,
-      locals: {
-        article_links: article_links,
-        link_total: link_total,
-        link_max: link_max,
-        min_rank: min_rank
-      },
-      formats: [:dot]
-    )
-
-    dot_file = "#{Rails.root}/public/images/working/dot/#{@article.id}.dot"
-    File.open(dot_file, 'w') do |f|
-      f.write(dot_source)
-    end
-    dot_out = "#{Rails.root}/public/images/working/dot/#{@article.id}.png"
-    dot_out_map = "#{Rails.root}/public/images/working/dot/#{@article.id}.map"
-
-    system "#{Rails.application.config.neato} -Tcmapx -o#{dot_out_map} -Tpng #{dot_file} -o #{dot_out}"
-
-    @map = File.read(dot_out_map)
-    @article.graph_image = dot_out
-    @article.save!
     session[:col_id] = @collection.slug
   end
 
@@ -372,6 +401,15 @@ class ArticleController < ApplicationController
   end
 
   private
+
+  def exact_title_duplicate(article)
+    return unless article.errors.details[:title].any? { |error| error[:error] == :taken }
+
+    @collection.articles
+               .where.not(id: article.id)
+               .where('LOWER(title) = LOWER(?)', article.title)
+               .first
+  end
 
   def authorized?
     redirect_to dashboard_path unless user_signed_in?

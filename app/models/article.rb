@@ -51,6 +51,18 @@ class Article < ApplicationRecord
 
   validates_presence_of :title
 
+  # Subject-title uniqueness is intentionally enforced only by Active Record.
+  # There is no matching unique database index: existing collections can contain
+  # historical duplicates, and those records must remain readable and editable.
+  # Consequently this validation improves normal create/edit feedback but is not
+  # a concurrency guarantee; callers must not treat it as a database constraint.
+  validates :title,
+            uniqueness: {
+              scope: :collection_id,
+              case_sensitive: false,
+              message: 'has already been used in this collection'
+            }
+
   validates :latitude, allow_blank: true, numericality: { less_than_or_equal_to: 90, greater_than_or_equal_to: -90 }
   validates :longitude, allow_blank: true, numericality: { less_than_or_equal_to: 180, greater_than_or_equal_to: -180 }
 
@@ -84,6 +96,10 @@ class Article < ApplicationRecord
 
   update_index('articles', if: -> { ELASTIC_ENABLED && !destroyed? }) { self }
   after_destroy :handle_index_deletion
+
+  has_one_attached :graph_attachment
+  has_one_attached :map_attachment
+  has_one_attached :d3js_attachment
 
   def self.es_search(query:, user: nil, is_public: true)
     blocked_collections = []
@@ -187,15 +203,6 @@ class Article < ApplicationRecord
   def org_fields_enabled?
     self.categories.where(org_fields_enabled: true).present?
   end
-
-  def clear_relationship_graph
-    File.unlink(d3js_file) if File.exist?(d3js_file)
-  end
-
-  def d3js_file
-    "#{Rails.root}/public/images/working/dot/#{self.id}.d3.js"
-  end
-
 
   #######################
   # De-Dup Support
