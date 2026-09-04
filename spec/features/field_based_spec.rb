@@ -182,15 +182,19 @@ describe 'collection field-based transcription settings' do
     click_button 'Add Additional Line'
     expect(page).to have_selector('#new-fields > tbody', count: 3)
 
-    within '#new-fields > tbody:last-child' do
-      fill_in 'transcription_fields__label', with: 'Instruction line'
-      fill_in 'transcription_fields__percentage', with: 20
+    moved_line = all('#new-fields > tbody').last
+    within moved_line do
+      find("input[name='transcription_fields[][label]']").set('Instruction line')
+      find("input[name='transcription_fields[][percentage]']").set(20)
     end
 
     page.execute_script(<<~JS)
       const table = $('#new-fields');
       const bodies = table.children('tbody');
-      bodies.last().insertAfter(bodies.first());
+      const movedBody = bodies.last();
+      movedBody.insertAfter(bodies.first());
+      const updateHandler = table.sortable('option', 'update');
+      updateHandler.call(table[0], $.Event('sortupdate'), { item: movedBody });
     JS
 
     click_button 'Save'
