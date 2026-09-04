@@ -36,6 +36,16 @@ describe Collection::AiTranscriptionsController do
         expect(response).to render_template(:edit)
       end
 
+      it 'places metadata draft settings beneath transcription settings' do
+        login_as owner
+        subject
+
+        settings = response.parsed_body.at_css('#collection-settings > .collection-settings-wrapper')
+
+        expect(settings.at_css('#ai-work-metadata-settings')).to be_present
+        expect(response.parsed_body.css('#collection-settings > .collection-settings-wrapper').size).to eq(1)
+      end
+
       context 'with more than 1 result' do
         let!(:page_2) { create(:page, work: work) }
         let!(:ai_transcription_2) { create(:ai_transcription, page_id: page_2.id, status: :finished, source_text: nil, reasoning: nil) }
