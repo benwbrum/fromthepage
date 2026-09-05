@@ -2,8 +2,15 @@
 es:
   work:
     ai_metadata:
-      description: Esta obra tiene metadatos redactados por IA a continuación. Los propietarios del proyecto pueden revisar y usar estos borradores desde la pestaña Configuración.
+      generated_with: Generado con %{model}
       heading: Borrador de Metadatos de IA
+      imported_metadata: Metadatos importados
+      reasoning: Razonamiento
+      select_model: Seleccionar modelo de IA
+      source_material: Material de origen
+      token_usage: Uso de tokens
+      tokens_used: "%{count} tokens usados"
+      view_source: Ver fuente
     ai_transcriptions:
       create:
         success: Se ha lanzado un servicio de transcripción con IA.
@@ -74,13 +81,8 @@ es:
     delete:
       success: Obra eliminado correctamente
     describe:
-      ai: IA
       ai_draft_fields: Borrador de IA
       ai_draft_fields_tooltip: Copiar metadatos generados por IA en los campos
-      ai_metadata_draft: Borrador de metadatos de IA
-      ai_model: "%{model}"
-      ai_reasoning: Razonamiento
-      ai_tokens_used: "%{count} tokens usados"
       always_show_fullscreen: Mostrar siempre pantalla completa
       approve: Aprobar
       approve_to_transcribed_tooltip: Guardar y aprobar estos metadatos

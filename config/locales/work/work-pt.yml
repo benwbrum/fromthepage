@@ -2,8 +2,15 @@
 pt:
   work:
     ai_metadata:
-      description: Esta obra tem metadados rascunhados por IA abaixo. Os proprietários do projeto podem revisar e usar esses rascunhos na aba Configurações.
+      generated_with: Gerado com %{model}
       heading: Rascunho de Metadados de IA
+      imported_metadata: Metadados importados
+      reasoning: Raciocínio
+      select_model: Selecionar modelo de IA
+      source_material: Material de origem
+      token_usage: Uso de tokens
+      tokens_used: "%{count} tokens usados"
+      view_source: Ver fonte
     ai_transcriptions:
       create:
         success: Vaga de transcrição por IA aberta.
@@ -74,13 +81,8 @@ pt:
     delete:
       success: Obra excluído com sucesso
     describe:
-      ai: IA
       ai_draft_fields: Rascunho de IA
       ai_draft_fields_tooltip: Copiar metadados gerados por IA para os campos
-      ai_metadata_draft: Rascunho de metadados de IA
-      ai_model: "%{model}"
-      ai_reasoning: Raciocínio
-      ai_tokens_used: "%{count} tokens usados"
       always_show_fullscreen: Sempre mostrar tela cheia
       approve: Aprovar
       approve_to_transcribed_tooltip: Salve e aprove estes metadados

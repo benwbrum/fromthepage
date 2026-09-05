@@ -48,6 +48,7 @@ en:
       suspicious_behaviors: Suspicious Behaviors
       works_list: Works List
     description_tabs:
+      ai: AI
       back_to_original_work: Back to the original work
       describe: Metadata
       help: Help
@@ -105,7 +106,6 @@ en:
       form: form
     work_tabs:
       about: About
-      ai: AI
       contents: Contents
       download: Download
       help: Help
