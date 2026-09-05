@@ -3,15 +3,14 @@ en:
   work:
     ai_metadata:
       generated_with: Generated with %{model}
+      heading: AI Metadata Draft
       imported_metadata: Imported Metadata
       reasoning: Reasoning
       select_model: Select AI model
       source_material: Source Material
       token_usage: Token Usage
-      tokens_used: '%{count} tokens used'
+      tokens_used: "%{count} tokens used"
       view_source: View source
-      description: This work has AI-drafted metadata below. Project owners can review and use these drafts from the Settings tab.
-      heading: AI Metadata Draft
     ai_transcriptions:
       create:
         success: AI transcription job launched.
@@ -82,13 +81,8 @@ en:
     delete:
       success: Work deleted successfully
     describe:
-      ai: AI
       ai_draft_fields: AI Draft
       ai_draft_fields_tooltip: Copy AI-generated metadata into the fields
-      ai_metadata_draft: AI Metadata Draft
-      ai_model: "%{model}"
-      ai_reasoning: Reasoning
-      ai_tokens_used: "%{count} tokens used"
       always_show_fullscreen: Always show fullscreen
       approve: Approve
       approve_to_transcribed_tooltip: Save and approve this metadata

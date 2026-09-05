@@ -3,15 +3,14 @@ fr:
   work:
     ai_metadata:
       generated_with: Généré avec %{model}
+      heading: Brouillon de métadonnées par IA
       imported_metadata: Métadonnées importées
       reasoning: Raisonnement
       select_model: Sélectionner le modèle d’IA
       source_material: Documents sources
       token_usage: Utilisation des jetons
-      tokens_used: '%{count} jetons utilisés'
+      tokens_used: "%{count} jetons utilisés"
       view_source: Afficher la source
-      description: Cette œuvre dispose ci-dessous de métadonnées rédigées par IA. Les propriétaires du projet peuvent consulter et utiliser ces brouillons depuis l'onglet Réglages.
-      heading: Brouillon de métadonnées par IA
     ai_transcriptions:
       create:
         success: Lancement d'un projet de transcription par IA.
@@ -82,13 +81,8 @@ fr:
     delete:
       success: Œuvre supprimée avec succès
     describe:
-      ai: IA
       ai_draft_fields: Brouillon IA
       ai_draft_fields_tooltip: Copier les métadonnées générées par l'IA dans les champs
-      ai_metadata_draft: Brouillon de métadonnées IA
-      ai_model: "%{model}"
-      ai_reasoning: Raisonnement
-      ai_tokens_used: "%{count} jetons utilisés"
       always_show_fullscreen: Toujours afficher en plein écran
       approve: Approuver
       approve_to_transcribed_tooltip: Enregistrer et approuver ces métadonnées

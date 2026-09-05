@@ -3,15 +3,14 @@ de:
   work:
     ai_metadata:
       generated_with: Erstellt mit %{model}
+      heading: KI-Metadatenentwurf
       imported_metadata: Importierte Metadaten
       reasoning: Begründung
       select_model: KI-Modell auswählen
       source_material: Quellmaterial
       token_usage: Token-Verwendung
-      tokens_used: '%{count} Token verwendet'
+      tokens_used: "%{count} Token verwendet"
       view_source: Quelle anzeigen
-      description: Für dieses Werk liegen unten von KI erstellte Metadatenentwürfe vor. Projektinhaber können diese Entwürfe im Reiter Einstellungen überprüfen und verwenden.
-      heading: KI-Metadatenentwurf
     ai_transcriptions:
       create:
         success: KI-Transkriptionsauftrag gestartet.
@@ -82,13 +81,8 @@ de:
     delete:
       success: Werk erfolgreich gelöscht
     describe:
-      ai: KI
       ai_draft_fields: KI-Entwurf
       ai_draft_fields_tooltip: KI-generierte Metadaten in die Felder kopieren
-      ai_metadata_draft: KI-Metadatenentwurf
-      ai_model: "%{model}"
-      ai_reasoning: Begründung
-      ai_tokens_used: "%{count} Tokens verwendet"
       always_show_fullscreen: Immer Vollbild anzeigen
       approve: Freigeben
       approve_to_transcribed_tooltip: Diese Metadaten speichern und freigeben
