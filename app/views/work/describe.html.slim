@@ -51,7 +51,7 @@
 
         .flex-toolbar_group class=(@collection.review_workflow ? 'push-right' : '')
           -if @work.ai_metadata_draft_available? && (!@collection.ai_draft_disabled || current_user.like_owner?(@collection))
-            =button_tag t('.ai_draft_fields'), type: 'button', id: 'ai-draft-metadata-fields', class: 'button outline', title: "#{t('.ai_draft_fields_tooltip')}"
+            =button_tag t('.ai_draft_fields'), type: 'button', id: 'ai-draft-metadata-fields', title: "#{t('.ai_draft_fields_tooltip')}"
 
           / check status of page and configuration of collection
           -if @work.description_status.nil? || @work.description_status == Work::DescriptionStatus::INCOMPLETE || @work.description_status == Work::DescriptionStatus::UNDESCRIBED
@@ -246,4 +246,3 @@ h2.legend =t('.notes_and_questions')
       $('.page-original').toggle(false);
       $('.page-ai').toggle(false);
     })
-

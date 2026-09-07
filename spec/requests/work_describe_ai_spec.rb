@@ -28,6 +28,7 @@ describe WorkController, '#describe' do
 
     document = Nokogiri::HTML(response.body)
     ai_draft_button = document.at_css('#ai-draft-metadata-fields')
+    expect(ai_draft_button['class'].to_s.split).not_to include('outline')
     expect(ai_draft_button.next_element['id']).to eq('save_button_top')
   end
 
