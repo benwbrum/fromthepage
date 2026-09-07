@@ -1,11 +1,11 @@
 ---
 en:
   page:
-    create_ai_transcription:
-      ai_draft_queued: AI Draft has been queued for this page
-      ai_draft_failed: Failed to queue AI Draft for this page
     create:
       page_created: Page created successfully
+    create_ai_transcription:
+      ai_draft_failed: Failed to queue AI Draft for this page
+      ai_draft_queued: AI Draft has been queued for this page
     destroy:
       page_deleted: Page has been deleted
     edit:
