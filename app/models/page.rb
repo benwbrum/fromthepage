@@ -500,8 +500,11 @@ class Page < ApplicationRecord
   # once to reset the previous links, once to reset new links
   def clear_article_graphs
     article_ids = self.page_article_links.pluck(:article_id)
-    Article.where(id: article_ids).update_all(graph_image: nil)
-    Article.where(id: article_ids).each { |article| article.clear_relationship_graph }
+
+    Article.where(id: article_ids).each do |article|
+      article.graph_attachment.purge
+      article.d3js_attachment.purge
+    end
   end
 
   def populate_search

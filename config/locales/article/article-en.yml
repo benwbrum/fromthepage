@@ -22,12 +22,15 @@ en:
       categories: Categories
       combine_selected: Combine Selected
       confirm_delete_subject: Are you sure you want to delete this subject?  After deleting you won't be able to recover it!
+      confirm_merge_with_duplicate: Are you sure you want to merge this subject into "%{duplicate}"? All links will be updated and this subject will be deleted.
       death_date: Death Date
       delete_subject: Delete Subject
       description: Description
       ended: Ended
       latitude: Latitude
       longitude: Longitude
+      merge_with_duplicate: Merge into "%{duplicate}"
+      merge_with_duplicate_description: A subject named "%{duplicate}" already exists. Merge this subject into it to preserve the existing subject and remap this subject's links.
       microphone: Microphone
       n_pages:
         one: 1 page
