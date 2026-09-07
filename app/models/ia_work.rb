@@ -7,7 +7,7 @@
 #  collection     :string(255)
 #  contributor    :string(255)
 #  creator        :string(255)
-#  description    :string(1024)
+#  description    :text(16777215)
 #  detail_url     :string(255)
 #  djvu_file      :string(255)
 #  ia_path        :string(255)
@@ -31,11 +31,15 @@
 class IaWork < ApplicationRecord
   require 'open-uri'
 
+  DESCRIPTION_MAX_LENGTH = 16.megabytes - 1
+
   belongs_to :user, optional: true
   belongs_to :work, optional: true
   has_many :ia_leaves, class_name: 'IaLeaf'
 
   before_create :truncate_title
+
+  validates :description, html: true, length: { maximum: DESCRIPTION_MAX_LENGTH }
 
   def truncate_title
     self.title = self.title.truncate(1028, omission: '...')
@@ -46,19 +50,6 @@ class IaWork < ApplicationRecord
     #  if @page.status == Page::STATUS_RAW_OCR
     #    @page.status = nil;
     #  end
-  end
-
-  def self.refresh_server(book_id)
-    # first get the call the location API and parse that document
-    api_url = 'http://www.archive.org/services/find_file.php?file='+book_id
-    logger.debug(api_url)
-    loc_doc = Nokogiri::HTML(URI.open(api_url))
-    location = loc_doc.search('results').first
-    server = location['server']
-    dir = location['dir']
-    logger.debug "DEBUG Server=#{server}"
-    logger.debug "DEBUG Dir=#{dir}"
-    { server: server, ia_path: dir }
   end
 
   def zip_file
@@ -94,6 +85,13 @@ class IaWork < ApplicationRecord
     else
       "#{scandata_stub}"
     end
+  end
+
+  def archive_download_url(filename)
+    identifier_segment = CGI.escape(self[:book_id].to_s).gsub('+', '%20')
+    filename_segment = CGI.escape(filename.to_s).gsub('+', '%20')
+
+    "https://archive.org/download/#{identifier_segment}/#{filename_segment}"
   end
 
   # IA importer code refactored from ia_controller.rb
@@ -133,14 +131,13 @@ class IaWork < ApplicationRecord
   end
 
   def ingest_work(id)
-    # find the length of the description column
-    limit = (IaWork.columns_hash['description'].limit)
     loc_doc = fetch_loc_doc(id)
     location = loc_doc.search('results').first
-    server = location['server']
     dir = location['dir']
 
-    self.server = server
+    # ia_path is retained only for the legacy archive-layout helpers (book_path
+    # and sub_prefix). Derivatives are always fetched through archive.org's
+    # stable download endpoint rather than a resolved storage server.
     self.ia_path = dir
     self.book_id = loc_doc.search('identifier').text
     self[:title] = loc_doc.search('title').text            # work title
@@ -148,9 +145,9 @@ class IaWork < ApplicationRecord
     self[:collection] = loc_doc.search('collection').text   # ?
     # description is truncated so it isn't too long for the description column
     if loc_doc.search('abstract').blank?
-      self[:description] = loc_doc.search('description').text.truncate(limit) # description
+      self[:description] = loc_doc.search('description').text.truncate(DESCRIPTION_MAX_LENGTH) # description
     else
-      self[:description] = loc_doc.search('abstract').text.truncate(limit) # description
+      self[:description] = loc_doc.search('abstract').text.truncate(DESCRIPTION_MAX_LENGTH) # description
     end
     self[:notes] = loc_doc.search('notes').text             # physical description
     self[:image_count] = loc_doc.search('imagecount').text
@@ -166,7 +163,7 @@ class IaWork < ApplicationRecord
 
     self.save!
     # now fetch the scandata.xml file and parse it
-    scandata_url = "http://#{server}#{dir}/#{CGI.escape(scandata_file)}" # will not work on new format: we cannot assume filenames are re-named with their content
+    scandata_url = archive_download_url(scandata_file)
 
     sd_doc = open_doc(scandata_url)
 
@@ -281,7 +278,7 @@ class IaWork < ApplicationRecord
     loc_doc = fetch_loc_doc(self.book_id)
     scandata_file, djvu_file = files_from_loc(loc_doc)
 
-    djvu_url =  "http://#{self.server}#{self.ia_path}/#{CGI.escape(djvu_file)}"
+    djvu_url = archive_download_url(djvu_file)
     logger.debug(djvu_url)
     djvu_doc = open_doc(djvu_url)
 

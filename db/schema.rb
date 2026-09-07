@@ -512,7 +512,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_31_000000) do
     t.string "title", limit: 1028
     t.string "creator"
     t.string "collection"
-    t.string "description", limit: 1024
+    t.text "description", size: :medium
     t.string "subject"
     t.string "notes"
     t.string "contributor"

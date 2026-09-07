@@ -9,4 +9,4 @@ dd
               = '(...)'
 
 -if @next_batch.present?
-  =render partial: 'lazy_item', locals: { collection_id: @collection.slug, category: category, batch: @next_batch, timestamp: Time.now.to_i }
+  =render partial: 'lazy_item', locals: { collection_id: @collection.slug, category: category, batch: @next_batch, timestamp: SecureRandom.uuid }
