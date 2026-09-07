@@ -77,3 +77,6 @@
                   =link_to ai_transcription.short_error_message, collection_work_ai_transcription_path(user_slug: collection.owner.to_param, collection_id: collection.to_param, work_id: work.to_param, id: ai_transcription.id)
             -if @failed_ai_transcriptions_hidden_count.positive?
               p =t('.failed_transcription_errors_hidden', count: @failed_ai_transcriptions_hidden_count)
+
+  #ai-work-metadata-settings
+    =render partial: 'work/ai_work_metadata/form', locals: { collection: collection, work: work }
