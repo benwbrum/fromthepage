@@ -83,6 +83,9 @@ de:
     describe:
       ai_draft_fields: KI-Entwurf
       ai_draft_fields_tooltip: KI-generierte Metadaten in die Felder kopieren
+      ai_model: "%{model}"
+      ai_reasoning: Begründung
+      ai_tokens_used: "%{count} Tokens verwendet"
       always_show_fullscreen: Immer Vollbild anzeigen
       approve: Freigeben
       approve_to_transcribed_tooltip: Diese Metadaten speichern und freigeben

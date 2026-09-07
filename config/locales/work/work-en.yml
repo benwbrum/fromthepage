@@ -83,6 +83,9 @@ en:
     describe:
       ai_draft_fields: AI Draft
       ai_draft_fields_tooltip: Copy AI-generated metadata into the fields
+      ai_model: "%{model}"
+      ai_reasoning: Reasoning
+      ai_tokens_used: "%{count} tokens used"
       always_show_fullscreen: Always show fullscreen
       approve: Approve
       approve_to_transcribed_tooltip: Save and approve this metadata

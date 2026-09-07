@@ -83,6 +83,9 @@ es:
     describe:
       ai_draft_fields: Borrador de IA
       ai_draft_fields_tooltip: Copiar metadatos generados por IA en los campos
+      ai_model: "%{model}"
+      ai_reasoning: Razonamiento
+      ai_tokens_used: "%{count} tokens usados"
       always_show_fullscreen: Mostrar siempre pantalla completa
       approve: Aprobar
       approve_to_transcribed_tooltip: Guardar y aprobar estos metadatos
