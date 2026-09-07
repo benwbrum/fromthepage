@@ -34,6 +34,8 @@ class Note < ApplicationRecord
   # automated stuff
   acts_as_tree
 
+  include XmlSourceProcessor
+
   MAX_TITLE_LENGTH = 250
 
   # associations
@@ -83,5 +85,20 @@ class Note < ApplicationRecord
 
   def update_page_last_note
     self.page.update_column(:last_note_updated_at, page.notes.last.updated_at) if self.page
+  end
+
+  def xml_text
+    xml_string = String.new("#{user.display_name}:\n#{body}")
+
+    xml_string = process_latex_snippets(xml_string)
+    xml_string = clean_bad_braces(xml_string)
+    xml_string = clean_script_tags(xml_string)
+    xml_string = process_initial_whitespace(xml_string)
+    xml_string = process_linewise_markup(xml_string)
+    xml_string = process_line_breaks(xml_string)
+    xml_string = valid_xml_from_source(xml_string)
+    xml_string = postprocess_xml_markup(xml_string)
+
+    xml_string
   end
 end

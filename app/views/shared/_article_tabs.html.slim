@@ -20,10 +20,11 @@
 
 -description = cached_article_xml_to_html(@article, collection: @collection)
 -selected_tab = tabs.find { |tab| tab[:selected] == selected }[:name] rescue ""
--content_for :page_title, selected == 1 ? @article.title : "#{selected_tab} - #{@article.title}"
--content_for :meta_description, "#{@article.title} - #{t('.subject')} #{selected_tab.downcase}. #{strip_tags(description).truncate(150, separator: ' ')}"
+-display_title = @article.errors[:title].present? ? @article.title_in_database : @article.title
+-content_for :page_title, selected == 1 ? display_title : "#{selected_tab} - #{display_title}"
+-content_for :meta_description, "#{display_title} - #{t('.subject')} #{selected_tab.downcase}. #{strip_tags(description).truncate(150, separator: ' ')}"
 
-h1[*language_attrs(@collection)] =@article.title
+h1[*language_attrs(@collection)] =display_title
 .tabs
   -for tab in tabs
     -if tab[:path]
