@@ -32,7 +32,7 @@ class AiVolunteerBehaviorReport
 
     @contributions = {}
     @eligible_contributions = {}
-    @all_user_collections = {}
+    @active_eligible_collection_ids = {}
     @versions = {}
 
     PERIODS.each do |label, period|
@@ -48,11 +48,10 @@ class AiVolunteerBehaviorReport
       end
       debug_contributions(label, 'AI-enabled collections', @eligible_contributions[label])
 
-      @all_user_collections[label] = step("Period #{label}: loading user/collection pairs") do
-        deed_user_collections(period)
+      @active_eligible_collection_ids[label] = step("Period #{label}: finding active AI-enabled collections") do
+        non_owner_deeds(period, collection_ids: @eligible_collection_ids).distinct.pluck(:collection_id).to_set
       end
-      pair_count = @all_user_collections[label].values.sum(&:size)
-      debug "Period #{label}: #{@all_user_collections[label].size} users across #{pair_count} user/collection pairs"
+      debug "Period #{label}: #{@active_eligible_collection_ids[label].size} AI-enabled collections had non-owner activity"
 
       @versions[label] = step("Period #{label}: loading saved page versions for AI-enabled collections") do
         version_rows(period, collection_ids: @eligible_collection_ids)
@@ -141,6 +140,8 @@ class AiVolunteerBehaviorReport
       * AI-enabled means at least #{@ai_collection_minimum} `ai_transcriptions` created during C (all statuses/models). The same fixed collection set is used when comparing A, B, and C.
       * AI use is a saved `page_versions.ai_draft_used` value. "Most" means at least 50% of a user's saved versions; "heavy" additionally requires #{@heavy_ai_minimum}+ AI-assisted versions.
       * Pages/week counts distinct user-page pairs in each UTC calendar week. It measures pages touched, not final page completions.
+      * Retention counts all collection-edit deeds, while adoption and productivity require a saved page version. The latter therefore exclude contributions such as article, metadata, and review deeds that do not save a page version; their user denominators will be smaller.
+      * The full AI-enabled cohort is selected from C and is not longitudinally balanced. Productivity is therefore also reported for collections active in all three periods and for collections active in both B and C. "Active" means at least one non-owner collection-edit deed in the period.
     MD
   end
 
@@ -161,21 +162,22 @@ class AiVolunteerBehaviorReport
     debug "Adoption intermediary results: #{bands.transform_values(&:size).map { |label, count| "#{label}=#{count}" }.join(', ')}"
     lines = ['## Adoption', '', "#{c_stats.count { |_id, s| s[:ai].positive? }} non-owner users used an AI Draft in C.", '', '| Adoption band | Users | Percent |', '|---|---:|---:|']
     bands.each { |label, ids| lines << "| #{label} | #{ids.size} | #{percent(ids.size, c_stats.size)} |" }
-    lines += ['', transition_table('B', 'C', include_ai: true), '', transition_table('A', 'B', include_ai: false, pairs: @all_user_collections, scope_label: 'all collections')]
+    lines += ['', transition_table('B', 'C', include_ai: true), '', transition_table('A', 'B', include_ai: false)]
+    lines += ['', '> Retention and adoption/productivity have different denominators: retention includes all collection-edit deeds, while this section includes only users with saved page versions.']
     lines.join("\n")
   end
 
-  def transition_table(from, to, include_ai:, pairs: nil, scope_label: 'fixed AI-enabled collection set')
-    from_pairs = pairs ? pairs[from] : user_collections(@versions[from])
-    to_pairs = pairs ? pairs[to] : user_collections(@versions[to])
+  def transition_table(from, to, include_ai:)
+    from_pairs = user_collections(@versions[from])
+    to_pairs = user_collections(@versions[to])
     cohort = from_pairs.keys.to_set
     same = cohort.count { |id| (from_pairs[id] & to_pairs.fetch(id, Set.new)).any? }
     other = cohort.count { |id| to_pairs.key?(id) && (from_pairs[id] & to_pairs[id]).empty? }
     inactive = cohort.size - same - other
-    debug "#{from}->#{to} switching (#{scope_label}): cohort=#{cohort.size}, same=#{same}, " \
+    debug "#{from}->#{to} switching (fixed AI-enabled collection set): cohort=#{cohort.size}, same=#{same}, " \
           "different=#{other}, inactive=#{inactive}"
     title = "### #{from} to #{to} collection behavior"
-    rows = [title, '', "Cohort: #{cohort.size} users active in #{from} on #{scope_label}.", '', '| Outcome | Users | Percent |', '|---|---:|---:|', "| Continued on at least one same collection | #{same} | #{percent(same, cohort.size)} |", "| Used only different collections | #{other} | #{percent(other, cohort.size)} |", "| No activity in this collection scope | #{inactive} | #{percent(inactive, cohort.size)} |"]
+    rows = [title, '', "Cohort: #{cohort.size} users active in #{from} on the fixed AI-enabled collection set.", '', '| Outcome | Users | Percent |', '|---|---:|---:|', "| Continued on at least one same collection | #{same} | #{percent(same, cohort.size)} |", "| Used only different collections | #{other} | #{percent(other, cohort.size)} |", "| No activity in this collection scope | #{inactive} | #{percent(inactive, cohort.size)} |"]
     if include_ai
       ai_users = user_version_stats(@versions[to]).select { |id, s| cohort.include?(id) && s[:ai].positive? }.size
       continuing = cohort.count { |id| to_pairs.key?(id) }
@@ -185,32 +187,46 @@ class AiVolunteerBehaviorReport
   end
 
   def productivity
-    lines = ['## Productivity', '', '| Period | Users | Distinct pages | Active user-weeks | Pages / active user-week | Mean user pages/week |', '|---|---:|---:|---:|---:|---:|']
+    all_periods = @active_eligible_collection_ids.values.reduce(:&)
+    b_and_c = @active_eligible_collection_ids['B'] & @active_eligible_collection_ids['C']
+    debug "Productivity panels: full=#{@eligible_collection_ids.size} collections, " \
+          "active in A/B/C=#{all_periods.size}, active in B/C=#{b_and_c.size}"
+
+    lines = ['## Productivity', '', '### Full C-selected AI-enabled collection cohort (unbalanced)', '', '> This cohort is selected using period C AI records and is projected backward. Changes may reflect collections entering or leaving the active portfolio, not a change in volunteer productivity.', '', '| Period | Users | Distinct page-weeks | Active user-weeks | Pages / active user-week | Mean user pages/week |', '|---|---:|---:|---:|---:|---:|']
     PERIODS.each_key { |label| lines << productivity_row(label, @versions[label]) }
+
+    lines += ['', "### Balanced panel: #{all_periods.size} collections active in A, B, and C", '', '| Period | Users | Distinct page-weeks | Active user-weeks | Pages / active user-week | Mean user pages/week |', '|---|---:|---:|---:|---:|---:|']
+    PERIODS.each_key do |label|
+      lines << productivity_row(label, versions_for_collections(label, all_periods))
+    end
+
+    lines += ['', "### B/C panel: #{b_and_c.size} collections active in both B and C", '', '| Period | Users | Distinct page-weeks | Active user-weeks | Pages / active user-week | Mean user pages/week |', '|---|---:|---:|---:|---:|---:|']
+    %w[B C].each do |label|
+      lines << productivity_row(label, versions_for_collections(label, b_and_c))
+    end
+
     c_stats = user_version_stats(@versions['C'])
     ai_ids = c_stats.select { |_id, s| s[:ai].positive? }.keys.to_set
-    lines += ['', '### Period C by AI use', '', '| Group | Users | Distinct pages | Active user-weeks | Pages / active user-week | Mean user pages/week |', '|---|---:|---:|---:|---:|---:|', productivity_row('Used AI Draft', @versions['C'].select { |row| ai_ids.include?(row[0]) }), productivity_row('Never used AI Draft', @versions['C'].reject { |row| ai_ids.include?(row[0]) }), '', 'For context, the all-user period B average appears in the preceding table.']
+    lines += ['', '### Period C by AI use', '', '| Group | Users | Distinct page-weeks | Active user-weeks | Pages / active user-week | Mean user pages/week |', '|---|---:|---:|---:|---:|---:|', productivity_row('Used AI Draft', @versions['C'].select { |row| ai_ids.include?(row[0]) }), productivity_row('Never used AI Draft', @versions['C'].reject { |row| ai_ids.include?(row[0]) }), '', 'For context, the all-user period B average appears in the preceding table.']
     lines.join("\n")
   end
 
   def productivity_row(label, rows)
-    user_pages = rows.group_by(&:first).transform_values { |r| r.map { |x| x[1] }.uniq.size }
+    user_rows = rows.group_by(&:first)
+    page_weeks = rows.map { |r| [r[0], r[1], r[3].to_date.cwyear, r[3].to_date.cweek] }.uniq.size
     user_weeks = rows.group_by { |r| [r[0], r[3].to_date.cweek, r[3].to_date.cwyear] }.size
-    per_user_week = rows.group_by(&:first).values.map do |user_rows|
-      user_rows.map { |r| r[1] }.uniq.size.to_f / user_rows.map { |r| [r[3].to_date.cweek, r[3].to_date.cwyear] }.uniq.size
+    per_user_week = user_rows.values.map do |rows_for_user|
+      page_week_count = rows_for_user.map { |r| [r[1], r[3].to_date.cwyear, r[3].to_date.cweek] }.uniq.size
+      active_week_count = rows_for_user.map { |r| [r[3].to_date.cwyear, r[3].to_date.cweek] }.uniq.size
+      page_week_count.to_f / active_week_count
     end
-    debug "Productivity #{label}: users=#{user_pages.size}, distinct user/pages=#{user_pages.values.sum}, " \
-          "active user-weeks=#{user_weeks}, pages/user-week=#{ratio(user_pages.values.sum, user_weeks)}, " \
+    debug "Productivity #{label}: users=#{user_rows.size}, distinct page-weeks=#{page_weeks}, " \
+          "active user-weeks=#{user_weeks}, pages/user-week=#{ratio(page_weeks, user_weeks)}, " \
           "mean user pages/week=#{average(per_user_week)}"
-    "| #{label} | #{user_pages.size} | #{user_pages.values.sum} | #{user_weeks} | #{ratio(user_pages.values.sum, user_weeks)} | #{average(per_user_week)} |"
+    "| #{label} | #{user_rows.size} | #{page_weeks} | #{user_weeks} | #{ratio(page_weeks, user_weeks)} | #{average(per_user_week)} |"
   end
 
   def collections
-    active = PERIODS.transform_values do |period|
-      step("Loading active AI-enabled collections for period #{period.label}") do
-        non_owner_deeds(period, collection_ids: @eligible_collection_ids).distinct.pluck(:collection_id).to_set
-      end
-    end
     records = step('Loading eligible collection titles and owners') do
       Collection.includes(:owner).where(id: @eligible_collection_ids).order(:title).to_a
     end
@@ -219,14 +235,14 @@ class AiVolunteerBehaviorReport
       AiTranscription.joins(page: :work).where(created_at: PERIODS['C'].starts_at...PERIODS['C'].ends_at, works: { collection_id: @eligible_collection_ids }).group('works.collection_id').count
     end
     debug "Eligible collection intermediary results: #{records.map { |record| "#{record.id}=#{counts[record.id]}" }.join(', ')}"
-    records.each { |c| lines << "| #{escape(c.title)} | #{escape(c.owner&.display_name)} | #{counts[c.id]} | #{yes(active['A'].include?(c.id))} | #{yes(active['B'].include?(c.id))} | #{yes(active['C'].include?(c.id))} |" }
+    records.each { |c| lines << "| #{escape(c.title)} | #{escape(c.owner&.display_name)} | #{counts[c.id]} | #{yes(@active_eligible_collection_ids['A'].include?(c.id))} | #{yes(@active_eligible_collection_ids['B'].include?(c.id))} | #{yes(@active_eligible_collection_ids['C'].include?(c.id))} |" }
     lines.join("\n")
   end
 
   def survey_candidates
     stats = user_version_stats(@versions['C'])
     b_users = @versions['B'].map(&:first).to_set
-    attempted = stats.select { |_id, s| (1..2).cover?(s[:ai]) && s[:last_non_ai] && s[:last_non_ai] > s[:last_ai] }.keys
+    attempted = stats.select { |_id, s| (1..2).cover?(s[:ai]) && s[:subsequent_manual_saves].positive? }.keys
     heavy = stats.select { |_id, s| s[:ai] >= @heavy_ai_minimum && s[:ai].to_f / s[:total] >= 0.5 }.keys
     groups = { 'Tried once or twice, then continued without AI' => attempted, 'Heavy AI users with pre-AI experience' => heavy.select { |id| b_users.include?(id) }, 'New heavy AI users' => heavy.reject { |id| b_users.include?(id) } }
     debug "Survey candidate intermediary results: #{groups.transform_values(&:size).map { |label, count| "#{label}=#{count}" }.join(', ')}"
@@ -235,9 +251,18 @@ class AiVolunteerBehaviorReport
       User.where(id: groups.values.flatten.uniq).index_by(&:id)
     end
     groups.each do |label, ids|
-      lines += ['', "### #{label}", '', '| Display name | Email | AI saves C | All saves C |', '|---|---|---:|---:|']
+      lines += ['', "### #{label}", '']
+      if label == 'Tried once or twice, then continued without AI'
+        lines += ['| Display name | Email | First AI date | Last AI date | Subsequent manual saves | Subsequent active days | AI saves C | All saves C |', '|---|---|---|---|---:|---:|---:|---:|']
+      else
+        lines += ['| Display name | Email | AI saves C | All saves C |', '|---|---|---:|---:|']
+      end
       ids.sort_by { |id| users[id]&.display_name.to_s.downcase }.each do |id|
-        lines << "| #{escape(users[id]&.display_name)} | #{escape(users[id]&.email)} | #{stats[id][:ai]} | #{stats[id][:total]} |"
+        if label == 'Tried once or twice, then continued without AI'
+          lines << "| #{escape(users[id]&.display_name)} | #{escape(users[id]&.email)} | #{date(stats[id][:first_ai])} | #{date(stats[id][:last_ai])} | #{stats[id][:subsequent_manual_saves]} | #{stats[id][:subsequent_active_days]} | #{stats[id][:ai]} | #{stats[id][:total]} |"
+        else
+          lines << "| #{escape(users[id]&.display_name)} | #{escape(users[id]&.email)} | #{stats[id][:ai]} | #{stats[id][:total]} |"
+        end
       end
     end
     lines.join("\n")
@@ -247,7 +272,17 @@ class AiVolunteerBehaviorReport
     rows.group_by(&:first).transform_values do |user_rows|
       ai_rows = user_rows.select { |row| row[4] }
       non_ai_rows = user_rows.reject { |row| row[4] }
-      { total: user_rows.size, ai: ai_rows.size, last_ai: ai_rows.map { |r| r[3] }.max, last_non_ai: non_ai_rows.map { |r| r[3] }.max }
+      first_ai = ai_rows.map { |r| r[3] }.min
+      last_ai = ai_rows.map { |r| r[3] }.max
+      subsequent_manual_rows = last_ai ? non_ai_rows.select { |row| row[3] > last_ai } : []
+      {
+        total: user_rows.size,
+        ai: ai_rows.size,
+        first_ai: first_ai,
+        last_ai: last_ai,
+        subsequent_manual_saves: subsequent_manual_rows.size,
+        subsequent_active_days: subsequent_manual_rows.map { |row| row[3].to_date }.uniq.size
+      }
     end
   end
 
@@ -259,10 +294,8 @@ class AiVolunteerBehaviorReport
     rows.each_with_object(Hash.new { |h, k| h[k] = Set.new }) { |row, result| result[row[0]] << row[2] }
   end
 
-  def deed_user_collections(period)
-    non_owner_deeds(period).distinct.pluck(:user_id, :collection_id).each_with_object(Hash.new { |h, k| h[k] = Set.new }) do |(user_id, collection_id), result|
-      result[user_id] << collection_id
-    end
+  def versions_for_collections(label, collection_ids)
+    @versions[label].select { |row| collection_ids.include?(row[2]) }
   end
 
   def debug_contributions(label, scope, counts)
@@ -300,6 +333,7 @@ class AiVolunteerBehaviorReport
   def ratio(numerator, denominator) = denominator.zero? ? 'n/a' : (numerator.to_f / denominator).round(2)
   def average(values) = values.empty? ? 'n/a' : (values.sum / values.size).round(2)
   def yes(value) = value ? 'Yes' : 'No'
+  def date(value) = value&.to_date&.iso8601.to_s
   def escape(value) = value.to_s.gsub('|', '\\|').gsub(/\r?\n/, ' ')
 end
 

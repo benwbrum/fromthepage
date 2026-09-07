@@ -13,6 +13,12 @@ collection switching, productivity, eligible collection, and survey-candidate
 tables to one Markdown file. Definitions and denominators are written into the
 report itself so exported results remain interpretable.
 
+Productivity is reported for three collection cohorts: the full period-C-selected
+AI collection cohort, a balanced panel active in A/B/C, and a larger panel active
+in both B/C. The collection-switching comparisons use the same fixed AI-enabled
+collection universe in both transitions. The report also explains why deed-based
+retention and saved-page-version analyses have different user denominators.
+
 The script prints timestamped `START`, `DONE`, and `ERROR` messages to standard
 output for every database-loading and report-rendering step. It also prints
 intermediate record counts, cohort sizes, adoption bands, and productivity
