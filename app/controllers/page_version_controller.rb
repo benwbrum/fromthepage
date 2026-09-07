@@ -17,6 +17,10 @@ class PageVersionController < ApplicationController
     render 'show'
   end
 
+  def show
+    render 'show'
+  end
+
   def revert
     unless current_user.like_owner?(@work)
       flash[:error] = t('.not_authorized')
