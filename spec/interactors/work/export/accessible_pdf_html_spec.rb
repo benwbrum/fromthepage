@@ -76,7 +76,7 @@ describe Work::Export::AccessiblePdfHtml do
       html = '<table><tr><td>a</td><td>b</td></tr><tr><td>c</td></tr></table>'
 
       padded = doc(html).css('tr').last.css('td').last
-      expect(padded.text).to eq(" ")
+      expect(padded.text).to eq("\u00A0")
     end
 
     it 'leaves already-regular tables untouched' do
