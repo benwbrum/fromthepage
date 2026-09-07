@@ -23,16 +23,51 @@ class AiVolunteerBehaviorReport
   end
 
   def call
-    @eligible_collection_ids = eligible_collection_ids
-    @contributions = PERIODS.transform_values { |period| contribution_counts(period) }
-    @eligible_contributions = PERIODS.transform_values do |period|
-      contribution_counts(period, collection_ids: @eligible_collection_ids)
-    end
-    @all_user_collections = PERIODS.transform_values { |period| deed_user_collections(period) }
-    @versions = PERIODS.transform_values { |period| version_rows(period, collection_ids: @eligible_collection_ids) }
+    $stdout.sync = true
+    debug "Starting report; output=#{@output.inspect}, AI collection minimum=#{@ai_collection_minimum}, " \
+          "heavy AI minimum=#{@heavy_ai_minimum}"
 
-    FileUtils.mkdir_p(File.dirname(@output))
-    File.write(@output, render)
+    @eligible_collection_ids = step('Finding AI-enabled collections') { eligible_collection_ids }
+    debug "Eligible collections: #{@eligible_collection_ids.size} (IDs: #{list(@eligible_collection_ids)})"
+
+    @contributions = {}
+    @eligible_contributions = {}
+    @all_user_collections = {}
+    @versions = {}
+
+    PERIODS.each do |label, period|
+      debug "Beginning period #{label}: #{period.starts_at.iso8601}...#{period.ends_at.iso8601}"
+
+      @contributions[label] = step("Period #{label}: counting participants across all collections") do
+        contribution_counts(period)
+      end
+      debug_contributions(label, 'all collections', @contributions[label])
+
+      @eligible_contributions[label] = step("Period #{label}: counting participants in AI-enabled collections") do
+        contribution_counts(period, collection_ids: @eligible_collection_ids)
+      end
+      debug_contributions(label, 'AI-enabled collections', @eligible_contributions[label])
+
+      @all_user_collections[label] = step("Period #{label}: loading user/collection pairs") do
+        deed_user_collections(period)
+      end
+      pair_count = @all_user_collections[label].values.sum(&:size)
+      debug "Period #{label}: #{@all_user_collections[label].size} users across #{pair_count} user/collection pairs"
+
+      @versions[label] = step("Period #{label}: loading saved page versions for AI-enabled collections") do
+        version_rows(period, collection_ids: @eligible_collection_ids)
+      end
+      version_users = @versions[label].map(&:first).uniq.size
+      version_pages = @versions[label].map { |row| row[1] }.uniq.size
+      ai_versions = @versions[label].count { |row| row[4] }
+      debug "Period #{label}: #{@versions[label].size} saved versions, #{version_users} users, " \
+            "#{version_pages} pages, #{ai_versions} AI-assisted saves"
+    end
+
+    markdown = step('Rendering Markdown report') { render }
+    step("Creating output directory #{File.dirname(@output)}") { FileUtils.mkdir_p(File.dirname(@output)) }
+    step("Writing #{markdown.bytesize} bytes to #{@output}") { File.write(@output, markdown) }
+    debug "Report complete: #{@output}"
     @output
   end
 
@@ -79,7 +114,17 @@ class AiVolunteerBehaviorReport
   end
 
   def render
-    sections = [header, retention, adoption, productivity, collections, survey_candidates]
+    sections = []
+    {
+      'methodology' => :header,
+      'retention' => :retention,
+      'adoption and switching' => :adoption,
+      'productivity' => :productivity,
+      'eligible collections' => :collections,
+      'survey candidates' => :survey_candidates
+    }.each do |label, method|
+      sections << step("Rendering #{label} section") { send(method) }
+    end
     sections.join("\n\n") + "\n"
   end
 
@@ -113,6 +158,7 @@ class AiVolunteerBehaviorReport
   def adoption
     c_stats = user_version_stats(@versions['C'])
     bands = adoption_bands(c_stats)
+    debug "Adoption intermediary results: #{bands.transform_values(&:size).map { |label, count| "#{label}=#{count}" }.join(', ')}"
     lines = ['## Adoption', '', "#{c_stats.count { |_id, s| s[:ai].positive? }} non-owner users used an AI Draft in C.", '', '| Adoption band | Users | Percent |', '|---|---:|---:|']
     bands.each { |label, ids| lines << "| #{label} | #{ids.size} | #{percent(ids.size, c_stats.size)} |" }
     lines += ['', transition_table('B', 'C', include_ai: true), '', transition_table('A', 'B', include_ai: false, pairs: @all_user_collections, scope_label: 'all collections')]
@@ -126,6 +172,8 @@ class AiVolunteerBehaviorReport
     same = cohort.count { |id| (from_pairs[id] & to_pairs.fetch(id, Set.new)).any? }
     other = cohort.count { |id| to_pairs.key?(id) && (from_pairs[id] & to_pairs[id]).empty? }
     inactive = cohort.size - same - other
+    debug "#{from}->#{to} switching (#{scope_label}): cohort=#{cohort.size}, same=#{same}, " \
+          "different=#{other}, inactive=#{inactive}"
     title = "### #{from} to #{to} collection behavior"
     rows = [title, '', "Cohort: #{cohort.size} users active in #{from} on #{scope_label}.", '', '| Outcome | Users | Percent |', '|---|---:|---:|', "| Continued on at least one same collection | #{same} | #{percent(same, cohort.size)} |", "| Used only different collections | #{other} | #{percent(other, cohort.size)} |", "| No activity in this collection scope | #{inactive} | #{percent(inactive, cohort.size)} |"]
     if include_ai
@@ -151,14 +199,26 @@ class AiVolunteerBehaviorReport
     per_user_week = rows.group_by(&:first).values.map do |user_rows|
       user_rows.map { |r| r[1] }.uniq.size.to_f / user_rows.map { |r| [r[3].to_date.cweek, r[3].to_date.cwyear] }.uniq.size
     end
+    debug "Productivity #{label}: users=#{user_pages.size}, distinct user/pages=#{user_pages.values.sum}, " \
+          "active user-weeks=#{user_weeks}, pages/user-week=#{ratio(user_pages.values.sum, user_weeks)}, " \
+          "mean user pages/week=#{average(per_user_week)}"
     "| #{label} | #{user_pages.size} | #{user_pages.values.sum} | #{user_weeks} | #{ratio(user_pages.values.sum, user_weeks)} | #{average(per_user_week)} |"
   end
 
   def collections
-    active = PERIODS.transform_values { |p| non_owner_deeds(p, collection_ids: @eligible_collection_ids).distinct.pluck(:collection_id).to_set }
-    records = Collection.includes(:owner).where(id: @eligible_collection_ids).order(:title)
+    active = PERIODS.transform_values do |period|
+      step("Loading active AI-enabled collections for period #{period.label}") do
+        non_owner_deeds(period, collection_ids: @eligible_collection_ids).distinct.pluck(:collection_id).to_set
+      end
+    end
+    records = step('Loading eligible collection titles and owners') do
+      Collection.includes(:owner).where(id: @eligible_collection_ids).order(:title).to_a
+    end
     lines = ['## Qualitative: eligible collections', '', '| Collection | Owner institution | AI records in C | Active A | Active B | Active C |', '|---|---|---:|:---:|:---:|:---:|']
-    counts = AiTranscription.joins(page: :work).where(created_at: PERIODS['C'].starts_at...PERIODS['C'].ends_at, works: { collection_id: @eligible_collection_ids }).group('works.collection_id').count
+    counts = step('Counting period C AI transcription records by collection') do
+      AiTranscription.joins(page: :work).where(created_at: PERIODS['C'].starts_at...PERIODS['C'].ends_at, works: { collection_id: @eligible_collection_ids }).group('works.collection_id').count
+    end
+    debug "Eligible collection intermediary results: #{records.map { |record| "#{record.id}=#{counts[record.id]}" }.join(', ')}"
     records.each { |c| lines << "| #{escape(c.title)} | #{escape(c.owner&.display_name)} | #{counts[c.id]} | #{yes(active['A'].include?(c.id))} | #{yes(active['B'].include?(c.id))} | #{yes(active['C'].include?(c.id))} |" }
     lines.join("\n")
   end
@@ -169,8 +229,11 @@ class AiVolunteerBehaviorReport
     attempted = stats.select { |_id, s| (1..2).cover?(s[:ai]) && s[:last_non_ai] && s[:last_non_ai] > s[:last_ai] }.keys
     heavy = stats.select { |_id, s| s[:ai] >= @heavy_ai_minimum && s[:ai].to_f / s[:total] >= 0.5 }.keys
     groups = { 'Tried once or twice, then continued without AI' => attempted, 'Heavy AI users with pre-AI experience' => heavy.select { |id| b_users.include?(id) }, 'New heavy AI users' => heavy.reject { |id| b_users.include?(id) } }
+    debug "Survey candidate intermediary results: #{groups.transform_values(&:size).map { |label, count| "#{label}=#{count}" }.join(', ')}"
     lines = ['## Qualitative: survey candidates', '', '> **Sensitive:** This section contains contact information. Store and share the report appropriately.']
-    users = User.where(id: groups.values.flatten.uniq).index_by(&:id)
+    users = step("Loading contact details for #{groups.values.flatten.uniq.size} survey candidates") do
+      User.where(id: groups.values.flatten.uniq).index_by(&:id)
+    end
     groups.each do |label, ids|
       lines += ['', "### #{label}", '', '| Display name | Email | AI saves C | All saves C |', '|---|---|---:|---:|']
       ids.sort_by { |id| users[id]&.display_name.to_s.downcase }.each do |id|
@@ -200,6 +263,36 @@ class AiVolunteerBehaviorReport
     non_owner_deeds(period).distinct.pluck(:user_id, :collection_id).each_with_object(Hash.new { |h, k| h[k] = Set.new }) do |(user_id, collection_id), result|
       result[user_id] << collection_id
     end
+  end
+
+  def debug_contributions(label, scope, counts)
+    thresholds = SCOPES.map do |name, minimum|
+      "#{name}=#{counts.count { |_user_id, count| count >= minimum }}"
+    end
+    debug "Period #{label}, #{scope}: #{counts.size} participant count records (#{thresholds.join(', ')})"
+  end
+
+  def step(description)
+    started_at = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+    debug "START #{description}"
+    result = yield
+    elapsed = Process.clock_gettime(Process::CLOCK_MONOTONIC) - started_at
+    debug format('DONE  %s (%.2fs)', description, elapsed)
+    result
+  rescue StandardError => e
+    elapsed = Process.clock_gettime(Process::CLOCK_MONOTONIC) - started_at
+    debug format('ERROR %s after %.2fs: %s: %s', description, elapsed, e.class, e.message)
+    raise
+  end
+
+  def debug(message)
+    puts "[#{Time.current.utc.iso8601}] [AI volunteer report] #{message}"
+  end
+
+  def list(values, limit: 50)
+    return values.join(', ') if values.size <= limit
+
+    "#{values.first(limit).join(', ')}, ... (#{values.size - limit} more)"
   end
 
   def intersection(sets, left, right) = (sets[left] & sets[right]).size

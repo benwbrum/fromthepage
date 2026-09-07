@@ -13,6 +13,12 @@ collection switching, productivity, eligible collection, and survey-candidate
 tables to one Markdown file. Definitions and denominators are written into the
 report itself so exported results remain interpretable.
 
+The script prints timestamped `START`, `DONE`, and `ERROR` messages to standard
+output for every database-loading and report-rendering step. It also prints
+intermediate record counts, cohort sizes, adoption bands, and productivity
+totals. Output is flushed immediately, so a long-running database query remains
+identifiable while the script is running.
+
 The default eligible-collection threshold is 100 AI transcription records in
 period C. The default "heavy AI" survey threshold is 10 AI-assisted saves and
 AI use on at least half of saved versions. Both can be overridden:
