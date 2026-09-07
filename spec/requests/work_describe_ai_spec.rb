@@ -25,6 +25,10 @@ describe WorkController, '#describe' do
 
     expect(response).to have_http_status(:ok)
     expect(response.body).to include('page-ai')
+
+    document = Nokogiri::HTML(response.body)
+    ai_draft_button = document.at_css('#ai-draft-metadata-fields')
+    expect(ai_draft_button.next_element['id']).to eq('save_button_top')
   end
 
   it 'renders describe page without an ai draft option when none is available' do
