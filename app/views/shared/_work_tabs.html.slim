@@ -20,13 +20,6 @@
       :path => "#{download_collection_work_path(@collection.owner, @collection, @work)}",
     }]
 
--if @work.ai_metadata_draft_available? && (!@collection.ai_draft_disabled || (user_signed_in? && current_user.like_owner?(@collection)))
-  -tabs += [{\
-    :name => t('.ai'),
-    :selected => 10,
-    :path => "#{collection_work_ai_metadata_path(@collection.owner, @collection, @work)}",
-  }]
-
 -if user_signed_in? && current_user.like_owner?(@collection)
   -tabs += [{\
     :name => t('.settings'),
