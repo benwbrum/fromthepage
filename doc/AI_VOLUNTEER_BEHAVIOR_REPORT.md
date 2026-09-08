@@ -20,7 +20,9 @@ collection universe in both transitions. The report also explains why deed-based
 retention and saved-page-version analyses have different user denominators.
 Heavy-AI-user tables include each user's period-C suspicious-behavior count and
 behavior-type breakdown, plus cohort totals. These records are explicitly
-described as review signals rather than proof of abuse.
+described as review signals rather than proof of abuse. Every survey-candidate
+table includes a linked FromThePage username, display name, email address,
+account-creation date, and lifetime contribution count.
 
 The report also reconstructs page-level AI eligibility in C from the earliest
 finished, nonblank database AI transcription available before each save. It

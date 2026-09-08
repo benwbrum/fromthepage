@@ -465,19 +465,24 @@ class AiVolunteerBehaviorReport
     users = step("Loading contact details for #{groups.values.flatten.uniq.size} survey candidates") do
       User.where(id: groups.values.flatten.uniq).index_by(&:id)
     end
+    contribution_totals = step("Counting lifetime contributions for #{users.size} survey candidates") do
+      Deed.where(user_id: users.keys).group(:user_id).count
+    end
     groups.each do |label, ids|
       lines += ['', "### #{label}", '']
       if label == 'Tried once or twice, then continued without AI'
-        lines += ['| Display name | Email | First AI date | Last AI date | Subsequent manual saves | Subsequent active days | AI saves C | All saves C |', '|---|---|---|---|---:|---:|---:|---:|']
+        lines += ['| Username | Display name | Email | Account created | Lifetime contributions | First AI date | Last AI date | Subsequent manual saves | Subsequent active days | AI saves C | All saves C |', '|---|---|---|---|---:|---|---|---:|---:|---:|---:|']
       else
-        lines += ['| Display name | Email | AI saves C | All saves C | Suspicious behaviors C | Behavior types C |', '|---|---|---:|---:|---:|---|']
+        lines += ['| Username | Display name | Email | Account created | Lifetime contributions | AI saves C | All saves C | Suspicious behaviors C | Behavior types C |', '|---|---|---|---|---:|---:|---:|---:|---|']
       end
       ids.sort_by { |id| users[id]&.display_name.to_s.downcase }.each do |id|
+        user = users[id]
+        identity = "| #{profile_link(user)} | #{escape(user&.display_name)} | #{escape(user&.email)} | #{date(user&.created_at)} | #{contribution_totals.fetch(id, 0)}"
         if label == 'Tried once or twice, then continued without AI'
-          lines << "| #{escape(users[id]&.display_name)} | #{escape(users[id]&.email)} | #{date(stats[id][:first_ai])} | #{date(stats[id][:last_ai])} | #{stats[id][:subsequent_manual_saves]} | #{stats[id][:subsequent_active_days]} | #{stats[id][:ai]} | #{stats[id][:total]} |"
+          lines << "#{identity} | #{date(stats[id][:first_ai])} | #{date(stats[id][:last_ai])} | #{stats[id][:subsequent_manual_saves]} | #{stats[id][:subsequent_active_days]} | #{stats[id][:ai]} | #{stats[id][:total]} |"
         else
           user_behavior_counts = suspicious_counts_by_user[id]
-          lines << "| #{escape(users[id]&.display_name)} | #{escape(users[id]&.email)} | #{stats[id][:ai]} | #{stats[id][:total]} | #{user_behavior_counts.values.sum} | #{escape(format_behavior_counts(user_behavior_counts))} |"
+          lines << "#{identity} | #{stats[id][:ai]} | #{stats[id][:total]} | #{user_behavior_counts.values.sum} | #{escape(format_behavior_counts(user_behavior_counts))} |"
         end
       end
     end
@@ -652,6 +657,14 @@ class AiVolunteerBehaviorReport
     counts.sort_by { |behavior_type, _count| behavior_type }.map do |behavior_type, count|
       "#{behavior_type}=#{count}"
     end.join(', ')
+  end
+
+  def profile_link(user)
+    return '' unless user
+
+    label = escape(user.login.presence || user.display_name).gsub(/[\[\]]/) { |character| "\\#{character}" }
+    url = Rails.application.routes.url_helpers.user_profile_url(user_id: user.id)
+    "[#{label}](#{url})"
   end
 
   def intersection(sets, left, right) = (sets[left] & sets[right]).size
