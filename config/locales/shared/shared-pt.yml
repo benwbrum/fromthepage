@@ -48,6 +48,7 @@ pt:
       suspicious_behaviors: Comportamentos suspeitos
       works_list: Lista de Obras
     description_tabs:
+      ai: AI
       back_to_original_work: Voltar para a obra original
       describe: Metadados
       help: Ajuda
@@ -105,7 +106,6 @@ pt:
       form: Formato
     work_tabs:
       about: Sobre
-      ai: IA
       contents: Conteúdo
       download: Download
       help: Ajuda

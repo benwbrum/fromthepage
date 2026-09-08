@@ -48,6 +48,7 @@ de:
       suspicious_behaviors: Verdächtige Verhaltensweisen
       works_list: Werkliste
     description_tabs:
+      ai: AI
       back_to_original_work: Zurück zum ursprünglichen Werk
       describe: Metadaten
       help: Hilfe
@@ -105,7 +106,6 @@ de:
       form: Formular
     work_tabs:
       about: Info
-      ai: KI
       contents: Inhalt
       download: Download
       help: Hilfe

@@ -1,7 +1,81 @@
-=render partial: '/shared/work_tabs', locals: { selected: 10 }
+=javascript_include_tag "transcribe"
+=render partial: '/shared/description_tabs', locals: { selected: 10, page_id: @work.slug }
 
-.collection-meta-wrapper
-  #work-ai-metadata
-    h2 =t('.heading')
-    p.fgfaded =t('.description')
-    =render partial: 'work/ai_metadata_draft_engines', locals: { engines: @finished_ai_work_metadata_by_engine, collection: @collection }
+.page-toolbar
+  .flex-toolbar
+    .flex-toolbar_group
+      dl.dropdown.page-columns-layout(data-controller='dropdown' data-dropdown-selectable-value='true')
+        dt.button.outline
+          span.hide-l =t('.view_source')
+        dd
+          a(data-view-set="image") =t('work.describe.page_images')
+          a(data-view-set="transcript") =t('work.describe.text')
+          a(data-view-set="metadata") =t('.imported_metadata')
+
+.page-headlines
+  .headline
+    h3.headline_title =t('.source_material')
+  .headline
+    h3.headline_title =t('.heading')
+    .page_info
+      -if @finished_ai_work_metadata_by_engine.size > 1
+        =form_tag collection_work_ai_metadata_path(@collection.owner, @collection, @work), method: :get do
+          =select_tag :engine, options_for_select(@finished_ai_work_metadata_by_engine.map { |engine, draft| [draft.model, engine] }, @selected_ai_engine), onchange: 'this.form.submit()', 'aria-label': t('.select_model')
+      -else
+        =t('.generated_with', model: @ai_work_metadata.model)
+
+#work-ai-metadata.page-columns(data-layout-mode="ltr")
+  .page-column.page-imagescan
+    .page-preview
+      .work-page_content
+        -@work.pages.each do |page|
+          -if page.work.pages_are_meaningful
+            h4.work-page_title =page.title
+          .work-page_text[*language_attrs(@collection)]
+            -transcription =xml_to_html(page.xml_text, false)
+            -if page.status_blank?
+              p.nodata_text =t('work.describe.this_page_is_blank')
+            -elsif transcription.present?
+              ==transcription.force_encoding('utf-8')
+    .page-imagescan.page-image
+      =render partial: '/shared/osd_div'
+    .page-original
+      h5 =t('.imported_metadata')
+      .big =raw(html_metadata_from_work(@work))
+
+  .splitter
+  .page-column
+    .page-preview
+      -if @ai_work_metadata.metadata_json.present?
+        -@collection.metadata_fields.order(:line_number, :position).each do |field|
+          -value =@ai_work_metadata.metadata_json[field.id.to_s]
+          -next if value.nil?
+          p
+            b ="#{field.label}: "
+            =value.is_a?(Array) ? value.join(', ') : value
+
+    -if @ai_work_metadata.metadata.is_a?(Hash) && @ai_work_metadata.metadata['total_token_count'].present?
+      #token-usage.ai-token-usage
+        h4 =t('.token_usage')
+        .token-usage-content
+          p =t('.tokens_used', count: @ai_work_metadata.metadata['total_token_count'])
+
+    -if @ai_work_metadata.reasoning.present?
+      #reasoning.ai-reasoning
+        h4 =t('.reasoning')
+        .reasoning-content
+          ==Markdown.new(@ai_work_metadata.reasoning).to_html
+
+-content_for :javascript
+  javascript:
+    $(function() {
+      $('[data-view-set]').on('click', function() {
+        var mode = $(this).data('view-set');
+        $('.page-image').toggle(mode === 'image');
+        $('.page-preview').first().toggle(mode === 'transcript');
+        $('.page-original').toggle(mode === 'metadata');
+      });
+
+      $('.page-preview').first().hide();
+      $('.page-original').hide();
+    });
