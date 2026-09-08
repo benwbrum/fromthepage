@@ -66,8 +66,14 @@ class AiVolunteerBehaviorReport
             "#{version_pages} pages, #{ai_versions} AI-assisted saves"
     end
 
+    @accuracy_review_versions = step('Loading all period C non-owner saves with needs-review status') do
+      version_rows(PERIODS['C'], collection_ids: nil, statuses: [Page.statuses[:needs_review]])
+    end
+    debug "Accuracy candidate saves: #{@accuracy_review_versions.size} across #{@accuracy_review_versions.map { |row| row[1] }.uniq.size} pages"
+
     @ai_available_at_by_page = step('Reconstructing page-level AI availability before period C saves') do
-      ai_available_at_by_page(@versions['C'].map { |row| row[1] }.uniq)
+      page_ids = (@versions['C'] + @accuracy_review_versions).map { |row| row[1] }.uniq
+      ai_available_at_by_page(page_ids)
     end
     debug "Reconstructed prior AI availability for #{@ai_available_at_by_page.size} period C pages"
 
@@ -108,16 +114,18 @@ class AiVolunteerBehaviorReport
     collection_ids.nil? ? scope : scope.where(collection_id: collection_ids)
   end
 
-  def version_rows(period, collection_ids:)
-    PageVersion.joins(page: { work: :collection })
-      .where(created_on: period.starts_at...period.ends_at, works: { collection_id: collection_ids })
+  def version_rows(period, collection_ids:, statuses: nil)
+    scope = PageVersion.joins(page: { work: :collection })
+      .where(created_on: period.starts_at...period.ends_at)
       .where.not(user_id: nil)
       .where.not(<<~SQL.squish)
         (collections.owner_user_id IS NOT NULL AND page_versions.user_id = collections.owner_user_id)
         OR EXISTS (SELECT 1 FROM collection_owners WHERE collection_owners.collection_id = collections.id
                    AND collection_owners.user_id = page_versions.user_id)
       SQL
-      .pluck(:user_id, :page_id, 'works.collection_id', :created_on, :ai_draft_used)
+    scope = scope.where(works: { collection_id: collection_ids }) if collection_ids
+    scope = scope.where(status: statuses) if statuses
+    scope.pluck(:user_id, :page_id, 'works.collection_id', :created_on, :ai_draft_used, :status)
   end
 
   def ai_available_at_by_page(page_ids)
@@ -136,6 +144,7 @@ class AiVolunteerBehaviorReport
       'retention' => :retention,
       'adoption and switching' => :adoption,
       'page-level AI eligibility' => :page_ai_eligibility,
+      'review accuracy' => :review_accuracy,
       'productivity' => :productivity,
       'within-person productivity' => :within_person_productivity,
       'longitudinal B-to-C productivity' => :longitudinal_productivity,
@@ -164,6 +173,7 @@ class AiVolunteerBehaviorReport
       * The full AI-enabled cohort is selected from C and is not longitudinally balanced. Productivity is therefore also reported for collections active in all three periods and for collections active in both B and C. "Active" means at least one non-owner collection-edit deed in the period.
       * Suspicious-behavior counts for heavy AI users include records created during period C across all collections, grouped by behavior type. They are signals for review, not findings that abuse occurred.
       * Exact historical AI eligibility cannot be reconstructed: collection configuration (`ai_draft_disabled`, entry type, and related UI conditions) is not versioned, and legacy filesystem drafts have no queryable availability timestamp. The conservative database proxy used below requires a currently-finished `ai_transcriptions` record with nonblank text/JSON whose `updated_at` is no later than the human save. Current collection settings are deliberately not projected backward. This proxy can undercount drafts (especially records updated later or legacy files) and can still overstate exposure if a collection had AI disabled at the time.
+      * The accuracy analysis spans all collections and includes a page only when a non-owner period-C save has historical `needs_review` status, the AI-availability proxy was satisfied at that save, and the page currently has an `approval_delta`. Lower `approval_delta` means the approver changed less text. Because only the current page-level delta is retained, it may not represent the selected review cycle if a page was reviewed more than once.
     MD
   end
 
@@ -275,6 +285,49 @@ class AiVolunteerBehaviorReport
     substantial.each do |collection_id, users, eligible, ai|
       lines << "| #{escape(names[collection_id])} | #{users} | #{eligible} | #{ai} | #{percent(ai, eligible)} |"
     end
+    lines.join("\n")
+  end
+
+  def review_accuracy
+    review_rows = @accuracy_review_versions
+    first_review_by_page = review_rows.group_by { |row| row[1] }.transform_values { |rows| rows.min_by { |row| row[3] } }
+    eligible_reviews = first_review_by_page.values.select do |row|
+      %i[eligible_ai eligible_manual].include?(eligibility_category(row))
+    end
+    anomalies = first_review_by_page.values.count { |row| eligibility_category(row) == :anomaly }
+    deltas = step("Loading approval deltas for #{eligible_reviews.size} proxy-eligible reviewed pages") do
+      Page.where(id: eligible_reviews.map { |row| row[1] }).where.not(approval_delta: nil).pluck(:id, :approval_delta).to_h
+    end
+    observations = eligible_reviews.filter_map do |row|
+      delta = deltas[row[1]]
+      next if delta.nil?
+
+      { user_id: row[0], page_id: row[1], mode: row[4] ? :ai : :manual, delta: delta.to_f }
+    end
+    by_mode = observations.group_by { |observation| observation[:mode] }
+
+    lines = ['## Approval delta on proxy-eligible reviewed pages', '', '> `approval_delta` is the normalized text change made during approval; lower values indicate less reviewer correction. This is an observational comparison, not a ground-truth character error rate.', '', "Selection denominator: #{review_rows.size} non-owner C saves with a saved `needs_review` status across all collections, representing #{first_review_by_page.size} distinct pages. Of those, #{eligible_reviews.size} were proxy-eligible at their first C needs-review save, #{anomalies} were apparent availability anomalies, and #{observations.size} proxy-eligible pages had a non-null current `approval_delta`.", '', 'Each page appears once, classified from its earliest period-C non-owner needs-review save. Pages without needs-review history, without proxy eligibility, or without a current approval delta are excluded.', '', '| Transcription mode | Pages | Contributors | Mean approval delta | Median | 25th percentile | 75th percentile | No reviewer change |', '|---|---:|---:|---:|---:|---:|---:|---:|']
+    %i[manual ai].each do |mode|
+      mode_rows = by_mode.fetch(mode, [])
+      values = mode_rows.map { |observation| observation[:delta] }
+      lines << "| #{mode == :ai ? 'AI Draft used' : 'Eligible, AI not used'} | #{mode_rows.size} | #{mode_rows.map { |observation| observation[:user_id] }.uniq.size} | #{number(mean(values))} | #{number(percentile(values, 0.5))} | #{number(percentile(values, 0.25))} | #{number(percentile(values, 0.75))} | #{percent(values.count(&:zero?), values.size)} |"
+    end
+
+    user_mode_means = observations.group_by { |observation| [observation[:user_id], observation[:mode]] }.transform_values do |user_rows|
+      mean(user_rows.map { |observation| observation[:delta] })
+    end
+    lines += ['', '### Contributor-weighted approval delta', '', 'Denominator: contributors with at least one included page in the specified mode. Each contributor contributes one mean, regardless of their page count.', '', '| Transcription mode | Contributors | Mean contributor average | Median contributor average | 25th percentile | 75th percentile |', '|---|---:|---:|---:|---:|---:|']
+    %i[manual ai].each do |mode|
+      values = user_mode_means.filter_map { |(_user_id, candidate_mode), value| value if candidate_mode == mode }
+      lines << "| #{mode == :ai ? 'AI Draft used' : 'Eligible, AI not used'} | #{values.size} | #{number(mean(values))} | #{number(percentile(values, 0.5))} | #{number(percentile(values, 0.25))} | #{number(percentile(values, 0.75))} |"
+    end
+
+    paired_user_ids = user_mode_means.keys.group_by(&:first).select { |_user_id, keys| keys.map(&:last).uniq.size == 2 }.keys
+    paired_differences = paired_user_ids.map do |user_id|
+      user_mode_means[[user_id, :ai]] - user_mode_means[[user_id, :manual]]
+    end
+    lines += ['', '### Same-contributor approval-delta sensitivity', '', "Denominator: #{paired_user_ids.size} contributors with at least one included AI-assisted page and one included eligible-manual page. Difference is AI minus manual, so a negative value means less reviewer correction on the contributor's AI-assisted pages.", '', "Median paired difference: #{signed_number(percentile(paired_differences, 0.5))}; mean paired difference: #{signed_number(mean(paired_differences))}; #{percent(paired_differences.count(&:negative?), paired_differences.size)} had a lower average delta with AI.", '', '> Limitation: `pages.approval_delta` stores only the current calculated value, not a versioned delta tied to a particular needs-review save. Re-review, later editing, asynchronous calculation, and reviewer behavior can confound this comparison.']
+    debug "Review accuracy: needs_review_pages=#{first_review_by_page.size}, eligible=#{eligible_reviews.size}, with_delta=#{observations.size}, ai=#{by_mode.fetch(:ai, []).size}, manual=#{by_mode.fetch(:manual, []).size}"
     lines.join("\n")
   end
 

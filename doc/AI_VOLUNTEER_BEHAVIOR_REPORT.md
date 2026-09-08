@@ -28,13 +28,20 @@ The report also reconstructs page-level AI eligibility in C from the earliest
 finished, nonblank database AI transcription available before each save. It
 reports save- and user-page-level exposure, adoption distributions, collection
 variation, anomalous AI use, paired within-person productivity, a same-user and
-same-collection sensitivity analysis, and longitudinal B-to-C results.
+same-collection sensitivity analysis, and longitudinal B-to-C results. It also
+compares current `approval_delta` values for proxy-eligible pages submitted to
+`needs_review` with and without an AI Draft, including page-weighted,
+contributor-weighted, and paired same-contributor summaries.
 
 Historical collection settings are not versioned, and legacy filesystem drafts
 do not have queryable timestamps. Consequently, the eligibility analysis is a
 conservative database proxy rather than an exact reconstruction of whether the
 AI Draft button was visible. The generated report repeats this limitation and
 does not describe observational productivity differences as causal effects.
+Likewise, `approval_delta` is stored on the current page rather than versioned
+with each review cycle, so the report prominently describes its accuracy
+comparison as a potentially confounded measure of reviewer correction rather
+than a ground-truth character error rate.
 
 The script prints timestamped `START`, `DONE`, and `ERROR` messages to standard
 output for every database-loading and report-rendering step. It also prints
