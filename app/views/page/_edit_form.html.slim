@@ -53,3 +53,5 @@
 .toolbar
   .toolbar_group.w100
     =link_to t('page.form.delete'), page_path(page), method: :delete, data: { confirm: t('page.form.delete_confirm_message') }, class: 'button big'
+    -unless current_user.individual_researcher? || !collection.is_active
+      =link_to t('page.form.run_ai_draft'), create_ai_transcription_page_path(page_id: page.id), class: 'button big', data: { turbo: true, turbo_method: :post }

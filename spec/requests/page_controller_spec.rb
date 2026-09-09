@@ -219,4 +219,49 @@ describe PageController do
       expect(response).to redirect_to(work_pages_tab_path(work_id: work.id))
     end
   end
+
+  describe '#create_ai_transcription' do
+    let(:action_path) { create_ai_transcription_page_path(page_id: page.id) }
+
+    let(:subject) { post action_path }
+
+    context 'when successful' do
+      before do
+        ai_transcription = instance_double(AiTranscription, id: 1)
+        result = instance_double(AiTranscription::Create, success?: true, ai_transcription: ai_transcription)
+        allow(AiTranscription::Create).to receive(:new).and_return(double(call: result))
+        allow(AiTranscription::GenerateJob).to receive(:perform_later)
+      end
+
+      it 'redirects to page edit path' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(collection_edit_page_path(owner, collection, work, page.id))
+      end
+
+      it 'enqueues generate job' do
+        login_as owner
+        subject
+
+        expect(AiTranscription::GenerateJob).to have_received(:perform_later)
+      end
+    end
+
+    context 'when failed' do
+      before do
+        result = instance_double(AiTranscription::Create, success?: false)
+        allow(AiTranscription::Create).to receive(:new).and_return(double(call: result))
+      end
+
+      it 'redirects to page edit path' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(collection_edit_page_path(owner, collection, work, page.id))
+      end
+    end
+  end
 end
