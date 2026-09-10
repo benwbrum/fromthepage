@@ -1,0 +1,70 @@
+# AI volunteer behavior report
+
+Run the production analysis from the application root:
+
+```sh
+OUTPUT=/secure/path/ai_volunteer_behavior_report.md \
+  bundle exec rails runner script/ai_volunteer_behavior_report.rb
+```
+
+The report compares the fixed six-month windows A (2024), B (2025), and C
+(2026) described in the conference proposal. It writes retention, adoption,
+collection switching, productivity, eligible collection, and survey-candidate
+tables to one Markdown file. Definitions and denominators are written into the
+report itself so exported results remain interpretable.
+
+Productivity is reported for three collection cohorts: the full period-C-selected
+AI collection cohort, a balanced panel active in A/B/C, and a larger panel active
+in both B/C. The collection-switching comparisons use the same fixed AI-enabled
+collection universe in both transitions. The report also explains why deed-based
+retention and saved-page-version analyses have different user denominators.
+Heavy-AI-user tables include each user's period-C suspicious-behavior count and
+behavior-type breakdown, plus cohort totals. These records are explicitly
+described as review signals rather than proof of abuse. Every survey-candidate
+table includes a linked FromThePage username, display name, email address,
+account-creation date, and lifetime contribution count.
+The heavy-user aggregate also reports all of their non-owner period-C saved page
+versions across collections, distinct pages and user-page pairs, AI-assisted and
+manual-save shares, and record/user/rate totals for every suspicious-behavior
+type (including types with zero records).
+
+The report also reconstructs page-level AI eligibility in C from the earliest
+finished, nonblank database AI transcription available before each save. It
+reports save- and user-page-level exposure, adoption distributions, collection
+variation, anomalous AI use, paired within-person productivity, a same-user and
+same-collection sensitivity analysis, and longitudinal B-to-C results. It also
+compares current `approval_delta` values for proxy-eligible pages submitted to
+`needs_review` with and without an AI Draft, including page-weighted,
+contributor-weighted, and paired same-contributor summaries.
+
+Historical collection settings are not versioned, and legacy filesystem drafts
+do not have queryable timestamps. Consequently, the eligibility analysis is a
+conservative database proxy rather than an exact reconstruction of whether the
+AI Draft button was visible. The generated report repeats this limitation and
+does not describe observational productivity differences as causal effects.
+Likewise, `approval_delta` is stored on the current page rather than versioned
+with each review cycle, so the report prominently describes its accuracy
+comparison as a potentially confounded measure of reviewer correction rather
+than a ground-truth character error rate.
+
+The script prints timestamped `START`, `DONE`, and `ERROR` messages to standard
+output for every database-loading and report-rendering step. It also prints
+intermediate record counts, cohort sizes, adoption bands, and productivity
+totals. Output is flushed immediately, so a long-running database query remains
+identifiable while the script is running.
+
+The default eligible-collection threshold is 100 AI transcription records in
+period C. The default "heavy AI" survey threshold is 10 AI-assisted saves and
+AI use on at least half of saved versions. Both can be overridden:
+
+```sh
+OUTPUT=/secure/path/report.md \
+  AI_COLLECTION_MINIMUM=100 \
+  HEAVY_AI_MINIMUM=10 \
+  bundle exec rails runner script/ai_volunteer_behavior_report.rb
+```
+
+The generated file contains volunteer email addresses. Write it to a secure,
+non-public location, restrict access, and do not commit it to the repository.
+The default output is `tmp/ai_volunteer_behavior_report.md`, which is ignored
+by Git.
