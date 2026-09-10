@@ -1264,7 +1264,7 @@ button, .button, .dropdown dd a {
     color: $bodyFgFaded;
     height: 35px;
 
-    form {
+    .diff-title-compare-form {
       position: relative;
       padding-left: 115px;
       label {
@@ -1278,6 +1278,12 @@ button, .button, .dropdown dd a {
       select {
         max-width: 250px;
       }
+    }
+
+    .diff-title-action {
+      display: inline-block;
+      margin-left: $gapSize / 2;
+      vertical-align: middle;
     }
   }
   td {

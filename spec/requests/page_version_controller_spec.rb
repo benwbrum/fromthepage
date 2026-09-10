@@ -34,6 +34,14 @@ RSpec.describe PageVersionController do
 
       expect(response).to have_http_status(:ok)
     end
+
+    it 'renders the revert button inline for owners viewing a non-current version' do
+      get page_version_show_path, params: { page_version_id: first_version.id }
+
+      rendered_page = Capybara.string(response.body)
+
+      expect(rendered_page).to have_css("form.diff-title-action input.button.outline.small[type='submit'][value='Revert to this version']")
+    end
   end
 
   context 'when logged out' do
