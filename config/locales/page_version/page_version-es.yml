@@ -20,8 +20,8 @@ es:
       page_version_status_needs_review: necesita revisión
       page_version_status_review: revisar
       page_version_status_transcribed: transcrito
-      revert_confirm: "¿Está seguro de que desea revertir a esta versión? Se le llevará a la pantalla de transcripción para revisar y guardar."
       restore: Restaurar
       restore_tooltip: Restaurar esta versión
+      revert_confirm: "¿Está seguro de que desea revertir a esta versión? Se le llevará a la pantalla de transcripción para revisar y guardar."
       translation: Traducción
       untitled: Intitulado
