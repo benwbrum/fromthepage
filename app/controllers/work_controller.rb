@@ -28,6 +28,7 @@ class WorkController < ApplicationController
     :remove_scribe,
     :search_scribes
   ]
+  before_action :authorized_to_describe?, only: [:describe, :save_description]
 
   # no layout if xhr request
   layout :dynamic_layout, only: [:new, :create, :configurable_printout, :edit_scribes, :remove_scribe]
@@ -399,6 +400,12 @@ class WorkController < ApplicationController
   end
 
   private
+
+  def authorized_to_describe?
+    return if user_signed_in? && current_user.can_transcribe?(@work, @collection)
+
+    redirect_to metadata_overview_collection_work_path(@collection.owner, @collection, @work)
+  end
 
   def require_segmentation_feature
     return if @collection&.segmentation_feature_enabled?

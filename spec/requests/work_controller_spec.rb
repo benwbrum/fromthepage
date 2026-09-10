@@ -11,6 +11,61 @@ describe WorkController do
   let!(:page) { create(:page, work: work) }
   let!(:article) { create(:article, collection: collection, pages: [page]) }
 
+  describe 'metadata description authorization' do
+    let(:user) { create(:unique_user) }
+
+    shared_examples 'read-only metadata' do
+      it 'redirects non-owners away from the description editor' do
+        login_as user
+
+        get describe_collection_work_path(owner, access_object, work)
+
+        expect(response).to redirect_to(metadata_overview_collection_work_path(owner, access_object, work))
+        follow_redirect!
+        expect(response.body).not_to include(describe_collection_work_path(owner, access_object, work))
+      end
+
+      it 'does not let non-owners save metadata directly' do
+        login_as user
+        original_metadata = work.metadata_description
+
+        patch save_description_collection_work_path(owner, access_object, work), params: {
+          fields: { '0' => { label: 'Restricted field', value: 'Restricted value' } },
+          save_to_transcribed: '1'
+        }
+
+        expect(response).to redirect_to(metadata_overview_collection_work_path(owner, access_object, work))
+        expect(work.reload.metadata_description).to eq(original_metadata)
+      end
+
+      it 'still lets the owner open the description editor' do
+        login_as owner
+
+        get describe_collection_work_path(owner, access_object, work)
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:describe)
+      end
+    end
+
+    context 'when the collection is read-only' do
+      before { collection.update!(visibility: :read_only) }
+
+      let(:access_object) { collection }
+
+      include_examples 'read-only metadata'
+    end
+
+    context 'when the document set is read-only' do
+      let!(:document_set) do
+        create(:document_set, :read_only, owner_user_id: owner.id, collection_id: collection.id, works: [work])
+      end
+      let(:access_object) { document_set }
+
+      include_examples 'read-only metadata'
+    end
+  end
+
   describe '#edit' do
     let(:action_path) { edit_collection_work_path(owner, collection, work) }
     let(:subject) { get action_path }
