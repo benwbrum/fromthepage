@@ -26,8 +26,10 @@ class WorkController < ApplicationController
     :edit_scribes,
     :add_scribe,
     :remove_scribe,
-    :search_scribes
+    :search_scribes,
+    :restore_description_version
   ]
+  before_action :authorized_to_describe?, only: [:describe, :save_description]
 
   # no layout if xhr request
   layout :dynamic_layout, only: [:new, :create, :configurable_printout, :edit_scribes, :remove_scribe]
@@ -114,14 +116,14 @@ class WorkController < ApplicationController
     # @previous_version = params[:compare_version_id] ? PageVersion.find(params[:compare_version_id]) : @selected_version.prev
     selected_version_id = params[:metadata_description_version_id]
     if selected_version_id
-      @selected_version= MetadataDescriptionVersion.find(selected_version_id)
+      @selected_version= @work.metadata_description_versions.find(selected_version_id)
     else
       @selected_version= @work.metadata_description_versions.first
     end
     # NB: Unlike in page versions (which are created when we first create the page), metadata description versions may be nil
     compare_version_id = params[:compare_version_id]
     if compare_version_id
-      @previous_version = MetadataDescriptionVersion.find(compare_version_id)
+      @previous_version = @work.metadata_description_versions.find(compare_version_id)
     else
       if @selected_version.version_number > 1
         @previous_version = @work.metadata_description_versions.second
@@ -130,6 +132,21 @@ class WorkController < ApplicationController
       end
     end
     # again, both may be blank here
+  end
+
+  def restore_description_version
+    version = @work.metadata_description_versions.find_by(id: params[:metadata_description_version_id])
+
+    if version.nil?
+      flash[:error] = t('.version_not_found')
+      redirect_to description_versions_collection_work_path(@collection.owner, @collection, @work)
+      return
+    end
+
+    @work.update!(metadata_description: version.metadata_description)
+
+    flash[:notice] = t('.restored')
+    redirect_to describe_collection_work_path(@collection.owner, @collection, @work)
   end
 
   def delete
@@ -399,6 +416,12 @@ class WorkController < ApplicationController
   end
 
   private
+
+  def authorized_to_describe?
+    return if user_signed_in? && current_user.can_transcribe?(@work, @collection)
+
+    redirect_to metadata_overview_collection_work_path(@collection.owner, @collection, @work)
+  end
 
   def require_segmentation_feature
     return if @collection&.segmentation_feature_enabled?

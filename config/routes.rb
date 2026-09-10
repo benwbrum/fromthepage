@@ -272,6 +272,7 @@ Fromthepage::Application.routes.draw do
   scope 'page_version', as: 'page_version' do
     get 'list', to: 'page_version#list'
     get 'show', to: 'page_version#show'
+    post 'revert', to: 'page_version#revert', as: 'revert'
   end
 
   scope 'article_version', as: 'article_version' do
@@ -571,6 +572,7 @@ Fromthepage::Application.routes.draw do
         get 'describe', on: :member
         patch 'save_description', on: :member, to: 'work#save_description'
         get 'description_versions', on: :member
+        patch 'description_versions/:metadata_description_version_id/restore', on: :member, to: 'work#restore_description_version', as: :restore_description_version
         get 'metadata_overview', on: :member
         get 'metadata_overview_monitor', on: :member
         get ':page_id/active_editing', on: :member, to: 'transcribe#active_editing', as: 'active_editing'

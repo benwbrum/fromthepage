@@ -29,7 +29,7 @@
 
   .page-column
     .page-editarea(style=("display:none" if @preview_xml) *language_attrs(@collection))
-      -if @work.description_status == Work::DescriptionStatus::UNDESCRIBED
+      -if @work.description_status == Work::DescriptionStatus::UNDESCRIBED && current_user&.can_transcribe?(@work, @collection)
         p.collection-work_action
           =t('collection.show.this_work_has_not_been_described')
           span &nbsp;
@@ -122,4 +122,3 @@ h2.legend =t('.notes_and_questions')
         $('#page_needs_review').prop('checked', false);
       });
     });
-
