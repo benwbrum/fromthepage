@@ -1262,7 +1262,7 @@ button, .button, .dropdown dd a {
     padding: 10px 0;
     line-height: 30px;
     color: $bodyFgFaded;
-    height: 35px;
+    min-height: 35px;
 
     .diff-title-compare-form {
       position: relative;
@@ -1280,11 +1280,20 @@ button, .button, .dropdown dd a {
       }
     }
 
-    .diff-title-action {
-      display: inline-block;
-      margin-left: $gapSize / 2;
-      vertical-align: middle;
+    .diff-title-label {
+      flex: 1 1 auto;
+      min-width: 0;
     }
+
+    .diff-title-action {
+      flex: 0 0 auto;
+      margin-left: $gapSize / 2;
+    }
+  }
+
+  .version-col:not(.right) > .diff-title {
+    align-items: center;
+    display: flex;
   }
   td {
     vertical-align: top;
