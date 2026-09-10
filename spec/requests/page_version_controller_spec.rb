@@ -41,9 +41,9 @@ RSpec.describe PageVersionController do
       rendered_page = Capybara.string(response.body)
 
       expect(rendered_page).to have_css(
-        "form.diff-title-action input.button[type='submit'][value='Restore'][title='Replace the current text with the transcription from this version']"
+        "form.diff-title-action input[type='submit'][value='Restore'][title='Replace the current text with the transcription from this version']"
       )
-      expect(rendered_page).to have_no_css('form.diff-title-action input.outline, form.diff-title-action input.small')
+      expect(rendered_page).to have_no_css('form.diff-title-action input.button, form.diff-title-action input.outline, form.diff-title-action input.small')
     end
   end
 
