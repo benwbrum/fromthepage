@@ -1,6 +1,10 @@
 ---
 en:
   page_version:
+    revert:
+      not_authorized: You are not authorized to revert this page.
+      reverted: Page has been reverted to the selected version. Please review and save.
+      version_not_found: Version not found.
     show:
       ai_draft_used: AI Draft used
       author_contributed_at: "%{author} at %{date}"
@@ -20,7 +24,3 @@ en:
       revert_to_this_version: Revert to this version
       translation: Translation
       untitled: Untitled
-    revert:
-      not_authorized: You are not authorized to revert this page.
-      reverted: Page has been reverted to the selected version. Please review and save.
-      version_not_found: Version not found.

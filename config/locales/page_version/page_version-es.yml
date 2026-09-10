@@ -1,6 +1,10 @@
 ---
 es:
   page_version:
+    revert:
+      not_authorized: No está autorizado para revertir esta página.
+      reverted: La página se ha revertido a la versión seleccionada. Revísela y guárdela.
+      version_not_found: No se encontró la versión.
     show:
       ai_draft_used: Borrador de IA utilizado
       author_contributed_at: "%{author} en %{date}"
@@ -16,5 +20,7 @@ es:
       page_version_status_needs_review: necesita revisión
       page_version_status_review: revisar
       page_version_status_transcribed: transcrito
+      revert_confirm: "¿Está seguro de que desea revertir a esta versión? Se le llevará a la pantalla de transcripción para revisar y guardar."
+      revert_to_this_version: Revertir a esta versión
       translation: Traducción
       untitled: Intitulado
