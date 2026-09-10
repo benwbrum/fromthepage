@@ -21,6 +21,7 @@ es:
       page_version_status_review: revisar
       page_version_status_transcribed: transcrito
       revert_confirm: "¿Está seguro de que desea revertir a esta versión? Se le llevará a la pantalla de transcripción para revisar y guardar."
-      revert_to_this_version: Revertir a esta versión
+      restore: Restaurar
+      restore_tooltip: Reemplazar el texto actual con la transcripción de esta versión
       translation: Traducción
       untitled: Intitulado
