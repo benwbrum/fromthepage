@@ -1283,11 +1283,21 @@ button, .button, .dropdown dd a {
     .diff-title-label {
       flex: 1 1 auto;
       min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     .diff-title-action {
       flex: 0 0 auto;
       margin-left: $gapSize / 2;
+
+      // button_to renders a form around the input. Keep both elements sized to
+      // their contents so the form cannot consume (and overflow) the column.
+      input {
+        max-width: none;
+        width: auto;
+      }
     }
   }
 
