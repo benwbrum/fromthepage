@@ -181,10 +181,10 @@ class IiifController < ApplicationController
     stats = Page.where(work_id: work.id)
       .left_joins(:ai_transcriptions)
       .pick(
-        'MAX(pages.updated_at)',
-        'COUNT(DISTINCT pages.id)',
-        'MAX(ai_transcriptions.updated_at)',
-        'COUNT(ai_transcriptions.id)'
+        Arel.sql('MAX(pages.updated_at)'),
+        Arel.sql('COUNT(DISTINCT pages.id)'),
+        Arel.sql('MAX(ai_transcriptions.updated_at)'),
+        Arel.sql('COUNT(ai_transcriptions.id)')
       )
 
     latest_page_update, page_count, latest_ai_update, ai_count = stats
