@@ -178,17 +178,28 @@ class IiifController < ApplicationController
     return render status: :not_found, json: { error: 'Not found' } unless work
 
     # TODO: Refactor to use cache concern when https://github.com/benwbrum/fromthepage/pull/5331 is merged
-    latest_page_update, page_count = Page.where(work_id: work.id).pick('MAX(updated_at)', 'COUNT(id)')
+    stats = Page.where(work_id: work.id)
+      .left_joins(:ai_transcriptions)
+      .pick(
+        'MAX(pages.updated_at)',
+        'COUNT(DISTINCT pages.id)',
+        'MAX(ai_transcriptions.updated_at)',
+        'COUNT(ai_transcriptions.id)'
+      )
+
+    latest_page_update, page_count, latest_ai_update, ai_count = stats
+    latest_update = [latest_page_update, latest_ai_update].compact.max
     cache_key = [
       'iiif-v2-manifest-v1',
-      work.cache_key_with_version,
-      latest_page_update&.to_i,
-      page_count
+      "work-#{work.id}",
+      latest_update&.to_i,
+      page_count,
+      ai_count
     ]
 
     expires_in MANIFEST_EXPIRES_AT, public: true
 
-    if stale?(etag: cache_key, last_modified: latest_page_update)
+    if stale?(etag: cache_key, last_modified: latest_update)
       json_manifest = Rails.cache.fetch(cache_key, expires_in: 1.day) do
         build_iiif_manifest(work).to_json(pretty: true)
       end
