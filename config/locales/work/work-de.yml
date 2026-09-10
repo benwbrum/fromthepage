@@ -84,7 +84,13 @@ de:
       author_contributed_at: "%{author} am %{date}"
       compared_with: Im Vergleich zu
       help_description: Anzeige und Vergleich der Änderungen, die in jeder Revision an dem Metadaten des Werkes vorgenommen wurden. Die linke Spalte zeigt die Metadaten in der ausgewählten Revision, die rechte Spalte zeigt, was geändert wurde. Unveränderter Text wird <span>weiß hervorgehoben</span>, gelöschter Text wird <del>rot hervorgehoben</del> und eingefügter Text wird <ins>grün hervorgehoben</ins>.
+      restore: Wiederherstellen
+      restore_confirm: Möchten Sie diese Version der Werkmetadaten wirklich wiederherstellen? Sie werden zur Metadatenseite weitergeleitet, um sie zu überprüfen.
+      restore_tooltip: Die aktuellen Werkmetadaten durch diese Version ersetzen
       revision: Revision
+    restore_description_version:
+      restored: Die Werkmetadaten wurden auf die ausgewählte Version zurückgesetzt. Bitte überprüfen Sie sie.
+      version_not_found: Metadatenversion nicht gefunden.
     download:
       accessible_pdf: Barrierefreies PDF
       accessible_pdf_download_description: Laden Sie eine für Bildschirmleseprogramme und assistive Technologien optimierte PDF-Version dieses Werkes herunter.

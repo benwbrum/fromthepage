@@ -344,4 +344,119 @@ describe WorkController do
       expect(response).to render_template(:search)
     end
   end
+
+  describe 'work metadata versions' do
+    let!(:older_version) do
+      create(
+        :metadata_description_version,
+        work: work,
+        user: owner,
+        version_number: 1,
+        metadata_description: [{ 'label' => 'Date', 'value' => '1901' }].to_json
+      )
+    end
+    let!(:current_version) do
+      create(
+        :metadata_description_version,
+        work: work,
+        user: owner,
+        version_number: 2,
+        metadata_description: [{ 'label' => 'Date', 'value' => '1902' }].to_json
+      )
+    end
+
+    describe 'GET #description_versions' do
+      it 'shows a restore button to an owner for a previous version' do
+        login_as owner
+
+        get description_versions_collection_work_path(
+          owner,
+          collection,
+          work,
+          metadata_description_version_id: older_version.id
+        )
+
+        rendered_page = Capybara.string(response.body)
+        expect(rendered_page).to have_css(
+          "form.diff-title-action input[type='submit'][value='Restore'][title='Replace the current work metadata with this version']"
+        )
+      end
+
+      it 'does not show a restore button for the current version' do
+        login_as owner
+
+        get description_versions_collection_work_path(owner, collection, work)
+
+        expect(response.body).not_to include('diff-title-action')
+      end
+
+      it 'does not show a restore button to a non-owner' do
+        login_as create(:unique_user)
+
+        get description_versions_collection_work_path(
+          owner,
+          collection,
+          work,
+          metadata_description_version_id: older_version.id
+        )
+
+        expect(response.body).not_to include('diff-title-action')
+      end
+    end
+
+    describe 'PATCH #restore_description_version' do
+      let(:action_path) do
+        restore_description_version_collection_work_path(
+          owner,
+          collection,
+          work,
+          metadata_description_version_id: older_version.id
+        )
+      end
+
+      it 'restores the selected metadata and records a new version for the owner' do
+        login_as owner
+
+        expect { patch action_path }.to change { work.metadata_description_versions.count }.by(1)
+
+        expect(response).to redirect_to(describe_collection_work_path(owner, collection, work))
+        expect(work.reload.metadata_description).to eq(older_version.metadata_description)
+        expect(work.metadata_description_versions.first.user).to eq(owner)
+        expect(flash[:notice]).to be_present
+      end
+
+      it 'does not allow a non-owner to restore metadata' do
+        user = create(:unique_user)
+        login_as user
+        original_metadata = work.metadata_description
+
+        patch action_path
+
+        expect(response).to redirect_to(dashboard_path)
+        expect(work.reload.metadata_description).to eq(original_metadata)
+      end
+
+      it 'does not restore a version belonging to another work' do
+        other_work = create(:work, collection: collection, owner_user_id: owner.id)
+        other_version = create(
+          :metadata_description_version,
+          work: other_work,
+          user: owner,
+          metadata_description: [{ 'label' => 'Date', 'value' => '1800' }].to_json
+        )
+        login_as owner
+
+        patch restore_description_version_collection_work_path(
+          owner,
+          collection,
+          work,
+          metadata_description_version_id: other_version.id
+        )
+
+        expect(response).to redirect_to(description_versions_collection_work_path(owner, collection, work))
+        expect(work.reload.metadata_description).not_to eq(other_version.metadata_description)
+        expect(flash[:error]).to be_present
+      end
+    end
+  end
 end
