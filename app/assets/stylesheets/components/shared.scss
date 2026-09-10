@@ -1262,9 +1262,9 @@ button, .button, .dropdown dd a {
     padding: 10px 0;
     line-height: 30px;
     color: $bodyFgFaded;
-    height: 35px;
+    min-height: 35px;
 
-    form {
+    .diff-title-compare-form {
       position: relative;
       padding-left: 115px;
       label {
@@ -1279,6 +1279,32 @@ button, .button, .dropdown dd a {
         max-width: 250px;
       }
     }
+
+    .diff-title-label {
+      background: transparent;
+      flex: 1 1 auto;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .diff-title-action {
+      flex: 0 0 auto;
+      margin-left: $gapSize / 2;
+
+      // button_to renders a form around the input. Keep both elements sized to
+      // their contents so the form cannot consume (and overflow) the column.
+      input {
+        max-width: none;
+        width: auto;
+      }
+    }
+  }
+
+  .version-col:not(.right) > .diff-title {
+    align-items: center;
+    display: flex;
   }
   td {
     vertical-align: top;
