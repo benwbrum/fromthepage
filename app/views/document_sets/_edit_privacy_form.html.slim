@@ -8,6 +8,9 @@ tr
       p =t('document_sets.edit_privacy.document_set_restricted_description')
     -else
       p =t('document_sets.edit_privacy.document_set_unrestricted_description')
+
+    = fe_infos(icon: flash_icons[:info]) do
+      = t("document_sets.edit_privacy.parent_collection_visibility_#{document_set.collection.visibility}").html_safe
 tr
   td(colspan="2")
     =f.radio_button :visibility, :public, name: 'document_set[visibility]', checked: document_set.visibility_public?

@@ -174,6 +174,22 @@ describe ArticleController do
         expect(response).to render_template(:_items)
       end
     end
+
+    context 'when collection is a document set' do
+      let!(:document_set) { create(:document_set, collection_id: collection.id, owner_user_id: owner.id, works: [work]) }
+      let(:action_path) { article_items_path(collection_id: document_set.slug) }
+
+      it 'renders subject titles without lazy page count frames' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:_items)
+        expect(response.body).to include(categorized_article.title)
+        expect(response.body).not_to include('turbo-frame')
+        expect(response.body).not_to include('page_counts')
+      end
+    end
   end
 
   describe '#page_counts' do
@@ -262,6 +278,38 @@ describe ArticleController do
 
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response).to render_template(:edit)
+      end
+    end
+
+    context 'when title duplicates another subject' do
+      let!(:article) { create(:article, collection: collection, title: 'Puking') }
+      let!(:duplicate_article) { create(:article, collection: collection, title: 'vomit') }
+      let(:params) do
+        {
+          article: {
+            title: 'vomit'
+          },
+          save: '1'
+        }
+      end
+
+      it 'shows the saved title and offers to merge into the existing subject' do
+        login_as owner
+        subject
+
+        rendered_page = Capybara.string(response.body)
+
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(rendered_page).to have_css('h1', text: 'Puking')
+        expect(rendered_page).to have_css('input#article_title[value="vomit"]')
+        expect(rendered_page).to have_link(
+          'Merge into "vomit"',
+          href: article_combine_duplicate_path(
+            article_id: duplicate_article.id,
+            from_article_ids: [article.id]
+          )
+        )
+        expect(article.reload.title).to eq('Puking')
       end
     end
 
@@ -445,7 +493,7 @@ describe ArticleController do
     before do
       create(:article_article_link, source_article: article, target_article: linked_article)
       linked_article.pages << page
-      FileUtils.rm_f(article.d3js_file)
+      article.d3js_attachment.purge
     end
 
     let(:action_path) { collection_article_relationship_graph_path(owner, collection, article) }
@@ -459,7 +507,7 @@ describe ArticleController do
       node_ids = json['nodes'].map { |n| n['id'] }
       expect(node_ids).to include("S#{article.id}", "S#{linked_article.id}", "D#{page.id}")
       expect(json['links']).to include(a_hash_including('source' => "S#{article.id}", 'target' => "S#{linked_article.id}", 'group' => 'direct'))
-      expect(File).to exist(article.d3js_file)
+      expect(article.reload.d3js_attachment.attached?).to be_truthy
     end
 
     it 'excludes bio field from article nodes in JSON response' do
@@ -501,7 +549,7 @@ describe ArticleController do
 
       before do
         create(:page_article_link, article: article_in_work, work: work_not_meaningful, page: page_not_meaningful)
-        FileUtils.rm_f(article_in_work.d3js_file)
+        article_in_work.d3js_attachment.purge
       end
 
       it 'includes identifier in work-based document nodes' do
@@ -535,7 +583,7 @@ describe ArticleController do
     end
 
     context 'when no access' do
-      let!(:collection) { create(:collection, owner_user_id: owner.id, restricted: true) }
+      let!(:collection) { create(:collection, owner_user_id: owner.id, visibility: :private) }
       let!(:non_owner) { create(:unique_user) }
 
       it 'redirects' do
@@ -580,7 +628,7 @@ describe ArticleController do
     end
 
     context 'when no access' do
-      let!(:collection) { create(:collection, owner_user_id: owner.id, restricted: true) }
+      let!(:collection) { create(:collection, owner_user_id: owner.id, visibility: :private) }
       let!(:non_owner) { create(:unique_user) }
 
       it 'redirects' do

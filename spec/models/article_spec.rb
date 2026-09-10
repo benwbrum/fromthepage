@@ -8,7 +8,7 @@ describe Article do
 
     let!(:owner) { create(:unique_user, :owner) }
     let!(:public_collection) { create(:collection, owner_user_id: owner.id) }
-    let!(:restricted_collection) { create(:collection, owner_user_id: owner.id, restricted: true) }
+    let!(:restricted_collection) { create(:collection, owner_user_id: owner.id, visibility: :private) }
 
     let!(:work_1) { create(:work, collection: public_collection) }
     let!(:page_1) { create(:page, work: work_1) }
@@ -55,7 +55,8 @@ describe Article do
     let!(:article_3) do
       create(
         :article,
-        title: identifier,
+        title: "Public document set #{identifier}",
+        source_text: identifier,
         collection: restricted_collection,
         pages: [page_3],
         created_by_id: owner.id
@@ -64,7 +65,7 @@ describe Article do
 
     let!(:other_user) { create(:unique_user, :owner) }
     let!(:other_public_collection) { create(:collection, owner_user_id: other_user.id) }
-    let!(:other_restricted_collection) { create(:collection, owner_user_id: other_user.id, restricted: true) }
+    let!(:other_restricted_collection) { create(:collection, owner_user_id: other_user.id, visibility: :private) }
 
     let!(:work_4) { create(:work, collection: other_public_collection) }
     let!(:page_4) { create(:page, work: work_4) }
@@ -300,6 +301,25 @@ describe Article do
         expect(both_words_idx).to be < only_calvert_idx
         expect(both_words_idx).to be < only_frederick_idx
       end
+    end
+  end
+
+  describe 'validations' do
+    let(:collection) { create(:collection) }
+
+    it 'prevents duplicate titles in the same collection without relying on a database constraint' do
+      create(:article, collection: collection, title: 'John Smith')
+
+      duplicate = build(:article, collection: collection, title: 'john smith')
+
+      expect(duplicate).not_to be_valid
+      expect(duplicate.errors[:title]).to include('has already been used in this collection')
+    end
+
+    it 'allows the same title in different collections' do
+      create(:article, collection: collection, title: 'John Smith')
+
+      expect(build(:article, collection: create(:collection), title: 'John Smith')).to be_valid
     end
   end
 end

@@ -31,6 +31,18 @@ fr:
       more_help: Plus de conseils...
       needs_review: À besoin d'une révision
       notes_and_questions: Notes et questions
+      previous_work_title: Titre pour les pages 1–%{n}
+      segmentation_cancel: Annuler
+      segmentation_candidate: Cela ressemble à un nouveau document. Séparer ceci dans une nouvelle œuvre ?
+      segmentation_confirm: Séparer
+      segmentation_dismiss: Ignorer
+      segmentation_edit_work_metadata: Modifier les métadonnées de la nouvelle œuvre
+      segmentation_no: Non
+      segmentation_split_confirm_message: Séparer ceci dans une nouvelle œuvre à partir d'ici ?
+      segmentation_success: "« %{title} » créé avec %{count} pages."
+      segmentation_view_work: Voir la nouvelle œuvre
+      segmentation_yes: Oui, séparer ici
+      split_into_new_work: Séparer dans une nouvelle œuvre
       this_page_marked_blank: Cette page est marquée comme vierge
       this_page_marked_needs_review: Cette page a été marquée comme "ayant besoin d'une révision". Vous pouvez améliorer cette page en relisant l'original et en ajoutant ou en corrigeant le texte. Lorsque vous avez terminé, décochez « À besoin d'une révision » et enregistrez la page.
       this_page_marked_needs_review_workflow_version: Cette page doit être révisée. Vous pouvez améliorer cette page en relisant l'original et en ajoutant ou en corrigeant le texte, puis en approuvant le texte.

@@ -12,7 +12,7 @@
             -if RECAPTCHA_ENABLED
               p =recaptcha_tags
             p.big =t('.save_up_to_three_transcriptions')
-            p 
+            p
               button =t('.transcribe_as_guest')
           p =button_to t('.sign_up_now'), new_user_registration_path, :method => 'get'
         -elsif !@page.work.restrict_scribes

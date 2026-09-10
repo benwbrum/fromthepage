@@ -287,4 +287,16 @@ module ApplicationHelper
       [I18n.t('will_paginate.all'), -1]
     ]
   end
+
+  def default_split_title(work)
+    first_page = work.pages.order(:position).first
+    if first_page&.title.present? &&
+       first_page.title !~ /\A(Untitled Page )?\d+\z/ &&
+       first_page.title != work.title
+      return first_page.title
+    end
+    base = work.title
+    existing_count = work.collection.works.where('title LIKE ?', "#{ActiveRecord::Base.sanitize_sql_like(base)} %").count
+    "#{base} #{existing_count + 1}"
+  end
 end

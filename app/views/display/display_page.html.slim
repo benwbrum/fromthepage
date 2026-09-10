@@ -89,11 +89,11 @@
             -if @collection.active? # Inactive Collections shouldn't display this stuff
               h5.nodata_title =t('.this_page_is_not', text_type: text_type)
               p.nodata_text
-                -if current_user && current_user.can_transcribe?(@page.work, @collection)
-                  -help_link = link_to(help_word, { :controller => 'transcribe', :action => action, :page_id => @page.id })
+                -if current_user && current_user.can_transcribe?(@page.work, @collection) && !@collection.visibility_read_only?
+                  -help_link = link_to(help_word, { controller: 'transcribe', action: action, page_id: @page.id })
                   ==t('.please_help_this_page', help_link: help_link)
                   ==t('.or_mark_blank', mark_blank: mark_blank) unless @page.status_blank?
-                -elsif !current_user && !@page.work.restrict_scribes
+                -elsif !current_user && !@page.work.restrict_scribes && !@collection.visibility_read_only?
                   -help_link = link_to(help_word, transcribe_guest_path(:page_id => @page.id))
                   ==t('.please_help_this_page', help_link: help_link)
                 -else
@@ -119,15 +119,15 @@
   javascript:
     $(function() {
       let splitter = Object.create(ResizableSplitter);
-      
+
       function applySplitter(mode=$('[data-layout-mode]').attr('data-layout-mode')) {
         const leftPanel = (mode === 'ltr' || mode === 'ttb')?'#leftColumn':'#rightColumn';
         const rightPanel = (mode === 'ltr' || mode === 'ttb')?'#rightColumn':'#leftColumn';
-        
+
         if(splitter && splitter.destroy) {
           splitter.destroy()
         }
-        
+
         splitter[(mode === 'ltr' || mode === 'rtl')?'initVertical':'initHorizontal']('#splitter', leftPanel, rightPanel, mode, {
           splitterContext: 'overview',
           onChanged: function() {
@@ -143,13 +143,13 @@
           },
           initialPosition: (window.localStorage.getItem('overviewSplitterPos') || 50) + '%'
         });
-        
+
         // Trigger viewer to reset bounds after splitter initialization
         if (typeof viewer !== 'undefined') {
           requestAnimationFrame(() => viewer.raiseEvent('reset-bounds'));
         }
       }
-      
+
       // initialize splitter when page loaded
       $(document).ready(function(){
         applySplitter($('[data-layout-mode]').attr('data-layout-mode'));

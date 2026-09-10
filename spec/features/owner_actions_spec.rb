@@ -10,6 +10,10 @@ describe 'owner actions' do
 
   after do |example|
     if example.metadata[:js]
+      # Clear Warden's session before destroying the user. Otherwise the next
+      # browser request can try to update Devise tracking fields on the frozen
+      # User instance left behind by destroy!.
+      logout(:user)
       owner.all_owner_collections.each(&:destroy!)
       owner.destroy!
     else
@@ -161,7 +165,7 @@ describe 'owner actions' do
     visit collection_path(collection.owner, collection)
     page.find('.tabs').click_link('Subjects')
     expect(page).to have_content('Places')
-    page.find('a.tree-item', text: 'Places').click
+    page.find('a.tree-item', text: 'Places', wait: 10, match: :first).click
 
     page.find(category_selector).find('dl.dropdown.right dt.h5', text: 'Actions', match: :first).click
     page.find(category_selector).find('a', text: 'Enable GIS').click
@@ -172,7 +176,7 @@ describe 'owner actions' do
     fill_in 'category_title', with: 'Child GIS'
     click_button('Create Category')
 
-    page.find('a.tree-item', text: 'Places').click
+    page.find('a.tree-item', text: 'Places', wait: 10, match: :first).click
     page.find(category_selector).find('dl.dropdown.right dt.h5', text: 'Actions', match: :first).click
     page.find(category_selector).find('a', text: 'Disable GIS').click
     expect(page.find('.flash_message')).to have_content('GIS disabled for Places and 1 child category')
@@ -182,7 +186,7 @@ describe 'owner actions' do
     fill_in 'category_title', with: 'Child GIS-2'
     click_button('Create Category')
 
-    page.find('a.tree-item', text: 'Places').click
+    page.find('a.tree-item', text: 'Places', wait: 10, match: :first).click
     page.find(category_selector).find('dl.dropdown.right dt.h5', text: 'Actions', match: :first).click
     page.find(category_selector).find('a', text: 'Enable GIS').click
     expect(page.find('.flash_message')).to have_content('GIS enabled for Places and 2 child categories')
@@ -418,9 +422,9 @@ describe 'owner actions' do
   def work_with_subject_link
     work = create(:work, owner: owner, collection: second_collection, pages: [])
     test_page = create(:page, work: work)
+    # Saving the wikilink creates its subject through XmlSourceProcessor.
     test_page.update!(source_text: '[[Switzerland]]')
-    article = create(:article, title: 'Switzerland', collection: second_collection)
-    create(:page_article_link, page: test_page, article: article, display_text: 'Switzerland')
+    expect(second_collection.articles.find_by(title: 'Switzerland')).to be_present
     [work, test_page]
   end
 end

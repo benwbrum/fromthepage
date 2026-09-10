@@ -41,6 +41,14 @@ de:
       table_csv: Tabelle CSV
       tei: TEI
       work_title: Werktitel
+    new_grover_export:
+      ai_warning: 'Warnung: Dieses Transkript wurde von einer KI generiert (%{model} %{created_at}).'
+      contents: Inhalt
+      download: Herunterladen
+      heading: Konfiguration für barrierefreies PDF
+      human_and_ai: Sofern verfügbar, menschliche Transkripte exportieren, andernfalls KI-Entwürfe exportieren.
+      human_only: Nur von Menschen bearbeitete Transkripte exportieren
+      prepend_ai_warnings: 'Vorangestellter Warnhinweis: Dieses Transkript wurde von einer KI generiert und oben im Transkript eingefügt.'
     show:
       bibliography: Bibliographie
       categories: 'Kategorien:'

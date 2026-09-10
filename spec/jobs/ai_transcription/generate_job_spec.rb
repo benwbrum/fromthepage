@@ -59,7 +59,7 @@ describe AiTranscription::GenerateJob do
           perform_worker
         end
 
-        expect(ai_transcription.reload.model).to eq('gemini-3.1-pro-preview')
+        expect(ai_transcription.reload.model).to eq('gemini-3.7-flash')
       end
     end
 

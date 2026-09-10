@@ -37,7 +37,11 @@
             =svg_symbol '#icon-arrow-left', class: 'icon', title: 'Previous page'
 
           span.page-nav_info = t('.metadata')
-          -if index.present?
+          -split_source_work = @work.split_from_work if @work.split_from_work&.pages&.exists?
+          -if split_source_work
+            =link_to(collection_transcribe_page_path(@collection.owner, @collection, split_source_work, split_source_work.pages.first.id), class: 'page-nav_next', title: t('.back_to_original_work'), 'aria-label' => t('.back_to_original_work'), onclick: 'unsavedTranscription(event);')
+              =svg_symbol '#icon-arrow-right', class: 'icon', title: 'Back to the original work'
+          -elsif index.present?
             -next_works = @collection.works.to_a[index+1..]
             -next_work = next_works.detect {|candidate| candidate.pages.where(status: [:new, :incomplete]).first || candidate.description_status == Work::DescriptionStatus::UNDESCRIBED }
             -if next_work

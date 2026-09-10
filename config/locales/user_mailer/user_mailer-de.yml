@@ -63,6 +63,13 @@ de:
         to_view_note: 'Um die Anmerkung auf Seite %{work}: %{page} anzuzeigen, besuchen Sie die folgende URL: %{url}'
         to_view_work: 'Um %{collection}: %{work} anzuzeigen, besuchen Sie die folgende URL: %{url}'
       work_added: "%{owner} hat %{work} zur Sammlung %{collection} hinzugefügt."
+    segmentation_finished:
+      body: Die Segmentierung von „%{work}“ in der Sammlung „%{collection}“ ist abgeschlossen. Seiten, die als mögliche Dokumentanfänge erkannt wurden, sind in der Transkriptionsansicht hervorgehoben.
+      candidate_count_label: 'Als mögliche Dokumentanfänge erkannte Seiten:'
+      greeting: Hallo %{user},
+      heading: Die Segmentierung von „%{work}“ ist abgeschlossen
+      subject: Die Segmentierung von „%{work}“ ist abgeschlossen
+      view_work: Werk ansehen
     text:
       closing: |-
         Danke,

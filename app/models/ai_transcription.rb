@@ -29,6 +29,7 @@
 #
 # Indexes
 #
+#  idx_ai_transcriptions_dashboard                   (created_at,model,status)
 #  index_ai_transcriptions_on_page_id                (page_id)
 #  index_ai_transcriptions_on_page_id_and_id         (page_id,id)
 #  index_ai_transcriptions_on_status                 (status)
@@ -39,7 +40,7 @@
 #  fk_rails_...  (page_id => pages.id) ON DELETE => cascade
 #
 class AiTranscription < ApplicationRecord
-  DEFAULT_MODEL = 'gemini-3.1-pro-preview'
+  DEFAULT_MODEL = 'gemini-3.7-flash'
   ALTO_MODEL = 'Transkribus+OpenAI'
   MAX_FAILED_ERRORS = 100
   FE_COLOR_STATUSES = {

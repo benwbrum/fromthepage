@@ -31,7 +31,7 @@ namespace :fromthepage do
     private
 
     def generate_collections_sitemap(sitemap_dir, base_url, max_urls_per_file)
-      collections = Collection.where(restricted: false)
+      collections = Collection.where(visibility: [:public, :read_only])
                              .includes(:owner)
                              .order(:id)
 
@@ -58,9 +58,9 @@ namespace :fromthepage do
 
   def generate_works_sitemap(sitemap_dir, base_url, max_urls_per_file)
     works = Work.joins(:collection)
-               .where(collections: { restricted: false })
-               .includes(collection: :owner)
-               .order(:id)
+                .where(collections: { visibility: [:public, :read_only] })
+                .includes(collection: :owner)
+                .order(:id)
 
     file_count = (works.count.to_f / max_urls_per_file).ceil
 
@@ -85,10 +85,10 @@ namespace :fromthepage do
 
   def generate_pages_sitemap(sitemap_dir, base_url, max_urls_per_file)
     pages = Page.joins(work: :collection)
-               .where(collections: { restricted: false })
-               .where.not(status: ['blank', 'new'])
-               .includes(work: { collection: :owner })
-               .order(:id)
+                .where(collections: { visibility: [:public, :read_only] })
+                .where.not(status: ['blank', 'new'])
+                .includes(work: { collection: :owner })
+                .order(:id)
 
     file_count = (pages.count.to_f / max_urls_per_file).ceil
 

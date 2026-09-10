@@ -52,7 +52,10 @@ class ScCollection < ApplicationRecord
   end
 
   def self.collection_for_at_id(at_id)
-    connection = URI.open(at_id)
+    uri = URI.parse(at_id)
+    raise ArgumentError, 'collection URL must use HTTP or HTTPS' unless uri.is_a?(URI::HTTP)
+
+    connection = uri.open
     collection_json = connection.read
     # collection_json = TEST_COLLECTION
     service = IIIF::Service.parse(collection_json)

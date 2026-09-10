@@ -1,4 +1,6 @@
 class DashboardController < ApplicationController
+  DEEDS_DEFAULT_LIMIT = 10
+
   protect_from_forgery except: [:new_upload]
 
   include AddWorkHelper
@@ -325,6 +327,19 @@ class DashboardController < ApplicationController
     @work = @result.work
 
     respond_to(&:turbo_stream)
+  end
+
+  def deeds
+    deed_options = {}
+
+    unless params[:all]
+      deed_options[:user_id] = current_user.id
+      deed_options[:limit] = params[:limit].present? ? params[:limit].to_i : DEEDS_DEFAULT_LIMIT
+    end
+
+    render turbo_stream: turbo_stream.replace(
+      'lazy_deeds', partial: 'deeds', locals: { deed_options: deed_options }
+    )
   end
 
   private

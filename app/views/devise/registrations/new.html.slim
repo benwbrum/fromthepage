@@ -24,9 +24,6 @@ section.signon
       =f.text_field :real_name
       small
         i= t('devise.real_name_message')
-    .signon_field
-      =f.hidden_field :owner
-      =f.hidden_field :paid_date
     -if RECAPTCHA_ENABLED
       .signon_field
         =recaptcha_tags

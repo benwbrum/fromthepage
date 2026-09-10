@@ -31,6 +31,18 @@ en:
       more_help: More help....
       needs_review: Needs Review
       notes_and_questions: Notes and Questions
+      previous_work_title: Title for pages 1–%{n}
+      segmentation_cancel: Cancel
+      segmentation_candidate: This looks like a new document. Separate this into a new work?
+      segmentation_confirm: Split
+      segmentation_dismiss: Dismiss
+      segmentation_edit_work_metadata: Edit new work metadata
+      segmentation_no: 'No'
+      segmentation_split_confirm_message: Split this into a new work starting here?
+      segmentation_success: Created "%{title}" with %{count} pages.
+      segmentation_view_work: View new work
+      segmentation_yes: Yes, split here
+      split_into_new_work: Split into new work
       this_page_marked_blank: This page is marked blank
       this_page_marked_needs_review: This page has been marked as "needs review". You can improve this page by proofreading it against the original and adding or correcting the text.  When you are done, uncheck "needs review" and save the page.
       this_page_marked_needs_review_workflow_version: This page needs review. You can improve this page by proofreading it against the original and adding or correcting the text, then approve the text.

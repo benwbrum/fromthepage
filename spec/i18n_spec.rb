@@ -59,7 +59,7 @@ RSpec.describe I18n do
     # Words that should be "work of literature" not "labor"
     let(:incorrect_translations) do
       {
-        'de' => ['arbeit', 'arbeiten', 'dokumentensatz'],
+        'de' => ['arbeit', 'arbeiten', 'dokumentensatz', 'dokumentensätze', 'dokumentsätze'],
         'es' => ['trabajo', 'trabajos'],
         'fr' => ['travail', 'travaux'],
         'pt' => ['trabalho', 'trabalhos']
@@ -81,7 +81,8 @@ RSpec.describe I18n do
         'collection.ai_transcriptions.form.description', # "AI transcription job"
         'collection.ai_transcriptions.form.retry', # "retry failed jobs"
         'collection.ai_transcriptions.update.success', # "AI transcription job",
-        'work.ai_transcriptions.form.retry' # "retry failed jobs"
+        'work.ai_transcriptions.form.retry', # "retry failed jobs"
+        'work.ai_transcriptions.segment.success' # "segmentation job" (background job, not literary work)
       ]
     end
 

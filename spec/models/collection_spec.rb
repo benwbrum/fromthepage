@@ -28,14 +28,14 @@ describe Collection do
   describe '#is_public' do
     it 'returns true if a collection is not restricted' do
       user = build_stubbed(:user)
-      collection = build_stubbed(:collection, owner_user_id: user.id, restricted: false)
+      collection = build_stubbed(:collection, owner_user_id: user.id, visibility: :public)
 
       expect(collection.is_public).to be true
     end
 
     it 'returns false if a collection is restricted' do
       user = build_stubbed(:user)
-      collection = build_stubbed(:collection, owner_user_id: user.id, restricted: true)
+      collection = build_stubbed(:collection, owner_user_id: user.id, visibility: :private)
 
       expect(collection.is_public).to be false
     end
@@ -167,12 +167,12 @@ describe Collection do
 
     let!(:owner) { create(:unique_user, :owner) }
     let!(:public_collection) { create(:collection, title: identifier, owner_user_id: owner.id) }
-    let!(:restricted_collection) { create(:collection, title: identifier, owner_user_id: owner.id, restricted: true) }
+    let!(:restricted_collection) { create(:collection, title: identifier, owner_user_id: owner.id, visibility: :private) }
     let!(:public_updated_to_restricted_collection) { create(:collection, title: identifier, owner_user_id: owner.id) }
 
     let!(:other_user) { create(:unique_user, :owner) }
     let!(:other_public_collection) { create(:collection, title: identifier, owner_user_id: other_user.id) }
-    let!(:other_restricted_collection) { create(:collection, intro_block: "<div>#{identifier}</div>", owner_user_id: other_user.id, restricted: true) }
+    let!(:other_restricted_collection) { create(:collection, intro_block: "<div>#{identifier}</div>", owner_user_id: other_user.id, visibility: :private) }
 
     let(:records) do
       [
@@ -194,7 +194,7 @@ describe Collection do
       CollectionsIndex.purge
       records.each(&:save!)
 
-      public_updated_to_restricted_collection.update!(restricted: true)
+      public_updated_to_restricted_collection.update!(visibility: :private)
     end
 
     after(:each) do
@@ -273,6 +273,54 @@ describe Collection do
           )
         end
       end
+    end
+  end
+
+  describe '#segmentation_feature_enabled?' do
+    let(:owner) { create(:unique_user, :owner) }
+    let(:collection) { create(:collection, owner_user_id: owner.id) }
+
+    it 'follows the owner account flag' do
+      expect(collection.segmentation_feature_enabled?).to be(false)
+      owner.update!(segmentation_enabled: true)
+      expect(collection.reload.segmentation_feature_enabled?).to be(true)
+    end
+  end
+
+  describe '#transcriber_segmentation_enabled?' do
+    let(:owner) { create(:unique_user, :owner, segmentation_enabled: true) }
+    let(:collection) do
+      create(:collection, owner_user_id: owner.id, data_entry_type: 'text',
+                          is_active: true, allow_transcriber_segmentation: true)
+    end
+
+    it 'is true for an active text collection with the flag on' do
+      expect(collection.transcriber_segmentation_enabled?).to be(true)
+    end
+
+    it 'is false when the owner account is not opted into segmentation' do
+      owner.update!(segmentation_enabled: false)
+      expect(collection.reload.transcriber_segmentation_enabled?).to be(false)
+    end
+
+    it 'is false when the flag is off' do
+      collection.update!(allow_transcriber_segmentation: false)
+      expect(collection.transcriber_segmentation_enabled?).to be(false)
+    end
+
+    it 'is false for an inactive collection' do
+      collection.update!(is_active: false)
+      expect(collection.transcriber_segmentation_enabled?).to be(false)
+    end
+
+    it 'is false for a metadata-only collection' do
+      collection.update!(data_entry_type: 'metadata')
+      expect(collection.transcriber_segmentation_enabled?).to be(false)
+    end
+
+    it 'is false when the owner is on the individual researcher plan' do
+      owner.update!(account_type: 'Individual Researcher')
+      expect(collection.reload.transcriber_segmentation_enabled?).to be(false)
     end
   end
 end

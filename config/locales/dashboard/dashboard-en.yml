@@ -106,6 +106,7 @@ en:
         other: "%{count} works: "
       private: " (Private)"
       public: " (Public)"
+      read_only: " (Read-only)"
       start_a_project: Start A Project
       there_are_no_works: There are no works in this collection yet
       you_can_new_collection: You can %{new_collection}

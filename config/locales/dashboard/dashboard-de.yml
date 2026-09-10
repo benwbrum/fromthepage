@@ -106,6 +106,7 @@ de:
         other: "%{count} funktioniert:"
       private: " (Privatgelände)"
       public: " (Öffentlich)"
+      read_only: "(Schreibgeschützt)"
       start_a_project: Ein Projekt starten
       there_are_no_works: Es gibt noch keine Werke in dieser Sammlung
       you_can_new_collection: Sie können %{new_collection}

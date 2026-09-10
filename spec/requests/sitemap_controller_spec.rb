@@ -2,7 +2,7 @@ require 'spec_helper'
 
 RSpec.describe SitemapController, type: :request do
   let!(:owner) { create(:unique_user, :owner) }
-  let!(:collection) { create(:collection, owner: owner, is_active: true, restricted: false) }
+  let!(:collection) { create(:collection, owner: owner, is_active: true, visibility: :public) }
   let!(:work) { create(:work, collection: collection) }
   let!(:page) { create(:page, work: work, status: 'transcribed') }
 
@@ -89,7 +89,7 @@ RSpec.describe SitemapController, type: :request do
 
   describe "restricted collections" do
     it "excludes restricted collections from sitemap" do
-      restricted_collection = create(:collection, owner: owner, is_active: true, restricted: true)
+      restricted_collection = create(:collection, owner: owner, is_active: true, visibility: :private)
 
       get "/sitemap_collections.xml"
 

@@ -120,7 +120,8 @@ RSpec.describe ScManifest, type: :model do
     end
 
     it 'creates ScManifest object for v2 manifest' do
-      allow(URI).to receive(:open).and_return(double(read: v2_manifest_json))
+      stub_request(:get, 'https://example.com/manifest/v2')
+        .to_return(status: 200, body: v2_manifest_json)
 
       sc_manifest = ScManifest.manifest_for_at_id('https://example.com/manifest/v2')
       expect(sc_manifest).to be_a(ScManifest)
@@ -129,7 +130,8 @@ RSpec.describe ScManifest, type: :model do
     end
 
     it 'raises ArgumentError for collections' do
-      allow(URI).to receive(:open).and_return(double(read: v2_collection_json))
+      stub_request(:get, 'https://example.com/collection/v2')
+        .to_return(status: 200, body: v2_collection_json)
 
       expect {
         ScManifest.manifest_for_at_id('https://example.com/collection/v2')

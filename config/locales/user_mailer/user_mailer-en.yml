@@ -63,6 +63,13 @@ en:
         to_view_note: 'To view the note on page %{work}: %{page}, visit the following URL: %{url}'
         to_view_work: 'To view %{collection}: %{work}, visit the following URL: %{url}'
       work_added: "%{owner} added %{work} to the collection %{collection}. "
+    segmentation_finished:
+      body: The segmentation of "%{work}" in the collection "%{collection}" is complete. Pages identified as possible document starts are highlighted in the transcription view.
+      candidate_count_label: 'Pages identified as possible document starts:'
+      greeting: Hi %{user},
+      heading: Segmentation of "%{work}" is complete
+      subject: Segmentation of "%{work}" is complete
+      view_work: View work
     text:
       closing: |-
         Thanks,

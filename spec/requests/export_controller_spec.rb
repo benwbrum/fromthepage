@@ -232,6 +232,48 @@ describe ExportController do
     end
   end
 
+  describe '#new_grover_export' do
+    let(:action_path) { export_new_grover_export_path(collection, work) }
+
+    let(:subject) { get action_path }
+
+    it 'renders status and template' do
+      login_as owner
+      subject
+
+      expect(response).to have_http_status(:ok)
+      expect(response).to render_template(:new_grover_export)
+    end
+  end
+
+  describe '#grover_printable' do
+    let(:action_path) { export_grover_printable_path(collection, work) }
+    let(:params) { { edition: 'text' } }
+
+    let(:subject) { post action_path, params: params }
+
+    it 'renders status' do
+      login_as owner
+      subject
+
+      expect(response).to have_http_status(:ok)
+    end
+
+    context 'with human_and_ai source' do
+      let(:params) { { edition: 'text', source: :human_and_ai } }
+
+      let!(:page_2) { create(:page, work: work) }
+      let!(:ai_transcription) { create(:ai_transcription, page_id: page_2.id, status: :finished, source_text: "Sample") }
+
+      it 'renders status' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+      end
+    end
+  end
+
   describe '#tei' do
     let(:action_path) { export_tei_path(work.slug) }
 
@@ -729,6 +771,17 @@ describe ExportController do
     let(:params) { {} }
 
     let(:subject) { get action_path, params: params }
+
+    it 'redirects when not logged in' do
+      subject
+      expect(response).to redirect_to(dashboard_path)
+    end
+
+    it 'redirects a non-owner' do
+      login_as user
+      subject
+      expect(response).to redirect_to(dashboard_path)
+    end
 
     it 'renders status' do
       login_as owner

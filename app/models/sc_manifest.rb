@@ -56,7 +56,10 @@ class ScManifest < ApplicationRecord
   end
 
   def self.manifest_for_at_id(at_id)
-    connection = URI.open(at_id)
+    uri = URI.parse(at_id)
+    raise ArgumentError, 'manifest URL must use HTTP or HTTPS' unless uri.is_a?(URI::HTTP)
+
+    connection = uri.open
     manifest_json = connection.read
     # manifest_json = TEST_MANIFEST
     service = IIIF::Service.parse(manifest_json)

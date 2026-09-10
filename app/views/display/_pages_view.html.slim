@@ -70,7 +70,7 @@
             ==transcription.force_encoding('utf-8')
 
         -else
-          -if can_transcribe
+          -if can_transcribe && !@collection.visibility_read_only?
             -if @collection.active?
               -if page.work.ocr_correction
                 -status = t('.corrected')

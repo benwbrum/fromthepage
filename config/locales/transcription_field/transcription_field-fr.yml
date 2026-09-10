@@ -56,6 +56,7 @@ fr:
       ai_both_agree: Les deux modèles d'IA sont d'accord
       ai_disagree_header: Les modèles d'IA sont en désaccord — vérifiez et choisissez-en un
       ai_option_placeholder: Cliquez sur une suggestion ci-dessous, ou saisissez votre transcription…
+      ai_spreadsheet_option: Utiliser ce brouillon
       instructions: Des instructions
     line_form:
       field_options: Options de champ (séparées par des points-virgules)

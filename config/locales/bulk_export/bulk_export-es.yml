@@ -23,6 +23,8 @@ es:
       upload_details: Subir detalles
       user: Usuario
     new:
+      accessible_pdf: PDF accesible
+      accessible_pdf_description: Un archivo PDF optimizado para lectores de pantalla y tecnologías de asistencia.
       download: Descargar
       expanded_plaintext: Texto sin formato expandido
       expanded_plaintext_description: Al igual que el texto sin formato textual, este archivo de texto sin formato representará saltos de línea con una sola línea nueva, saltos de párrafo con una doble línea nueva y saltos de página con una triple línea nueva. Se diferencia del texto textual en que la normalización se aplicará a todos los temas mencionados, de modo que mientras el texto textual puede decir "Saludé al Sr. Jones y su esposa esta mañana", el texto sin formato modificado dirá "Saludé a James Jones". y Elizabeth Smith Jones esta mañana”. Este texto artificial es útil para el análisis programático, pero no está destinado a ser leído por humanos.
@@ -37,6 +39,8 @@ es:
       format_options: Opciones de formato
       html: HTML
       html_description: Esto puede ser útil para la conservación en otros sistemas o como punto de partida para su visualización en otro sitio web.
+      human_and_ai: Exportar transcripciones humanas cuando estén disponibles; de lo contrario, exportar borradores de IA.
+      human_only: Exportar únicamente transcripciones editadas por humanos
       notes_csv: Notas CSV
       notes_csv_description: Una hoja de cálculo que enumera cada nota en la colección.
       one_file_per_collection: Un archivo por colección
@@ -49,6 +53,7 @@ es:
       organization_work: Carpetas de obras
       page_details_csv: Detalles de página CSV
       page_details_csv_description: Una hoja de cálculo con una fila por página, incluyendo información de la página y metadatos de la obra principal.
+      prepend_ai_warnings: 'Advertencia: Esta transcripción ha sido generada por IA y se añade al principio de la transcripción.'
       preserve_linebreaks: Conservar saltos de línea
       previous_exports: Exportaciones anteriores
       search_optimized_plaintext: Texto sin formato optimizado para búsqueda

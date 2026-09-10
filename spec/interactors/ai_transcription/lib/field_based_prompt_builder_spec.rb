@@ -49,14 +49,62 @@ describe AiTranscription::Lib::FieldBasedPromptBuilder do
     expect(prompt).not_to include('Fill out carefully')
   end
 
-  it 'excludes instruction fields' do
-    expect(prompt).not_to include('Enter county name')
+  it 'includes instruction labels in the field list as guidance rather than extractable fields' do
+    field_section = prompt[/Fields to extract:\n(.*?)\n\nRules:/m, 1]
+
+    expect(field_section.lines.map(&:chomp)).to include('- Instruction: Enter county name')
+    expect(field_section).not_to include("Instruction field #{instruction_field.id}")
+    expect(described_class.new(collection: collection).instance_variable_get(:@fields)).not_to include(instruction_field)
   end
 
   it 'includes an example JSON structure keyed by field ID' do
     expect(prompt).to include("\"#{text_field.id}\"")
     expect(prompt).to include("\"#{select_field.id}\"")
     expect(prompt).to include("\"#{date_field.id}\"")
+  end
+
+  it 'does not add the instruction field ID to the expected JSON object' do
+    expected_json = JSON.parse(prompt.split("Expected JSON format:\n", 2).last)
+
+    expect(expected_json).not_to have_key(instruction_field.id.to_s)
+  end
+
+  context 'with multiple instructions' do
+    let!(:earlier_instruction) do
+      create(:transcription_field, :instruction_field,
+             label: 'Transcribe the location exactly', collection: collection,
+             position: 2, line_number: 2)
+    end
+
+    let!(:later_instruction) do
+      create(:transcription_field, :instruction_field,
+             label: 'Preserve original spelling', collection: collection,
+             position: 7, line_number: 7)
+    end
+
+    it 'interleaves instructions with extractable fields in transcription-field order' do
+      field_section = prompt[/Fields to extract:\n(.*?)\n\nRules:/m, 1]
+
+      expect(field_section.index('Name')).to be < field_section.index('Transcribe the location exactly')
+      expect(field_section.index('Transcribe the location exactly')).to be < field_section.index('County')
+      expect(field_section.index('Birth Date')).to be < field_section.index('Enter county name')
+      expect(field_section.index('Enter county name')).to be < field_section.index('Preserve original spelling')
+    end
+  end
+
+  context 'when field positions repeat across lines' do
+    before do
+      text_field.update!(position: 2, line_number: 1)
+      select_field.update!(position: 1, line_number: 2)
+      date_field.update!(position: 1, line_number: 1)
+    end
+
+    it 'lists fields in line order, then position order within each line' do
+      field_section = prompt[/Fields to extract:\n(.*?)\n\nRules:/m, 1]
+
+      expect(field_section.index('Birth Date')).to be < field_section.index('Name')
+      expect(field_section.index('Name')).to be < field_section.index('County')
+    end
   end
 
   context 'with a spreadsheet field' do

@@ -1,0 +1,260 @@
+doctype html
+html
+  head
+    meta charset="utf-8"
+    meta name="viewport" content="width=device-width, initial-scale=1.0"
+
+    style
+      |
+        html, body {
+          font-family: Arial, Helvetica, sans-serif;
+          font-size: 10pt;
+          line-height: 1.55;
+          color: #000;
+          background: #fff;
+          margin: 0;
+          padding: 0;
+        }
+
+        body {
+          -webkit-print-color-adjust: exact;
+          text-rendering: optimizeLegibility;
+        }
+
+        @page {
+          size: A4;
+          margin: 1in;
+        }
+
+        @page :first {
+          margin-top: 1.5in;
+        }
+
+        @page {
+          @bottom-center {
+            content: counter(page);
+            font-size: 9pt;
+            color: #444;
+          }
+        }
+
+        p {
+          margin: 0 0 0.85em 0;
+          text-align: justify;
+          orphans: 3;
+          widows: 3;
+          font-size: 10pt;
+        }
+
+        h1 + p, h2 + p, h3 + p {
+          text-indent: 0;
+        }
+
+        p + p {
+          text-indent: 0;
+        }
+
+        p.indent {
+          text-indent: 1.5em;
+        }
+
+        h1, h2, h3, h4 {
+          font-weight: bold;
+          page-break-after: avoid;
+          break-after: avoid;
+          margin: 1.2em 0 0.5em 0;
+        }
+
+        h1 {
+          font-size: 14pt;
+        }
+
+        h2 {
+          font-size: 12pt;
+        }
+
+        h3 {
+          font-size: 11pt;
+        }
+
+        h4 {
+          font-size: 10pt;
+        }
+
+        a {
+          text-decoration: underline;
+          word-break: break-word;
+        }
+
+        .page-break {
+          break-before: page;
+          page-break-before: always;
+        }
+
+        .page-break-after {
+          break-after: page;
+          page-break-after: always;
+        }
+
+        .no-break {
+          break-inside: avoid;
+          page-break-inside: avoid;
+        }
+
+        .section {
+          margin-bottom: 1.5em;
+          break-inside: avoid;
+        }
+
+        .section.new-page {
+          break-before: page;
+          page-break-before: always;
+        }
+
+        hr {
+          border: none;
+          border-top: 1px solid #000;
+          margin: 2em 0;
+        }
+
+        hr.soft {
+          border-top: 1px solid #ccc;
+        }
+
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          margin: 1em 0;
+          font-size: 10.5pt;
+        }
+
+        th, td {
+          border: 1px solid #000;
+          padding: 6px 8px;
+          vertical-align: top;
+        }
+
+        th {
+          background: #f5f5f5;
+          font-weight: bold;
+        }
+
+        table, tr, td, th {
+          break-inside: avoid;
+          page-break-inside: avoid;
+        }
+
+        caption {
+          caption-side: bottom;
+          font-size: 9pt;
+          margin-top: 0.5em;
+          color: #444;
+        }
+
+        blockquote {
+          margin: 1em 2em;
+          font-style: italic;
+          color: #222;
+          border-left: 2px solid #000;
+          padding-left: 1em;
+          break-inside: avoid;
+        }
+
+        pre {
+          font-family: "Courier New", monospace;
+          font-size: 9.5pt;
+          background: #f6f6f6;
+          padding: 10px;
+          overflow-x: auto;
+          border: 1px solid #ddd;
+          break-inside: avoid;
+        }
+
+        code {
+          font-family: "Courier New", monospace;
+          font-size: 10pt;
+        }
+
+        ul, ol {
+          margin: 0 0 1em 1.5em;
+        }
+
+        li {
+          margin-bottom: 0.3em;
+        }
+
+        img {
+          max-width: 100%;
+          height: auto;
+          display: block;
+          margin: 1em auto;
+          break-inside: avoid;
+        }
+
+        figure {
+          margin: 1em 0;
+          break-inside: avoid;
+        }
+
+        figcaption {
+          font-size: 9pt;
+          text-align: center;
+          color: #444;
+        }
+
+        .title-page {
+          text-align: center;
+          margin-top: 3in;
+        }
+
+        .title-page h1 {
+          font-size: 24pt;
+          margin-bottom: 0.5em;
+        }
+
+        .title-page p {
+          font-size: 12pt;
+          text-indent: 0;
+        }
+
+        .small {
+          font-size: 9pt;
+          color: #444;
+        }
+
+        .center {
+          text-align: center;
+        }
+
+        .img-container {
+          width: 100%;
+          height: 100vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          page-break-inside: avoid;
+        }
+
+        .img-container img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+          display: block;
+        }
+
+        small {
+          font-size: 9px;
+          line-height: 1.4;
+          color: #444;
+          display: inline;
+        }
+
+  body
+    .document
+      -if @edition_type != 'text_only'
+        =render partial: 'shared/grover/headers', locals: { work: @work, include_metadata: @include_metadata, time: @time }
+
+      = yield
+
+      -if @edition_type != 'text_only' && @include_contributors
+        =render partial: 'shared/grover/contributors', locals: {}

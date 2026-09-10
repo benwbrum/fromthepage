@@ -485,4 +485,38 @@ describe DashboardController do
       expect(response).to render_template(:create_work)
     end
   end
+
+  describe '#deeds' do
+    let(:action_path) { dashboard_deeds_path }
+    let(:subject) { get action_path, params: params, as: :turbo_stream }
+
+    let(:params) do
+      {
+        limit: 10
+      }
+    end
+
+    it 'renders status and template' do
+      login_as owner
+      subject
+
+      expect(response).to have_http_status(:ok)
+      expect(response).to render_template(:_deeds)
+    end
+
+    context 'all' do
+      let(:params) do
+        {
+          all: true
+        }
+      end
+
+      it 'renders status and template' do
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:_deeds)
+      end
+    end
+  end
 end

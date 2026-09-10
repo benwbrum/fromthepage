@@ -133,7 +133,7 @@ RSpec.describe UserMailer::Activity do
           user_id: @contributor.id
         })
 
-        @collection.update!(restricted: true)
+        @collection.update!(visibility: :private)
         @work.update!(restrict_scribes: true)
         @work.scribes.delete(@contributor)
 

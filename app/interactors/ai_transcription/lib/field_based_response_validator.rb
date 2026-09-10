@@ -84,9 +84,8 @@ class AiTranscription::Lib::FieldBasedResponseValidator
         next
       end
 
-      missing = expected_col_ids.reject { |k| row.key?(k) }
-      if missing.any?
-        @errors << "Field \"#{field.label}\" (#{field.id}): row #{i + 1} missing columns: #{missing.join(', ')}"
+      expected_col_ids.each do |column_id|
+        row[column_id] = nil unless row.key?(column_id)
       end
     end
   end

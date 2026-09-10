@@ -41,6 +41,14 @@ es:
       table_csv: Tabla en formato CSV
       tei: IET
       work_title: Título de la obra
+    new_grover_export:
+      ai_warning: 'Advertencia: Esta transcripción ha sido generada por IA (%{model} %{created_at}).'
+      contents: Contenido
+      download: Descargar
+      heading: Configuración de PDF accesible
+      human_and_ai: Exportar transcripciones humanas cuando estén disponibles; de lo contrario, exportar borradores de IA.
+      human_only: Exportar únicamente transcripciones editadas por humanos.
+      prepend_ai_warnings: 'Advertencia: Esta transcripción ha sido generada por IA y se añade al principio de la transcripción.'
     show:
       bibliography: Bibliografía
       categories: 'Categorías:'

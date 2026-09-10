@@ -1,4 +1,6 @@
 =javascript_include_tag "transcribe"
+-if @work.page_segmentation_enabled?
+  =render partial: 'transcribe/segmentation_banner', locals: { page: @page, work: @work, collection: @collection }
 -if current_page?(collection_oneoff_review_page_path(@collection.owner, @collection, @page)) || @quality_sampling || @user
   =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 12, :collection_id => @collection.id }})
   .review-breadcrumbs
@@ -20,7 +22,7 @@
   =hidden_field_tag(:page_id, @page.id)
   =hidden_field_tag(:flow, params[:flow])
   =hidden_field_tag(:quality_sampling_id, params[:quality_sampling_id])
-  =hidden_field_tag(:ai_draft_used, false)
+  =hidden_field_tag(:ai_draft_used, @ai_draft_used)
   =validation_summary @page.errors
 
   .page-toolbar
@@ -64,7 +66,15 @@
           =f.label 'needs_review', t('.needs_review')
           =f.check_box('needs_review', {checked: @page.status_needs_review?})
 
+      -if @page.position > 1 && @work.page_segmentation_enabled?
+        .flex-toolbar_group
+          button.button.outline(type='button' data-segmentation-split-toggle aria-controls="segmentation-split-strip-#{@page.id}" title=t('.split_into_new_work') aria-label=t('.split_into_new_work'))
+            =svg_symbol "#icon-scissors", class: 'icon'
+
       =render partial: 'save_buttons'
+
+  -if @page.position > 1 && @work.page_segmentation_enabled?
+    =render partial: 'transcribe/segmentation_split_strip', locals: { page: @page, work: @work, collection: @collection }
 
   -if @page.status_needs_review? && current_user.can_review?(@collection)
     .page-review
@@ -306,7 +316,7 @@
             showCustomAlert();
         }
 
-      $('form').submit(function(event) {
+      $('#custom_form_id').submit(function(event) {
         var isMarkedBlank = $('#page_mark_blank').is(':checked');
         var hasTranscribedvalue = $('.page-editarea_textarea').length < 0;
         var hasTranscribedText = $('.page-editarea_textarea').length > 0 && $('.page-editarea_textarea').val().trim().length > 0;

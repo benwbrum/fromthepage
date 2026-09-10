@@ -22,12 +22,15 @@ de:
       categories: Kategorien
       combine_selected: Auswahl kombinieren
       confirm_delete_subject: Möchten Sie diese Entität wirklich löschen? Das Löschen kann nicht rückgängig gemacht werden!
+      confirm_merge_with_duplicate: Möchten Sie diese Entität wirklich mit „%{duplicate}“ zusammenführen? Alle Links werden aktualisiert und diese Entität wird gelöscht.
       death_date: Sterbedatum
       delete_subject: Entität löschen
       description: Beschreibung
       ended: Beendet
       latitude: Breitengrad
       longitude: Längengrad
+      merge_with_duplicate: Mit „%{duplicate}“ zusammenführen
+      merge_with_duplicate_description: Eine Entität namens „%{duplicate}“ ist bereits vorhanden. Führen Sie diese Entität damit zusammen, um die vorhandene Entität beizubehalten und die Links dieser Entität neu zuzuordnen.
       microphone: Mikrofon
       n_pages:
         one: 1 Seite

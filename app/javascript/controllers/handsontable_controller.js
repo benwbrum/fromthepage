@@ -101,36 +101,56 @@ export default class extends Controller {
 
   dataConfig() {
     if (!this._dataConfig) {
-      this._dataConfig = this.contentValue.map(row => {
-        return this.columnsValue.map(column => {
-          let value = row[column.id];
-
-          if (column.input_type === 'checkbox') {
-            value = (value == 'true') || value ? 'true' : 'false';
-          }
-
-          return value;
-        });
-      });
-
-      const currentLength = this._dataConfig.length;
-      const requiredLength = this.transcriptionFieldValue.starting_rows;
-
-      if (currentLength < requiredLength) {
-        const rowsToAdd = requiredLength - currentLength;
-
-        for (let i = 0; i < rowsToAdd; i++) {
-          const newRow = this.columnsValue.map(col => {
-            if (col.input_type === 'checkbox') return 'false';
-            return null;
-          });
-
-          this._dataConfig.push(newRow);
-        }
-      }
+      this._dataConfig = this.buildGridData(this.contentValue);
     }
 
     return this._dataConfig
+  }
+
+  // Converts an array of row objects (keyed by spreadsheet column id, the format
+  // both the initially-saved content and an AI draft's per-field JSON use) into the
+  // row-of-arrays grid Handsontable expects, padded out to at least starting_rows.
+  buildGridData(rows) {
+    const grid = (rows || []).map(row => {
+      return this.columnsValue.map(column => {
+        let value = row[column.id];
+
+        if (column.input_type === 'checkbox') {
+          value = (value == 'true') || value ? 'true' : 'false';
+        }
+
+        return value;
+      });
+    });
+
+    const currentLength = grid.length;
+    const requiredLength = this.transcriptionFieldValue.starting_rows;
+
+    if (currentLength < requiredLength) {
+      const rowsToAdd = requiredLength - currentLength;
+
+      for (let i = 0; i < rowsToAdd; i++) {
+        const newRow = this.columnsValue.map(col => {
+          if (col.input_type === 'checkbox') return 'false';
+          return null;
+        });
+
+        grid.push(newRow);
+      }
+    }
+
+    return grid;
+  }
+
+  // Called from the AI Draft button's click handler (transcription_field/_field_layout)
+  // to load a chosen engine's spreadsheet suggestion into this grid.
+  applyAiDraftRows(rows) {
+    this._handsontable.loadData(this.buildGridData(rows));
+
+    document.getElementById(`fields-${this.transcriptionFieldValue.id}`).value = JSON.stringify(this._handsontable.getData());
+
+    this._handsontable.updateSettings({ height: this.getHotHeight(this._handsontable.countRows()) });
+    this._handsontable.validateCells();
   }
 
   getHotHeight(rows) {

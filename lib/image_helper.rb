@@ -5,6 +5,7 @@ require 'fileutils'
 require 'rmagick'
 require 'zip'
 require 'shellwords'
+require 'open3'
 include Magick
 
 module ImageHelper
@@ -27,11 +28,15 @@ module ImageHelper
   def self.unzip_file(file, destination)
     print "unzip_file(#{file})\n"
 
+    destination = File.expand_path(destination)
+
     Zip::File.open(file) do |zip_file|
       zip_file.each do |f|
-        # f_path=File.join(destination, File.basename(f.name))
-        # FileUtils.mkdir_p(File.dirname(destination)) unless Dir.exist? destination
-        outfile = File.join(destination, f.name)
+        outfile = File.expand_path(f.name, destination)
+        unless outfile.start_with?("#{destination}#{File::SEPARATOR}")
+          raise Zip::EntryNameError, "zip entry escapes destination: #{f.name}"
+        end
+
         FileUtils.mkdir_p(File.dirname(outfile))
 
         print "\textracting #{outfile}\n"
@@ -47,8 +52,11 @@ module ImageHelper
 
   def self.calculate_page_size_and_dpi(filename)
     # some PDFs have page sizes so big that our 300x300 DPI creates images wider than the max 16000
-    raw_page_size = `pdfinfo #{Shellwords.escape(filename)} | grep "Page size"`.gsub(/Page size:\s+/, '').gsub(' pts',
-                                                                                                               '').chomp
+    pdfinfo, status = Open3.capture2('pdfinfo', filename.to_s)
+    raise "pdfinfo failed for #{filename}" unless status.success?
+
+    raw_page_size = pdfinfo[/^Page size:\s+(.+?)\s+pts(?:\s|$)/, 1]
+    raise "pdfinfo did not report a page size for #{filename}" if raw_page_size.blank?
     dpi = 300
     pixel_dim = raw_page_size.split(' x ').map { |e| e.to_f / 72 * dpi }
     if pixel_dim.max >= 16_000
@@ -68,9 +76,9 @@ module ImageHelper
     page_info = calculate_page_size_and_dpi(filename)
     dpi = page_info[:dpi]
 
-    gs = "gs -r#{dpi}x#{dpi} -dJPEGQ=30 -o '#{pattern}' -sDEVICE=jpeg #{Shellwords.escape(filename)}"
-    print "\t\t#{gs}\n"
-    system(gs)
+    gs = ['gs', "-r#{dpi}x#{dpi}", '-dJPEGQ=30', '-o', pattern, '-sDEVICE=jpeg', filename.to_s]
+    print "\t\t#{gs.shelljoin}\n"
+    system(*gs)
 
     if ocr
       # now extract OCR text
@@ -78,9 +86,9 @@ module ImageHelper
       page_count = Dir.glob(File.join(destination, '*.jpg')).count
       1.upto(page_count) do |page_num|
         output_file = pattern % page_num
-        pdftotext = "pdftotext -f #{page_num} -l #{page_num} #{Shellwords.escape(filename)} #{Shellwords.escape(output_file)}"
-        print "\t\t#{pdftotext}\n"
-        system(pdftotext)
+        pdftotext = ['pdftotext', '-f', page_num.to_s, '-l', page_num.to_s, filename.to_s, output_file]
+        print "\t\t#{pdftotext.shelljoin}\n"
+        system(*pdftotext)
       end
     end
 

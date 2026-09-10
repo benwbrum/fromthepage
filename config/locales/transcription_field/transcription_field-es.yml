@@ -56,6 +56,7 @@ es:
       ai_both_agree: Ambos modelos de IA coinciden
       ai_disagree_header: Los modelos de IA no coinciden — revise y elija uno
       ai_option_placeholder: Haga clic en una sugerencia a continuación, o escriba su transcripción…
+      ai_spreadsheet_option: Usar este borrador
       instructions: Instrucciones
     line_form:
       field_options: Opciones de campo (separa con punto y coma)

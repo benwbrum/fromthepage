@@ -61,6 +61,13 @@ es:
         to_view_note: 'Para ver la nota en la página %{work}: %{page}, visite la siguiente URL: %{url}'
         to_view_work: 'Para ver %{collection}: %{work}, visite la siguiente URL: %{url}'
       work_added: "%{owner} añadió %{work} a la colección %{collection}. "
+    segmentation_finished:
+      body: La segmentación de "%{work}" en la colección "%{collection}" está completa. Las páginas identificadas como posibles inicios de documento están resaltadas en la vista de transcripción.
+      candidate_count_label: 'Páginas identificadas como posibles inicios de documento:'
+      greeting: Hola %{user},
+      heading: La segmentación de "%{work}" está completa
+      subject: La segmentación de "%{work}" está completa
+      view_work: Ver obra
     text:
       closing: |-
         Gracias,

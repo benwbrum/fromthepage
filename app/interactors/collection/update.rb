@@ -30,7 +30,7 @@ class Collection::Update < ApplicationInteractor
       set_featured_at
 
       @collection.save!
-      saved_change_to_restricted = @collection.saved_change_to_restricted?
+      saved_change_to_restricted = @collection.saved_change_to_visibility?
     end
 
     return unless saved_change_to_restricted
@@ -114,8 +114,8 @@ class Collection::Update < ApplicationInteractor
   end
 
   def set_featured_at
-    return unless @collection.restricted_changed?
+    return unless @collection.visibility_changed?
 
-    @collection.featured_at = @collection.restricted? ? nil : Time.current
+    @collection.featured_at = @collection.restricted ? nil : Time.current
   end
 end
