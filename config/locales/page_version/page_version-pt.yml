@@ -20,7 +20,8 @@ pt:
       page_version_status_needs_review: necessita revisão
       page_version_status_review: análise
       page_version_status_transcribed: transcrito
+      restore: Restaurar
+      restore_tooltip: Substituir o texto atual pela transcrição desta versão
       revert_confirm: Tem certeza de que deseja reverter para esta versão? Você será levado à tela de transcrição para revisar e salvar.
-      revert_to_this_version: Reverter para esta versão
       translation: Tradução
       untitled: Sem título

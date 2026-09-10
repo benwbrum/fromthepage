@@ -49,7 +49,7 @@ table.diff-versions(data-fullheight='{ "bottom": 30, "cssrule": "min-height" }')
                       = t('.ai_draft_used')
                       = svg_symbol '#icon-robot', class: 'icon', style: 'margin-left: 5px; stroke: yellow;'
               - if current_user&.like_owner?(@work) && !@selected_version.current_version?
-                = button_to t('.revert_to_this_version'), page_version_revert_path(page_version_id: @selected_version.id), method: :post, class: 'button outline small', form_class: 'diff-title-action', data: { confirm: t('.revert_confirm') }
+                = button_to t('.restore'), page_version_revert_path(page_version_id: @selected_version.id), method: :post, form_class: 'diff-title-action', title: t('.restore_tooltip'), data: { confirm: t('.revert_confirm') }
           div.version-content
             - if @selected_version&.page_version && @previous_version&.page_version
               - if @selected_version.page_version > @previous_version.page_version
