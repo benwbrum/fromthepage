@@ -572,6 +572,7 @@ Fromthepage::Application.routes.draw do
         get 'describe', on: :member
         patch 'save_description', on: :member, to: 'work#save_description'
         get 'description_versions', on: :member
+        patch 'description_versions/:metadata_description_version_id/restore', on: :member, to: 'work#restore_description_version', as: :restore_description_version
         get 'metadata_overview', on: :member
         get 'metadata_overview_monitor', on: :member
         get ':page_id/active_editing', on: :member, to: 'transcribe#active_editing', as: 'active_editing'
