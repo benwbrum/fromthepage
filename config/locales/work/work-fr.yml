@@ -88,9 +88,6 @@ fr:
       restore_confirm: Êtes-vous sûr de vouloir restaurer cette version des métadonnées de l’œuvre ? Vous serez redirigé vers l’écran des métadonnées pour la vérifier.
       restore_tooltip: Remplacer les métadonnées actuelles de l’œuvre par cette version
       revision: révision
-    restore_description_version:
-      restored: Les métadonnées de l’œuvre ont été restaurées à la version sélectionnée. Veuillez les vérifier.
-      version_not_found: Version des métadonnées introuvable.
     download:
       accessible_pdf: PDF accessible
       accessible_pdf_download_description: Téléchargez une version PDF de cet ouvrage optimisée pour les lecteurs d'écran et les technologies d'assistance.
@@ -238,6 +235,9 @@ fr:
       transcribe: Transcrire
       upload: Télécharger
       upload_page_image: Image de la page %{upload}
+    restore_description_version:
+      restored: Les métadonnées de l’œuvre ont été restaurées à la version sélectionnée. Veuillez les vérifier.
+      version_not_found: Version des métadonnées introuvable.
     save_description:
       work_described: Votre description a été enregistrée
     search:

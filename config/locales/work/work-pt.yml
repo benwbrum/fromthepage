@@ -88,9 +88,6 @@ pt:
       restore_confirm: Tem certeza de que deseja restaurar esta versão dos metadados da obra? Você será levado à tela de metadados para revisá-la.
       restore_tooltip: Substituir os metadados atuais da obra por esta versão
       revision: revisão
-    restore_description_version:
-      restored: Os metadados da obra foram restaurados para a versão selecionada. Revise-os.
-      version_not_found: Versão dos metadados não encontrada.
     download:
       accessible_pdf: PDF acessível
       accessible_pdf_download_description: Baixe uma versão em PDF deste obra otimizada para leitores de tela e tecnologias assistivas.
@@ -238,6 +235,9 @@ pt:
       transcribe: Transcrever
       upload: Envio
       upload_page_image: "%{upload} imagem da página"
+    restore_description_version:
+      restored: Os metadados da obra foram restaurados para a versão selecionada. Revise-os.
+      version_not_found: Versão dos metadados não encontrada.
     save_description:
       work_described: Sua descrição foi salva
     search:

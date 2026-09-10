@@ -88,9 +88,6 @@ de:
       restore_confirm: Möchten Sie diese Version der Werkmetadaten wirklich wiederherstellen? Sie werden zur Metadatenseite weitergeleitet, um sie zu überprüfen.
       restore_tooltip: Die aktuellen Werkmetadaten durch diese Version ersetzen
       revision: Revision
-    restore_description_version:
-      restored: Die Werkmetadaten wurden auf die ausgewählte Version zurückgesetzt. Bitte überprüfen Sie sie.
-      version_not_found: Metadatenversion nicht gefunden.
     download:
       accessible_pdf: Barrierefreies PDF
       accessible_pdf_download_description: Laden Sie eine für Bildschirmleseprogramme und assistive Technologien optimierte PDF-Version dieses Werkes herunter.
@@ -238,6 +235,9 @@ de:
       transcribe: Transkribieren
       upload: Hochladen
       upload_page_image: "%{upload} Faksimile"
+    restore_description_version:
+      restored: Die Werkmetadaten wurden auf die ausgewählte Version zurückgesetzt. Bitte überprüfen Sie sie.
+      version_not_found: Metadatenversion nicht gefunden.
     save_description:
       work_described: Ihre Beschreibung wurde gespeichert
     search:

@@ -88,9 +88,6 @@ en:
       restore_confirm: Are you sure you want to restore this version of the work metadata? You will be taken to the metadata screen to review it.
       restore_tooltip: Replace the current work metadata with this version
       revision: revision
-    restore_description_version:
-      restored: Work metadata has been restored to the selected version. Please review it.
-      version_not_found: Metadata version not found.
     download:
       accessible_pdf: Accessible PDF
       accessible_pdf_download_description: Download a PDF version of this work optimized for screen readers and assistive technologies.
@@ -238,6 +235,9 @@ en:
       transcribe: transcribe
       upload: Upload
       upload_page_image: "%{upload} page image"
+    restore_description_version:
+      restored: Work metadata has been restored to the selected version. Please review it.
+      version_not_found: Metadata version not found.
     save_description:
       work_described: Your description has been saved
     search:

@@ -138,14 +138,14 @@ class WorkController < ApplicationController
 
     if version.nil?
       flash[:error] = t('.version_not_found')
-      redirect_to description_versions_collection_work_path(@work.slug)
+      redirect_to description_versions_collection_work_path(@collection.owner, @collection, @work)
       return
     end
 
     @work.update!(metadata_description: version.metadata_description)
 
     flash[:notice] = t('.restored')
-    redirect_to describe_collection_work_path(@work.slug)
+    redirect_to describe_collection_work_path(@collection.owner, @collection, @work)
   end
 
   def delete

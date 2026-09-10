@@ -85,12 +85,9 @@ es:
       compared_with: Comparado con
       help_description: Vea y compara los cambios que se han realizado en cada revisión a los metadatos de obra. La columna de la izquierda muestra los metadatos en la revisión seleccionada, la columna de la derecha muestra lo que se ha cambiado. El texto que no ha cambiado está <span>resaltado en blanco</span>, el texto eliminado está <del>resaltado en rojo</del> y el texto insertado está <ins>resaltado en color verde</ins>.
       restore: Restaurar
-      restore_confirm: ¿Está seguro de que desea restaurar esta versión de los metadatos de la obra? Se le llevará a la pantalla de metadatos para revisarla.
+      restore_confirm: "¿Está seguro de que desea restaurar esta versión de los metadatos de la obra? Se le llevará a la pantalla de metadatos para revisarla."
       restore_tooltip: Reemplazar los metadatos actuales de la obra con esta versión
       revision: revisión
-    restore_description_version:
-      restored: Los metadatos de la obra se han restaurado a la versión seleccionada. Revísela.
-      version_not_found: No se encontró la versión de los metadatos.
     download:
       accessible_pdf: PDF accesible
       accessible_pdf_download_description: Descargue una versión en PDF de esta obra optimizada para lectores de pantalla y tecnologías de asistencia.
@@ -238,6 +235,9 @@ es:
       transcribe: transcribir
       upload: Subir
       upload_page_image: Imagen de la página %{upload}
+    restore_description_version:
+      restored: Los metadatos de la obra se han restaurado a la versión seleccionada. Revísela.
+      version_not_found: No se encontró la versión de los metadatos.
     save_description:
       work_described: Tu descripción ha sido guardada
     search:
