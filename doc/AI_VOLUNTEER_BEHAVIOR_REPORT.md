@@ -23,6 +23,10 @@ behavior-type breakdown, plus cohort totals. These records are explicitly
 described as review signals rather than proof of abuse. Every survey-candidate
 table includes a linked FromThePage username, display name, email address,
 account-creation date, and lifetime contribution count.
+The heavy-user aggregate also reports all of their non-owner period-C saved page
+versions across collections, distinct pages and user-page pairs, AI-assisted and
+manual-save shares, and record/user/rate totals for every suspicious-behavior
+type (including types with zero records).
 
 The report also reconstructs page-level AI eligibility in C from the earliest
 finished, nonblank database AI transcription available before each save. It

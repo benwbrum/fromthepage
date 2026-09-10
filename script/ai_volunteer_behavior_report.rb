@@ -114,7 +114,7 @@ class AiVolunteerBehaviorReport
     collection_ids.nil? ? scope : scope.where(collection_id: collection_ids)
   end
 
-  def version_rows(period, collection_ids:, statuses: nil)
+  def version_rows(period, collection_ids:, statuses: nil, user_ids: nil)
     scope = PageVersion.joins(page: { work: :collection })
       .where(created_on: period.starts_at...period.ends_at)
       .where.not(user_id: nil)
@@ -125,6 +125,7 @@ class AiVolunteerBehaviorReport
       SQL
     scope = scope.where(works: { collection_id: collection_ids }) if collection_ids
     scope = scope.where(status: statuses) if statuses
+    scope = scope.where(user_id: user_ids) if user_ids
     scope.pluck(:user_id, :page_id, 'works.collection_id', :created_on, :ai_draft_used, :status)
   end
 
@@ -500,6 +501,9 @@ class AiVolunteerBehaviorReport
     groups = { 'Tried once or twice, then continued without AI' => attempted, 'Heavy AI users with pre-AI experience' => heavy.select { |id| b_users.include?(id) }, 'New heavy AI users' => heavy.reject { |id| b_users.include?(id) } }
     debug "Survey candidate intermediary results: #{groups.transform_values(&:size).map { |label, count| "#{label}=#{count}" }.join(', ')}"
     lines = ['## Qualitative: survey candidates', '', '> **Sensitive:** This section contains contact information. Store and share the report appropriately.']
+    heavy_versions = step("Loading all period C page saves for #{heavy.size} heavy AI users") do
+      version_rows(PERIODS['C'], collection_ids: nil, user_ids: heavy)
+    end
     suspicious_counts = step("Counting period C suspicious behaviors for #{heavy.size} heavy AI users") do
       SuspiciousBehavior.where(user_id: heavy, created_at: PERIODS['C'].starts_at...PERIODS['C'].ends_at)
         .group(:user_id, :behavior_type).count
@@ -514,7 +518,7 @@ class AiVolunteerBehaviorReport
     end
     debug "Heavy AI suspicious-behavior results: records=#{suspicious_total}, users=#{suspicious_users}, " \
           "types=#{format_behavior_counts(behavior_totals)}"
-    lines += ['', '### Suspicious behaviors among heavy AI users', '', "During period C, #{suspicious_total} suspicious-behavior records were created for #{suspicious_users} of the #{heavy.size} heavy AI users. Breakdown: #{format_behavior_counts(behavior_totals)}.", '', '> Suspicious-behavior records are automated or review signals and do not by themselves establish abuse.']
+    lines += ['', heavy_ai_aggregate_activity(heavy, heavy_versions, suspicious_counts), '', '> Suspicious-behavior records are automated or review signals and do not by themselves establish abuse.']
     users = step("Loading contact details for #{groups.values.flatten.uniq.size} survey candidates") do
       User.where(id: groups.values.flatten.uniq).index_by(&:id)
     end
@@ -539,6 +543,29 @@ class AiVolunteerBehaviorReport
         end
       end
     end
+    lines.join("\n")
+  end
+
+  def heavy_ai_aggregate_activity(heavy_user_ids, versions, suspicious_counts)
+    ai_versions = versions.count { |row| row[4] }
+    manual_versions = versions.size - ai_versions
+    distinct_pages = versions.map { |row| row[1] }.uniq.size
+    distinct_user_pages = versions.map { |row| [row[0], row[1]] }.uniq.size
+    ai_user_pages = versions.filter_map { |row| [row[0], row[1]] if row[4] }.uniq.size
+    manual_user_pages = versions.filter_map { |row| [row[0], row[1]] unless row[4] }.uniq.size
+    affected_users = suspicious_counts.keys.map(&:first).uniq.size
+    lines = ['### Aggregate period C activity for heavy AI users', '', "Denominator: #{heavy_user_ids.size} heavy AI users, defined above from their activity in the fixed AI-enabled collection cohort. Page-save totals below include their non-owner saves across all collections during C; suspicious-behavior totals use the same users, all collections, and period C. AI and manual distinct user-page counts can overlap when the same user saved the same page in both modes.", '', '| Page-save measure | Count | Percent of saved versions |', '|---|---:|---:|', "| Saved page versions | #{versions.size} | 100.0% |", "| Distinct pages saved | #{distinct_pages} | n/a |", "| Distinct user-page pairs | #{distinct_user_pages} | n/a |", "| AI Draft used | #{ai_versions} | #{percent(ai_versions, versions.size)} |", "| AI-assisted distinct user-page pairs | #{ai_user_pages} | n/a |", "| AI Draft not used | #{manual_versions} | #{percent(manual_versions, versions.size)} |", "| Manual distinct user-page pairs | #{manual_user_pages} | n/a |", '', "Across these users, #{suspicious_counts.values.sum} suspicious-behavior records were created for #{affected_users} users (#{percent(affected_users, heavy_user_ids.size)} of the heavy-user cohort).", '', '| Suspicious behavior type | Records | Users with record | Records per 100 saved versions |', '|---|---:|---:|---:|']
+    SuspiciousBehavior.behavior_types.keys.sort.each do |behavior_type|
+      type_counts = suspicious_counts.filter_map do |(user_id, candidate_type), count|
+        [user_id, count] if candidate_type == behavior_type
+      end
+      record_count = type_counts.sum { |_user_id, count| count }
+      user_count = type_counts.map(&:first).uniq.size
+      rate = versions.empty? ? 'n/a' : (100.0 * record_count / versions.size).round(2)
+      lines << "| `#{behavior_type}` | #{record_count} | #{user_count} | #{rate} |"
+    end
+    total_rate = versions.empty? ? 'n/a' : (100.0 * suspicious_counts.values.sum / versions.size).round(2)
+    lines << "| **All suspicious behaviors** | #{suspicious_counts.values.sum} | #{affected_users} | #{total_rate} |"
     lines.join("\n")
   end
 
