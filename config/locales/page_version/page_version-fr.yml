@@ -21,6 +21,7 @@ fr:
       page_version_status_review: revoir
       page_version_status_transcribed: transcrit
       revert_confirm: Êtes-vous sûr de vouloir revenir à cette version ? Vous serez redirigé vers l’écran de transcription pour vérifier et enregistrer.
-      revert_to_this_version: Revenir à cette version
+      restore: Restaurer
+      restore_tooltip: Restaurer cette version
       translation: Traduction
       untitled: Sans titre

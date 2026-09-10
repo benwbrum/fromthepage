@@ -21,6 +21,7 @@ de:
       page_version_status_review: Rezension
       page_version_status_transcribed: transkribiert
       revert_confirm: Sind Sie sicher, dass Sie auf diese Version zurücksetzen möchten? Sie werden zur Transkriptionsansicht weitergeleitet, um die Änderung zu prüfen und zu speichern.
-      revert_to_this_version: Auf diese Version zurücksetzen
+      restore: Wiederherstellen
+      restore_tooltip: Diese Version wiederherstellen
       translation: Übersetzung
       untitled: Ohne Titel
