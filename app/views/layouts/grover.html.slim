@@ -30,13 +30,9 @@ html
           margin-top: 1.5in;
         }
 
-        @page {
-          @bottom-center {
-            content: counter(page);
-            font-size: 9pt;
-            color: #444;
-          }
-        }
+        /* No @page margin-box page numbers: Chrome emits that generated text
+           without a structure-tree tag or an Artifact marker, which fails
+           Acrobat's "Tagged content" accessibility check. */
 
         p {
           margin: 0 0 0.85em 0;
