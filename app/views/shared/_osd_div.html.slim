@@ -52,6 +52,27 @@
 -content_for :javascript
   javascript:
     OpenSeadragon.DEFAULT_SETTINGS.timeout = 60000;
+    var makeAjaxRequest = OpenSeadragon.makeAjaxRequest;
+    OpenSeadragon.makeAjaxRequest = function(options) {
+      if (typeof options === 'object' && options.success) {
+        var success = options.success;
+        options = Object.assign({}, options, {
+          success: function(xhr) {
+            // Some IIIF servers return a valid info document with HTTP 202.
+            if (xhr.status === 202) {
+              xhr = new Proxy(xhr, {
+                get: function(target, property) {
+                  return property === 'status' ? 200 : target[property];
+                }
+              });
+            }
+            success(xhr);
+          }
+        });
+        return makeAjaxRequest.call(this, options);
+      }
+      return makeAjaxRequest.apply(this, arguments);
+    };
     var viewer = 'foo'; // global variable
     var lastFocused = null; // last focused field in the edit area
 
