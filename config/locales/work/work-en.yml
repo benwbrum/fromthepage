@@ -1,6 +1,16 @@
 ---
 en:
   work:
+    ai_metadata:
+      generated_with: Generated with %{model}
+      heading: AI Metadata Draft
+      imported_metadata: Imported Metadata
+      reasoning: Reasoning
+      select_model: Select AI model
+      source_material: Source Material
+      token_usage: Token Usage
+      tokens_used: "%{count} tokens used"
+      view_source: View source
     ai_transcriptions:
       create:
         success: AI transcription job launched.
@@ -33,6 +43,22 @@ en:
         success: Segmentation setting saved.
       update:
         success: Retrying AI transcription job.
+    ai_work_metadata:
+      create:
+        success: AI metadata draft job launched.
+      form:
+        description: Generate AI drafts of this work's metadata using Gemini and Claude.
+        drafts_heading: Drafts
+        generate: Generate AI metadata draft
+        heading: AI Metadata Draft
+        no_metadata_fields: Please configure metadata fields under Task Configuration before generating AI metadata drafts.
+      show:
+        back: Back to AI Settings
+        fields_heading: Draft fields
+        heading: AI Metadata Draft (%{model})
+        reasoning_heading: Reasoning
+        status: 'Status: %{status}'
+        tokens_used: 'Tokens used: %{count}'
     configurable_printout:
       description: Export this work in a printable format
       export: Export
@@ -55,6 +81,11 @@ en:
     delete:
       success: Work deleted successfully
     describe:
+      ai_draft_fields: AI Draft
+      ai_draft_fields_tooltip: Copy AI-generated metadata into the fields
+      ai_model: "%{model}"
+      ai_reasoning: Reasoning
+      ai_tokens_used: "%{count} tokens used"
       always_show_fullscreen: Always show fullscreen
       approve: Approve
       approve_to_transcribed_tooltip: Save and approve this metadata

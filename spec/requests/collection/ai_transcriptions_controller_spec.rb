@@ -36,6 +36,16 @@ describe Collection::AiTranscriptionsController do
         expect(response).to render_template(:edit)
       end
 
+      it 'places metadata draft settings beneath transcription settings' do
+        login_as owner
+        subject
+
+        settings = response.parsed_body.at_css('#collection-settings > .collection-settings-wrapper')
+
+        expect(settings.at_css('#ai-work-metadata-settings')).to be_present
+        expect(response.parsed_body.css('#collection-settings > .collection-settings-wrapper').size).to eq(1)
+      end
+
       context 'with more than 1 result' do
         let!(:page_2) { create(:page, work: work) }
         let!(:ai_transcription_2) { create(:ai_transcription, page_id: page_2.id, status: :finished, source_text: nil, reasoning: nil) }
@@ -70,6 +80,21 @@ describe Collection::AiTranscriptionsController do
           expect(response.body).to include('Failed Collection Page')
           expect(response.body).to include('Failed Work')
           expect(response.body).to include(collection_display_page_path(owner, collection, work_2, failed_page))
+        end
+      end
+
+      context 'with failed ai work metadata' do
+        let!(:metadata_field) { create(:transcription_field, :as_metadata, :text_field, collection_id: collection.id) }
+        let!(:failed_ai_work_metadata) do
+          create(:ai_work_metadata, work_id: work.id, status: :error, metadata: { error_message: 'RECITATION' })
+        end
+
+        it 'renders failed work metadata draft details alongside the transcription section' do
+          login_as owner
+          subject
+
+          expect(response.body).to include('Failed metadata draft errors')
+          expect(response.body).to include('RECITATION')
         end
       end
     end

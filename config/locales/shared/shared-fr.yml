@@ -48,6 +48,7 @@ fr:
       suspicious_behaviors: Comportements suspects
       works_list: Liste des œuvres
     description_tabs:
+      ai: AI
       back_to_original_work: Retour à l'œuvre d'origine
       describe: Métadonnées
       help: Aide

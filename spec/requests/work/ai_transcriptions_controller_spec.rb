@@ -41,6 +41,16 @@ describe Work::AiTranscriptionsController do
         expect(response).to render_template(:edit)
       end
 
+      it 'places metadata draft settings beneath transcription settings' do
+        login_as owner
+        subject
+
+        settings = response.parsed_body.at_css('#collection-settings > .collection-settings-wrapper')
+
+        expect(settings.at_css('#ai-work-metadata-settings')).to be_present
+        expect(response.parsed_body.css('#collection-settings > .collection-settings-wrapper').size).to eq(1)
+      end
+
       it 'shows the segmentation section' do
         login_as owner
         subject

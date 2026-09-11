@@ -22,6 +22,31 @@ en:
         total_tokens_used: Total tokens used
       update:
         success: Retrying AI transcription job.
+    ai_work_metadata:
+      create:
+        success: AI metadata draft job launched.
+      form:
+        description: Launch AI metadata draft jobs for works without them.
+        description_complete: All works in this collection have AI metadata drafts.
+        failed: Failed
+        failed_work_metadata_errors: Failed metadata draft errors
+        failed_work_metadata_errors_hidden: "%{count} additional failed metadata draft errors are not shown."
+        finished: Finished
+        generate: Create AI metadata drafts for works without them.
+        heading: AI Metadata Draft
+        in_progress: In progress
+        no_metadata_fields: Please configure metadata fields under Task Configuration before generating AI metadata drafts.
+        not_started: Not started
+        queued: Queued
+        total_tokens_used: Total tokens used
+        works: Works
+      show:
+        back: Back to AI Settings
+        fields_heading: Draft fields
+        heading: 'AI Metadata Draft (%{model}): %{work}'
+        reasoning_heading: Reasoning
+        status: 'Status: %{status}'
+        tokens_used: 'Tokens used: %{count}'
     approve_all:
       approved_n_pages: Approved %{page_count} pages.
     blank_collection:

@@ -14,6 +14,10 @@ default: &default
       threads: 10
       processes: <%= ENV.fetch("JOB_CONCURRENCY", 1) %>
       polling_interval: 0.1
+    - queues: ["ai_work_metadata"]
+      threads: 10
+      processes: <%= ENV.fetch("JOB_CONCURRENCY", 1) %>
+      polling_interval: 0.1
 
 development:
   <<: *default
