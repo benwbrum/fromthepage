@@ -464,8 +464,11 @@ module ExportHelper
       end
     end
     category.children.each do |child|
-      has_content = true
-      tei << category_to_tei(child, subjects, seen_subjects)
+      child_tei = category_to_tei(child, subjects, seen_subjects)
+      unless child_tei.empty?
+        has_content = true
+        tei << child_tei
+      end
     end
     tei << "</category>\n"
 
