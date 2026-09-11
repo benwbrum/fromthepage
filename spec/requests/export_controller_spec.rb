@@ -370,9 +370,21 @@ describe ExportController do
     end
 
     context 'with organization articles in descendant categories' do
-      let!(:organizations_category) { create(:category, title: 'Organizations', collection: collection, org_fields_enabled: true) }
+      let!(:businesses_category) { create(:category, title: 'Businesses', collection: collection, org_fields_enabled: true) }
+      let!(:companies_category) do
+        create(:category, title: 'Companies', collection: collection, parent: businesses_category)
+      end
       let!(:military_units_category) do
-        create(:category, title: 'Military Units', collection: collection, parent: organizations_category)
+        create(:category, title: 'Military Units', collection: collection, org_fields_enabled: true)
+      end
+      let!(:regiments_category) do
+        create(:category, title: 'Regiments', collection: collection, parent: military_units_category)
+      end
+      let!(:business_article) do
+        create(:article,
+               title: 'Acme Manufacturing Company',
+               collection: collection,
+               uri: 'O00009')
       end
       let!(:military_unit_article) do
         create(:article,
@@ -380,18 +392,26 @@ describe ExportController do
                collection: collection,
                uri: 'O00010')
       end
-      let!(:child_military_unit_article) do
+      let!(:other_category) { create(:category, title: 'Subjects', collection: collection) }
+      let!(:nested_other_category) do
+        create(:category, title: 'Nested Subjects', collection: collection, parent: other_category)
+      end
+      let!(:deep_other_category) do
+        create(:category, title: 'Deep Subjects', collection: collection, parent: nested_other_category)
+      end
+      let!(:other_article) do
         create(:article,
-               title: 'Mississippi Infantry -- Company A',
-               collection: collection,
-               uri: 'O00011')
+               title: 'Unrelated Topic',
+               collection: collection)
       end
 
       before do
-        military_unit_article.categories << military_units_category
-        child_military_unit_article.categories << military_units_category
+        business_article.categories << companies_category
+        military_unit_article.categories << regiments_category
+        other_article.categories << deep_other_category
+        page.page_article_links.create!(article: business_article)
         page.page_article_links.create!(article: military_unit_article)
-        page.page_article_links.create!(article: child_military_unit_article)
+        page.page_article_links.create!(article: other_article)
       end
 
       it 'includes descendant org category articles in listOrg' do
@@ -402,23 +422,38 @@ describe ExportController do
         expect(response).to render_template(:tei)
 
         expect(response.body).to include("<listOrg>")
+        expect(response.body).to include("<org xml:id=\"S#{business_article.id}\">")
         expect(response.body).to include("<org xml:id=\"S#{military_unit_article.id}\">")
-        expect(response.body).to include("<org xml:id=\"S#{child_military_unit_article.id}\">")
+        expect(response.body).to include("<orgName>Acme Manufacturing Company</orgName>")
         expect(response.body).to include("<orgName>Mississippi Infantry</orgName>")
-        expect(response.body).to include("<orgName>Mississippi Infantry -- Company A</orgName>")
       end
 
-      it 'does not duplicate org articles between listOrg and taxonomy' do
+      it 'omits empty organization category branches from taxonomy' do
         login_as owner
         subject
 
         # Articles in descendant org categories should appear exactly once in listOrg
+        expect(response.body.scan("<org xml:id=\"S#{business_article.id}\">").count).to eq(1)
         expect(response.body.scan("<org xml:id=\"S#{military_unit_article.id}\">").count).to eq(1)
-        expect(response.body.scan("<org xml:id=\"S#{child_military_unit_article.id}\">").count).to eq(1)
 
-        # They should NOT appear in the taxonomy (encodingDesc > classDecl)
+        # Organization subjects and their now-empty category shells should not appear in taxonomy.
+        expect(response.body).to include('<encodingDesc>')
+        expect(response.body).not_to include("<category xml:id=\"C#{businesses_category.id}\">")
+        expect(response.body).not_to include("<category xml:id=\"C#{companies_category.id}\">")
+        expect(response.body).not_to include("<category xml:id=\"C#{military_units_category.id}\">")
+        expect(response.body).not_to include("<category xml:id=\"C#{regiments_category.id}\">")
+        expect(response.body).not_to include("<category xml:id=\"S#{business_article.id}\">")
         expect(response.body).not_to include("<category xml:id=\"S#{military_unit_article.id}\">")
-        expect(response.body).not_to include("<category xml:id=\"S#{child_military_unit_article.id}\">")
+      end
+
+      it 'retains parent categories when a deeper descendant has a non-organization subject' do
+        login_as owner
+        subject
+
+        expect(response.body).to include("<category xml:id=\"C#{other_category.id}\">")
+        expect(response.body).to include("<category xml:id=\"C#{nested_other_category.id}\">")
+        expect(response.body).to include("<category xml:id=\"C#{deep_other_category.id}\">")
+        expect(response.body).to include("<category xml:id=\"S#{other_article.id}\">")
       end
     end
 
