@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 RSpec.describe AiWorkMetadata, type: :model do
-  let(:ai_work_metadata) { described_class.new(model: described_class::DEFAULT_MODEL) }
+  let(:ai_work_metadata) { described_class.new(model: described_class::DEFAULT_METADATA_MODELS.fetch('gemini')) }
 
   describe '#engine' do
     it 'returns gemini for gemini models' do

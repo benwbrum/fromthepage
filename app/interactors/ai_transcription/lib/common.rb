@@ -2,7 +2,7 @@ module AiTranscription::Lib::Common
   # TODO: When we start supporting custom models from user,
   # sanitation should happen here to filter out supported models
   def sanitize_model
-    @model ||= AiTranscription::DEFAULT_MODEL
+    @model ||= AiTranscription::DEFAULT_TRANSCRIPTION_MODEL
   end
 
   def sanitize_prompt

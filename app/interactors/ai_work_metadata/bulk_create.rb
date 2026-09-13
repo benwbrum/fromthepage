@@ -16,27 +16,28 @@ class AiWorkMetadata::BulkCreate < ApplicationInteractor
 
     raise ArgumentError, 'Collection has no metadata fields configured' unless @collection.metadata_fields.exists?
 
-    @sanitized_model = sanitize_model
-
     ai_work_metadata_records = []
 
     works.find_each do |work|
       @work = work
       sanitized_prompt = build_prompt
-      existing = latest_ai_work_metadata_for_model_engine(work)
 
-      if existing.nil?
-        ai_work_metadata_records << AiWorkMetadata.new(
-          work_id: work.id,
-          model: @sanitized_model,
-          prompt: sanitized_prompt,
-          status: :processing
-        )
-      elsif existing.status_new? || existing.status_error?
-        existing.status = :processing
-        existing.model = @sanitized_model
-        existing.prompt = sanitized_prompt
-        ai_work_metadata_records << existing
+      models.each do |model|
+        existing = latest_ai_work_metadata_for_model_engine(work, model)
+
+        if existing.nil?
+          ai_work_metadata_records << AiWorkMetadata.new(
+            work_id: work.id,
+            model: model,
+            prompt: sanitized_prompt,
+            status: :processing
+          )
+        elsif existing.status_new? || existing.status_error?
+          existing.status = :processing
+          existing.model = model
+          existing.prompt = sanitized_prompt
+          ai_work_metadata_records << existing
+        end
       end
     end
 
@@ -59,8 +60,12 @@ class AiWorkMetadata::BulkCreate < ApplicationInteractor
     @works
   end
 
-  def latest_ai_work_metadata_for_model_engine(work)
-    engine = AiWorkMetadata.engine_for_model(@sanitized_model)
+  def models
+    @models ||= @model.present? ? [sanitize_model] : AiWorkMetadata.configured_metadata_models
+  end
+
+  def latest_ai_work_metadata_for_model_engine(work, model)
+    engine = AiWorkMetadata.engine_for_model(model)
 
     work.ai_work_metadata
         .sort_by(&:created_at)

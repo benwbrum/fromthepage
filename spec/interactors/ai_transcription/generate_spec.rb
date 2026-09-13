@@ -8,7 +8,7 @@ describe AiTranscription::Generate do
 
   let!(:ai_transcription) { create(:ai_transcription, page_id: page.id, model: model, prompt: prompt, status: :processing, source_text: nil, reasoning: nil) }
 
-  let(:model) { AiTranscription::DEFAULT_MODEL }
+  let(:model) { AiTranscription::DEFAULT_TRANSCRIPTION_MODEL }
   let(:prompt) { File.read(Rails.root.join('lib/transcription_prompt.txt')) }
 
   let(:expected_response) do

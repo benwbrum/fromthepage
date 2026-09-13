@@ -1,6 +1,6 @@
 module AiWorkMetadata::Lib::Common
   def sanitize_model
-    @model ||= AiWorkMetadata::DEFAULT_MODEL
+    @model ||= AiWorkMetadata::DEFAULT_METADATA_MODELS.fetch('gemini')
   end
 
   def build_prompt
