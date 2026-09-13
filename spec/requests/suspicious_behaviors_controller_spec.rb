@@ -38,11 +38,12 @@ describe SuspiciousBehaviorsController do
       context 'when a collaborator' do
         let!(:collection) { create(:collection, owner_user_id: owner.id, collaborators: [user]) }
 
-        it 'renders status and template' do
+        it 'redirects without exposing suspicious behaviors' do
           login_as user
           subject
-          expect(response).to have_http_status(:ok)
-          expect(response).to render_template(:index)
+          expect(response).to have_http_status(:redirect)
+          expect(response).to redirect_to(dashboard_path)
+          expect(response.body).not_to include(suspicious_behavior.behavior_type)
         end
       end
     end
@@ -105,6 +106,20 @@ describe SuspiciousBehaviorsController do
       expect(response).to redirect_to(dashboard_path)
     end
 
+    context 'when a collaborator' do
+      let!(:collection) { create(:collection, owner_user_id: owner.id, collaborators: [user]) }
+
+      it 'redirects without exposing suspicious behavior metadata' do
+        suspicious_behavior.update!(metadata: { content: 'private suspicious behavior content' })
+        login_as user
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(dashboard_path)
+        expect(response.body).not_to include('private suspicious behavior content')
+      end
+    end
+
     it 'renders status' do
       login_as owner
       subject
@@ -128,6 +143,18 @@ describe SuspiciousBehaviorsController do
       subject
       expect(response).to have_http_status(:redirect)
       expect(response).to redirect_to(dashboard_path)
+    end
+
+    context 'when a collaborator' do
+      let!(:collection) { create(:collection, owner_user_id: owner.id, collaborators: [user]) }
+
+      it 'redirects without updating the suspicious behavior' do
+        login_as user
+
+        expect { subject }.not_to change { suspicious_behavior.reload.status }
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(dashboard_path)
+      end
     end
 
     it 'renders status and template' do
@@ -154,6 +181,19 @@ describe SuspiciousBehaviorsController do
       subject
       expect(response).to have_http_status(:redirect)
       expect(response).to redirect_to(dashboard_path)
+    end
+
+    context 'when a collaborator' do
+      let!(:collection) { create(:collection, owner_user_id: owner.id, collaborators: [user]) }
+
+      it 'redirects without deleting the suspicious behavior' do
+        login_as user
+
+        expect { subject }.not_to change(SuspiciousBehavior, :count)
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(dashboard_path)
+        expect(SuspiciousBehavior.exists?(suspicious_behavior.id)).to be_truthy
+      end
     end
 
     it 'renders status and template' do

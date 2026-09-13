@@ -85,6 +85,19 @@ describe 'collection field-based transcription settings' do
     end
   end
 
+  it 'does not show the suspicious behaviors tab to a collaborator' do
+    collaborator = create(:unique_user)
+    collection.collaborators << collaborator
+    logout(:user)
+    login_as(collaborator, scope: :user)
+
+    visit collection_path(owner, collection)
+
+    within '#collection-tabs .tabs' do
+      expect(page).to have_no_link('Suspicious Behaviors')
+    end
+  end
+
   it 'checks the field preview on the edit page' do
     create_transcription_fields
     visit transcription_field_edit_fields_path(collection_id: collection)
