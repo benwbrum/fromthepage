@@ -16,7 +16,7 @@ class AiTranscription::Create < ApplicationInteractor
   #   - User must be admin OR can_transcribe to create ai_transcription
   # @params model: required
   #   - AI Model to be used. ex: 'gemini-3-pro-preview'
-  #   - defaults to `AiTranscription::DEFAULT_MODEL`
+  #   - defaults to `AiTranscription::DEFAULT_TRANSCRIPTION_MODEL`
   # @params prompt: required
   #   - Prompt `TEXT`, not `FILE` is expected
   #   - default: reads content of `lib/transcription_prompt.txt`

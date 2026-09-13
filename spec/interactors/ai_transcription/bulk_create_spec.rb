@@ -44,7 +44,7 @@ describe AiTranscription::BulkCreate do
       expect(ai_transcriptions.pluck(:id)).to include(ai_transcription.id)
       expect(ai_transcriptions.pluck(:status).uniq).to eq(['processing'])
       expect(ai_transcription.reload).to have_attributes(
-        model: AiTranscription::DEFAULT_MODEL,
+        model: AiTranscription::DEFAULT_TRANSCRIPTION_MODEL,
         prompt: File.read(Rails.root.join('lib/transcription_prompt.txt'))
       )
     end

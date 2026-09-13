@@ -19,6 +19,10 @@ describe AiWorkMetadata::BulkCreate do
 
   before do
     Current.user = user
+    allow(ENV).to receive(:[]).and_call_original
+    allow(ENV).to receive(:[]).with('GEMINI_API_KEY').and_return('gemini-key')
+    allow(ENV).to receive(:[]).with('ANTHROPIC_API_KEY').and_return(nil)
+    allow(ENV).to receive(:[]).with('OPENAI_ACCESS_TOKEN').and_return(nil)
   end
 
   it 'initializes processing ai_work_metadata records for every work' do
@@ -27,6 +31,32 @@ describe AiWorkMetadata::BulkCreate do
     expect(records.size).to eq(2)
     expect(records.map(&:status).uniq).to eq(['processing'])
     expect(records.map(&:prompt)).to all(include(text_field.id.to_s))
+  end
+
+  context 'when all metadata engines are configured' do
+    before do
+      allow(ENV).to receive(:[]).with('ANTHROPIC_API_KEY').and_return('anthropic-key')
+      allow(ENV).to receive(:[]).with('OPENAI_ACCESS_TOKEN').and_return('openai-key')
+    end
+
+    it 'initializes one record per work and engine' do
+      expect(result.success?).to be_truthy
+      records = collection.works.includes(:ai_work_metadata).flat_map(&:ai_work_metadata)
+
+      expect(records.size).to eq(6)
+      expect(records.map(&:model).uniq).to match_array(AiWorkMetadata::DEFAULT_METADATA_MODELS.values)
+    end
+  end
+
+  context 'when no metadata engines are configured' do
+    before do
+      allow(ENV).to receive(:[]).with('GEMINI_API_KEY').and_return(nil)
+    end
+
+    it 'does not initialize any records' do
+      expect(result.success?).to be_truthy
+      expect(collection.works.includes(:ai_work_metadata).flat_map(&:ai_work_metadata)).to be_empty
+    end
   end
 
   context 'when the collection has no metadata fields' do

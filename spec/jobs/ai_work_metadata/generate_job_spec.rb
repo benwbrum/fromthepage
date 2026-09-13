@@ -12,7 +12,7 @@ describe AiWorkMetadata::GenerateJob do
   end
 
   let!(:ai_work_metadata) do
-    create(:ai_work_metadata, work_id: work.id, model: AiWorkMetadata::DEFAULT_MODEL, prompt: 'Sample prompt',
+    create(:ai_work_metadata, work_id: work.id, model: AiWorkMetadata::DEFAULT_METADATA_MODELS.fetch('gemini'), prompt: 'Sample prompt',
                               status: :processing, metadata_json: nil, reasoning: nil)
   end
 

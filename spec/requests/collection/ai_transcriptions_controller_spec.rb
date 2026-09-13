@@ -135,7 +135,7 @@ describe Collection::AiTranscriptionsController do
 
     context 'with errors' do
       before do
-        stub_const('AiTranscription::DEFAULT_MODEL', nil)
+        stub_const('AiTranscription::DEFAULT_TRANSCRIPTION_MODEL', nil)
       end
 
       it 'renders status and template' do

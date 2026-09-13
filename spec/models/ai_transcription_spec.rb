@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 RSpec.describe AiTranscription, type: :model do
-  let(:ai_transcription) { AiTranscription.new(model: AiTranscription::DEFAULT_MODEL) }
+  let(:ai_transcription) { AiTranscription.new(model: AiTranscription::DEFAULT_TRANSCRIPTION_MODEL) }
 
   describe '#supports_reasoning?' do
     it 'returns true for non-ALTO models' do

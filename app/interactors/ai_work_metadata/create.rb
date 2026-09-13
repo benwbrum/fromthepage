@@ -14,7 +14,7 @@ class AiWorkMetadata::Create < ApplicationInteractor
   #   - User must be admin OR like_owner? to create ai_work_metadata
   # @params model: optional
   #   - AI Model to be used. ex: 'gemini-3.7-flash'
-  #   - defaults to `AiWorkMetadata::DEFAULT_MODEL`
+  #   - defaults to the Gemini model in `AiWorkMetadata::DEFAULT_METADATA_MODELS`
   # @params retranscribe
   #   - If ai_work_metadata exists, checks if we want to regenerate a new one
   #   - default: false
