@@ -33,9 +33,9 @@ describe SuspiciousBehaviors::Update do
       ).call
     end
 
-    it 'updates suspicious_behavior' do
-      expect(result.success?).to be_truthy
-      expect(result.suspicious_behavior.flagged?).to be_truthy
+    it 'does not update suspicious_behavior' do
+      expect(result.success?).to be_falsey
+      expect(result.suspicious_behavior.reload.flagged?).to be_falsey
     end
   end
 

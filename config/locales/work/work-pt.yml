@@ -84,6 +84,9 @@ pt:
       author_contributed_at: "%{author} em %{date}"
       compared_with: Comparado com
       help_description: Visualize e compare as alterações que foram feitas em cada revisão aos metadados da obra. A coluna da esquerda mostra os metadados na revisão selecionada, a coluna da direita mostra o que foi alterado. O texto inalterado é <span>destacado em branco</span>, o texto excluído é <del>destacado em vermelho</del> e o texto inserido é <ins>destacado em verde</ins>.
+      restore: Restaurar
+      restore_confirm: Tem certeza de que deseja restaurar esta versão dos metadados da obra? Você será levado à tela de metadados para revisá-la.
+      restore_tooltip: Substituir os metadados atuais da obra por esta versão
       revision: revisão
     download:
       accessible_pdf: PDF acessível
@@ -232,6 +235,9 @@ pt:
       transcribe: Transcrever
       upload: Envio
       upload_page_image: "%{upload} imagem da página"
+    restore_description_version:
+      restored: Os metadados da obra foram restaurados para a versão selecionada. Revise-os.
+      version_not_found: Versão dos metadados não encontrada.
     save_description:
       work_described: Sua descrição foi salva
     search:
