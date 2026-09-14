@@ -950,6 +950,41 @@ describe CollectionController do
         expect(response.body).not_to include(work.title)
       end
     end
+
+    context 'when the collection is read only' do
+      before do
+        collection.update!(visibility: :read_only)
+        collection.pages.first.update!(status: :needs_review)
+      end
+
+      it 'hides pages that need work buttons for a regular user' do
+        login_as user
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response.body).not_to include('Pages That Need Transcription')
+        expect(response.body).not_to include('Pages That Need Review')
+      end
+    end
+
+    context 'when the document set is read only' do
+      let!(:document_set) do
+        create(:document_set, :read_only, collection: collection, owner: owner, works: collection.works)
+      end
+
+      before do
+        document_set.pages.first.update!(status: :needs_review)
+      end
+
+      it 'hides pages that need work buttons for a regular user' do
+        login_as user
+        get collection_path(owner, document_set)
+
+        expect(response).to have_http_status(:ok)
+        expect(response.body).not_to include('Pages That Need Transcription')
+        expect(response.body).not_to include('Pages That Need Review')
+      end
+    end
   end
 
   describe '#deeds' do
