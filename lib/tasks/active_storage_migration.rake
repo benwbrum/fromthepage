@@ -115,9 +115,7 @@ namespace :fromthepage do
       msg: 'Migration complete'
     )
   end
-end
 
-namespace :fromthepage do
   desc 'Delete legacy page images migrated to ActiveStorage for a user or collection slug'
   task :delete_migrated_page_images, [:slug] => :environment do |_task, args|
     require 'open3'
@@ -173,5 +171,23 @@ namespace :fromthepage do
     puts format('Deleted %<files>d files and freed %<mib>.2f MiB.',
                 files: deleted_files,
                 mib: deleted_mebibytes)
+  end
+
+  desc 'Find page IDs missing ActiveStorage attachments that have a base_image'
+  task find_unmigrated_page_ids: :environment do
+    # Subquery to locate pages that already have an ActiveStorage attachment
+    attached_page_ids = ActiveStorage::Attachment.where(record_type: 'Page', name: 'image').select(:record_id)
+
+    # Find pages with base_image present but no attachment
+    unmigrated_ids = Page.where.not(base_image: [nil, ''])
+                         .where.not(id: attached_page_ids)
+                         .pluck(:id)
+
+    if unmigrated_ids.empty?
+      puts 'No unmigrated pages found.'
+    else
+      puts "Found #{unmigrated_ids.size} unmigrated page(s)."
+      puts unmigrated_ids.join('-')
+    end
   end
 end
