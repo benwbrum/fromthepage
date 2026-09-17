@@ -5,6 +5,25 @@ describe AiTranscription::Lib::Gemini::TranscribeHandler do
     described_class.new(prompt: 'Transcribe', model: 'gemini-test', image_url: 'https://example.com/image.jpg')
   end
 
+  %w[
+    gemini-3.1-pro-preview
+    gemini-3-flash-preview
+    gemini-3.5-flash
+    gemini-3.6-flash
+    gemini-3.7-flash
+  ].each do |model|
+    it "includes thought summaries in requests to #{model}" do
+      model_handler = described_class.new(
+        prompt: 'Transcribe', model: model, image_url: 'https://example.com/image.jpg'
+      )
+      allow(model_handler).to receive(:encoded_image).and_return('encoded-image')
+
+      expect(model_handler.send(:payload)).to include(
+        generation_config: { thinking_config: { include_thoughts: true } }
+      )
+    end
+  end
+
   it 'redacts credentials from provider errors before logging' do
     error = StandardError.new(
       'the server responded with status 429 for URL https://provider.example/generate?token=fake-secret&alt=json'
