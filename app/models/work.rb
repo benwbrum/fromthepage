@@ -131,6 +131,8 @@ class Work < ApplicationRecord
            -> { order(version_number: :desc) },
            dependent: :destroy
 
+  has_many :ai_work_metadata, class_name: 'AiWorkMetadata'
+
   before_save :update_derivatives
 
   after_save :create_version
@@ -326,6 +328,20 @@ class Work < ApplicationRecord
       .select { |page| !page.status_blank? }
       .map { |page| page.verbatim_transcription_plaintext }
       .join("\n\n\n")
+  end
+
+  def ai_metadata_draft_available?
+    finished_ai_work_metadata_by_engine.any?
+  end
+
+  # Latest finished AiWorkMetadata per engine (e.g. "gemini", "claude"),
+  # used to display AI-drafted metadata alongside the OSD/text/metadata views.
+  def finished_ai_work_metadata_by_engine
+    @finished_ai_work_metadata_by_engine ||= ai_work_metadata
+      .status_finished
+      .order(created_at: :desc)
+      .group_by(&:engine)
+      .transform_values(&:first)
   end
 
   def verbatim_translation_plaintext

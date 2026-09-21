@@ -49,7 +49,7 @@ describe AiTranscription::Generate do
       expect(result.ai_transcription.metadata["total_token_count"]).to eq(usage["totalTokenCount"])
     end
 
-    context 'when model used does not support reasoning' do
+    context 'when the response reports thinking-token usage without an included thought summary' do
       let(:model) { 'gemini-2.5-pro' }
       let(:expected_response) do
         JSON.parse(
@@ -74,6 +74,37 @@ describe AiTranscription::Generate do
         expect(result.ai_transcription.metadata["candidates_token_count"]).to eq(usage["candidatesTokenCount"])
         expect(result.ai_transcription.metadata["thoughts_token_count"]).to eq(usage["thoughtsTokenCount"])
         expect(result.ai_transcription.metadata["total_token_count"]).to eq(usage["totalTokenCount"])
+      end
+    end
+
+    context 'when the response includes a thought summary and normal text' do
+      let(:response) do
+        {
+          'candidates' => [{
+            'content' => {
+              'parts' => [
+                { 'thought' => true, 'text' => 'I examined the handwriting.' },
+                { 'text' => 'The transcribed document.' }
+              ]
+            }
+          }],
+          'usageMetadata' => { 'thoughtsTokenCount' => 12 }
+        }
+      end
+
+      before do
+        client = double('gemini-client', generate_content: response)
+        allow_any_instance_of(AiTranscription::Lib::Gemini::TranscribeHandler).to receive(:client).and_return(client)
+        allow_any_instance_of(AiTranscription::Lib::Gemini::TranscribeHandler).to receive(:encoded_image).and_return('encoded-image')
+      end
+
+      it 'saves the thought summary as reasoning and normal text as source text' do
+        expect(result.success?).to be_truthy
+
+        expect(ai_transcription.reload).to have_attributes(
+          reasoning: 'I examined the handwriting.',
+          source_text: 'The transcribed document.'
+        )
       end
     end
 
