@@ -12,20 +12,20 @@ module Gemini
     REASONING_MAP = ModelSupport::REASONING_MAP
 
     # Transcribes text from a page image using Google's Gemini multi-modal model
-    # Defaults to AiTranscription::DEFAULT_MODEL but can be configured via model parameter
+    # Defaults to AiTranscription::DEFAULT_TRANSCRIPTION_MODEL but can be configured via model parameter
     #
     # Implements exponential backoff retry logic for 503 errors (server overload) and 429 errors (rate limit)
     #
     # @param image_url [String] The URL of the page image to transcribe
     # @param prompt [String] Optional custom prompt for transcription
-    # @param model [String] Optional custom model to use. Defaults to AiTranscription::DEFAULT_MODEL
+    # @param model [String] Optional custom model to use. Defaults to AiTranscription::DEFAULT_TRANSCRIPTION_MODEL
     # @param max_retries [Integer] Maximum number of retry attempts for 503/429 errors
     # @return [String] The transcribed text from the image
-    def self.transcribe_image(image_url, prompt: nil, model: AiTranscription::DEFAULT_MODEL, max_retries: 5)
+    def self.transcribe_image(image_url, prompt: nil, model: AiTranscription::DEFAULT_TRANSCRIPTION_MODEL, max_retries: 5)
       api_key = ENV['GEMINI_API_KEY']
       raise ArgumentError, 'GEMINI_API_KEY environment variable is not set' if api_key.blank?
 
-      model ||= AiTranscription::DEFAULT_MODEL
+      model ||= AiTranscription::DEFAULT_TRANSCRIPTION_MODEL
 
       client = ::Gemini.new(
         credentials: {

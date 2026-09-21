@@ -31,7 +31,7 @@ describe AiTranscription::Create do
     expect(result.success?).to be_truthy
     expect(result.ai_transcription).to have_attributes(
       page_id: page.id,
-      model: AiTranscription::DEFAULT_MODEL,
+      model: AiTranscription::DEFAULT_TRANSCRIPTION_MODEL,
       prompt: prompt,
       status: 'processing'
     )
@@ -44,7 +44,7 @@ describe AiTranscription::Create do
       expect(result.success?).to be_truthy
       expect(result.ai_transcription).to have_attributes(
         page_id: page.id,
-        model: AiTranscription::DEFAULT_MODEL,
+        model: AiTranscription::DEFAULT_TRANSCRIPTION_MODEL,
         prompt: prompt,
         status: 'processing'
       )
@@ -73,7 +73,7 @@ describe AiTranscription::Create do
       expect(result.success?).to be_truthy
       expect(result.ai_transcription).to have_attributes(
         page_id: page.id,
-        model: AiTranscription::DEFAULT_MODEL,
+        model: AiTranscription::DEFAULT_TRANSCRIPTION_MODEL,
         prompt: prompt,
         status: 'processing'
       )
@@ -94,7 +94,7 @@ describe AiTranscription::Create do
       expect(result.success?).to be_truthy
       expect(result.ai_transcription).to have_attributes(
         page_id: page.id,
-        model: AiTranscription::DEFAULT_MODEL,
+        model: AiTranscription::DEFAULT_TRANSCRIPTION_MODEL,
         prompt: prompt,
         status: 'processing'
       )
@@ -110,7 +110,7 @@ describe AiTranscription::Create do
         expect(result.ai_transcription).to have_attributes(
           id: ai_transcription.id,
           page_id: page.id,
-          model: AiTranscription::DEFAULT_MODEL,
+          model: AiTranscription::DEFAULT_TRANSCRIPTION_MODEL,
           prompt: prompt,
           status: 'processing'
         )
@@ -125,7 +125,7 @@ describe AiTranscription::Create do
         expect(result.ai_transcription).to have_attributes(
           id: ai_transcription.id,
           page_id: page.id,
-          model: AiTranscription::DEFAULT_MODEL,
+          model: AiTranscription::DEFAULT_TRANSCRIPTION_MODEL,
           prompt: prompt,
           status: 'processing'
         )
@@ -147,7 +147,7 @@ describe AiTranscription::Create do
           expect(result.success?).to be_truthy
           expect(result.ai_transcription).to have_attributes(
             page_id: page.id,
-            model: AiTranscription::DEFAULT_MODEL,
+            model: AiTranscription::DEFAULT_TRANSCRIPTION_MODEL,
             prompt: prompt,
             status: 'processing'
           )
@@ -171,7 +171,7 @@ describe AiTranscription::Create do
           expect(result.success?).to be_truthy
           expect(result.ai_transcription).to have_attributes(
             page_id: page.id,
-            model: AiTranscription::DEFAULT_MODEL,
+            model: AiTranscription::DEFAULT_TRANSCRIPTION_MODEL,
             prompt: prompt,
             status: 'processing'
           )

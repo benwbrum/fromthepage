@@ -28,7 +28,7 @@ describe AiTranscription::BulkRetryJob do
 
     perform_worker
 
-    expect(ai_transcription.reload.model).to eq(AiTranscription::DEFAULT_MODEL)
+    expect(ai_transcription.reload.model).to eq(AiTranscription::DEFAULT_TRANSCRIPTION_MODEL)
   end
 
   it 'preserves supported non-default models' do

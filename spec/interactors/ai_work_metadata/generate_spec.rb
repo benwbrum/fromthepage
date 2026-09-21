@@ -14,7 +14,7 @@ describe AiWorkMetadata::Generate do
                               metadata_json: nil, reasoning: nil)
   end
 
-  let(:model) { AiWorkMetadata::DEFAULT_MODEL }
+  let(:model) { AiWorkMetadata::DEFAULT_METADATA_MODELS.fetch('gemini') }
   let(:response_json) { { text_field.id.to_s => 'A great title' }.to_json }
   let(:handler_response) { [response_json, 'because reasons', { 'total_token_count' => 42 }, nil] }
 

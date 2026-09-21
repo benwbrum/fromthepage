@@ -25,7 +25,19 @@
 class AiWorkMetadata < ApplicationRecord
   self.table_name = 'ai_work_metadata'
 
-  DEFAULT_MODEL = 'gemini-3.7-flash'
+  DEFAULT_GEMINI_METADATA_MODEL = 'gemini-3.7-flash'
+  DEFAULT_CLAUDE_METADATA_MODEL = 'claude-sonnet-4-6'
+  DEFAULT_OPENAI_METADATA_MODEL = 'gpt-4o'
+  DEFAULT_METADATA_MODELS = {
+    'gemini' => DEFAULT_GEMINI_METADATA_MODEL,
+    'claude' => DEFAULT_CLAUDE_METADATA_MODEL,
+    'openai' => DEFAULT_OPENAI_METADATA_MODEL
+  }.freeze
+  ENGINE_API_KEYS = {
+    'gemini' => 'GEMINI_API_KEY',
+    'claude' => 'ANTHROPIC_API_KEY',
+    'openai' => 'OPENAI_ACCESS_TOKEN'
+  }.freeze
   MAX_FAILED_ERRORS = 100
   FE_COLOR_STATUSES = {
     finished: '#6C2',
@@ -69,6 +81,15 @@ class AiWorkMetadata < ApplicationRecord
     return 'openai' if model_name.start_with?('gpt', 'o1', 'o3', 'o4', 'chatgpt')
 
     'gemini'
+  end
+
+  def self.configured_metadata_models
+    DEFAULT_METADATA_MODELS.filter_map do |engine, model|
+      next if ENV[ENGINE_API_KEYS.fetch(engine)].blank?
+      next if engine == 'openai' && defined?(ENABLE_OPENAI) && !ENABLE_OPENAI
+
+      model
+    end
   end
 
   CollectionStats = Struct.new(

@@ -1,6 +1,6 @@
 class Segmentation::Generate
   PROMPT = 'Is this the first page of a historic document? (i.e. a letter with a salutation or dateline, an address page, a header or preamble text.) Answer only yes or no.'.freeze
-  MODEL = AiTranscription::DEFAULT_MODEL
+  MODEL = AiTranscription::DEFAULT_TRANSCRIPTION_MODEL
 
   def initialize(page:)
     @page = page

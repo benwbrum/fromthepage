@@ -25,7 +25,7 @@ describe AiWorkMetadata::Create do
     expect(result.success?).to be_truthy
     expect(result.ai_work_metadata).to have_attributes(
       work_id: work.id,
-      model: AiWorkMetadata::DEFAULT_MODEL,
+      model: AiWorkMetadata::DEFAULT_METADATA_MODELS.fetch('gemini'),
       status: 'processing'
     )
   end
