@@ -26,6 +26,7 @@ en:
         segment_collection: Segment Collection
         segmentation: Segment Collection
         segmentation_description: By uploading a set of images (i.e. a folder) and then segmenting it, we'll suggest places where documents should be split into individual works.
+        segmentation_tokens_used: Segmentation tokens used
         total_tokens_used: Total tokens used
       segment:
         success: Segmentation job launched. You will receive an email when it is complete.

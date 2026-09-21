@@ -26,6 +26,7 @@ pt:
         segment_collection: Segmentar Coleção
         segmentation: Segmentar Coleção
         segmentation_description: Ao enviar um conjunto de imagens (por exemplo, uma pasta) e depois segmentá-lo, sugeriremos os locais onde os documentos devem ser divididos em obras individuais.
+        segmentation_tokens_used: Fichas utilizadas para a segmentação
         total_tokens_used: Total de fichas utilizadas
       segment:
         success: O trabalho de segmentação foi iniciado. Você receberá um e-mail quando ele for concluído.

@@ -26,6 +26,7 @@ es:
         segment_collection: Segmentar Colección
         segmentation: Segmentar Colección
         segmentation_description: Al subir un conjunto de imágenes (por ejemplo, una carpeta) y luego segmentarlo, sugeriremos los lugares donde los documentos deben dividirse en obras individuales.
+        segmentation_tokens_used: Tokens utilizados para la segmentación
         total_tokens_used: Total de tokens utilizados
       segment:
         success: Se inició el trabajo de segmentación. Recibirá un correo electrónico cuando haya finalizado.
