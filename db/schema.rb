@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_09_02_000000) do
+ActiveRecord::Schema[7.2].define(version: 2026_09_21_000000) do
   create_table "active_storage_attachments", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -738,6 +738,20 @@ ActiveRecord::Schema[7.2].define(version: 2026_09_02_000000) do
     t.index ["work_id"], name: "index_search_attempts_on_work_id"
   end
 
+  create_table "segmentation_logs", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.integer "page_id", null: false
+    t.integer "work_id", null: false
+    t.string "model", null: false
+    t.string "status", default: "finished", null: false
+    t.boolean "is_first_page_candidate"
+    t.text "error_message"
+    t.text "metadata", size: :long
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["page_id"], name: "index_segmentation_logs_on_page_id"
+    t.index ["work_id"], name: "index_segmentation_logs_on_work_id"
+  end
+
   create_table "sections", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "title"
     t.integer "depth"
@@ -1404,6 +1418,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_09_02_000000) do
   add_foreign_key "privacy_preferences", "users", on_delete: :cascade
   add_foreign_key "quality_samplings", "collections"
   add_foreign_key "quality_samplings", "users"
+  add_foreign_key "segmentation_logs", "pages", on_delete: :cascade
   add_foreign_key "spreadsheet_columns", "transcription_fields"
   add_foreign_key "suspicious_behaviors", "collections", on_delete: :nullify
   add_foreign_key "suspicious_behaviors", "pages", on_delete: :nullify

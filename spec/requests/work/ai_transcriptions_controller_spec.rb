@@ -48,6 +48,31 @@ describe Work::AiTranscriptionsController do
         expect(response.body).to include('name="work[edit_metadata_after_split]"')
       end
 
+      it 'does not show a token count when the work has no segmentation logs' do
+        login_as owner
+        subject
+
+        expect(response.body).not_to include(I18n.t('work.ai_transcriptions.form.segmentation_tokens_used'))
+      end
+
+      context 'when the work has finished segmentation logs' do
+        let!(:segmentation_log) do
+          create(:segmentation_log, page: page, work_id: work.id, metadata: {
+            'prompt_token_count' => 100,
+            'candidates_token_count' => 5,
+            'thoughts_token_count' => 20
+          })
+        end
+
+        it 'shows the total segmentation tokens used' do
+          login_as owner
+          subject
+
+          expect(response.body).to include('data-prefix="125"')
+          expect(response.body).to include(I18n.t('work.ai_transcriptions.form.segmentation_tokens_used'))
+        end
+      end
+
       context 'when the owner account is not opted into segmentation' do
         before { owner.update!(segmentation_enabled: false) }
 
