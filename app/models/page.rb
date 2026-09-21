@@ -365,6 +365,10 @@ class Page < ApplicationRecord
       self.ia_leaf.thumb_url
     elsif self.sc_canvas && !self.image.attached? && self[:base_image].blank?
       self.sc_canvas.thumbnail_url
+    elsif self.image.attached? && ::ACTIVE_STORAGE_PROXY_LIST.include?(work.collection.owner.slug)
+      Rails.application.routes.url_helpers.rails_storage_proxy_url(
+        image.variant(resize_to_limit: [nil, 400])
+      )
     elsif self.image.attached?
       Rails.application.routes.url_helpers.url_for(
         image.variant(resize_to_limit: [nil, 400])

@@ -46,7 +46,10 @@
           =svg_symbol "#icon-rotate-ccw", class: 'icon'
 
   -if page.image.attached?
-    .page-image-preview =image_tag(page.image)
+    -if ::ACTIVE_STORAGE_PROXY_LIST.include?(collection.owner.slug)
+      .page-image-preview =image_tag(rails_storage_proxy_path(page.image))
+    -else
+      .page-image-preview =image_tag(page.image)
   -else
     .page-image-preview =image_tag("#{file_to_url(page.canonical_facsimile_url)}?#{Time.now.to_i}")
 
