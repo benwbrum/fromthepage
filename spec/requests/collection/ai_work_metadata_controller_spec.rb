@@ -65,6 +65,7 @@ describe Collection::AiWorkMetadataController do
 
     it 'renders status and template and queues generation for works without a draft' do
       login_as owner
+      get '/feature/ai_work_metadata/enable'
 
       expect { subject }.to have_enqueued_job(AiWorkMetadata::BulkGenerateJob)
 
@@ -84,15 +85,34 @@ describe Collection::AiWorkMetadataController do
 
     context 'with errors' do
       before do
+        login_as owner
+        get '/feature/ai_work_metadata/enable'
         allow_any_instance_of(AiWorkMetadata::BulkCreate).to receive(:perform).and_raise(ArgumentError, 'boom')
       end
 
       it 'renders status and template' do
-        login_as owner
         subject
 
         expect(response).to have_http_status(:ok)
         expect(response).to render_template(:create)
+      end
+    end
+
+    context 'when the feature is disabled' do
+      it 'does not enable metadata drafts for a collection without them' do
+        login_as owner
+
+        expect { subject }.not_to change(AiWorkMetadata, :count)
+        expect(AiWorkMetadata::BulkGenerateJob).not_to have_been_enqueued
+        expect(response).to have_http_status(:not_found)
+      end
+
+      it 'allows metadata drafts to run when they are already enabled for the collection' do
+        create(:ai_work_metadata, work: work, status: :error)
+        login_as owner
+
+        expect { subject }.to have_enqueued_job(AiWorkMetadata::BulkGenerateJob)
+        expect(response).to have_http_status(:ok)
       end
     end
   end

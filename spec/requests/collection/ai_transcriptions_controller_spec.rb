@@ -38,12 +38,28 @@ describe Collection::AiTranscriptionsController do
 
       it 'places metadata draft settings beneath transcription settings' do
         login_as owner
+        get '/feature/ai_work_metadata/enable'
         subject
 
         settings = response.parsed_body.at_css('#collection-settings > .collection-settings-wrapper')
 
         expect(settings.at_css('#ai-work-metadata-settings')).to be_present
         expect(response.parsed_body.css('#collection-settings > .collection-settings-wrapper').size).to eq(1)
+      end
+
+      it 'hides metadata draft settings when the feature is disabled' do
+        login_as owner
+        subject
+
+        expect(response.parsed_body.at_css('#ai-work-metadata-settings')).not_to be_present
+      end
+
+      it 'shows metadata draft settings without the feature flag when drafts are already enabled' do
+        create(:ai_work_metadata, work: work, status: :finished)
+        login_as owner
+        subject
+
+        expect(response.parsed_body.at_css('#ai-work-metadata-settings')).to be_present
       end
 
       context 'with more than 1 result' do
@@ -91,6 +107,7 @@ describe Collection::AiTranscriptionsController do
 
         it 'renders failed work metadata draft details alongside the transcription section' do
           login_as owner
+          get '/feature/ai_work_metadata/enable'
           subject
 
           expect(response.body).to include('Failed metadata draft errors')

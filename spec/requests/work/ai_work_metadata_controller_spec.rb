@@ -52,8 +52,12 @@ describe Work::AiWorkMetadataController do
     end
 
     context 'when accessed by owner' do
-      it 'renders status and template' do
+      before do
         login_as owner
+        get '/feature/ai_work_metadata/enable'
+      end
+
+      it 'renders status and template' do
         subject
 
         expect(response).to have_http_status(:ok)
@@ -61,8 +65,6 @@ describe Work::AiWorkMetadataController do
       end
 
       it 'triggers a bulk generate job for this work only' do
-        login_as owner
-
         expect(AiWorkMetadata::BulkGenerateJob).to receive(:perform_later).with(
           collection_id: collection.id,
           user_id: owner.id,
@@ -77,12 +79,29 @@ describe Work::AiWorkMetadataController do
         let!(:collection) { create(:collection, owner_user_id: owner.id, works: []) }
 
         it 'still renders the create template' do
-          login_as owner
           subject
 
           expect(response).to have_http_status(:ok)
           expect(response).to render_template(:create)
         end
+      end
+    end
+
+    context 'when the feature is disabled' do
+      it 'does not enable metadata drafts for a collection without them' do
+        login_as owner
+        ai_work_metadata.destroy!
+
+        expect { subject }.not_to change(AiWorkMetadata, :count)
+        expect(AiWorkMetadata::BulkGenerateJob).not_to have_been_enqueued
+        expect(response).to have_http_status(:not_found)
+      end
+
+      it 'allows metadata drafts to run when they are already enabled for the collection' do
+        login_as owner
+
+        expect { subject }.to have_enqueued_job(AiWorkMetadata::BulkGenerateJob)
+        expect(response).to have_http_status(:ok)
       end
     end
   end
