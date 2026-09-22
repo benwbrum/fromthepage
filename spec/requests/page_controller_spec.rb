@@ -124,6 +124,22 @@ describe PageController do
       end
     end
 
+    context 'user is individual researcher owner' do
+      let(:owner) { create(:owner, account_type: 'Individual Researcher') }
+      let(:collection) { create(:collection, owner_user_id: owner.id) }
+      let(:work) { create(:work, collection: collection) }
+      let!(:page) { create(:page, :with_image, work: work, status: :new) }
+
+      it 'renders status and hides run ai draft button' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:edit)
+        expect(response.body).not_to include(I18n.t('page.form.run_ai_draft'))
+      end
+    end
+
     context 'user is staff owner' do
       let(:staff_user) { create(:user) }
 
