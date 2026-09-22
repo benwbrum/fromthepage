@@ -120,6 +120,7 @@ describe PageController do
 
         expect(response).to have_http_status(:ok)
         expect(response).to render_template(:edit)
+        expect(response.body).to include(I18n.t('page.form.run_ai_draft'))
       end
     end
 
