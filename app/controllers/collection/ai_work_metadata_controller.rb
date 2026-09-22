@@ -1,5 +1,6 @@
 class Collection::AiWorkMetadataController < CollectionController
   before_action :authorized?
+  before_action :require_ai_work_metadata_feature, only: :create
 
   def show
     @ai_work_metadata = AiWorkMetadata.joins(:work).where(works: { collection_id: @collection.id }).find(params[:id])
@@ -25,6 +26,10 @@ class Collection::AiWorkMetadataController < CollectionController
   end
 
   private
+
+  def require_ai_work_metadata_feature
+    head :not_found unless helpers.ai_work_metadata_available?(@collection)
+  end
 
   def assign_stats
     stats = AiWorkMetadata.stats_for_collection(@collection)

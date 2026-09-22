@@ -78,5 +78,6 @@
             -if @failed_ai_transcriptions_hidden_count.positive?
               p =t('.failed_transcription_errors_hidden', count: @failed_ai_transcriptions_hidden_count)
 
-  #ai-work-metadata-settings
-    =render partial: 'work/ai_work_metadata/form', locals: { collection: collection, work: work }
+  -if ai_work_metadata_available?(collection)
+    #ai-work-metadata-settings
+      =render partial: 'work/ai_work_metadata/form', locals: { collection: collection, work: work }

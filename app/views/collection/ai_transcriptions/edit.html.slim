@@ -3,5 +3,6 @@
   =render partial: 'collection/edit_tabs', locals: { selected: 7 }
   #collection-settings
     =render partial: 'form', locals: { collection: @collection }
-    #ai-work-metadata-settings
-      =render partial: 'collection/ai_work_metadata/form', locals: { collection: @collection }
+    -if ai_work_metadata_available?(@collection)
+      #ai-work-metadata-settings
+        =render partial: 'collection/ai_work_metadata/form', locals: { collection: @collection }

@@ -254,6 +254,10 @@ module ApplicationHelper
     session[:features] && session[:features][feature.to_s]
   end
 
+  def ai_work_metadata_available?(collection)
+    feature_enabled?(:ai_work_metadata) || collection.ai_work_metadata_enabled?
+  end
+
   # makes an intro block into a snippet by removing style tag, stripping tags, and truncating
   def to_snippet(intro_block)
     return '' if intro_block.blank?
