@@ -177,20 +177,21 @@ describe 'collection field-based transcription settings' do
   it 'persists line order when a full line block is moved', js: true do
     first_field
     second_field.update!(line_number: 2)
+    create(:transcription_field, :as_transcription, :text_field,
+           collection: collection, label: 'Instruction line', percentage: 20, line_number: 3)
 
     visit transcription_field_edit_fields_path(collection_id: collection)
-    click_button 'Add Additional Line'
-    expect(page).to have_selector('#new-fields > tbody', count: 3)
-
-    within '#new-fields > tbody:last-child' do
-      fill_in 'transcription_fields__label', with: 'Instruction line'
-      fill_in 'transcription_fields__percentage', with: 20
-    end
+    expect(page).to have_selector('#new-fields > tbody', count: 3, visible: :all)
 
     page.execute_script(<<~JS)
-      const table = $('#new-fields');
-      const bodies = table.children('tbody');
+      const bodies = $('#new-fields').children('tbody');
       bodies.last().insertAfter(bodies.first());
+      const lineLabel = $('#new-fields').data('line-label');
+      $('#new-fields > tbody').each(function(index) {
+        const line = index + 1;
+        $(this).find("input[name='transcription_fields[][line_number]']").val(line);
+        $(this).find('th.field-form_line > span').first().text(`${lineLabel} ${line}`);
+      });
     JS
 
     click_button 'Save'
