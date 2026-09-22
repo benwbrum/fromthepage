@@ -10,7 +10,7 @@ class Segmentation::Generate
     image_url = @page.image_url_for_download
     raise ArgumentError, "Page #{@page.id} has no image to segment" if image_url.blank?
 
-    text, = AiTranscription::Lib::Gemini::TranscribeHandler.new(
+    text, _reasoning, metadata, = AiTranscription::Lib::Gemini::TranscribeHandler.new(
       prompt: PROMPT,
       model: MODEL,
       image_url: image_url
@@ -18,5 +18,15 @@ class Segmentation::Generate
 
     is_candidate = text.strip.downcase.start_with?('yes')
     @page.update_column(:is_first_page_candidate, is_candidate)
+
+    SegmentationLog.create!(
+      page: @page,
+      work_id: @page.work_id,
+      model: MODEL,
+      is_first_page_candidate: is_candidate,
+      metadata: metadata
+    )
+
+    is_candidate
   end
 end

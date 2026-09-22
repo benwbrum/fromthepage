@@ -26,6 +26,7 @@ fr:
         segment_collection: Segmenter la collection
         segmentation: Segmenter la collection
         segmentation_description: En téléversant un ensemble d'images (par exemple, un dossier) puis en le segmentant, nous suggérerons les endroits où les documents doivent être séparés en œuvres individuelles.
+        segmentation_tokens_used: Jetons utilisés pour la segmentation
         total_tokens_used: Nombre total de jetons utilisés
       segment:
         success: La tâche de segmentation a été lancée. Vous recevrez un e-mail lorsqu'elle sera terminée.

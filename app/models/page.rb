@@ -9,6 +9,7 @@
 #  base_width              :integer
 #  created_on              :datetime
 #  edit_started_at         :datetime
+#  is_first_page_candidate :boolean
 #  last_note_updated_at    :datetime
 #  line_count              :integer
 #  lock_version            :integer          default(0)
@@ -71,6 +72,7 @@ class Page < ApplicationRecord
   has_many :ai_transcriptions, class_name: 'AiTranscription'
   has_one :ai_transcription, -> { order(created_at: :desc) }, class_name: 'AiTranscription'
   has_one :finished_ai_transcription, -> { status_finished.order(created_at: :desc) }, class_name: 'AiTranscription'
+  has_many :segmentation_logs, dependent: :destroy
 
   has_many :alto_transcriptions, -> { alto }, class_name: 'AiTranscription'
   has_one :alto_transcription, -> { alto.order(created_at: :desc) }, class_name: 'AiTranscription'
