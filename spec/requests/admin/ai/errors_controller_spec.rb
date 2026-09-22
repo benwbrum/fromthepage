@@ -54,6 +54,19 @@ describe Admin::Ai::ErrorsController do
       subject
       expect(assigns(:ai_transcriptions).first).to eq(ai_transcription_error)
     end
+
+    it 'ignores orphaned ai transcriptions without pages' do
+      orphan_page = create(:page, work: work)
+      orphan_ai_transcription = create(:ai_transcription, page_id: orphan_page.id, status: :error)
+      orphan_page.destroy!
+
+      login_as admin
+      subject
+
+      expect(response).to have_http_status(:ok)
+      expect(assigns(:ai_transcriptions)).not_to include(orphan_ai_transcription)
+      expect(response.body).not_to include(orphan_ai_transcription.short_error_message)
+    end
   end
 
   describe '#show' do
