@@ -1,6 +1,10 @@
 ---
 fr:
   page_version:
+    revert:
+      not_authorized: Vous n’êtes pas autorisé à rétablir cette page.
+      reverted: La page a été rétablie à la version sélectionnée. Veuillez la vérifier et l’enregistrer.
+      version_not_found: Version introuvable.
     show:
       ai_draft_used: Brouillon d'IA utilisé
       author_contributed_at: "%{author} le %{date}"
@@ -16,5 +20,8 @@ fr:
       page_version_status_needs_review: nécessite révision
       page_version_status_review: revoir
       page_version_status_transcribed: transcrit
+      restore: Restaurer
+      restore_tooltip: Remplacer le texte actuel par la transcription de cette version
+      revert_confirm: Êtes-vous sûr de vouloir revenir à cette version ? Vous serez redirigé vers l’écran de transcription pour vérifier et enregistrer.
       translation: Traduction
       untitled: Sans titre

@@ -1,6 +1,10 @@
 ---
 en:
   page_version:
+    revert:
+      not_authorized: You are not authorized to revert this page.
+      reverted: Page has been reverted to the selected version. Please review and save.
+      version_not_found: Version not found.
     show:
       ai_draft_used: AI Draft used
       author_contributed_at: "%{author} at %{date}"
@@ -16,5 +20,8 @@ en:
       page_version_status_needs_review: needs review
       page_version_status_review: review
       page_version_status_transcribed: transcribed
+      restore: Restore
+      restore_tooltip: Replace the current text with the transcription from this version
+      revert_confirm: Are you sure you want to revert to this version? You will be taken to the transcription screen to review and save.
       translation: Translation
       untitled: Untitled
