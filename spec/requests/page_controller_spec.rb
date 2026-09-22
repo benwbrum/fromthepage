@@ -122,6 +122,23 @@ describe PageController do
         expect(response).to render_template(:edit)
       end
     end
+
+    context 'user is staff owner' do
+      let(:staff_user) { create(:user) }
+
+      before do
+        collection.owners << staff_user
+      end
+
+      it 'renders status and shows run ai draft button' do
+        login_as staff_user
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:edit)
+        expect(response.body).to include(I18n.t('page.form.run_ai_draft'))
+      end
+    end
   end
 
   describe '#update' do
@@ -246,6 +263,23 @@ describe PageController do
         subject
 
         expect(AiTranscription::GenerateJob).to have_received(:perform_later)
+      end
+
+      context 'when user is staff owner' do
+        let(:staff_user) { create(:user) }
+
+        before do
+          collection.owners << staff_user
+        end
+
+        it 'enqueues generate job' do
+          login_as staff_user
+          subject
+
+          expect(response).to have_http_status(:redirect)
+          expect(response).to redirect_to(collection_edit_page_path(owner, collection, work, page.id))
+          expect(AiTranscription::GenerateJob).to have_received(:perform_later)
+        end
       end
     end
 
