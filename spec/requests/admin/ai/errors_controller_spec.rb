@@ -57,7 +57,10 @@ describe Admin::Ai::ErrorsController do
 
     it 'ignores orphaned ai transcriptions without pages' do
       orphan_page = create(:page, work: work)
-      orphan_ai_transcription = create(:ai_transcription, page_id: orphan_page.id, status: :error)
+      orphan_ai_transcription = create(:ai_transcription,
+                                       page_id: orphan_page.id,
+                                       status: :error,
+                                       metadata: { 'error_message' => 'Orphaned transcription error - page deleted' })
       orphan_page.destroy!
 
       login_as admin

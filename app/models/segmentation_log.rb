@@ -24,7 +24,7 @@
 #
 class SegmentationLog < ApplicationRecord
   belongs_to :page
-  belongs_to :work, optional: true
+  belongs_to :work
 
   # TODO: We need to upgrade our DB version to utilize native json column field.
   # Right now we are technically using long-text field and serializing to JSON
