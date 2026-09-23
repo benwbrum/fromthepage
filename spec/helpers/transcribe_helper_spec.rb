@@ -26,4 +26,28 @@ RSpec.describe TranscribeHelper, type: :helper do
       expect(helper.get_active_tab_path('unknown', owner, collection, work, item)).to eq('/transcribe')
     end
   end
+
+  describe '#osd_source' do
+    let(:work) { create(:work) }
+
+    it 'uses the local image service for an Active Storage image' do
+      page = create(:page, :with_image, work: work)
+
+      expect(helper.send(:osd_source, page, work)).to eq(["http://test.host/image-service/#{page.id}/info.json"])
+    end
+
+    it 'uses the local image service for a legacy image' do
+      page = create(:page, :with_legacy_image, work: work)
+
+      expect(helper.send(:osd_source, page, work)).to eq(["http://test.host/image-service/#{page.id}/info.json"])
+    end
+
+    it 'retains external IIIF sources' do
+      sc_page = instance_double(Page, sc_canvas: double(iiif_image_info_url: 'https://example.org/iiif/sc/info.json'))
+      ia_page = instance_double(Page, sc_canvas: nil, ia_leaf: double(iiif_image_info_url: 'https://archive.org/iiif/ia/info.json'))
+
+      expect(helper.send(:osd_source, sc_page, work)).to eq(['https://example.org/iiif/sc/info.json'])
+      expect(helper.send(:osd_source, ia_page, work)).to eq(['https://archive.org/iiif/ia/info.json'])
+    end
+  end
 end
