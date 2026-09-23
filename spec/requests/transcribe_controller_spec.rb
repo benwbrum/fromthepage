@@ -184,6 +184,20 @@ describe TranscribeController do
       ai_draft_field = response.parsed_body.at_css('input[name="ai_draft_used"]')
       expect(ai_draft_field['value']).to eq('false')
     end
+
+    it 'serves oversized images to OpenSeadragon through the tiled image service' do
+      page.image.attach(
+        io: File.open(Rails.root.join('test_data/images/pages/sanskrit.jpg')),
+        filename: 'oversized.jpg',
+        content_type: 'image/jpeg'
+      )
+      page.image.blob.update!(metadata: { width: 20_000, height: 570 })
+      login_as owner
+      subject
+
+      expect(response.body).to include("tileSources: [\"http://www.example.com/image-service/#{page.id}/info.json\"]")
+      expect(response.body).not_to include('/rails/active_storage/blobs/')
+    end
   end
 
   describe '#save_transcription' do
