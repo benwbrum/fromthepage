@@ -33,13 +33,13 @@ RSpec.describe TranscribeHelper, type: :helper do
     it 'uses the local image service for an Active Storage image' do
       page = create(:page, :with_image, work: work)
 
-      expect(helper.send(:osd_source, page, work)).to eq(["http://test.host/image-service/#{page.id}/info.json"])
+      expect(helper.send(:osd_source, page, work)).to eq(["/image-service/#{page.id}/info.json"])
     end
 
     it 'uses the local image service for a legacy image' do
       page = create(:page, :with_legacy_image, work: work)
 
-      expect(helper.send(:osd_source, page, work)).to eq(["http://test.host/image-service/#{page.id}/info.json"])
+      expect(helper.send(:osd_source, page, work)).to eq(["/image-service/#{page.id}/info.json"])
     end
 
     it 'retains external IIIF sources' do
