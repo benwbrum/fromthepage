@@ -24,6 +24,14 @@ fr:
       marginalia_description: Marque le texte dans les marges du texte principal.
       redo_description: Refaire la dernière action annulée
       reg_description: Marque une forme régularisée du texte, avec des formes originales dans l'attribut orig.
+      review_ai_draft:
+        one: |-
+          Les brouillons de l'IA peuvent se tromper, notamment sur les noms et les lieux — c'est précisément ce que votre relecture permet de déceler.
+           Vous pouvez enregistrer dans %{count} seconde.
+        other: |-
+          Les brouillons de l'IA peuvent se tromper, notamment sur les noms et les lieux — c'est précisément ce que votre révision permet de repérer.
+           Vous pouvez enregistrer dans %{count} secondes.
+        zero: Les ébauches générées par l'IA peuvent se tromper, notamment au niveau des noms et des lieux — c'est précisément ce que votre relecture permet de déceler.
       s_description: Marque le texte qui a été barré pour une raison quelconque.
       sub_description: Texte en indice.
       sup_description: Texte en exposant.

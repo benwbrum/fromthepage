@@ -24,6 +24,14 @@ de:
       marginalia_description: Markiert Text am Seitenrand (außerhalb des Haupttextes).
       redo_description: Die letzte rückgängig gemachte Aktion wiederherstellen.
       reg_description: Markiert eine normalisierte Schreibung mit Originalform im orig-Attribut.
+      review_ai_draft:
+        one: |-
+          KI-Entwürfe können Fehler enthalten, insbesondere bei Namen und Orten – genau das deckt Ihre Überprüfung auf.
+           Sie können in %{count} Sekunden speichern.
+        other: |-
+          KI-Entwürfe können Fehler machen, insbesondere bei Namen und Orten – genau das deckt Ihre Überprüfung auf.
+           Sie können in %{count} Sekunden speichern.
+        zero: KI-Entwürfe können Fehler machen, insbesondere bei Namen und Orten – genau das deckt Ihre Überprüfung auf.
       s_description: Markiert Text, der aus irgendeinem Grund durchgestrichen wurde.
       sub_description: Tiefgestellter Text.
       sup_description: Hochgestellter Text.
