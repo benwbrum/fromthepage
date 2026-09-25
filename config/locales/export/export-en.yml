@@ -1,6 +1,9 @@
 ---
 en:
   export:
+    accessible_pdf:
+      struck_through: 'struck through: %{text}'
+      table_without_headers: 'Table as transcribed, %{rows} rows by %{columns} columns. Column headers were not marked in the original transcription, so cells are read without them.'
     edit_contentdm_credentials:
       connect: Connect
       contentdm_credentials: CONTENTdm Credentials
@@ -10,6 +13,7 @@ en:
       license_key: License key
     facing_edition:
       contributions_message: 'This document would not be possible without the editorial contributions of the following people:'
+      contributors: Contributors
       export_metadata: FromThePage export of %{work} from %{collection} made on %{time}.
       metadata: Metadata
       notes: Notes

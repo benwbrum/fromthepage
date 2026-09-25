@@ -4,6 +4,11 @@ html
     meta charset="utf-8"
     meta name="viewport" content="width=device-width, initial-scale=1.0"
 
+    / Chrome writes <title> into the PDF's document title, which the catalog's
+    / DisplayDocTitle tells a reader to show instead of the filename. Without
+    / one it falls back to the page URL ("example.com").
+    title =@work.title
+
     style
       |
         html, body {

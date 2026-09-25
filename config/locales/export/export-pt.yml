@@ -1,6 +1,9 @@
 ---
 pt:
   export:
+    accessible_pdf:
+      struck_through: 'riscado: %{text}'
+      table_without_headers: 'Tabela conforme transcrita, %{rows} linhas por %{columns} colunas. Os cabeçalhos de coluna não foram marcados na transcrição original, portanto as células são lidas sem eles.'
     edit_contentdm_credentials:
       connect: Conectar
       contentdm_credentials: Credenciais do CONTENTdm
@@ -10,6 +13,7 @@ pt:
       license_key: Chave de licença
     facing_edition:
       contributions_message: 'Este documento não seria possível sem as contribuições editoriais das seguintes pessoas:'
+      contributors: Colaboradores
       export_metadata: Exportação FromThePage de %{work} de %{collection} feita em %{time}.
       metadata: Metadados
       notes: Notas
