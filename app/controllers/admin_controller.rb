@@ -291,6 +291,12 @@ class AdminController < ApplicationController
     redirect_back fallback_location: { action: 'user_list' }, notice: t('.user_downgraded_successfully')
   end
 
+  def unlock_user
+    u = User.find(params[:user_id])
+    u.unlock_access!
+    redirect_back fallback_location: { action: 'user_list' }, notice: t('.user_unlocked', user: u.display_name)
+  end
+
   def moderation
     @collections = Collection.where(messageboards_enabled: true)
   end

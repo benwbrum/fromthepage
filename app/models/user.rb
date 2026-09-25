@@ -46,6 +46,9 @@
 #  created_at                  :datetime
 #  updated_at                  :datetime
 #  external_id                 :string(255)
+#  failed_attempts             :integer          default(0), not null
+#  unlock_token                :string(255)
+#  locked_at                   :datetime
 #
 # Indexes
 #
@@ -53,15 +56,16 @@
 #  index_users_on_login                 (login)
 #  index_users_on_reset_password_token  (reset_password_token) UNIQUE
 #  index_users_on_slug                  (slug) UNIQUE
+#  index_users_on_unlock_token          (unlock_token) UNIQUE
 #
 class User < ApplicationRecord
   WEBSITE_SCHEME_REGEX = /\Ahttps?:\/\//i
   ANY_SCHEME_REGEX = /\A[a-z][a-z0-9+\-.]*:\/\//i
 
   # Include default devise modules. Others available are:
-  # :confirmable and :lockable
+  # :confirmable
   devise :database_authenticatable, :registerable, :masqueradable,
-         :recoverable, :rememberable, :trackable, :validatable, :timeoutable,
+         :recoverable, :rememberable, :trackable, :validatable, :timeoutable, :lockable,
          :omniauthable, :encryptable, encryptor: :restful_authentication_sha1,
          omniauth_providers: [:google_oauth2, :saml]
 

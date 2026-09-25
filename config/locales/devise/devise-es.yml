@@ -22,6 +22,8 @@ es:
       already_authenticated: Ya has iniciado sesión.
       inactive: Tu cuenta aún no ha sido activada.
       invalid: La contraseña o %{authentication_keys} son inválidos.
+      last_attempt: Le queda un intento más antes de que su cuenta se bloquee durante 30 minutos.
+      locked: Su cuenta está bloqueada debido a demasiados intentos fallidos de inicio de sesión. Vuelva a intentarlo en 30 minutos.
       not_found_in_database: La contraseña o %{authentication_keys} son inválidos.
       timeout: La sesión expiró. Por favor vuelve a iniciar sesión para continuar.
       unauthenticated: Para continuar debes iniciar sesión o crear una cuenta.
@@ -41,7 +43,7 @@ es:
     passwords:
       edit:
         change_password: Cambia la contraseña
-        change_password_message: Cree una nueva contraseña para su cuenta. La contraseña debe tener al menos 8 caracteres y contener tanto letras como números. ¡No use la misma contraseña que usa para su banco en línea o cuenta de correo electrónico!
+        change_password_message: Cree una nueva contraseña para su cuenta. La contraseña debe tener al menos 8 caracteres. ¡No use la misma contraseña que usa para su banco en línea o cuenta de correo electrónico!
         new_password: Nueva contraseña
       new:
         message: Ingrese la dirección de correo electrónico asociada con su cuenta de FromThePage. Si su dirección de correo electrónico existe en nuestra base de datos, recibirás un enlace de recuperación de contraseña en su dirección de correo electrónico en unos minutos.
@@ -52,7 +54,7 @@ es:
       send_paranoid_instructions: Si tu dirección de correo electrónico ya existe en nuestra base de datos, dentro de unos minutos recibirás un enlace para recuperar su contraseña en el buzón de entrada de tu correo.
       updated: La contraseña ha sido cambiada exitosamente. Has iniciado sesión.
       updated_not_active: La contraseña ha sido cambiada exitosamente.
-      validation: La longitud mínima de la contraseña es de 6 caracteres
+      validation: La longitud mínima de la contraseña es de 8 caracteres
     real_name: Nombre real
     real_name_message: Los proyectos pueden usar esto cuando le den crédito. Deje esto en blanco si no desea que se le acredite.
     receive_activity_emails: Recibir correos electrónicos de actividad

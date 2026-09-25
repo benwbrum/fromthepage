@@ -22,6 +22,8 @@ fr:
       already_authenticated: Vous êtes déjà connecté.
       inactive: Votre compte n'est pas encore activé.
       invalid: "%{authentication_keys} ou mot de passe non valide."
+      last_attempt: Il vous reste une tentative avant que votre compte ne soit verrouillé pendant 30 minutes.
+      locked: Votre compte est verrouillé en raison d'un trop grand nombre de tentatives de connexion infructueuses. Veuillez réessayer dans 30 minutes.
       not_found_in_database: "%{authentication_keys} ou mot de passe non valide."
       timeout: Votre session a expiré. Veuillez vous reconnecter pour continuer.
       unauthenticated: Vous devez vous connecter ou vous inscrire avant de continuer.
@@ -41,7 +43,7 @@ fr:
     passwords:
       edit:
         change_password: Changer le mot de passe
-        change_password_message: Créez un nouveau mot de passe pour votre compte. Le mot de passe doit comporter au moins 8 caractères et contenir à la fois des lettres et des chiffres. Veuillez ne pas utiliser le même mot de passe que vous utilisez pour votre banque en ligne ou votre compte de messagerie !
+        change_password_message: Créez un nouveau mot de passe pour votre compte. Le mot de passe doit comporter au moins 8 caractères. Veuillez ne pas utiliser le même mot de passe que vous utilisez pour votre banque en ligne ou votre compte de messagerie !
         new_password: Nouveau mot de passe
       new:
         message: Veuillez saisir l'adresse e-mail associée à votre compte FromThePage. Si votre adresse e-mail existe dans notre base de données, vous recevrez un lien de récupération de mot de passe à votre adresse e-mail dans quelques minutes.
@@ -52,7 +54,7 @@ fr:
       send_paranoid_instructions: Si votre adresse e-mail existe dans notre base de données, vous recevrez un lien de récupération de mot de passe à votre adresse e-mail dans quelques minutes.
       updated: Votre mot de passe a été changé avec succès. Vous êtes maintenant inscrit.
       updated_not_active: Votre mot de passe a été changé avec succès.
-      validation: La longueur minimale du mot de passe est de 6 caractères
+      validation: La longueur minimale du mot de passe est de 8 caractères
     real_name: Nom
     real_name_message: Les projets peuvent l'utiliser lorsqu'ils vous citent. Laissez ce champ vide si vous ne souhaitez pas être crédité.
     receive_activity_emails: Recevoir des e-mails d'activité
