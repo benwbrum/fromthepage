@@ -1,5 +1,6 @@
 .litebox-embed(style="width:550px")
   -flash.each do |type, message|
+    -next if type.to_s == 'timedout'
     -flash_icon = { 'notice' => '#icon-check-sign', 'alert' => '#icon-warning-sign', 'error' => '#icon-remove-sign' }
     .flash(class='flash-#{type}')
       span.flash_message

@@ -59,9 +59,9 @@ class User < ApplicationRecord
   ANY_SCHEME_REGEX = /\A[a-z][a-z0-9+\-.]*:\/\//i
 
   # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
+  # :confirmable and :lockable
   devise :database_authenticatable, :registerable, :masqueradable,
-         :recoverable, :rememberable, :trackable, :validatable,
+         :recoverable, :rememberable, :trackable, :validatable, :timeoutable,
          :omniauthable, :encryptable, encryptor: :restful_authentication_sha1,
          omniauth_providers: [:google_oauth2, :saml]
 
