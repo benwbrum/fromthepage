@@ -4,6 +4,11 @@ html
     meta charset="utf-8"
     meta name="viewport" content="width=device-width, initial-scale=1.0"
 
+    / Chrome writes <title> into the PDF's document title, which the catalog's
+    / DisplayDocTitle tells a reader to show instead of the filename. Without
+    / one it falls back to the page URL ("example.com").
+    title =@work.title
+
     style
       |
         html, body {
@@ -30,13 +35,9 @@ html
           margin-top: 1.5in;
         }
 
-        @page {
-          @bottom-center {
-            content: counter(page);
-            font-size: 9pt;
-            color: #444;
-          }
-        }
+        /* No @page margin-box page numbers: Chrome emits that generated text
+           without a structure-tree tag or an Artifact marker, which fails
+           Acrobat's "Tagged content" accessibility check. */
 
         p {
           margin: 0 0 0.85em 0;

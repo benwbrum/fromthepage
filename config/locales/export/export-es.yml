@@ -1,6 +1,9 @@
 ---
 es:
   export:
+    accessible_pdf:
+      struck_through: 'tachado: %{text}'
+      table_without_headers: 'Tabla según la transcripción, %{rows} filas por %{columns} columnas. Los encabezados de columna no se marcaron en la transcripción original, por lo que las celdas se leen sin ellos.'
     edit_contentdm_credentials:
       connect: Conectar
       contentdm_credentials: Credenciales CONTENTdm
@@ -10,6 +13,7 @@ es:
       license_key: Clave de licencia
     facing_edition:
       contributions_message: 'Este documento no sería posible sin las contribuciones editoriales de las siguientes personas:'
+      contributors: Colaboradores
       export_metadata: Exportación FromThePage de %{work} desde %{collection} realizada en %{time}.
       metadata: Metadatos
       notes: Notas

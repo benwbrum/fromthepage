@@ -1,6 +1,9 @@
 ---
 de:
   export:
+    accessible_pdf:
+      struck_through: 'durchgestrichen: %{text}'
+      table_without_headers: 'Tabelle wie transkribiert, %{rows} Zeilen und %{columns} Spalten. Im Original wurden keine Spaltenüberschriften markiert, daher werden die Zellen ohne sie gelesen.'
     edit_contentdm_credentials:
       connect: Verbinden
       contentdm_credentials: CONTENTdm-Berechtigung
@@ -10,6 +13,7 @@ de:
       license_key: Lizenzschlüssel
     facing_edition:
       contributions_message: 'Dieses Dokument wäre ohne die Beiträge der folgenden Personen nicht möglich:'
+      contributors: Mitwirkende
       export_metadata: FromThePage-Export von %{work} aus %{collection} von %{time}.
       metadata: Metadaten
       notes: Hinweise

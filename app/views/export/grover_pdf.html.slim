@@ -17,7 +17,9 @@
       =page.ai_transcription.source_text.gsub("\n", '<br/>').html_safe
 
   -if @work.supports_translation && !page.source_translation.blank?
-    h2 =t('export.facing_edition.translation')
+    / h3, not h2: a translation belongs to the page whose title is the h2
+    / above it. A second h2 here would read as a new top-level section.
+    h3 =t('export.facing_edition.translation')
     ==xml_to_html(page.xml_translation, @preserve_lb, @flatten_links)
 
   -if @include_notes && page.notes.size > 0

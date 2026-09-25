@@ -1,6 +1,9 @@
 ---
 fr:
   export:
+    accessible_pdf:
+      struck_through: 'biffé : %{text}'
+      table_without_headers: 'Tableau tel que transcrit, %{rows} lignes sur %{columns} colonnes. Les en-têtes de colonne n''ont pas été indiqués dans la transcription d''origine ; les cellules sont donc lues sans eux.'
     edit_contentdm_credentials:
       connect: Relier
       contentdm_credentials: CONTENUdm Identifiants
@@ -10,6 +13,7 @@ fr:
       license_key: Clé de licence
     facing_edition:
       contributions_message: 'Ce document ne serait pas possible sans les contributions éditoriales des personnes suivantes :'
+      contributors: Contributeurs
       export_metadata: Exportation FromThePage de %{work} à partir de %{collection} effectuée sur %{time}.
       metadata: Métadonnées
       notes: Remarques
