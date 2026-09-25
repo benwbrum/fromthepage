@@ -9,6 +9,14 @@ class IiifController < ApplicationController
   before_action :load_objects_from_ids
   before_action :check_api_access, except: [:collections, :contributions, :for, :collection_for_domain]
 
+  ANNOTATION_FIELDS = {
+    'transcription' => :source_text,
+    'translation'   => :source_translation,
+    'notes'         => :notes
+  }.freeze
+
+  MANIFEST_EXPIRES_AT = 1.day
+
   def load_objects_from_ids
     if @work && params[:work_id]
       if params[:work_id] =~ /^\d+$/
@@ -167,110 +175,37 @@ class IiifController < ApplicationController
     work_id = params[:id]
     work = Work.where(id: work_id).includes(:ia_work, :sc_manifest, :work_statistic).first
 
-    seed = {
-              '@id' => url_for({ controller: 'iiif', action: 'manifest', id: work_id, only_path: false }),
-              'label' => work.title
-            }
-    manifest = IIIF::Presentation::Manifest.new(seed)
-    manifest.label = work.title
-    dc_source = dc_source_from_work(work)
-    if dc_source
-      manifest.metadata = [dc_source]
-    else
-      manifest.metadata = []
-    end
+    return render status: :not_found, json: { error: 'Not found' } unless work
 
-    manifest.metadata += work.merge_metadata
+    # TODO: Refactor to use cache concern when https://github.com/benwbrum/fromthepage/pull/5331 is merged
+    stats = Page.where(work_id: work.id)
+      .left_joins(:ai_transcriptions)
+      .pick(
+        Arel.sql('MAX(pages.updated_at)'),
+        Arel.sql('COUNT(DISTINCT pages.id)'),
+        Arel.sql('MAX(ai_transcriptions.updated_at)'),
+        Arel.sql('COUNT(ai_transcriptions.id)')
+      )
 
-    if work.sc_manifest
-      manifest.description = 'This is an annotated version of the original manifest produced by FromThePage'
-    else
-      manifest.description = work.description unless work.description.blank?
-    end
-    manifest.within = {
-      '@type' => 'sc:Collection',
-      'label' => work.collection.title,
-      '@id' => iiif_collection_id_from_collection(work.collection)
-    }
-    manifest.related = [
-      {
-        'format' => 'text/html',
-        'label' => "Read #{work.title}",
-        '@id' => collection_read_work_url(work.collection.owner, work.collection, work)
-      },
-      {
-        'format' => 'text/html',
-        'label' => "Table of Contents for #{work.title}",
-        '@id' => collection_work_contents_url(work.collection.owner, work.collection, work)
-      }
+    latest_page_update, page_count, latest_ai_update, ai_count = stats
+    latest_update = [latest_page_update, latest_ai_update].compact.max
+    cache_key = [
+      'iiif-v2-manifest-v1',
+      "work-#{work.id}",
+      latest_update&.to_i,
+      page_count,
+      ai_count
     ]
 
-    manifest.seeAlso = []
-    manifest.seeAlso <<
-    { 'label' => 'Verbatim Plaintext',
-      'format' => 'text/plain',
-      'profile' => 'https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#verbatim-plaintext-1',
-      '@id' => iiif_work_export_plaintext_verbatim_url(work.id)
-    }
-    manifest.seeAlso <<
-    { 'label' => 'Emended Plaintext',
-      'format' => 'text/plain',
-      'profile' => 'https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#emended-plaintext',
-      '@id' => iiif_work_export_plaintext_emended_url(work.id)
-    }
-    if work.supports_translation?
-      manifest.seeAlso <<
-      { 'label' => 'Verbatim Translation Plaintext',
-        'format' => 'text/plain',
-        'profile' => 'https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#verbatim-translation-plaintext',
-        '@id' => iiif_work_export_plaintext_translation_verbatim_url(work.id)
-      }
-      manifest.seeAlso <<
-      { 'label' => 'Emended Translation Plaintext',
-        'format' => 'text/plain',
-        'profile' => 'https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#emended-translation-plaintext',
-        '@id' => iiif_work_export_plaintext_translation_emended_url(work.id)
-      }
-    end
-    manifest.seeAlso <<
-      { 'label' => 'Searchable Plaintext',
-        'format' => 'text/plain',
-        'profile' => 'https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#plaintext-for-full-text-search',
-        '@id' => iiif_work_export_plaintext_searchable_url(work.id)
-    }
-    if work.collection.metadata_entry?
-      manifest.seeAlso << structured_data_reference(work)
-    end
-    manifest.service << status_service_for_manifest(work)
-    sequence = iiif_sequence_from_work_id(work_id)
-    manifest.sequences << sequence
+    expires_in MANIFEST_EXPIRES_AT, public: true
 
-    seed = {
-              '@id' => url_for({ controller: 'iiif', id: work_id, action: 'layer', type: 'transcription', only_path: false }),
-              'label' => 'transcription layer'
-            }
-    layer = IIIF::Presentation::Layer.new(seed)
-    manifest['otherContent'] = [layer]
+    if stale?(etag: cache_key, last_modified: latest_update)
+      json_manifest = Rails.cache.fetch(cache_key, expires_in: 1.day) do
+        build_iiif_manifest(work).to_json(pretty: true)
+      end
 
-    if work.supports_translation?
-      seed = {
-              '@id' => url_for({ controller: 'iiif', id: work_id, action: 'layer', type: 'translation', only_path: false }),
-              'label' => 'translation layer'
-            }
-      layer = IIIF::Presentation::Layer.new(seed)
-      manifest['otherContent']  << layer
+      render plain: json_manifest, content_type: 'application/json'
     end
-
-    if true # any notes
-      seed = {
-              '@id' => url_for({ controller: 'iiif', id: work_id, action: 'layer', type: 'notes', only_path: false }),
-              'label' => 'notes layer'
-            }
-      layer = IIIF::Presentation::Layer.new(seed)
-      manifest['otherContent']  << layer
-    end
-
-    render plain: manifest.to_json(pretty: true), content_type: 'application/json'
   end
 
   def canvas
@@ -608,8 +543,6 @@ private
     [html, plaintext]
   end
 
-
-
   def structured_data_label(work, page = nil)
     if page
       'Structured data (field-based or spreadsheet transcriptions) for canvas'
@@ -617,7 +550,6 @@ private
       'Structured data (user-created metadata) for manifest'
     end
   end
-
 
   # stanza to embed within manifests or canvas documents
   def structured_data_reference(work, page = nil)
@@ -787,22 +719,19 @@ private
   end
 
   def dc_source_from_work(work)
-    dc_source = nil
-    if !work.identifier.blank? || work.sc_manifest || work.ia_work
-      dc_source = { 'label' => 'dc:source' }
-      value = []
-      value << work.identifier          if work.identifier
-      value << work.sc_manifest.at_id   if work.sc_manifest
-      value << work.ia_work.book_id     if work.ia_work
-      value << manifest_uri_from_ia(work.ia_work) if work.ia_work
+    return unless work.identifier.present? || work.sc_manifest || work.ia_work
 
-      if value.length == 1
-        dc_source['value'] = value.first
-      else
-        dc_source['value'] = value
-      end
-    end
-    dc_source
+    values = [
+      work.identifier.presence,
+      work.sc_manifest&.at_id,
+      work.ia_work&.book_id,
+      (manifest_uri_from_ia(work.ia_work) if work.ia_work)
+    ].compact
+
+    {
+      'label' => 'dc:source',
+      'value' => values.one? ? values.first : values
+    }
   end
 
   def canvas_id_from_page(page)
@@ -1082,32 +1011,14 @@ private
     end
   end
 
- def annotationlist_from_page(page, type)
-  # annotationlists[] = []
-  case type
-  when 'transcription'
-    unless page.source_text.blank?
-      annotation_list = IIIF::Presentation::AnnotationList.new
-      annotation_list['@id'] = url_for({ controller: 'iiif', action: 'list', page_id: page.id, annotation_type: type, only_path: false })
-      annotation_list['label'] = 'Transcription'
-      annotation_list['sc:forCanvas'] = canvas_id_from_page(page)
+  def annotationlist_from_page(page, type)
+    field = ANNOTATION_FIELDS[type]
+    return if field.nil? || page.public_send(field).blank?
+    IIIF::Presentation::AnnotationList.new.tap do |list|
+      list['@id']          = url_for(controller: 'iiif', action: 'list', page_id: page.id, annotation_type: type, only_path: false)
+      list['label']        = type.capitalize
+      list['sc:forCanvas'] = canvas_id_from_page(page)
     end
-  when 'translation'
-    unless page.source_translation.blank?
-      annotation_list = IIIF::Presentation::AnnotationList.new
-      annotation_list['@id'] = url_for({ controller: 'iiif', action: 'list', page_id: page.id, annotation_type: type, only_path: false })
-      annotation_list['label'] = 'Translation'
-      annotation_list['sc:forCanvas'] = canvas_id_from_page(page)
-    end
-  when 'notes'
-    unless page.notes.blank?   # no comments
-      annotation_list = IIIF::Presentation::AnnotationList.new
-      annotation_list['@id'] = url_for({ controller: 'iiif', action: 'list', page_id: page.id, annotation_type: type, only_path: false })
-      annotation_list['label'] = 'Notes'
-      annotation_list['sc:forCanvas'] = canvas_id_from_page(page)
-    end
-  end
-    annotation_list
   end
 
   def status_service_for_manifest(work)
@@ -1151,6 +1062,108 @@ private
     service['pageStatus'] << 'hasSubjectTags' if page.status_indexed?
     service['pageStatus'] << 'translationNeedsReview' if page.translation_status_needs_review?
     service
+  end
+
+  def build_iiif_manifest(work)
+    work_id = work.id
+    seed = {
+      '@id' => url_for({ controller: 'iiif', action: 'manifest', id: work_id, only_path: false }),
+      'label' => work.title
+    }
+
+    manifest = IIIF::Presentation::Manifest.new(seed)
+    manifest.label = work.title
+    manifest.metadata = [dc_source_from_work(work)].compact + work.merge_metadata
+
+    if work.sc_manifest
+      manifest.description = 'This is an annotated version of the original manifest produced by FromThePage'
+    elsif work.description.present?
+      manifest.description = work.description
+    end
+
+    manifest.within = {
+      '@type' => 'sc:Collection',
+      'label' => work.collection.title,
+      '@id' => iiif_collection_id_from_collection(work.collection)
+    }
+
+    manifest.related = [
+      {
+        'format' => 'text/html',
+        'label' => "Read #{work.title}",
+        '@id' => collection_read_work_url(work.collection.owner, work.collection, work)
+      },
+      {
+        'format' => 'text/html',
+        'label' => "Table of Contents for #{work.title}",
+        '@id' => collection_work_contents_url(work.collection.owner, work.collection, work)
+      }
+    ]
+
+    manifest.seeAlso = []
+    manifest.seeAlso <<
+    { 'label' => 'Verbatim Plaintext',
+      'format' => 'text/plain',
+      'profile' => 'https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#verbatim-plaintext-1',
+      '@id' => iiif_work_export_plaintext_verbatim_url(work.id)
+    }
+    manifest.seeAlso <<
+    { 'label' => 'Emended Plaintext',
+      'format' => 'text/plain',
+      'profile' => 'https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#emended-plaintext',
+      '@id' => iiif_work_export_plaintext_emended_url(work.id)
+    }
+    if work.supports_translation?
+      manifest.seeAlso <<
+      { 'label' => 'Verbatim Translation Plaintext',
+        'format' => 'text/plain',
+        'profile' => 'https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#verbatim-translation-plaintext',
+        '@id' => iiif_work_export_plaintext_translation_verbatim_url(work.id)
+      }
+      manifest.seeAlso <<
+      { 'label' => 'Emended Translation Plaintext',
+        'format' => 'text/plain',
+        'profile' => 'https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#emended-translation-plaintext',
+        '@id' => iiif_work_export_plaintext_translation_emended_url(work.id)
+      }
+    end
+    manifest.seeAlso <<
+      { 'label' => 'Searchable Plaintext',
+        'format' => 'text/plain',
+        'profile' => 'https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#plaintext-for-full-text-search',
+        '@id' => iiif_work_export_plaintext_searchable_url(work.id)
+    }
+    if work.collection.metadata_entry?
+      manifest.seeAlso << structured_data_reference(work)
+    end
+    manifest.service << status_service_for_manifest(work)
+    sequence = iiif_sequence_from_work_id(work_id)
+    manifest.sequences << sequence
+
+    seed = {
+      '@id' => url_for({ controller: 'iiif', id: work_id, action: 'layer', type: 'transcription', only_path: false }),
+      'label' => 'transcription layer'
+    }
+    layer = IIIF::Presentation::Layer.new(seed)
+    manifest['otherContent'] = [layer]
+
+    if work.supports_translation?
+      seed = {
+        '@id' => url_for({ controller: 'iiif', id: work_id, action: 'layer', type: 'translation', only_path: false }),
+        'label' => 'translation layer'
+      }
+      layer = IIIF::Presentation::Layer.new(seed)
+      manifest['otherContent'] << layer
+    end
+
+    seed = {
+      '@id' => url_for({ controller: 'iiif', id: work_id, action: 'layer', type: 'notes', only_path: false }),
+      'label' => 'notes layer'
+    }
+    layer = IIIF::Presentation::Layer.new(seed)
+    manifest['otherContent'] << layer
+
+    manifest
   end
 
   def format_pct(numerator, denominator)

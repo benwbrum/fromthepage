@@ -8,7 +8,9 @@ namespace :fromthepage do
 
       document_upload.attachment.purge if document_upload.attachment.present?
 
-      ActiveStorage::Blob.unattached.where(created_at: ..1.day.ago).find_each(&:purge_later)
+      ActiveStorage::Blob.unattached.where(created_at: ..1.day.ago).find_each(batch_size: 10_000) do |blob|
+        blob.purge
+      end
     end
   end
 end

@@ -26,6 +26,7 @@ de:
         segment_collection: Sammlung segmentieren
         segmentation: Sammlung segmentieren
         segmentation_description: Wenn Sie eine Reihe von Bildern (z. B. einen Ordner) hochladen und anschließend segmentieren, schlagen wir Stellen vor, an denen die Dokumente in einzelne Werke aufgeteilt werden sollten.
+        segmentation_tokens_used: Für die Segmentierung verwendete Token
         total_tokens_used: Insgesamt verwendete Token
       segment:
         success: Der Segmentierungsauftrag wurde gestartet. Sie erhalten eine E-Mail, sobald er abgeschlossen ist.
@@ -84,6 +85,9 @@ de:
       author_contributed_at: "%{author} am %{date}"
       compared_with: Im Vergleich zu
       help_description: Anzeige und Vergleich der Änderungen, die in jeder Revision an dem Metadaten des Werkes vorgenommen wurden. Die linke Spalte zeigt die Metadaten in der ausgewählten Revision, die rechte Spalte zeigt, was geändert wurde. Unveränderter Text wird <span>weiß hervorgehoben</span>, gelöschter Text wird <del>rot hervorgehoben</del> und eingefügter Text wird <ins>grün hervorgehoben</ins>.
+      restore: Wiederherstellen
+      restore_confirm: Möchten Sie diese Version der Werkmetadaten wirklich wiederherstellen? Sie werden zur Metadatenseite weitergeleitet, um sie zu überprüfen.
+      restore_tooltip: Die aktuellen Werkmetadaten durch diese Version ersetzen
       revision: Revision
     download:
       accessible_pdf: Barrierefreies PDF
@@ -232,6 +236,9 @@ de:
       transcribe: Transkribieren
       upload: Hochladen
       upload_page_image: "%{upload} Faksimile"
+    restore_description_version:
+      restored: Die Werkmetadaten wurden auf die ausgewählte Version zurückgesetzt. Bitte überprüfen Sie sie.
+      version_not_found: Metadatenversion nicht gefunden.
     save_description:
       work_described: Ihre Beschreibung wurde gespeichert
     search:

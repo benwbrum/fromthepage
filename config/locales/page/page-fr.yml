@@ -3,6 +3,9 @@ fr:
   page:
     create:
       page_created: Page créée avec succès
+    create_ai_transcription:
+      ai_draft_failed: Échec de la mise en file d'attente du brouillon IA pour cette page
+      ai_draft_queued: Le brouillon IA a été mis en file d'attente pour cette page
     destroy:
       page_deleted: La page a été supprimée
     edit:
@@ -40,6 +43,7 @@ fr:
       page_translation_status: État de la traduction de la page
       rotate_clockwise: Tourner dans le sens horaire
       rotate_counterclockwise: Tourner dans le sens antihoraire
+      run_ai_draft: Run AI Draft
       save_changes: Sauvegarder les modifications
     new:
       add_new_page: Ajouter une nouvelle page
