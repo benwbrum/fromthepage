@@ -3,7 +3,7 @@ pt:
   export:
     accessible_pdf:
       struck_through: 'riscado: %{text}'
-      table_without_headers: 'Tabela conforme transcrita, %{rows} linhas por %{columns} colunas. Os cabeçalhos de coluna não foram marcados na transcrição original, portanto as células são lidas sem eles.'
+      table_without_headers: Tabela conforme transcrita, %{rows} linhas por %{columns} colunas. Os cabeçalhos de coluna não foram marcados na transcrição original, portanto as células são lidas sem eles.
     edit_contentdm_credentials:
       connect: Conectar
       contentdm_credentials: Credenciais do CONTENTdm

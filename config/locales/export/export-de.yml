@@ -3,7 +3,7 @@ de:
   export:
     accessible_pdf:
       struck_through: 'durchgestrichen: %{text}'
-      table_without_headers: 'Tabelle wie transkribiert, %{rows} Zeilen und %{columns} Spalten. Im Original wurden keine Spaltenüberschriften markiert, daher werden die Zellen ohne sie gelesen.'
+      table_without_headers: Tabelle wie transkribiert, %{rows} Zeilen und %{columns} Spalten. Im Original wurden keine Spaltenüberschriften markiert, daher werden die Zellen ohne sie gelesen.
     edit_contentdm_credentials:
       connect: Verbinden
       contentdm_credentials: CONTENTdm-Berechtigung

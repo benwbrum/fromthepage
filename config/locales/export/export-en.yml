@@ -3,7 +3,7 @@ en:
   export:
     accessible_pdf:
       struck_through: 'struck through: %{text}'
-      table_without_headers: 'Table as transcribed, %{rows} rows by %{columns} columns. Column headers were not marked in the original transcription, so cells are read without them.'
+      table_without_headers: Table as transcribed, %{rows} rows by %{columns} columns. Column headers were not marked in the original transcription, so cells are read without them.
     edit_contentdm_credentials:
       connect: Connect
       contentdm_credentials: CONTENTdm Credentials

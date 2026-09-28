@@ -3,7 +3,7 @@ es:
   export:
     accessible_pdf:
       struck_through: 'tachado: %{text}'
-      table_without_headers: 'Tabla según la transcripción, %{rows} filas por %{columns} columnas. Los encabezados de columna no se marcaron en la transcripción original, por lo que las celdas se leen sin ellos.'
+      table_without_headers: Tabla según la transcripción, %{rows} filas por %{columns} columnas. Los encabezados de columna no se marcaron en la transcripción original, por lo que las celdas se leen sin ellos.
     edit_contentdm_credentials:
       connect: Conectar
       contentdm_credentials: Credenciales CONTENTdm
