@@ -1,3 +1,8 @@
-h4 = t('export.facing_edition.contributions_message')
+/ A real section heading, a sibling of "Metadata": the contributions sentence
+/ used to be an <h4>, which Acrobat flagged as a heading nested under nothing
+/ (only h1 "work title" and the h2 page headings precede it).
+h2 = t('export.facing_edition.contributors')
+
+p = t('export.facing_edition.contributions_message')
 
 p =@contributor_names.to_sentence
