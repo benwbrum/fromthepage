@@ -121,6 +121,7 @@ en:
       reasoning_explanation: Reasoning Explanation
     token_usage:
       ai_token_usage: AI Token Usage
+      cached_token_count: 'Cached tokens: %{count}'
       candidates_token_count: 'Output tokens: %{count}'
       prompt_token_count: 'Input tokens: %{count}'
       thoughts_token_count: 'Thoughts tokens: %{count}'

@@ -139,13 +139,16 @@ class AiTranscription::Lib::Gemini::TranscribeHandler < AiTranscription::Lib::Ba
   end
 
   def extract_usage_metadata(response)
-    usage = response['usageMetadata'] || {}
+    usage = response['usageMetadata'] || response[:usageMetadata] || {}
 
     {
-      prompt_token_count: usage['promptTokenCount'],
-      candidates_token_count: usage['candidatesTokenCount'],
-      thoughts_token_count: usage['thoughtsTokenCount'],
-      total_token_count: usage['totalTokenCount']
+      prompt_token_count: usage['promptTokenCount'] || usage[:promptTokenCount],
+      candidates_token_count: usage['candidatesTokenCount'] || usage[:candidatesTokenCount],
+      thoughts_token_count: usage['thoughtsTokenCount'] || usage[:thoughtsTokenCount],
+      cached_token_count: usage['cachedContentTokenCount'] || usage[:cachedContentTokenCount],
+      total_token_count: usage['totalTokenCount'] || usage[:totalTokenCount],
+      prompt_tokens_details: usage['promptTokensDetails'] || usage[:promptTokensDetails],
+      candidates_tokens_details: usage['candidatesTokensDetails'] || usage[:candidatesTokensDetails]
     }.compact
   end
 end
