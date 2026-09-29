@@ -118,6 +118,7 @@ class Work < ApplicationRecord
   has_many :table_cells, dependent: :destroy
   has_many :page_article_links, dependent: :destroy
   has_many :articles, through: :page_article_links
+  has_many :segmentation_logs, dependent: :destroy
 
   has_and_belongs_to_many :scribes,
                           class_name: 'User',

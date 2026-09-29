@@ -22,6 +22,6 @@ class SuspiciousBehaviors::Update < ApplicationInteractor
   private
 
   def user_has_permission?
-    @user.like_owner?(@suspicious_behavior.collection) || @user.collaborator?(@suspicious_behavior.collection)
+    @user.like_owner?(@suspicious_behavior.collection)
   end
 end

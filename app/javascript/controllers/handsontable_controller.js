@@ -116,7 +116,7 @@ export default class extends Controller {
         let value = row[column.id];
 
         if (column.input_type === 'checkbox') {
-          value = (value == 'true') || value ? 'true' : 'false';
+          value = value === true || value === 'true' ? 'true' : 'false';
         }
 
         return value;

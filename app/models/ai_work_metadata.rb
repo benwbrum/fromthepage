@@ -4,10 +4,10 @@
 #
 #  id            :bigint           not null, primary key
 #  metadata      :text(4294967295)
-#  metadata_json :text(4294967295)
+#  metadata_json :text(65535)
 #  model         :string(255)      not null
-#  prompt        :text(4294967295)
-#  reasoning     :text(4294967295)
+#  prompt        :text(65535)
+#  reasoning     :text(65535)
 #  status        :string(255)      default("new")
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null

@@ -57,6 +57,10 @@
             p =t('.segmentation_description')
             =link_to(segment_collection_work_ai_transcriptions_path(collection.owner, collection, work), class: 'button action-btn', data: { turbo: true, turbo_method: :post })
               span =t('.segment_collection')
+            -if @segmentation_token_count.to_i > 0
+              .collection-stats_counters[style='margin-top: 10px;']
+                .counter [data-prefix=@segmentation_token_count]
+                  =t('.segmentation_tokens_used')
             =form_for :work, url: segmentation_setting_collection_work_ai_transcriptions_path(collection.owner, collection, work), method: :patch, html: { style: 'margin-top: 10px;', data: { controller: 'form', action: 'change->form#requestSubmit', turbo: true } } do |f|
               =f.check_box :edit_metadata_after_split, checked: work.edit_metadata_after_split?, disabled: !collection.metadata_entry? || !collection.metadata_fields.exists?
               =f.label :edit_metadata_after_split

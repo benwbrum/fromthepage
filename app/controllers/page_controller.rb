@@ -77,6 +77,22 @@ class PageController < ApplicationController
     redirect_to work_pages_tab_path(work_id: @work.id)
   end
 
+  def create_ai_transcription
+    result = AiTranscription::Create.new(page: @page, user: current_user, retranscribe: true).call
+
+    if result.success?
+      AiTranscription::GenerateJob.perform_later(
+        ai_transcription_id: result.ai_transcription.id,
+        user_id: current_user.id
+      )
+      flash[:notice] = t('.ai_draft_queued')
+    else
+      flash[:error] = t('.ai_draft_failed')
+    end
+
+    redirect_to collection_edit_page_path(@collection.owner, @collection, @work, @page)
+  end
+
   def alto_xml
     # Transkribus ALTO does not include an ID on the String element, but we need one for Annotorious
     # we need to read the alto file and iterate over every string element, adding an ID attribute

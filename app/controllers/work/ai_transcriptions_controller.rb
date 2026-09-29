@@ -113,5 +113,10 @@ class Work::AiTranscriptionsController < WorkController
     @total_token_count = latest_ai_transcriptions
       .where(status: :finished)
       .sum("COALESCE(JSON_EXTRACT(metadata, '$.prompt_token_count'), 0) + COALESCE(JSON_EXTRACT(metadata, '$.candidates_token_count'), 0) + COALESCE(JSON_EXTRACT(metadata, '$.thoughts_token_count'), 0)")
+
+    @segmentation_token_count = @work.segmentation_logs
+      .finished
+      .sum("COALESCE(JSON_EXTRACT(metadata, '$.prompt_token_count'), 0) + COALESCE(JSON_EXTRACT(metadata, '$.candidates_token_count'), 0) + COALESCE(JSON_EXTRACT(metadata, '$.thoughts_token_count'), 0)")
+      .to_i
   end
 end

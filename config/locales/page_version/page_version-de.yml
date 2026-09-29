@@ -1,6 +1,10 @@
 ---
 de:
   page_version:
+    revert:
+      not_authorized: Sie sind nicht berechtigt, diese Seite zurückzusetzen.
+      reverted: Die Seite wurde auf die ausgewählte Version zurückgesetzt. Bitte prüfen und speichern Sie sie.
+      version_not_found: Version nicht gefunden.
     show:
       ai_draft_used: AI Draft verwendet
       author_contributed_at: "%{author} am %{date}"
@@ -16,5 +20,8 @@ de:
       page_version_status_needs_review: benötigt Überprüfung
       page_version_status_review: Rezension
       page_version_status_transcribed: transkribiert
+      restore: Wiederherstellen
+      restore_tooltip: Den aktuellen Text durch die Transkription dieser Version ersetzen
+      revert_confirm: Sind Sie sicher, dass Sie auf diese Version zurücksetzen möchten? Sie werden zur Transkriptionsansicht weitergeleitet, um die Änderung zu prüfen und zu speichern.
       translation: Übersetzung
       untitled: Ohne Titel

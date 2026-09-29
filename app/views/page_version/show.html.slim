@@ -40,13 +40,16 @@ table.diff-versions(data-fullheight='{ "bottom": 30, "cssrule": "min-height" }')
         div.version-col
           div.diff-title
             - if @selected_version
-              = t('.author_contributed_at', author: selected_version_user, date: selected_version_date).html_safe
-              - if @selected_version.ai_draft_used
-                b
-                  = ' - '
-                  i
-                    = t('.ai_draft_used')
-                    = svg_symbol '#icon-robot', class: 'icon', style: 'margin-left: 5px; stroke: yellow;'
+              span.diff-title-label
+                = t('.author_contributed_at', author: selected_version_user, date: selected_version_date).html_safe
+                - if @selected_version.ai_draft_used
+                  b
+                    = ' - '
+                    i
+                      = t('.ai_draft_used')
+                      = svg_symbol '#icon-robot', class: 'icon', style: 'margin-left: 5px; stroke: yellow;'
+              - if current_user&.like_owner?(@work) && !@selected_version.current_version?
+                = button_to t('.restore'), page_version_revert_path(page_version_id: @selected_version.id), method: :post, form_class: 'diff-title-action', title: t('.restore_tooltip'), data: { confirm: t('.revert_confirm') }
           div.version-content
             - if @selected_version&.page_version && @previous_version&.page_version
               - if @selected_version.page_version > @previous_version.page_version
@@ -96,7 +99,7 @@ table.diff-versions(data-fullheight='{ "bottom": 30, "cssrule": "min-height" }')
                     == xml_to_html(@selected_version&.xml_translation)
         div.version-col.right
           div.diff-title
-            =form_tag({ :action => 'show' }, :method => 'get', :enforce_utf8 => false, :'data-compare-with' => '') do
+            =form_tag({ :action => 'show' }, :method => 'get', :enforce_utf8 => false, :'data-compare-with' => '', class: 'diff-title-compare-form') do
               =hidden_field_tag :page_version_id, @selected_version&.id
               =label_tag :compare_version_id, t('.compared_with')
               =select_tag :compare_version_id, options_from_collection_for_select(@page_versions, :id, :display, (@previous_version ? @previous_version.id.to_s : ''))

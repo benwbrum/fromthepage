@@ -37,7 +37,9 @@ namespace :fromthepage do
       pages = Page.where(id: start_from_id..Float::INFINITY)
     end
 
+    attached_page_ids = ActiveStorage::Attachment.where(record_type: 'Page', name: 'image').select(:record_id)
     pages = pages.where.not(base_image: [nil, ''])
+                 .where.not(id: attached_page_ids)
 
     log(
       logger: logger,
@@ -115,9 +117,7 @@ namespace :fromthepage do
       msg: 'Migration complete'
     )
   end
-end
 
-namespace :fromthepage do
   desc 'Delete legacy page images migrated to ActiveStorage for a user or collection slug'
   task :delete_migrated_page_images, [:slug] => :environment do |_task, args|
     require 'open3'

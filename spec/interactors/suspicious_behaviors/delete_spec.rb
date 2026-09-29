@@ -30,9 +30,10 @@ describe SuspiciousBehaviors::Delete do
       ).call
     end
 
-    it 'destroys suspicious_behavior' do
-      expect(result.success?).to be_truthy
-      expect(result.suspicious_behavior.destroyed?).to be_truthy
+    it 'does not destroy suspicious_behavior' do
+      expect(result.success?).to be_falsey
+      expect(result.suspicious_behavior.destroyed?).to be_falsey
+      expect(SuspiciousBehavior.exists?(suspicious_behavior.id)).to be_truthy
     end
   end
 

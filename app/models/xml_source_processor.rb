@@ -107,7 +107,7 @@ module XmlSourceProcessor
                     ''
     end
 
-    xml_string = String.new(source_text)
+    xml_string = String.new(source_text.to_s)
     xml_string = process_latex_snippets(xml_string)
     xml_string = clean_bad_braces(xml_string)
     xml_string = clean_script_tags(xml_string)

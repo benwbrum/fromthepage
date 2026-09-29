@@ -3,6 +3,9 @@ de:
   page:
     create:
       page_created: Seite erfolgreich erstellt
+    create_ai_transcription:
+      ai_draft_failed: AI-Entwurf konnte für diese Seite nicht in die Warteschlange gestellt werden
+      ai_draft_queued: AI-Entwurf wurde für diese Seite in die Warteschlange gestellt
     destroy:
       page_deleted: Seite wurde gelöscht
     edit:
@@ -40,6 +43,7 @@ de:
       page_translation_status: Übersetzungsstatus
       rotate_clockwise: Im Uhrzeigersinn drehen
       rotate_counterclockwise: Gegen den Uhrzeigersinn drehen
+      run_ai_draft: Run AI Draft
       save_changes: Änderungen speichern
     new:
       add_new_page: Neue Seite hinzufügen

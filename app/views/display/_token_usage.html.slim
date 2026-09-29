@@ -10,5 +10,7 @@
         p =t('.candidates_token_count', count: metadata['candidates_token_count'])
       - if metadata['thoughts_token_count']
         p =t('.thoughts_token_count', count: metadata['thoughts_token_count'])
+      - if metadata['cached_token_count']
+        p =t('.cached_token_count', count: metadata['cached_token_count'])
       - if metadata['total_token_count']
         p =t('.total_token_count', count: metadata['total_token_count'])

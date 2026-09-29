@@ -191,8 +191,10 @@ module ExportHelper
         end
 
         if bulk_export.accessible_pdf_work
-          # NOTE: Facing editions should always preserve_lb
-          export_grover_printable_to_zip(work, path, by_work, original_filenames, true, include_metadata, include_contributors, include_notes, bulk_export.accessible_pdf_source, bulk_export.accessible_pdf_prepend_ai_warnings)
+          # The accessible PDF is a reflowed reading copy: do not preserve
+          # source line breaks (Work::Export::AccessiblePdfHtml collapses them
+          # so Chrome does not fragment every paragraph in the tag tree).
+          export_grover_printable_to_zip(work, path, by_work, original_filenames, false, include_metadata, include_contributors, include_notes, bulk_export.accessible_pdf_source, bulk_export.accessible_pdf_prepend_ai_warnings)
         end
 
         if bulk_export.text_pdf_work
@@ -464,8 +466,11 @@ module ExportHelper
       end
     end
     category.children.each do |child|
-      has_content = true
-      tei << category_to_tei(child, subjects, seen_subjects)
+      child_tei = category_to_tei(child, subjects, seen_subjects)
+      unless child_tei.empty?
+        has_content = true
+        tei << child_tei
+      end
     end
     tei << "</category>\n"
 

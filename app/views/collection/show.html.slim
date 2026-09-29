@@ -73,7 +73,7 @@
 
             -if @collection.metadata_entry? && work.description_status != Work::DescriptionStatus::DESCRIBED && !work.has_untranscribed_pages?
               p.collection-work_action
-                -if work.user_can_transcribe?(current_user)
+                -if current_user&.can_transcribe?(work, @collection)
                   =t('.this_work_has_not_been_described')
                   span &nbsp;
                   =link_to(t('.help_create_metadata'), describe_collection_work_path(@collection.owner, @collection, work), onclick: "resultClicked();")
@@ -140,7 +140,7 @@
         =search_field_tag :search_by_title, @search_attemp&.query, placeholder: t('.search_by_title')
         =button_tag t('.search')
 
-    -if user_signed_in? && notes_visible?(@collection, current_user) && (@collection.is_a?(Collection) || current_user&.can_transcribe?(nil, @collection))
+    -if user_signed_in? && notes_visible?(@collection, current_user) && current_user.can_transcribe?(nil, @collection)
       -if @collection.active? && @collection.text_entry?
         ruby:
           pages_need_correction_count = Page.where(work_id: @collection.work_ids, status: [:new, :incomplete]).count

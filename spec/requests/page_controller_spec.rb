@@ -120,6 +120,40 @@ describe PageController do
 
         expect(response).to have_http_status(:ok)
         expect(response).to render_template(:edit)
+        expect(response.body).to include(I18n.t('page.form.run_ai_draft'))
+      end
+    end
+
+    context 'user is individual researcher owner' do
+      let(:owner) { create(:owner, account_type: 'Individual Researcher') }
+      let(:collection) { create(:collection, owner_user_id: owner.id) }
+      let(:work) { create(:work, collection: collection) }
+      let!(:page) { create(:page, :with_image, work: work, status: :new) }
+
+      it 'renders status and hides run ai draft button' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:edit)
+        expect(response.body).not_to include(I18n.t('page.form.run_ai_draft'))
+      end
+    end
+
+    context 'user is staff owner' do
+      let(:staff_user) { create(:user) }
+
+      before do
+        collection.owners << staff_user
+      end
+
+      it 'renders status and shows run ai draft button' do
+        login_as staff_user
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:edit)
+        expect(response.body).to include(I18n.t('page.form.run_ai_draft'))
       end
     end
   end
@@ -217,6 +251,68 @@ describe PageController do
 
       expect(response).to have_http_status(:redirect)
       expect(response).to redirect_to(work_pages_tab_path(work_id: work.id))
+    end
+  end
+
+  describe '#create_ai_transcription' do
+    let(:action_path) { create_ai_transcription_page_path(page_id: page.id) }
+
+    let(:subject) { post action_path }
+
+    context 'when successful' do
+      before do
+        ai_transcription = instance_double(AiTranscription, id: 1)
+        result = instance_double(AiTranscription::Create, success?: true, ai_transcription: ai_transcription)
+        allow(AiTranscription::Create).to receive(:new).and_return(double(call: result))
+        allow(AiTranscription::GenerateJob).to receive(:perform_later)
+      end
+
+      it 'redirects to page edit path' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(collection_edit_page_path(owner, collection, work, page.id))
+      end
+
+      it 'enqueues generate job' do
+        login_as owner
+        subject
+
+        expect(AiTranscription::GenerateJob).to have_received(:perform_later)
+      end
+
+      context 'when user is staff owner' do
+        let(:staff_user) { create(:user) }
+
+        before do
+          collection.owners << staff_user
+        end
+
+        it 'enqueues generate job' do
+          login_as staff_user
+          subject
+
+          expect(response).to have_http_status(:redirect)
+          expect(response).to redirect_to(collection_edit_page_path(owner, collection, work, page.id))
+          expect(AiTranscription::GenerateJob).to have_received(:perform_later)
+        end
+      end
+    end
+
+    context 'when failed' do
+      before do
+        result = instance_double(AiTranscription::Create, success?: false)
+        allow(AiTranscription::Create).to receive(:new).and_return(double(call: result))
+      end
+
+      it 'redirects to page edit path' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(collection_edit_page_path(owner, collection, work, page.id))
+      end
     end
   end
 end
