@@ -49,6 +49,7 @@ describe Work::AiTranscriptionsController do
         settings = response.parsed_body.at_css('#collection-settings > .collection-settings-wrapper')
 
         expect(settings.at_css('#ai-work-metadata-settings')).to be_present
+        expect(response.parsed_body.css('#ai-work-metadata-settings').size).to eq(1)
         expect(response.parsed_body.css('#collection-settings > .collection-settings-wrapper').size).to eq(1)
       end
 
@@ -65,6 +66,7 @@ describe Work::AiTranscriptionsController do
         subject
 
         expect(response.parsed_body.at_css('#ai-work-metadata-settings')).to be_present
+        expect(response.parsed_body.css('#ai-work-metadata-settings').size).to eq(1)
       end
 
       it 'shows the segmentation section' do
