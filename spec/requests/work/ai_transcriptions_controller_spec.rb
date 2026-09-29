@@ -49,7 +49,8 @@ describe Work::AiTranscriptionsController do
         metadata_settings = response.parsed_body.at_css('#ai-work-metadata-settings')
 
         expect(response.parsed_body.css('#ai-work-metadata-settings').size).to eq(1)
-        expect(metadata_settings.parent['id']).to eq('collection-settings')
+        expect(metadata_settings.ancestors('.collection-settings-wrapper').size).to eq(1)
+        expect(metadata_settings.css('.collection-settings-wrapper')).to be_empty
         expect(response.parsed_body.css('#collection-settings > .collection-settings-wrapper').size).to eq(1)
       end
 
