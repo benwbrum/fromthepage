@@ -132,6 +132,7 @@ describe Collection::AiTranscriptionsController do
         it 'renders failed work metadata draft details alongside the transcription section' do
           login_as owner
           get '/feature/ai_work_metadata/enable'
+          collection.update!(data_entry_type: 'text_and_metadata')
           subject
 
           expect(response.body).to include('Failed metadata draft errors')
