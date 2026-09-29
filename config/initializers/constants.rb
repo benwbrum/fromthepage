@@ -26,3 +26,7 @@ GIS_DECIMAL_PRECISION = 5
 LIST_NUM_COLUMNS = 3
 
 SUPPORT_EMAIL = 'support@fromthepage.com'
+
+ACTIVE_STORAGE_PROXY_LIST = [
+  'acadcurator'
+].freeze
