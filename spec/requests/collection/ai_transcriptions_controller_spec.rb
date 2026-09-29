@@ -41,10 +41,10 @@ describe Collection::AiTranscriptionsController do
         get '/feature/ai_work_metadata/enable'
         subject
 
-        settings = response.parsed_body.at_css('#collection-settings > .collection-settings-wrapper')
+        metadata_settings = response.parsed_body.at_css('#ai-work-metadata-settings')
 
-        expect(settings.at_css('#ai-work-metadata-settings')).to be_present
         expect(response.parsed_body.css('#ai-work-metadata-settings').size).to eq(1)
+        expect(metadata_settings.parent['id']).to eq('collection-settings')
         expect(response.parsed_body.css('#collection-settings > .collection-settings-wrapper').size).to eq(1)
       end
 
