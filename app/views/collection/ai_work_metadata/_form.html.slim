@@ -1,57 +1,56 @@
-.collection-settings-wrapper
-  table.form.collection-settings
-    -if collection.metadata_fields.exists?
-      tr
-        td(colspan="2")
-          h3 =t('.heading')
-          -if @not_started_work_metadata_count.positive? || @failed_work_metadata_count.positive?
-            p =t('.description')
-          -else
-            p =t('.description_complete')
-          div[style='margin: 5px 0']
-            =link_to(collection_ai_work_metadata_path(collection.owner, collection), class: 'button action-btn', data: { turbo: true, turbo_method: :post })
-              span =t('.generate')
+table.form.collection-settings
+  -if collection.metadata_fields.exists?
+    tr
+      td(colspan="2")
+        h3 =t('.heading')
+        -if @not_started_work_metadata_count.positive? || @failed_work_metadata_count.positive?
+          p =t('.description')
+        -else
+          p =t('.description_complete')
+        div[style='margin: 5px 0']
+          =link_to(collection_ai_work_metadata_path(collection.owner, collection), class: 'button action-btn', data: { turbo: true, turbo_method: :post })
+            span =t('.generate')
 
-      tr
-        td(colspan="2")
-          =fe_stacked_bar(title: 'Works', labels: [t('.finished'), t('.in_progress'), t('.failed'), t('.not_started')], \
-            values: [@finished_work_metadata_count, @queued_work_metadata_count, @failed_work_metadata_count, @not_started_work_metadata_count], colors: AiWorkMetadata::FE_COLOR_STATUSES.values, \
-            options: { legend_position: 'bottom', tooltip_enabled: true, border_radius: 20 })
+    tr
+      td(colspan="2")
+        =fe_stacked_bar(title: 'Works', labels: [t('.finished'), t('.in_progress'), t('.failed'), t('.not_started')], \
+          values: [@finished_work_metadata_count, @queued_work_metadata_count, @failed_work_metadata_count, @not_started_work_metadata_count], colors: AiWorkMetadata::FE_COLOR_STATUSES.values, \
+          options: { legend_position: 'bottom', tooltip_enabled: true, border_radius: 20 })
 
-      tr
-        td(colspan="2")
-          section.collection-stats
-            .collection-stats_counters
-              .counter [data-prefix=@works_count]
-                =t('.works')
-            .collection-stats_counters
-              .counter [data-prefix=@finished_work_metadata_count]
-                =t('.finished')
-              .counter [data-prefix=@queued_work_metadata_count]
-                =t('.queued')
-              .counter [data-prefix=@failed_work_metadata_count]
-                =t('.failed')
-              .counter [data-prefix=@not_started_work_metadata_count]
-                =t('.not_started')
-          -if @total_work_metadata_token_count.to_i > 0
-            .collection-stats_counters
-              .counter [data-prefix=@total_work_metadata_token_count]
-                =t('.total_tokens_used')
+    tr
+      td(colspan="2")
+        section.collection-stats
+          .collection-stats_counters
+            .counter [data-prefix=@works_count]
+              =t('.works')
+          .collection-stats_counters
+            .counter [data-prefix=@finished_work_metadata_count]
+              =t('.finished')
+            .counter [data-prefix=@queued_work_metadata_count]
+              =t('.queued')
+            .counter [data-prefix=@failed_work_metadata_count]
+              =t('.failed')
+            .counter [data-prefix=@not_started_work_metadata_count]
+              =t('.not_started')
+        -if @total_work_metadata_token_count.to_i > 0
+          .collection-stats_counters
+            .counter [data-prefix=@total_work_metadata_token_count]
+              =t('.total_tokens_used')
 
-      -if @failed_ai_work_metadata.present?
-        tr
-          td(colspan="2")
-            h4 =t('.failed_work_metadata_errors')
-            ul
-              -@failed_ai_work_metadata.each do |ai_work_metadata|
-                li
-                  =link_to ai_work_metadata.work.title, describe_collection_work_path(collection.owner, collection, ai_work_metadata.work)
-                  |  —
-                  =link_to ai_work_metadata.short_error_message, collection_ai_work_metadatum_path(user_slug: collection.owner.to_param, collection_id: collection.to_param, id: ai_work_metadata.id)
-            -if @failed_ai_work_metadata_hidden_count.positive?
-              p =t('.failed_work_metadata_errors_hidden', count: @failed_ai_work_metadata_hidden_count)
-    -else
+    -if @failed_ai_work_metadata.present?
       tr
         td(colspan="2")
-          h3 =t('.heading')
-          p =t('.no_metadata_fields')
+          h4 =t('.failed_work_metadata_errors')
+          ul
+            -@failed_ai_work_metadata.each do |ai_work_metadata|
+              li
+                =link_to ai_work_metadata.work.title, describe_collection_work_path(collection.owner, collection, ai_work_metadata.work)
+                |  —
+                =link_to ai_work_metadata.short_error_message, collection_ai_work_metadatum_path(user_slug: collection.owner.to_param, collection_id: collection.to_param, id: ai_work_metadata.id)
+          -if @failed_ai_work_metadata_hidden_count.positive?
+            p =t('.failed_work_metadata_errors_hidden', count: @failed_ai_work_metadata_hidden_count)
+  -else
+    tr
+      td(colspan="2")
+        h3 =t('.heading')
+        p =t('.no_metadata_fields')

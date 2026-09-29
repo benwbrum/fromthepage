@@ -323,4 +323,19 @@ describe Collection do
       expect(collection.reload.transcriber_segmentation_enabled?).to be(false)
     end
   end
+
+  describe '#ai_work_metadata_enabled?' do
+    let(:collection) { create(:collection) }
+    let(:work) { create(:work, collection: collection) }
+
+    it 'is false before the collection has any metadata drafts' do
+      expect(collection.ai_work_metadata_enabled?).to be(false)
+    end
+
+    it 'is true after a metadata draft has been created for a work' do
+      create(:ai_work_metadata, work: work)
+
+      expect(collection.ai_work_metadata_enabled?).to be(true)
+    end
+  end
 end
