@@ -3,4 +3,6 @@
 <% else %>
   <%= turbo_flash(t('errors.error'), :error) %>
 <% end %>
-<%= turbo_stream.update('ai-work-metadata-settings', partial: 'work/ai_work_metadata/form', locals: { collection: @collection, work: @work }) %>
+<% if ai_work_metadata_form_available?(@collection) %>
+  <%= turbo_stream.update('ai-work-metadata-settings', partial: 'work/ai_work_metadata/form', locals: { collection: @collection, work: @work }) %>
+<% end %>

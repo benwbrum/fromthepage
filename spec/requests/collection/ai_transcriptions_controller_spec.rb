@@ -39,6 +39,8 @@ describe Collection::AiTranscriptionsController do
       it 'places metadata draft settings beneath transcription settings' do
         login_as owner
         get '/feature/ai_work_metadata/enable'
+        collection.update!(data_entry_type: 'text_and_metadata')
+        create(:transcription_field, :as_metadata, :text_field, collection: collection)
         subject
 
         metadata_settings = response.parsed_body.at_css('#ai-work-metadata-settings')
@@ -56,13 +58,32 @@ describe Collection::AiTranscriptionsController do
         expect(response.parsed_body.at_css('#ai-work-metadata-settings')).not_to be_present
       end
 
-      it 'shows metadata draft settings without the feature flag when drafts are already enabled' do
+      it 'hides metadata draft settings without the feature flag when drafts are already enabled' do
         create(:ai_work_metadata, work: work, status: :finished)
+        collection.update!(data_entry_type: 'text_and_metadata')
+        create(:transcription_field, :as_metadata, :text_field, collection: collection)
         login_as owner
         subject
 
-        expect(response.parsed_body.at_css('#ai-work-metadata-settings')).to be_present
-        expect(response.parsed_body.css('#ai-work-metadata-settings').size).to eq(1)
+        expect(response.parsed_body.at_css('#ai-work-metadata-settings')).not_to be_present
+      end
+
+      it 'hides metadata draft settings when metadata description is disabled' do
+        create(:transcription_field, :as_metadata, :text_field, collection: collection)
+        login_as owner
+        get '/feature/ai_work_metadata/enable'
+        subject
+
+        expect(response.parsed_body.at_css('#ai-work-metadata-settings')).not_to be_present
+      end
+
+      it 'hides metadata draft settings when no metadata fields exist' do
+        collection.update!(data_entry_type: 'text_and_metadata')
+        login_as owner
+        get '/feature/ai_work_metadata/enable'
+        subject
+
+        expect(response.parsed_body.at_css('#ai-work-metadata-settings')).not_to be_present
       end
 
       context 'with more than 1 result' do
