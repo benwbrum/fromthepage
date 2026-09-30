@@ -408,6 +408,10 @@ class Collection < ApplicationRecord
     allow_transcriber_segmentation? && transcriber_segmentation_available?
   end
 
+  def ai_work_metadata_enabled?
+    works.joins(:ai_work_metadata).exists?
+  end
+
   def set_next_untranscribed_page
     first_work = works.unrestricted.where.not(next_untranscribed_page_id: nil).order_by_incomplete.first
     first_page = first_work&.next_untranscribed_page

@@ -68,6 +68,9 @@ fr:
       percentage_title: Pourcentage de la largeur de ligne à utiliser pour ce champ.
       percentage_width: Largeur %
     metadata_field_layout:
+      ai_both_agree: Les deux modèles d'IA sont d'accord
+      ai_disagree_header: Les modèles d'IA sont en désaccord — vérifiez et choisissez-en un
+      ai_option_placeholder: Cliquez sur une suggestion ci-dessous, ou saisissez votre propre valeur…
       instructions: Des instructions
     multiselect_form:
       options_form_description: Entrez les options pour le champ de métadonnées à sélection multiple, chaque option sur une ligne distincte

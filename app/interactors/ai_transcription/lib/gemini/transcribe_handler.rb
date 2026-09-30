@@ -1,18 +1,11 @@
+require Rails.root.join('lib/gemini/model_support')
+
 class AiTranscription::Lib::Gemini::TranscribeHandler < AiTranscription::Lib::BaseTranscribeHandler
   # Follows key (model_name) value (version)
   # Add custom handling here if the model you are using
   # does not use `v1`
-  VERSION_MAP = {
-    'gemini-3.1-pro-preview' => 'v1beta',
-    'gemini-3-flash-preview' => 'v1beta',
-    'gemini-3.5-flash' => 'v1beta',
-    'gemini-3.6-flash' => 'v1beta',
-    'gemini-3.7-flash' => 'v1beta'
-  }.freeze
-
-  REASONING_MAP = {
-    'gemini-3.1-pro-preview' => true
-  }
+  VERSION_MAP = ::Gemini::ModelSupport::VERSION_MAP
+  REASONING_MAP = ::Gemini::ModelSupport::REASONING_MAP
 
   def perform
     attempt = 0
