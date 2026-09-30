@@ -36,9 +36,13 @@ describe 'display marked as blank' do
   it 'shows pages marked blank with a relative time in the short activity sidebar', js: true do
     visit collections_list_path
 
+    # Lazy loaded deeds workaround
     lazy_frame = page.find('turbo-frame#lazy_deeds')
-    expect(lazy_frame).to have_content("#{user.display_name} marked #{blank_page.title} as blank")
-    expect(lazy_frame.find('time.timeago').text).to end_with('ago')
+    expect(lazy_frame[:src]).to be_present
+    visit lazy_frame[:src]
+
+    expect(page).to have_content("#{user.display_name} marked #{blank_page.title} as blank")
+    expect(page.find('time.timeago').text).to end_with('ago')
   end
 
   it 'shows pages marked blank with a relative time in the long activity sidebar', js: true do
@@ -47,7 +51,10 @@ describe 'display marked as blank' do
     expect(page).to have_content('Recent Edits')
 
     lazy_frame = page.find('turbo-frame#lazy_deeds')
-    expect(lazy_frame).to have_content("#{user.display_name} marked #{blank_page.title} as blank")
-    expect(lazy_frame.find('time.timeago').text).to end_with('ago')
+    expect(lazy_frame[:src]).to be_present
+    visit lazy_frame[:src]
+
+    expect(page).to have_content("#{user.display_name} marked #{blank_page.title} as blank")
+    expect(page.find('time.timeago').text).to end_with('ago')
   end
 end
