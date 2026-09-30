@@ -36,10 +36,3 @@ h1 =t('dashboard.collaborator')
       = link_to t('.your_hours'), dashboard_your_hours_path, class: 'button outline small'
     turbo-frame id="lazy_deeds" src=dashboard_deeds_path(limit: 10) loading="lazy"
       = render partial: 'shared/components/loading'
-
--content_for :javascript
-  javascript:
-    $(document).ready(function() {
-      $("time.timeago").timeago("setLocale", '#{I18n.locale}');
-      $("time.timeago").timeago();
-    });

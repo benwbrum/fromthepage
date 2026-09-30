@@ -19,6 +19,8 @@
 //= require clipboard
 
 $(function() {
+  initializeTimeago(document);
+
   $('[data-fullheight]').fullheight();
 
   // Global page loading spinner
@@ -50,6 +52,26 @@ $(function() {
     duration: [100, 200],
     maxWidth: 300,
   });
+});
+
+// Initialize relative timestamps rendered with the page or inserted later by
+// a lazy-loaded Turbo frame.
+function initializeTimeago(container) {
+  var $container = $(container);
+  var $timestamps = $container.is('time.timeago')
+    ? $container
+    : $container.find('time.timeago');
+
+  if ($timestamps.length === 0) {
+    return;
+  }
+
+  $timestamps.timeago('setLocale', document.documentElement.lang);
+  $timestamps.timeago();
+}
+
+document.addEventListener('turbo:frame-load', function(event) {
+  initializeTimeago(event.target);
 });
 
 //Enable and disable select options for field-based transcription
