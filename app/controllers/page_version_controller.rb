@@ -42,7 +42,8 @@ class PageVersionController < ApplicationController
       xml_text: version.xml_transcription,
       title: version.title,
       source_translation: version.source_translation,
-      xml_translation: version.xml_translation
+      xml_translation: version.xml_translation,
+      transcription_json: version.transcription_json
     }
     page_attributes[:status] = version.status if version.status.present?
 
