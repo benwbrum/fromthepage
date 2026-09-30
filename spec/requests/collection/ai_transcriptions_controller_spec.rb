@@ -36,6 +36,56 @@ describe Collection::AiTranscriptionsController do
         expect(response).to render_template(:edit)
       end
 
+      it 'places metadata draft settings beneath transcription settings' do
+        login_as owner
+        get '/feature/ai_work_metadata/enable'
+        collection.update!(data_entry_type: 'text_and_metadata')
+        create(:transcription_field, :as_metadata, :text_field, collection: collection)
+        subject
+
+        metadata_settings = response.parsed_body.at_css('#ai-work-metadata-settings')
+
+        expect(response.parsed_body.css('#ai-work-metadata-settings').size).to eq(1)
+        expect(metadata_settings.ancestors('.collection-settings-wrapper').size).to eq(1)
+        expect(metadata_settings.css('.collection-settings-wrapper')).to be_empty
+        expect(response.parsed_body.css('#collection-settings > .collection-settings-wrapper').size).to eq(1)
+      end
+
+      it 'hides metadata draft settings when the feature is disabled' do
+        login_as owner
+        subject
+
+        expect(response.parsed_body.at_css('#ai-work-metadata-settings')).not_to be_present
+      end
+
+      it 'hides metadata draft settings without the feature flag when drafts are already enabled' do
+        create(:ai_work_metadata, work: work, status: :finished)
+        collection.update!(data_entry_type: 'text_and_metadata')
+        create(:transcription_field, :as_metadata, :text_field, collection: collection)
+        login_as owner
+        subject
+
+        expect(response.parsed_body.at_css('#ai-work-metadata-settings')).not_to be_present
+      end
+
+      it 'hides metadata draft settings when metadata description is disabled' do
+        create(:transcription_field, :as_metadata, :text_field, collection: collection)
+        login_as owner
+        get '/feature/ai_work_metadata/enable'
+        subject
+
+        expect(response.parsed_body.at_css('#ai-work-metadata-settings')).not_to be_present
+      end
+
+      it 'hides metadata draft settings when no metadata fields exist' do
+        collection.update!(data_entry_type: 'text_and_metadata')
+        login_as owner
+        get '/feature/ai_work_metadata/enable'
+        subject
+
+        expect(response.parsed_body.at_css('#ai-work-metadata-settings')).not_to be_present
+      end
+
       context 'with more than 1 result' do
         let!(:page_2) { create(:page, work: work) }
         let!(:ai_transcription_2) { create(:ai_transcription, page_id: page_2.id, status: :finished, source_text: nil, reasoning: nil) }
@@ -70,6 +120,23 @@ describe Collection::AiTranscriptionsController do
           expect(response.body).to include('Failed Collection Page')
           expect(response.body).to include('Failed Work')
           expect(response.body).to include(collection_display_page_path(owner, collection, work_2, failed_page))
+        end
+      end
+
+      context 'with failed ai work metadata' do
+        let!(:metadata_field) { create(:transcription_field, :as_metadata, :text_field, collection_id: collection.id) }
+        let!(:failed_ai_work_metadata) do
+          create(:ai_work_metadata, work_id: work.id, status: :error, metadata: { error_message: 'RECITATION' })
+        end
+
+        it 'renders failed work metadata draft details alongside the transcription section' do
+          login_as owner
+          get '/feature/ai_work_metadata/enable'
+          collection.update!(data_entry_type: 'text_and_metadata')
+          subject
+
+          expect(response.body).to include('Failed metadata draft errors')
+          expect(response.body).to include('RECITATION')
         end
       end
     end

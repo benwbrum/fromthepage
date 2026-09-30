@@ -41,5 +41,27 @@ RSpec.describe 'Gemini model support' do
         )
       )
     end
+
+    %w[
+      gemini-3.1-pro-preview
+      gemini-3-flash-preview
+      gemini-3.5-flash
+      gemini-3.6-flash
+      gemini-3.7-flash
+    ].each do |model|
+      it "includes thought summaries in requests to #{model}" do
+        allow(ENV).to receive(:[]).with('GEMINI_API_KEY').and_return('fake-key')
+        allow(described_class).to receive(:fetch_and_encode_image).and_return('fake-image-data')
+
+        client = double('gemini-client', stream_generate_content: [])
+        allow(::Gemini).to receive(:new).and_return(client)
+
+        described_class.transcribe_image('http://example.com/image.jpg', prompt: 'Transcribe', model: model)
+
+        expect(client).to have_received(:stream_generate_content).with(
+          hash_including(generation_config: { thinking_config: { include_thoughts: true } })
+        )
+      end
+    end
   end
 end

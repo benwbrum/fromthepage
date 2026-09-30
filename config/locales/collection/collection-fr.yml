@@ -22,6 +22,31 @@ fr:
         total_tokens_used: Total de tokens utilisés
       update:
         success: Nouvelle tentative de transcription par IA.
+    ai_work_metadata:
+      create:
+        success: Tâche de brouillon de métadonnées par IA lancée.
+      form:
+        description: Lancer des tâches de brouillon de métadonnées par IA pour les œuvres qui en sont dépourvues.
+        description_complete: Toutes les œuvres de cette collection comportent des brouillons de métadonnées par IA.
+        failed: Échoué
+        failed_work_metadata_errors: Erreurs de brouillon de métadonnées échouées
+        failed_work_metadata_errors_hidden: Les erreurs de brouillon de métadonnées supplémentaires %{count} ne sont pas affichées.
+        finished: Fini
+        generate: Créer des brouillons de métadonnées par IA pour les œuvres qui en sont dépourvues.
+        heading: Brouillon de métadonnées par IA
+        in_progress: En cours
+        no_metadata_fields: Veuillez configurer les champs de métadonnées dans la configuration des tâches avant de générer des brouillons de métadonnées par IA.
+        not_started: Pas encore commencé
+        queued: File d'attente
+        total_tokens_used: Total de tokens utilisés
+        works: Œuvres
+      show:
+        back: Retour aux paramètres IA
+        fields_heading: Champs du brouillon
+        heading: 'Brouillon de métadonnées par IA (%{model}) : %{work}'
+        reasoning_heading: Raisonnement
+        status: 'Statut : %{status}'
+        tokens_used: 'Jetons utilisés : %{count}'
     approve_all:
       approved_n_pages: "%{page_count} pages approuvées."
     blank_collection:

@@ -121,6 +121,7 @@ fr:
       reasoning_explanation: Explication du raisonnement
     token_usage:
       ai_token_usage: Utilisation des tokens IA
+      cached_token_count: 'Jetons mis en cache : %{count}'
       candidates_token_count: 'Tokens de sortie : %{count}'
       prompt_token_count: 'Tokens d''entrée : %{count}'
       thoughts_token_count: 'Jetons de pensées : %{count}'

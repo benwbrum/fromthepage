@@ -2,8 +2,8 @@
 #
 # Table name: document_sets_works
 #
-#  document_set_id :integer          not null
-#  work_id         :integer          not null
+#  document_set_id :integer          not null, primary key
+#  work_id         :integer          not null, primary key
 #
 # Indexes
 #
