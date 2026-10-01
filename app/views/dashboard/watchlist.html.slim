@@ -22,13 +22,12 @@ h1 =t('dashboard.collaborator')
                 =link_to(user_profile_path(d.user))
                   =profile_picture(d.user)
                 .user-bubble_content
-                  =timeago d.created_at
+                  =fe_timeago(time: d.created_at, classes: '')
                   p =render(partial: 'deed/deed', locals: { deed: d, long_view: true }, formats: [:html])
     -else
       =t('.try_transcribing_a_page')
       =link_to t('.collections'), dashboard_path
       ="."
-
 
   aside.sidecol
     .allowed-collaborators
@@ -36,10 +35,3 @@ h1 =t('dashboard.collaborator')
       = link_to t('.your_hours'), dashboard_your_hours_path, class: 'button outline small'
     turbo-frame id="lazy_deeds" src=dashboard_deeds_path(limit: 10) loading="lazy"
       = render partial: 'shared/components/loading'
-
--content_for :javascript
-  javascript:
-    $(document).ready(function() {
-      $("time.timeago").timeago("setLocale", '#{I18n.locale}');
-      $("time.timeago").timeago();
-    });
