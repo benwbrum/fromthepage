@@ -434,7 +434,6 @@ en:
       subject_categories: Subject Categories
       this_work_has_not_been_described: This work needs better metadata.
       this_work_has_pages_that_need_work: Some pages still need work.
-      time_ago_in_words: "%{time} ago"
       user_wrote_note: "%{user} wrote %{note}"
       works: Works
     start_transcribing:

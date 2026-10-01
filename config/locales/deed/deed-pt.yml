@@ -38,7 +38,6 @@ pt:
       older_activity: Atividade mais antiga
       owner_title: 'Proprietário: %{title}'
       time: Tempo
-      time_ago_in_words: Há %{time}
       type: Tipo
       user_title: 'Usuário: %{title}'
     needs_review: A página precisa de revisão

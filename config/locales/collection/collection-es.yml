@@ -434,7 +434,6 @@ es:
       subject_categories: Categorías de Temas
       this_work_has_not_been_described: Esta obra necesita mejores metadatos.
       this_work_has_pages_that_need_work: Algunas páginas todavía necesitan trabajo.
-      time_ago_in_words: Hace %{time}
       user_wrote_note: "%{user} escribió %{note}"
       works: Obras
     start_transcribing:
