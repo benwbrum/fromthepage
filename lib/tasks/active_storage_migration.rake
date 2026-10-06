@@ -52,6 +52,15 @@ namespace :fromthepage do
         msg: "Processing Page ##{page.id}"
       )
 
+      unless page.work
+        log(
+          logger: logger,
+          msg: "\tPage ##{page.id}: no associated work. Skipping..."
+        )
+
+        next
+      end
+
       if page.image.attached?
         log(
           logger: logger,
