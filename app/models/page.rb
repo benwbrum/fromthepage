@@ -394,11 +394,12 @@ class Page < ApplicationRecord
 
   def create_version
     # Import metadata, edit locks, and other administrative updates are not
-    # revisions. Always retain the initial snapshot, then version content only.
+    # revisions. Keep an initial snapshot, including after collection blanking
+    # clears history with update_columns, then version content only.
     return unless saved_change_to_id? || %w[
       title source_text xml_text source_translation xml_translation status
       translation_status transcription_json
-    ].any? { |attribute| saved_change_to_attribute?(attribute) }
+    ].any? { |attribute| saved_change_to_attribute?(attribute) } || !page_versions.exists?
 
     version = PageVersion.new(
       page: self,

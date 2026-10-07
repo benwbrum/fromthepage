@@ -42,5 +42,13 @@ describe Collection::Blankout do
       status: 'new',
       translation_status: 'new'
     )
+    expect(page.page_versions.count).to eq(1)
+    expect(page.current_version).to have_attributes(
+      page_version: 0,
+      transcription: nil,
+      source_translation: nil,
+      status: 'new',
+      user_id: owner.id
+    )
   end
 end
