@@ -187,6 +187,31 @@ describe TranscribeController do
   end
 
   describe '#save_transcription' do
+    context 'transcription credit after administrative versions' do
+      let(:action_path) do
+        collection_oneoff_review_page_save_path(user_slug: owner.slug,
+                                                collection_id: collection.slug, page_id: page.id)
+      end
+
+      def save_text(text)
+        patch action_path, params: {
+          page: { source_text: text, mark_blank: '0', needs_review: '0' },
+          save_to_transcribed: ''
+        }
+      end
+
+      it 'credits the first text as transcription and the subsequent text as edit' do
+        page.update!(title: 'Imported page title')
+        page.update!(title: 'Another title')
+        login_as owner
+        save_text('First transcription')
+        expect(page.deeds.where(deed_type: DeedType::PAGE_TRANSCRIPTION).count).to eq(1)
+        expect(page.deeds.where(deed_type: DeedType::PAGE_EDIT).count).to eq(0)
+        save_text('Revised transcription')
+        expect(page.deeds.where(deed_type: DeedType::PAGE_EDIT).count).to eq(1)
+      end
+    end
+
     # TODO: Move logic to interactor for better isolation testing
     # Temporary, do not do this pattern for request tests
     context 'Article rename race check' do

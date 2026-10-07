@@ -393,11 +393,12 @@ class Page < ApplicationRecord
   end
 
   def create_version
-    return unless self.saved_change_to_source_text? ||
-                  self.saved_change_to_title? ||
-                  self.saved_changes.present? ||
-                  self.saved_change_to_status? ||
-                  self.saved_change_to_translation_status?
+    # Import metadata, edit locks, and other administrative updates are not
+    # revisions. Always retain the initial snapshot, then version content only.
+    return unless saved_change_to_id? || %w[
+      title source_text xml_text source_translation xml_translation status
+      translation_status transcription_json
+    ].any? { |attribute| saved_change_to_attribute?(attribute) }
 
     version = PageVersion.new(
       page: self,

@@ -562,11 +562,12 @@ class TranscribeController  < ApplicationController
 
   def record_transcription_deed
     deed = stub_deed
-    current_version = @page.page_versions[0]
-    if current_version.page_version > 1
-      deed.deed_type = DeedType::PAGE_EDIT
-    else
+    # Metadata/title/status saves can precede the first transcription. Credit
+    # the content change, independently of how many snapshots already exist.
+    if @page.source_text_before_last_save.blank? && @page.transcription_json_before_last_save.blank?
       deed.deed_type = DeedType::PAGE_TRANSCRIPTION
+    else
+      deed.deed_type = DeedType::PAGE_EDIT
     end
     deed.save!
     update_search_attempt_contributions
