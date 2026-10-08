@@ -516,35 +516,43 @@ EOF
   # taken place within the article table in the DB
   ##############################################
   def rename_article_links(old_title, new_title)
-    title_regex =
-      Regexp.escape(old_title)
-        .gsub('\\ ', ' ') # Regexp.escape converts ' ' to '\\ ' for some reason -- undo this
-        .gsub(/\s+/, '\s+') # convert multiple whitespaces into 1+n space characters
-
-    self.source_text = rename_link_in_text(source_text, title_regex, new_title)
+    self.source_text = rename_link_in_text(source_text, old_title, new_title)
 
     # Articles don't have translations, but we still need to update pages.source_translation
     if has_attribute?(:source_translation) && !source_translation.nil?
-      self.source_translation = rename_link_in_text(source_translation, title_regex, new_title)
+      self.source_translation = rename_link_in_text(source_translation, old_title, new_title)
     end
   end
 
-  def rename_link_in_text(text, title_regex, new_title)
-    if new_title == ''
-      # Link deleted, remove [[ ]] but keep the original title text
+  def rename_link_in_text(text, old_title, new_title)
+    return text if text.nil? || text.empty?
 
-      # Handle links of the form [[Old Title|Display Text]] => Display Text
-      text = text.gsub(/\[\[#{title_regex}\|([^\]]+)\]\]/i, '\1')
-      # Handle links of the form [[Old Title]] => Old Title
-      text = text.gsub(/\[\[(#{title_regex})\]\]/i, '\1')
-    else
-      # Replace the title part in [[Old Title|Display Text]]
-      text = text.gsub(/\[\[#{title_regex}\|/i, "[[#{new_title}|")
-      # Replace [[Old Title]] with [[New Title|Old Title]]
-      text = text.gsub(/\[\[(#{title_regex})\]\]/i, "[[#{new_title}|\\1]]")
+    # Find every [[...]] block in the text
+    text.gsub(/\[\[(.*?)\]\]/m) do |full_match|
+      inner = $1
+
+      # Separate target from display text if piped (e.g. [[Target|Display]])
+      target, display = inner.split('|', 2)
+
+      # Strip XML/HTML tags and normalize spaces ONLY for title comparison
+      clean_target = target.gsub(/<[^>]+>/, '').strip.gsub(/\s+/, ' ')
+      clean_old_title = old_title.to_s.strip.gsub(/\s+/, ' ')
+
+      # Compare cleaned text (case-insensitive)
+      if clean_target.casecmp?(clean_old_title)
+        if new_title.to_s.empty?
+          # Unlink: return display text if present, else original target with formatting
+          display || target
+        else
+          # Rename: set target to new_title, preserve original formatted target/display
+          actual_display = display || target
+          "[[#{new_title}|#{actual_display}]]"
+        end
+      else
+        # Not a match, leave link untouched
+        full_match
+      end
     end
-
-    text
   end
 
 
