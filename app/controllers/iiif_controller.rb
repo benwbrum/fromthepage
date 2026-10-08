@@ -18,12 +18,18 @@ class IiifController < ApplicationController
   MANIFEST_EXPIRES_AT = 1.day
 
   def load_objects_from_ids
-    if @work && params[:work_id]
-      if params[:work_id] =~ /^\d+$/
-        if @work.id != params[:work_id].to_i
-          @work = Work.find(params[:work_id].to_i)
-        end
+    if params[:page_id] && params[:page_id] =~ /^\d+$/
+      @page = Page.find(params[:page_id].to_i)
+      @work = @page.work
+      @collection = @work.collection if @work
+    elsif params[:work_id] && params[:work_id] =~ /^\d+$/
+      if @work.nil? || @work.id != params[:work_id].to_i
+        @work = Work.find(params[:work_id].to_i)
       end
+      @collection = @work.collection if @work
+    elsif params[:id] && params[:id] =~ /^\d+$/
+      @work = Work.find(params[:id].to_i)
+      @collection = @work.collection if @work
     end
   end
 

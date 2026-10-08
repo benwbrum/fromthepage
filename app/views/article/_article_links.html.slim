@@ -5,7 +5,7 @@
   ul.article-links
     -links.each do |link|
       li
-        -parameter = link.text_type == "translation" ? true : false
+        -parameter = link.text_type == "translation"
         =svg_symbol '#icon-page', class: 'icon'
         =link_to link.page.title, collection_display_page_path(@collection.owner, @collection, link.page.work, link.page, translation: parameter)
         span.fglight ==" #{t('.in_the_work', work: link.page.work.title)}"

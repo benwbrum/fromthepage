@@ -434,7 +434,6 @@ de:
       subject_categories: Entitätenkategorien
       this_work_has_not_been_described: Dieses Werk benötigt bessere Metadaten.
       this_work_has_pages_that_need_work: Einige Seiten müssen noch bearbeitet werden.
-      time_ago_in_words: Vor %{time}
       user_wrote_note: "%{user} hat %{note} geschrieben"
       works: Werke
     start_transcribing:

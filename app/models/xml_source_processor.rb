@@ -391,7 +391,10 @@ EOF
     clear_links(text_type) unless preview_mode
 
 
-    articles_by_title = collection.articles.index_by(&:title) # optimize for common case
+    articles_by_title = collection.articles.each_with_object({}) do |article, hash|
+      hash[article.title.to_s.strip] = article
+    end
+
     candidate_articles = collection.articles.left_joins(:article_versions) # fall-back
     page_update_timestamp = 1.hour.ago
 
@@ -400,9 +403,8 @@ EOF
     doc = REXML::Document.new xml_string
     doc.elements.each('//link') do |element|
       # default the title to the text if it's not specified
-      if !(title = element.attributes['target_title'])
-        title = element.text
-      end
+      title = element.attributes['target_title'] || element.text
+
       # display_text = element.text
       display_text = ''
       element.children.each do |e|
@@ -410,17 +412,17 @@ EOF
       end
       debug("link display_text = #{display_text}")
       # change the xml version of quotes back to double quotes for article title
-      title = title.gsub('&quot;', '"')
+      title = title.gsub('&quot;', '"').strip
 
       article = articles_by_title[title]
 
       if article.nil?
-        article = candidate_articles.where('article_versions.title': title)
+        article = candidate_articles.where('TRIM(article_versions.title) = ?', title)
                                     .where('article_versions.created_on > ?', page_update_timestamp)
                                     .first
         if article.present?
           display_text = article.title
-          title = article.title
+          title = article.title.strip
         end
       end
 
@@ -446,6 +448,7 @@ EOF
       link_element.add_attribute('link_id', link_id.to_s) unless preview_mode
       element.replace_with(link_element)
     end
+
     doc.write(processed)
     processed
   end

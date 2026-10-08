@@ -47,6 +47,7 @@ class Article < ApplicationRecord
   # MINIMUM_DUPLICATE_WORD_LENGTH characters long are considered.
   DUPLICATE_WORD_REGEX = /[[:alpha:]]{#{MINIMUM_DUPLICATE_WORD_LENGTH},}/.freeze
 
+  before_validation :strip_title_whitespace
   before_save :process_source
 
   validates_presence_of :title
@@ -312,6 +313,10 @@ class Article < ApplicationRecord
     ancestors = category.ancestors.reverse
 
     [category] + ancestors
+  end
+
+  def strip_title_whitespace
+    title = title.strip if title.present?
   end
 
   def handle_index_deletion
