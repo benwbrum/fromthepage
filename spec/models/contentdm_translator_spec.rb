@@ -2,6 +2,49 @@ require 'spec_helper'
 require 'contentdm_translator'
 
 RSpec.describe ContentdmTranslator do
+  describe '.update_page_from_cdm' do
+    let(:owner) { create(:unique_user, :owner) }
+    let(:collection) { create(:collection, owner_user_id: owner.id, works: []) }
+    let(:work) { create(:work, collection: collection, owner_user_id: owner.id) }
+    let(:page) { create(:page, work: work) }
+
+    before do
+      allow(described_class).to receive(:fetch_cdm_info).with(page)
+        .and_return('title' => 'Metadata title', 'transc' => 'OCR & text')
+    end
+
+    it 'imports metadata without creating a revision' do
+      expect { described_class.update_page_from_cdm(page, false, nil) }
+        .not_to change { page.page_versions.count }
+      expect(page.reload.metadata['title']).to eq('Metadata title')
+    end
+
+    it 'imports OCR without creating a revision or transcription deed' do
+      expect { described_class.update_page_from_cdm(page, true, 'transc') }
+        .not_to change { page.page_versions.count }
+      expect(page.reload.source_text).to eq('OCR &amp; text')
+      expect(page.deeds).to be_empty
+    end
+
+    it 'keeps one initial version through manifest creation and REST metadata import' do
+      manifest = ScManifest.manifest_for_v3_hash({
+        '@context' => 'http://iiif.io/api/presentation/3/context.json',
+        'id' => 'https://cdm123.contentdm.oclc.org/iiif/info/test/1/manifest.json',
+        'label' => { 'en' => ['Imported work'] },
+        'items' => [{
+          'id' => 'https://cdm123.contentdm.oclc.org/iiif/test/1/canvas/c0',
+          'label' => { 'en' => ['Imported page'] }, 'width' => 100, 'height' => 100,
+          'items' => [{ 'items' => [{ 'body' => { 'id' => 'https://example.org/image.jpg' } }] }]
+        }]
+      })
+      imported_work = manifest.convert_with_collection(owner, collection)
+      imported_page = imported_work.pages.first
+      allow(described_class).to receive(:fetch_cdm_info).with(imported_page).and_return('title' => 'Metadata')
+      described_class.update_work_from_cdm(imported_work)
+      expect(imported_page.page_versions.pluck(:page_version)).to eq([0])
+    end
+  end
+
   describe '.transcript_for_page' do
     let(:created_at)      { Time.zone.parse('2026-05-01 12:00:00') }
     let(:ai_transcription) do

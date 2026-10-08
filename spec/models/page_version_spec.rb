@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 RSpec.describe PageVersion, type: :model do
-  let(:user) { create(:user, display_name: 'Editor') }
-  let(:work) { create(:work) }
+  let(:user) { create(:unique_user, display_name: 'Editor') }
+  let(:work) { create(:work, owner_user_id: user.id) }
   let(:page) { create(:page, work: work, title: 'Current', source_text: 'current text', xml_text: '<p>current</p>', source_translation: 'current translation', xml_translation: '<p>current translation</p>', status: :transcribed) }
 
   before do
@@ -39,6 +39,27 @@ RSpec.describe PageVersion, type: :model do
       expect(middle.next).to eq(last)
       expect(middle.current_version?).to be false
       expect(last.current_version?).to be true
+    end
+  end
+
+  describe 'page saves' do
+    let(:collection) { create(:collection, owner_user_id: user.id, works: []) }
+    let(:work) { create(:work, collection: collection, owner_user_id: user.id) }
+    let(:page) { create(:page, work: work) }
+
+    it 'retains the initial snapshot without versioning administrative changes' do
+      expect(page.page_versions.count).to eq(1)
+      page.update!(metadata: { 'title' => 'CONTENTdm metadata' }, edit_started_at: Time.current)
+      expect(page.page_versions.count).to eq(1)
+      page.save!
+      expect(page.page_versions.count).to eq(1)
+    end
+
+    it 'versions transcription, translation, and title changes' do
+      page.update!(source_text: 'First transcription')
+      page.update!(source_translation: 'First translation')
+      page.update!(title: 'Renamed')
+      expect(page.page_versions.count).to eq(4)
     end
   end
 
