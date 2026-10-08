@@ -23,6 +23,6 @@ describe 'IIIF Manifests API' do
     get iiif_manifest_path(work.id)
 
     expect(response).to have_http_status(:forbidden)
-    expect(response.body).to eq('This collection is private. The collection owner must enable API access to it or make it public for it to appear.')
+    expect(response.body).to eq('This collection is private.  The collection owner must enable API access to it or make it public for it to appear.')
   end
 end
