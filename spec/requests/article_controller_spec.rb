@@ -455,6 +455,24 @@ describe ArticleController do
         expect(response).to have_http_status(:ok)
       end
 
+      it 'renders UTF-8 graph maps' do
+        article.graph_attachment.attach(io: StringIO.new(''), filename: 'graph.png')
+        article.map_attachment.attach(io: StringIO.new('<map title="Commonwealth’s"></map>'), filename: 'graph.map')
+
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to include('Commonwealth’s')
+      end
+
+      it 'renders an article with a duplicate title' do
+        create(:article, collection: collection).update_column(:title, article.title)
+
+        subject
+
+        expect(response).to have_http_status(:ok)
+      end
+
       context 'when collection hides notes' do
         before do
           collection.update!(hide_notes: true)

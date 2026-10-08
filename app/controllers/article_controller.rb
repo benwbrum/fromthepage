@@ -351,6 +351,10 @@ class ArticleController < ApplicationController
             content_type: 'text/html'
           )
         end
+
+        unless @article.graph_attachment.attachment.persisted? && @article.map_attachment.attachment.persisted?
+          @article.save!(validate: false)
+        end
       ensure
         dot_file.unlink
         dot_out.unlink
