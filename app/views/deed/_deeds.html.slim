@@ -3,7 +3,8 @@
 
 -deeds.each do |d|
   .deed-short.small
-    =timeago d.created_at, class: 'timeago legend legend-left'
+    =fe_timeago(time: d.created_at)
+
     span.deed-short_content
         -if d.prerender
           ==show_prerender(d.prerender, I18n.locale)
@@ -16,10 +17,3 @@
       deed_list_path(:collection_id => @collection ? @collection.slug : nil, :user_id => options[:user_id] || options[:owner]),
       class: 'button outline round',
       id: 'show-more-deeds'
-
--content_for :javascript
-  javascript:
-    $(document).ready(function() {
-      $("time.timeago").timeago("setLocale", '#{I18n.locale}');
-      $("time.timeago").timeago();
-    });
