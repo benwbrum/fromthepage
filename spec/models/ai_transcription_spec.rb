@@ -3,6 +3,14 @@ require 'spec_helper'
 RSpec.describe AiTranscription, type: :model do
   let(:ai_transcription) { AiTranscription.new(model: AiTranscription::DEFAULT_MODEL) }
 
+  describe 'database indexes' do
+    it 'indexes page and status lookups ordered by creation time' do
+      indexes = AiTranscription.connection.indexes(:ai_transcriptions)
+
+      expect(indexes.map(&:columns)).to include(%w[page_id status created_at])
+    end
+  end
+
   describe '#supports_reasoning?' do
     it 'returns true for non-ALTO models' do
       expect(ai_transcription.supports_reasoning?).to be true
