@@ -45,8 +45,8 @@ RSpec.describe Riiif::FromThePageFileResolver do
       end
     end
 
-    context 'when page has an Active Storage image on a non-disk service (e.g. S3)' do
-      it 'downloads the blob to a temp cache and returns a Riiif::File' do
+    context 'when page has an Active Storage image on the Linode S3 service' do
+      it 'downloads the remote blob to a temp cache and returns a Riiif::File' do
         resolver = described_class.new
         s3_service = double('S3Service')  # does not respond to :path_for
         filename = instance_double(ActiveStorage::Filename, extension_with_delimiter: '.jpg')
@@ -72,6 +72,8 @@ RSpec.describe Riiif::FromThePageFileResolver do
         result = resolver.find('999')
         expect(result).to eq(riiif_file)
         expect(::File.exist?(expected_cache_path)).to be true
+        expect(resolver.find('999')).to eq(riiif_file)
+        expect(blob).to have_received(:open).once
       ensure
         FileUtils.rm_f(Rails.root.join('tmp', 'riiif_cache', 'xyz987.jpg').to_s)
         # The implementation uses a random suffix, so clean up any leftover .tmp
