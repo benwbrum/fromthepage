@@ -395,7 +395,10 @@ class Page < ApplicationRecord
   def create_version
     return unless self.saved_change_to_source_text? ||
                   self.saved_change_to_title? ||
-                  self.saved_changes.present? ||
+                  self.saved_change_to_xml_text? ||
+                  self.saved_change_to_source_translation? ||
+                  self.saved_change_to_xml_translation? ||
+                  self.saved_change_to_transcription_json? ||
                   self.saved_change_to_status? ||
                   self.saved_change_to_translation_status?
 
