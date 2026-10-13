@@ -562,12 +562,13 @@ class TranscribeController  < ApplicationController
 
   def record_transcription_deed
     deed = stub_deed
-    current_version = @page.page_versions[0]
-    if current_version.page_version > 1
+
+    if @page.deeds.where(deed_type: DeedType::PAGE_TRANSCRIPTION).any?
       deed.deed_type = DeedType::PAGE_EDIT
     else
       deed.deed_type = DeedType::PAGE_TRANSCRIPTION
     end
+
     deed.save!
     update_search_attempt_contributions
   end
