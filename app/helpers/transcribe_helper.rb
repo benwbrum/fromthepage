@@ -83,24 +83,32 @@ module TranscribeHelper
   end
 
   def osd_source(page, work)
+    should_proxy = ::ACTIVE_STORAGE_PROXY_LIST.include?(work.collection.owner.slug)
+
     if page.nil?
-      sources = []
-      work.pages.each do |page|
-        sources += osd_source(page, work)
-      end
-      sources
+      work.pages.map { |p| single_osd_source(p, proxy: should_proxy) }
     else
-      if page.sc_canvas
-        [page.sc_canvas.iiif_image_info_url]
-      elsif page.ia_leaf
-        [page.ia_leaf.iiif_image_info_url]
-      elsif browser.platform.ios? && browser.webkit?
-        ["#{url_for(:root)}image-service/#{page.id}/info.json"]
-      elsif page.image.attached?
-        [{ type: 'image', url: Rails.application.routes.url_helpers.url_for(page.image) }.to_json]
+      [single_osd_source(page, proxy: should_proxy)]
+    end
+  end
+
+  def single_osd_source(page, proxy: false)
+    if page.sc_canvas
+      page.sc_canvas.iiif_image_info_url
+    elsif page.ia_leaf
+      page.ia_leaf.iiif_image_info_url
+    elsif browser.platform.ios? && browser.webkit?
+      "#{url_for(:root)}image-service/#{page.id}/info.json"
+    elsif page.image.attached?
+      image_url = if proxy
+        Rails.application.routes.url_helpers.rails_storage_proxy_url(page.image)
       else
-        [{ type: 'image', url: file_to_url(page.canonical_facsimile_url) }.to_json]
+        Rails.application.routes.url_helpers.url_for(page.image)
       end
+
+      { type: 'image', url: image_url }
+    else
+      { type: 'image', url: file_to_url(page.canonical_facsimile_url) }
     end
   end
 end
