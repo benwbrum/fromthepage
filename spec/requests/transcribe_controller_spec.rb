@@ -253,6 +253,14 @@ describe TranscribeController do
       # deed creation an `edit` instead of `transcribe`
       let!(:page) { create(:page, work: work, source_text: '[[Original]]', source_translation: '[[Original]]') }
 
+      let(:action_path) do
+        collection_oneoff_review_page_save_path(
+          user_slug: owner.slug,
+          collection_id: collection.slug,
+          page_id: page.id
+        )
+      end
+
       let(:params) do
         {
           page: {
@@ -275,7 +283,7 @@ describe TranscribeController do
         login_as owner
         subject
 
-        expect(page.reload.page_versions.count).to eq(1)
+        expect(page.reload.page_versions.count).to eq(2)
         expect(page.reload.deeds.count).to eq(1)
         expect(page.reload.deeds.first.deed_type).to eq(DeedType::PAGE_TRANSCRIPTION)
       end
