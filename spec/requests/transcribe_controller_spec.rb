@@ -253,13 +253,7 @@ describe TranscribeController do
       # deed creation an `edit` instead of `transcribe`
       let!(:page) { create(:page, work: work, source_text: '[[Original]]', source_translation: '[[Original]]') }
 
-      let(:action_path) do
-        collection_oneoff_review_page_save_path(
-          user_slug: owner.slug,
-          collection_id: collection.slug,
-          page_id: page.id
-        )
-      end
+      let(:action_path) { transcribe_save_transcription_path(page_id: page.id) }
 
       let(:params) do
         {
