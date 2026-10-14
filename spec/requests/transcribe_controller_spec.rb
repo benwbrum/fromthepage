@@ -244,6 +244,42 @@ describe TranscribeController do
         expect(article.reload.categories).to include(category)
       end
     end
+
+    context 'Page version creation trigger' do
+      # Scenario:
+      # Page is created, a separate `save!` is called after the creation
+      # ex: Image upload/rotate, some rake metadata update, etc
+      # This creates unnecessary page_version, which then makes initial
+      # deed creation an `edit` instead of `transcribe`
+      let!(:page) { create(:page, work: work, source_text: '[[Original]]', source_translation: '[[Original]]') }
+
+      let(:params) do
+        {
+          page: {
+            mark_blank: '0',
+            needs_review: '0',
+            source_text: '[[Original]] some change'
+          }
+        }
+      end
+
+      let(:subject) { patch action_path, params: params }
+
+      it 'creates correct initial deed type' do
+        expect(page.page_versions.count).to eq(1)
+        expect(page.deeds.count).to eq(0)
+        page.update!(:base_height, 1080)
+        expect(page.page_versions.count).to eq(1)
+        expect(page.deeds.count).to eq(0)
+
+        login_as owner
+        subject
+
+        expect(page.reload.page_versions.count).to eq(1)
+        expect(page.reload.deeds.count).to eq(1)
+        expect(page.reload.deeds.first.deed_type).to eq(DeedType::PAGE_TRANSCRIPTION)
+      end
+    end
   end
 
   describe '#help' do
