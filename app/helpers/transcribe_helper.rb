@@ -106,9 +106,9 @@ module TranscribeHelper
         Rails.application.routes.url_helpers.url_for(page.image)
       end
 
-      { type: 'image', url: image_url }
+      { type: 'image', url: image_url }.to_json
     else
-      { type: 'image', url: file_to_url(page.canonical_facsimile_url) }
+      { type: 'image', url: file_to_url(page.canonical_facsimile_url) }.to_json
     end
   end
 end
