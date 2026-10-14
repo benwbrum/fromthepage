@@ -268,7 +268,7 @@ describe TranscribeController do
       it 'creates correct initial deed type' do
         expect(page.page_versions.count).to eq(1)
         expect(page.deeds.count).to eq(0)
-        page.update!(:base_height, 1080)
+        page.update!(base_height: 1080)
         expect(page.page_versions.count).to eq(1)
         expect(page.deeds.count).to eq(0)
 
