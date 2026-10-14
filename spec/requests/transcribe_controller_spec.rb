@@ -279,7 +279,9 @@ describe TranscribeController do
         subject
 
         expect(page.reload.page_versions.count).to eq(2)
-        expect(page.reload.deeds.count).to eq(1)
+        # 1 for page_trans
+        # 2 for index
+        expect(page.reload.deeds.count).to eq(2)
         expect(page.reload.deeds.first.deed_type).to eq(DeedType::PAGE_TRANSCRIPTION)
       end
     end
