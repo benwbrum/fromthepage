@@ -261,7 +261,8 @@ describe TranscribeController do
             mark_blank: '0',
             needs_review: '0',
             source_text: '[[Original]] some change'
-          }
+          },
+          save_to_transcribed: '1'
         }
       end
 
