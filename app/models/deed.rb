@@ -48,12 +48,19 @@ class Deed < ApplicationRecord
 
   visitable class_name: 'Visit' # ahoy integration
 
-  before_save :calculate_prerender, :calculate_prerender_mailer, :calculate_public
-  after_save :update_collections_most_recent_deed
-  after_save :update_works_most_recent_deed
+  before_save :calculate_public
+
+  after_save :async_calculations
 
   def deed_type_name
     DeedType.name(self.deed_type)
+  end
+
+  def async_calculations
+    Deed::CalculateJob.perform_later(
+      deed_id: self.id,
+      user_id: Current.user&.id
+    )
   end
 
   def calculate_public
@@ -62,61 +69,7 @@ class Deed < ApplicationRecord
     else
       self.is_public = true # work_add might be called before the work has been added to a collection
     end
+
     true # don't fail validation when is_public==false!
-  end
-
-  def calculate_prerender
-    unless self.deed_type == DeedType::COLLECTION_INACTIVE || self.deed_type == DeedType::COLLECTION_ACTIVE
-      renderer = ApplicationController.renderer.new
-      locales = I18n.available_locales.reject { |locale| locale.to_s.include? '-' } # don't include regional locales
-      self.prerender = locales.to_h do |locale|
-        [
-          locale,
-          renderer.render(
-            partial: 'deed/deed',
-            locals: {
-              deed: self,
-              long_view: false,
-              prerender: true,
-              locale: locale
-            },
-            formats: [:html]
-          )
-        ]
-      end.to_json
-    end
-  end
-
-  def calculate_prerender_mailer
-    renderer = ApplicationController.renderer.new
-    locales = I18n.available_locales.reject { |locale| locale.to_s.include? '-' } # don't include regional locales
-    self.prerender_mailer = locales.to_h do |locale|
-      [
-        locale,
-        renderer.render(
-          partial: 'deed/deed',
-          locals: {
-            deed: self,
-            long_view: true,
-            prerender: true,
-            mailer: true,
-            locale: locale
-          },
-          formats: [:html]
-        )
-      ]
-    end.to_json
-  end
-
-  def update_collections_most_recent_deed
-    if self.collection
-      self.collection.update_columns(most_recent_deed_created_at: self.created_at)
-    end
-  end
-
-  def update_works_most_recent_deed
-    if self.work
-      self.work.update_columns(most_recent_deed_created_at: self.created_at)
-    end
   end
 end
