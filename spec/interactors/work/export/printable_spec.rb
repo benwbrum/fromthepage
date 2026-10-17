@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'open3'
 
 describe Work::Export::Printable do
   before do
@@ -77,6 +78,31 @@ describe Work::Export::Printable do
       expect(result.success?).to be_truthy
       expect(result.tex_string.rstrip).to eq(expected_tex_string.rstrip)
       expect(File.exist?(result.file)).to be_truthy
+    end
+  end
+
+  describe 'facing edition TeX' do
+    it 'escapes image URLs while preserving their value through Pandoc parsing' do
+      image_url = 'https://example.org/Hadlock%20AccountBook_001.JPG?download=1&part=2#page'
+      exporter = described_class.new(
+        work: work,
+        format: 'pdf',
+        edition: 'facing',
+        include_metadata: false,
+        include_contributors: false,
+        include_notes: false,
+        preserve_lb: false,
+        time: time
+      )
+      allow(exporter).to receive(:pages).and_return([page])
+      allow(page).to receive(:normalized_image_url_for_download).and_return(image_url)
+
+      tex = exporter.tex_string_for_conversion
+
+      expect(tex).to include('Hadlock\%20AccountBook\_001.JPG?download=1\&part=2\#page')
+      output, error, status = Open3.capture3('pandoc', '--from=latex+raw_tex', '--to=json', stdin_data: tex)
+      expect(status.success?).to be(true), error
+      expect(output).to include(image_url)
     end
   end
 
