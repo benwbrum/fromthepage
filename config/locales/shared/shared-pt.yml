@@ -24,6 +24,14 @@ pt:
       marginalia_description: Marca o texto nas margens do texto principal.
       redo_description: Refazer a última ação anulada
       reg_description: Marca uma forma regularizada do texto, com formas originais no atributo original.
+      review_ai_draft:
+        one: |-
+          Os rascunhos de IA podem conter erros, especialmente em nomes e lugares — é exatamente isso que sua revisão detecta.
+           Você pode salvar em %{count} segundos.
+        other: |-
+          Os rascunhos de IA podem conter erros, especialmente em nomes e lugares — é exatamente isso que sua revisão detecta.
+           Você pode salvar em %{count} segundos.
+        zero: Os rascunhos feitos por IA podem conter erros, especialmente em nomes e lugares — e é exatamente isso que sua revisão detecta.
       s_description: Marca o texto que foi riscado por qualquer motivo.
       sub_description: Texto subscrito.
       sup_description: Superscript text.

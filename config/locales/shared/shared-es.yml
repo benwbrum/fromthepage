@@ -24,6 +24,14 @@ es:
       marginalia_description: Marca el texto en los márgenes del texto principal.
       redo_description: Rehacer la última acción deshecha
       reg_description: Marca una forma regularizada del texto, con formularios originales en el atributo orig.
+      review_ai_draft:
+        one: |-
+          Los borradores de IA pueden cometer errores, especialmente en nombres y lugares, — eso es exactamente lo que detecta tu revisión.
+           Puedes guardar en %{count} segundos.
+        other: |-
+          Los borradores de IA pueden cometer errores, especialmente en nombres y lugares, — eso es exactamente lo que detecta tu revisión.
+           Puedes guardar en %{count} segundos.
+        zero: Los borradores de IA pueden cometer errores, especialmente en nombres y lugares; eso es precisamente lo que detecta tu revisión.
       s_description: Marca el texto que se ha tachado por cualquier motivo.
       sub_description: Texto de subíndice.
       sup_description: Texto de superíndice.

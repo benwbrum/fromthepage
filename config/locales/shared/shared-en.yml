@@ -24,6 +24,16 @@ en:
       marginalia_description: Marks text in the margins of the main text.
       redo_description: Redo the last undone action
       reg_description: Marks a regularized form of the text, with original forms in the orig attribute.
+      review_ai_draft:
+        one: |-
+          AI drafts can get things wrong, especially names and places, — that's exactly what your review catches.
+
+          You can save in %{count} second.
+        other: |-
+          AI drafts can get things wrong, especially names and places, — that's exactly what your review catches.
+
+          You can save in %{count} seconds.
+        zero: AI drafts can get things wrong, especially names and places, — that's exactly what your review catches.
       s_description: Marks text that has been struck through for any reason.
       sub_description: Subscript text.
       sup_description: Superscript text.
