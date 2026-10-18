@@ -38,7 +38,9 @@ describe 'fromthepage:migrate_ai_accuracy_stats' do
     task.invoke(nil, page.id.to_s)
 
     expect(ai_transcription.reload).to have_attributes(
+      verbatim_cer: BigDecimal('35.71'),
       verbatim_wer: BigDecimal('33.33'),
+      text_cer: BigDecimal('27.27'),
       text_wer: BigDecimal('33.33'),
       verbatim_non_stopword_accuracy: BigDecimal('66.67')
     )

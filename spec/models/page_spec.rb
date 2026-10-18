@@ -4,10 +4,25 @@ describe Page do
   describe '#has_alto?' do
     let(:page) { create(:page) }
 
+    before do
+      allow(File).to receive(:exist?).and_call_original
+      allow(File).to receive(:exist?).with(page.alto_path).and_return(false)
+    end
+
     it 'returns true when an ALTO transcription exists' do
       create(:ai_transcription, page: page, model: AiTranscription::ALTO_MODEL)
 
       expect(page.has_alto?).to be true
+    end
+
+    it 'selects the newest ALTO transcription even when a newer non-ALTO transcription exists' do
+      older_alto = create(:ai_transcription, page: page, model: AiTranscription::ALTO_MODEL, created_at: 2.hours.ago)
+      newest_alto = create(:ai_transcription, page: page, model: AiTranscription::ALTO_MODEL, created_at: 1.hour.ago)
+      create(:ai_transcription, page: page, model: 'gemini-3.7-flash', created_at: Time.current)
+
+      expect(page.has_alto?).to be true
+      expect(page.alto_transcription).to eq(newest_alto)
+      expect(page.alto_transcription).not_to eq(older_alto)
     end
 
     it 'returns false when only non-ALTO transcriptions exist' do
@@ -16,7 +31,17 @@ describe Page do
       expect(page.has_alto?).to be false
     end
 
-    it 'uses the compound index for ALTO transcription lookups' do
+    it 'returns false when neither an ALTO transcription nor a legacy file exists' do
+      expect(page.has_alto?).to be false
+    end
+
+    it 'returns true when only a legacy ALTO file exists' do
+      allow(File).to receive(:exist?).with(page.alto_path).and_return(true)
+
+      expect(page.has_alto?).to be true
+    end
+
+    it 'has the compound index for ALTO transcription lookups' do
       expect(
         ActiveRecord::Base.connection.index_exists?(
           :ai_transcriptions,
