@@ -9,7 +9,7 @@ describe Page do
 
     before do
       allow(File).to receive(:exist?).and_call_original
-      allow(File).to receive(:exist?).with(page.alto_path).and_return(false)
+      allow(File).to receive(:exist?).with(page.send(:alto_path)).and_return(false)
     end
 
     it 'returns true when an ALTO transcription exists' do
@@ -39,7 +39,7 @@ describe Page do
     end
 
     it 'returns true when only a legacy ALTO file exists' do
-      allow(File).to receive(:exist?).with(page.alto_path).and_return(true)
+      allow(File).to receive(:exist?).with(page.send(:alto_path)).and_return(true)
 
       expect(page.has_alto?).to be true
     end
