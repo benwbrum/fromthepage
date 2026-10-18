@@ -50,6 +50,42 @@ describe Work::Export::Lib::Utils do
   describe '.xml_to_latex' do
     let(:page) { nil }
 
+    let(:table_xml) do
+      '<table><tbody><tr><td>First</td><td>Second</td></tr></tbody></table>'
+    end
+
+    it 'does not append paragraph line breaks after a table' do
+      result = described_class.xml_to_latex(page: page, xml_text: "<page><p>#{table_xml}</p></page>")
+
+      expect(result).to end_with("\\end{xltabular}\n")
+    end
+
+    it 'removes post-table breaks while preserving subsequent transcript line breaks' do
+      xml = "<page><p>#{table_xml}<lb/><lb/></p><p><lb/>After<lb/>table</p></page>"
+
+      result = described_class.xml_to_latex(page: page, xml_text: xml)
+
+      expect(result).to include("\\end{xltabular}\nAfter#{described_class::LINEBREAK_ELEMENT}table")
+      expect(result).to include("First & Second \\\\\n")
+    end
+
+    it 'does not emit line breaks between consecutive tables' do
+      xml = "<page><p>#{table_xml}</p><p>#{table_xml}</p></page>"
+
+      result = described_class.xml_to_latex(page: page, xml_text: xml)
+
+      expect(result).to include("\\end{xltabular}\n\\begin{xltabular}")
+      expect(result).to end_with("\\end{xltabular}\n")
+    end
+
+    it 'does not append post-table paragraph breaks when line preservation is disabled' do
+      xml = "<page><p>#{table_xml}</p><p>After</p></page>"
+
+      result = described_class.xml_to_latex(page: page, xml_text: xml, preserve_lb: false)
+
+      expect(result).to include("\\end{xltabular}\nAfter")
+    end
+
     it 'renders table headers in a tr when thead contains direct th children' do
       xml = <<~XML
         <page><table class="tabular"><thead>
