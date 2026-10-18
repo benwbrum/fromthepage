@@ -1,6 +1,32 @@
 require 'spec_helper'
 
 describe Page do
+  describe '#has_alto?' do
+    let(:page) { create(:page) }
+
+    it 'returns true when an ALTO transcription exists' do
+      create(:ai_transcription, page: page, model: AiTranscription::ALTO_MODEL)
+
+      expect(page.has_alto?).to be true
+    end
+
+    it 'returns false when only non-ALTO transcriptions exist' do
+      create(:ai_transcription, page: page, model: 'gemini-3.7-flash')
+
+      expect(page.has_alto?).to be false
+    end
+
+    it 'uses the compound index for ALTO transcription lookups' do
+      expect(
+        ActiveRecord::Base.connection.index_exists?(
+          :ai_transcriptions,
+          %i[page_id model created_at],
+          name: 'index_ai_transcriptions_on_page_model_created_at'
+        )
+      ).to be true
+    end
+  end
+
   #   context "associations" do
   #     it { should belong_to(:article) }
   #   end

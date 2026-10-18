@@ -10,11 +10,6 @@ class PreserveAiAccuracyStatisticsPrecision < ActiveRecord::Migration[7.2]
         t.change column, :decimal, precision: 12, scale: 2
       end
     end
-
-    # The previously rounded values cannot recover their fractional digits.
-    # Clearing the cache lets the AI tab recalculate from the source text.
-    assignments = STATISTIC_COLUMNS.map { |column| "#{column} = NULL" }.join(', ')
-    execute "UPDATE ai_transcriptions SET #{assignments}"
   end
 
   def down
