@@ -11,12 +11,12 @@ describe 'fromthepage:migrate_ai_accuracy_stats' do
   let!(:collection) { create(:collection, owner_user_id: user.id, text_language: 'eng') }
   let!(:work) { create(:work, collection: collection, owner_user_id: user.id) }
   let!(:page) do
-    create(
-      :page,
-      work: work,
+    page = create(:page, work: work)
+    page.update!(
       source_text: 'cat dog fox',
       xml_text: "<?xml version='1.0' encoding='UTF-8'?><page>cat dog fox</page>"
     )
+    page
   end
   let!(:ai_transcription) do
     create(

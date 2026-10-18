@@ -2,7 +2,10 @@ require 'spec_helper'
 
 describe Page do
   describe '#has_alto?' do
-    let(:page) { create(:page) }
+    let(:user) { create(:unique_user, :owner) }
+    let(:collection) { create(:collection, owner_user_id: user.id) }
+    let(:work) { create(:work, collection: collection, owner_user_id: user.id) }
+    let(:page) { create(:page, work: work) }
 
     before do
       allow(File).to receive(:exist?).and_call_original
