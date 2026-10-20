@@ -66,4 +66,14 @@ namespace :oneoff do
 
     stale_processes.delete_all
   end
+
+  desc 'Remediate wlps-archive log-books broken table cells'
+  task remediate_wlps_archive_log_books_broken_table_cells: :environment do
+    collection = Collection.find('log-books')
+
+    collection.pages.find_each do |page|
+      page.process_source(force_text: true)
+      page.save!
+    end
+  end
 end
