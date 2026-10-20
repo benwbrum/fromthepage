@@ -62,6 +62,7 @@ class Work::Metadata::ExportCsv < ApplicationInteractor
       described_headers = metadata_fields.map(&:label)
       include_ai_drafts = @collection.ai_work_metadata_enabled?
       ai_draft_headers = include_ai_drafts ? described_headers.map { |header| "#{header} (AI Draft)" } : []
+      ai_draft_headers.unshift('*AI Draft Provenance*') if include_ai_drafts
       csv << STATIC_HEADERS + metadata_headers + STATIC_DESCRIPTION_HEADERS + described_headers + ai_draft_headers
 
       works_scope.each do |work|
@@ -128,6 +129,7 @@ class Work::Metadata::ExportCsv < ApplicationInteractor
         if include_ai_drafts
           draft = work.ai_work_metadata.select(&:status_finished?).max_by { |record| [record.created_at, record.id] }
           draft_metadata = draft&.metadata_json || {}
+          row << (draft ? "#{draft.model} at #{draft.created_at.utc.iso8601}" : nil)
 
           metadata_fields.each do |field|
             value = draft_metadata[field.id.to_s]
