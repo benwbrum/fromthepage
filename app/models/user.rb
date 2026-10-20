@@ -499,12 +499,17 @@ class User < ApplicationRecord
       self.notification.save
     end
   end
+
   def join_collection(collection_id)
-      deed = Deed.new
-      deed.collection = Collection.find(collection_id)
-      deed.deed_type = DeedType::COLLECTION_JOINED
-      deed.user = self
-      deed.save!
+    collection = Collection.find(collection_id)
+
+    return if collection.visibility_private?
+
+    deed = Deed.new
+    deed.collection = collection
+    deed.deed_type = DeedType::COLLECTION_JOINED
+    deed.user = self
+    deed.save!
   end
 
   def downgrade
