@@ -41,7 +41,7 @@ class Collection::Blankout < ApplicationInteractor
 
     @pages.each do |page|
       page.page_versions.destroy_all
-      page.update_columns(
+      page.update!(
         source_text: nil,
         created_on: Time.now,
         lock_version: 0,
@@ -52,7 +52,6 @@ class Collection::Blankout < ApplicationInteractor
         translation_status: Page.translation_statuses[:new],
         search_text: "\n\n\n\n"
       )
-      page.save!
     end
 
     @page_versions.each do |page_version|
