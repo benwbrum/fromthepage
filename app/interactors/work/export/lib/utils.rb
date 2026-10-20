@@ -104,6 +104,12 @@ class Work::Export::Lib::Utils
 
     tex_string = page_doc.elements.map { |element| process_element(page, element, preserve_lb, flatten_links) }.join
     tex_string.sub(/(#{Regexp.escape(LINEBREAK_ELEMENT)}){2}\z/, '')
+    # Paragraphs and explicit line breaks can follow tables, but LaTeX has no
+    # active text line to end after xltabular. Normalize after joining elements
+    # so this also handles breaks introduced by subsequent paragraphs or tables.
+    tex_string.gsub!(/\\end\{xltabular\}\s*(?:#{Regexp.escape(LINEBREAK_ELEMENT)}\s*)+/) do
+      "\\end{xltabular}\n"
+    end
     tex_string = sanitize_unsupported_latex_commands(tex_string)
 
     tex_string

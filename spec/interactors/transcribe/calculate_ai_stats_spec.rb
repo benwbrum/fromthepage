@@ -11,6 +11,26 @@ describe Transcribe::CalculateAiStats do
 
   let(:result) { described_class.new(page: page).call }
 
+  it 'preserves two decimal places for all accuracy percentages after saving' do
+    collection.update!(text_language: 'eng')
+    page.update!(
+      source_text: 'cat dog fox',
+      xml_text: "<?xml version='1.0' encoding='UTF-8'?><page>cat dog fox</page>"
+    )
+    ai_transcription.update!(source_text: 'cat dog owl')
+
+    expect(result.success?).to be_truthy
+
+    # Verbatim CER includes the paragraph breaks generated from source_text.
+    expect(ai_transcription.reload).to have_attributes(
+      verbatim_cer: BigDecimal('35.71'),
+      verbatim_wer: BigDecimal('33.33'),
+      text_cer: BigDecimal('27.27'),
+      text_wer: BigDecimal('33.33'),
+      verbatim_non_stopword_accuracy: BigDecimal('66.67')
+    )
+  end
+
   it 'calculates ai stats for finished ai_transcriptions' do
     expect(ai_transcription).to have_attributes(
       verbatim_wer: nil,

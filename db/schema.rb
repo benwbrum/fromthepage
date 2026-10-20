@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_10_13_205415) do
+ActiveRecord::Schema[7.2].define(version: 2026_10_18_151300) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -72,20 +72,21 @@ ActiveRecord::Schema[7.2].define(version: 2026_10_13_205415) do
     t.datetime "updated_at", null: false
     t.string "status", default: "new", null: false
     t.text "transcription_json", size: :long
-    t.decimal "verbatim_cer", precision: 10
+    t.decimal "verbatim_cer", precision: 12, scale: 2
     t.decimal "verbatim_cer_distance", precision: 10
     t.decimal "verbatim_cer_length", precision: 10
-    t.decimal "verbatim_wer", precision: 10
+    t.decimal "verbatim_wer", precision: 12, scale: 2
     t.decimal "verbatim_wer_distance", precision: 10
     t.decimal "verbatim_wer_length", precision: 10
-    t.decimal "text_cer", precision: 10
+    t.decimal "text_cer", precision: 12, scale: 2
     t.decimal "text_cer_distance", precision: 10
     t.decimal "text_cer_length", precision: 10
-    t.decimal "text_wer", precision: 10
+    t.decimal "text_wer", precision: 12, scale: 2
     t.decimal "text_wer_distance", precision: 10
     t.decimal "text_wer_length", precision: 10
-    t.decimal "verbatim_non_stopword_accuracy", precision: 10
+    t.decimal "verbatim_non_stopword_accuracy", precision: 12, scale: 2
     t.index ["created_at", "model", "status"], name: "idx_ai_transcriptions_dashboard"
+    t.index ["page_id", "model", "created_at"], name: "index_ai_transcriptions_on_page_model_created_at"
     t.index ["page_id", "id"], name: "index_ai_transcriptions_on_page_id_and_id"
     t.index ["page_id"], name: "index_ai_transcriptions_on_page_id"
     t.index ["status", "updated_at"], name: "index_ai_transcriptions_on_status_and_updated_at"
