@@ -5,10 +5,10 @@
   .page-headlines
     .headline
       h3.headline_title =t('.source_material')
-      .page_info
+      .page_info.source-selector
         dl.dropdown.right.page-columns-layout(data-controller='dropdown' data-dropdown-selectable-value='true')
           dt.button.outline
-            span =t('.view_source')
+            span =t('work.describe.view_original')
           dd
             a(data-view-set="image") =t('work.describe.page_images')
             a(data-view-set="transcript") =t('work.describe.text')

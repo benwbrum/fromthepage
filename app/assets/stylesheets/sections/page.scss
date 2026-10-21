@@ -89,6 +89,10 @@
 
   .page-headlines {
     display: flex;
+
+    .source-selector {
+      padding-right: 2px;
+    }
   }
 }
 
