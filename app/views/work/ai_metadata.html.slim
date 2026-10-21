@@ -67,6 +67,9 @@
           .reasoning-content
             ==Markdown.new(@ai_work_metadata.reasoning).to_html
 
+-if @ai_work_metadata.prompt.present?
+  =render partial: 'display/prompt', locals: { prompt: @ai_work_metadata.prompt }
+
 -content_for :javascript
   javascript:
     $(function() {
