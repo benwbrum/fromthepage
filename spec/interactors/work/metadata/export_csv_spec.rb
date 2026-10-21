@@ -80,4 +80,78 @@ describe Work::Metadata::ExportCsv do
     expect(csv.first['Label 2']).to eq('Value 2; Value 3')
     expect(csv.first['Label 3']).to eq('')
   end
+
+  context 'with AI metadata drafts' do
+    let(:draft_metadata) do
+      {
+        metadata_field_2.id.to_s => ['Draft value 2', 'Draft value 3'],
+        metadata_field_1.id.to_s => 'Draft value 1'
+      }
+    end
+    let!(:draft) do
+      create(:ai_work_metadata, work_id: work_2.id, status: :finished, metadata_json: draft_metadata,
+                               created_at: Time.utc(2026, 10, 19, 14, 30))
+    end
+    let(:csv) { CSV.parse(result.csv_string, headers: true) }
+    let(:draft_row) { csv.find { |candidate| candidate['*FromThePage ID*'] == work_2.id.to_s } }
+
+    it 'exports drafts without requiring reviewed or original metadata' do
+      expect(result.success?).to be_truthy
+      expect(csv.headers).to eq(expected_headers + ['*AI Draft Provenance*', 'Label 1 (AI Draft)', 'Label 2 (AI Draft)', 'Label 3 (AI Draft)'])
+      expect(draft_row['*AI Draft Provenance*']).to eq('gemini-3.7-flash at 2026-10-19T14:30:00Z')
+
+      expect(draft_row['en']).to eq('')
+      expect(draft_row['*Description Status*']).to eq('')
+      expect(draft_row['*Described By*']).to eq('')
+      expect(draft_row['Label 1']).to eq('')
+      expect(draft_row['Label 1 (AI Draft)']).to eq('Draft value 1')
+      expect(draft_row['Label 2 (AI Draft)']).to eq('Draft value 2; Draft value 3')
+      expect(draft_row['Label 3 (AI Draft)']).to eq('')
+      expect(CSV.parse(result.csv_string).map(&:size).uniq).to eq([csv.headers.size])
+      expect(work_2.reload.metadata_description).to be_nil
+    end
+
+    it 'keeps reviewed values separate and leaves missing drafts blank' do
+      expect(csv.first['Label 1']).to eq('Value 1')
+      expect(csv.first['Label 2']).to eq('Value 2; Value 3')
+      expect(csv.first['*AI Draft Provenance*']).to eq('')
+      expect(csv.first['Label 1 (AI Draft)']).to eq('')
+      expect(csv.first['Label 2 (AI Draft)']).to eq('')
+
+      create(:ai_work_metadata, work_id: work_1.id, status: :finished, metadata_json: draft_metadata)
+      updated_result = described_class.new(collection: collection, works: collection.works).call
+      row = CSV.parse(updated_result.csv_string, headers: true).first
+      expect(row['Label 1']).to eq('Value 1')
+      expect(row['Label 1 (AI Draft)']).to eq('Draft value 1')
+    end
+
+    it 'uses the latest finished draft across engines and ignores unfinished attempts' do
+      draft.update!(created_at: 2.days.ago)
+      latest_draft = create(:ai_work_metadata, work_id: work_2.id, status: :finished, model: 'claude-sonnet-4-6',
+                                             created_at: 1.day.ago, metadata_json: { metadata_field_1.id.to_s => 'Latest draft' })
+      [:new, :processing, :error].each do |status|
+        create(:ai_work_metadata, work_id: work_2.id, status: status,
+                                 metadata_json: { metadata_field_1.id.to_s => 'Unfinished draft' })
+      end
+
+      expect(draft_row['Label 1 (AI Draft)']).to eq('Latest draft')
+      expect(draft_row['*AI Draft Provenance*']).to eq("claude-sonnet-4-6 at #{latest_draft.created_at.utc.iso8601}")
+      expect(draft_row['Label 2 (AI Draft)']).to eq('')
+    end
+
+    it 'leaves draft columns blank when there is no finished draft' do
+      draft.update!(status: :processing)
+
+      expect(csv.headers).to include('Label 1 (AI Draft)')
+      expect(draft_row['*AI Draft Provenance*']).to eq('')
+      expect(draft_row['Label 1 (AI Draft)']).to eq('')
+    end
+
+    it 'handles a finished draft without metadata' do
+      draft.update!(metadata_json: nil)
+
+      expect(result.success?).to be_truthy
+      expect(draft_row['Label 1 (AI Draft)']).to eq('')
+    end
+  end
 end

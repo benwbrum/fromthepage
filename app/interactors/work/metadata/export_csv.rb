@@ -47,6 +47,7 @@ class Work::Metadata::ExportCsv < ApplicationInteractor
                              :work_statistic,
                              :sc_manifest,
                              :deeds,
+                             :ai_work_metadata,
                              { metadata_description_versions: :user }
                            )
                           .reorder(:id)
@@ -57,8 +58,12 @@ class Work::Metadata::ExportCsv < ApplicationInteractor
                          .flat_map { |raw| JSON.parse(raw).map { |element| element['label'] } }
                          .uniq
 
-      described_headers = @collection.metadata_fields.map(&:label)
-      csv << STATIC_HEADERS + metadata_headers + STATIC_DESCRIPTION_HEADERS + described_headers
+      metadata_fields = @collection.metadata_fields.to_a
+      described_headers = metadata_fields.map(&:label)
+      include_ai_drafts = @collection.ai_work_metadata_enabled?
+      ai_draft_headers = include_ai_drafts ? described_headers.map { |header| "#{header} (AI Draft)" } : []
+      ai_draft_headers.unshift('*AI Draft Provenance*') if include_ai_drafts
+      csv << STATIC_HEADERS + metadata_headers + STATIC_DESCRIPTION_HEADERS + described_headers + ai_draft_headers
 
       works_scope.each do |work|
         work_users = work.deeds.map { |d| "#{d.user.display_name}<#{d.user.email}>".gsub('|', '//') }.uniq.join('|')
@@ -94,6 +99,8 @@ class Work::Metadata::ExportCsv < ApplicationInteractor
             # look up the value for this index
             row << metadata[header]
           end
+        else
+          row.concat(Array.new(metadata_headers.size))
         end
 
         if work.metadata_description.present?
@@ -105,7 +112,7 @@ class Work::Metadata::ExportCsv < ApplicationInteractor
           metadata = JSON.parse(work.metadata_description)
 
           # we rely on a consistent order of fields returned by collection.metadata_fields to prevent scrambling columns
-          @collection.metadata_fields.each do |field|
+          metadata_fields.each do |field|
             element = metadata.detect { |candidate| candidate['transcription_field_id'] == field.id }
             if element
               value = element['value']
@@ -114,6 +121,19 @@ class Work::Metadata::ExportCsv < ApplicationInteractor
             else
               row << nil
             end
+          end
+        else
+          row.concat(Array.new(STATIC_DESCRIPTION_HEADERS.size + metadata_fields.size))
+        end
+
+        if include_ai_drafts
+          draft = work.ai_work_metadata.select(&:status_finished?).max_by { |record| [record.created_at, record.id] }
+          draft_metadata = draft&.metadata_json || {}
+          row << (draft ? "#{draft.model} at #{draft.created_at.utc.iso8601}" : nil)
+
+          metadata_fields.each do |field|
+            value = draft_metadata[field.id.to_s]
+            row << (value.is_a?(Array) ? value.join('; ') : value)
           end
         end
 
