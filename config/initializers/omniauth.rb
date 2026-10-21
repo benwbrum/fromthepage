@@ -91,8 +91,9 @@ Rails.application.config.middleware.use OmniAuth::Builder do
       elsif identity_provider_id == 'dartmouth'
         options = {
           idp_cert: ENV['IDP_CERT_DARTMOUTH'],
-          idp_sso_target_url: 'https://login.dartmouth.edu/cas/idp/profile/SAML2/Redirect/SSO',
+          idp_sso_target_url: 'https://login.openathens.net/saml/2/sso/dartmouth.edu',
           issuer: 'https://fromthepage.com',
+      assertion_consumer_url: 'https://login.openathens.net/en-US/saml/2/sso/dartmouth.edu',
           attribute_statements: {
             external_id: ['urn:oid:0.9.2342.19200300.100.1.1'],
             email: ['urn:oid:0.9.2342.19200300.100.1.3'],
