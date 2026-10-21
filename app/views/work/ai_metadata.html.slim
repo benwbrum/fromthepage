@@ -1,21 +1,18 @@
 =javascript_include_tag "transcribe"
 =render partial: '/shared/description_tabs', locals: { selected: 10, page_id: @work.slug }
 
-.page-editor
-  .page-toolbar
-    .flex-toolbar
-      .flex-toolbar_group
-        dl.dropdown.page-columns-layout(data-controller='dropdown' data-dropdown-selectable-value='true')
+.page-editor.ai-metadata-editor
+  .page-headlines
+    .headline
+      h3.headline_title =t('.source_material')
+      .page_info
+        dl.dropdown.right.page-columns-layout(data-controller='dropdown' data-dropdown-selectable-value='true')
           dt.button.outline
-            span.hide-l =t('.view_source')
+            span =t('.view_source')
           dd
             a(data-view-set="image") =t('work.describe.page_images')
             a(data-view-set="transcript") =t('work.describe.text')
             a(data-view-set="metadata") =t('.imported_metadata')
-
-  .page-headlines
-    .headline
-      h3.headline_title =t('.source_material')
     .headline
       h3.headline_title =t('.heading')
       .page_info
