@@ -55,11 +55,8 @@
               b ="#{field.label}: "
               =value.is_a?(Array) ? value.join(', ') : value
 
-      -if @ai_work_metadata.metadata.is_a?(Hash) && @ai_work_metadata.metadata['total_token_count'].present?
-        #token-usage.ai-token-usage
-          h4 =t('.token_usage')
-          .token-usage-content
-            p =t('.tokens_used', count: @ai_work_metadata.metadata['total_token_count'])
+      -if @ai_work_metadata.metadata.is_a?(Hash)
+        =render partial: 'display/token_usage', locals: { metadata: @ai_work_metadata.metadata }
 
       -if @ai_work_metadata.reasoning.present?
         #reasoning.ai-reasoning
