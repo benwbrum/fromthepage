@@ -12,9 +12,10 @@
 #
 # Indexes
 #
-#  index_page_article_links_on_article_id  (article_id)
-#  index_page_article_links_on_page_id     (page_id)
-#  index_page_article_links_on_work_id     (work_id)
+#  index_page_article_links_on_article_id              (article_id)
+#  index_page_article_links_on_article_id_and_page_id  (article_id,page_id)
+#  index_page_article_links_on_page_id                 (page_id)
+#  index_page_article_links_on_work_id                 (work_id)
 #
 # Foreign Keys
 #
