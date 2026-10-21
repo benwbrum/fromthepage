@@ -181,9 +181,17 @@ fr:
       your_activity: Votre activité
       your_hours: Vos horaires
     your_hours:
+      collection: Collection
       download_letter: Télécharger une lettre
       end_date: Date de fin
       hours_details_message: "%{user_name} a contribué %{time_duration} entre le %{start_date} et %{end_date}"
       hours_update_note: Les statistiques de contribution sont calculées toutes les vingt-quatre heures. Ces statistiques reflètent l'activité jusqu'à %{time_ago}.
+      institutions: Institutions
+      minutes: Minutes
+      pages: Pages
+      select_date_range: 'Sélectionnez une période :'
       start_date: Date de début
+      title: Vos heures de bénévolat
+      totals: 'Totaux :'
       update: Mise à jour
+      update_every_24_hours: Ces statistiques sont mises à jour toutes les 24 heures. Revenez demain pour voir le travail effectué aujourd'hui !
