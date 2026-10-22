@@ -170,6 +170,9 @@ GEM
       execjs (~> 2.0)
     base64 (0.3.0)
     bcrypt (3.1.22)
+    bcrypt_pbkdf (1.1.2)
+    bcrypt_pbkdf (1.1.2-arm64-darwin)
+    bcrypt_pbkdf (1.1.2-x86_64-darwin)
     benchmark (0.5.0)
     better_errors (2.10.1)
       erubi (>= 1.0.0)
@@ -268,6 +271,7 @@ GEM
     easy_translate (0.5.1)
       thread
       thread_safe
+    ed25519 (1.4.0)
     edtf (3.2.0)
       activesupport (>= 3.0, < 9.0)
     edtf-humanize (2.3.0)
@@ -514,7 +518,7 @@ GEM
     net-smtp (0.5.1)
       net-protocol
     net-ssh (7.3.0)
-    newrelic_rpm (10.6.0)
+    newrelic_rpm (10.9.1)
       logger
     nio4r (2.7.5)
     nkf (0.2.0)
@@ -953,6 +957,7 @@ DEPENDENCIES
   anthropic
   autoprefixer-rails
   aws-sdk-s3
+  bcrypt_pbkdf (>= 1.0, < 2.0)
   bento-sdk!
   better_errors
   binding_of_caller
@@ -976,6 +981,7 @@ DEPENDENCIES
   dotenv
   dotenv-rails
   easy_translate
+  ed25519 (>= 1.2, < 2.0)
   edtf
   edtf-humanize
   factory_bot_rails
