@@ -8,9 +8,6 @@ fr:
       reasoning: Raisonnement
       select_model: Sélectionner le modèle d’IA
       source_material: Documents sources
-      token_usage: Utilisation des jetons
-      tokens_used: "%{count} jetons utilisés"
-      view_source: Afficher la source
     ai_transcriptions:
       create:
         success: Lancement d'un projet de transcription par IA.
