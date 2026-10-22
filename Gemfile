@@ -44,7 +44,7 @@ gem 'rubyzip'
 
 # HTTP / API / External SDKs
 gem 'httparty'
-gem 'savon', '~> 2.15', '>= 2.15.1'
+gem 'savon', '~> 2.17'
 gem 'ruby-openai'
 gem 'gemini-ai'
 gem 'anthropic'
