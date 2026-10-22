@@ -762,7 +762,7 @@ GEM
     ruby-vips (2.3.0)
       ffi (~> 1.12)
       logger
-    rubyzip (3.2.2)
+    rubyzip (3.4.0)
     rvm1-capistrano3 (1.4.1)
       capistrano (~> 3.0)
       sshkit (>= 1.2)
