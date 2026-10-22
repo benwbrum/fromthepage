@@ -29,11 +29,13 @@
 #
 # Indexes
 #
-#  idx_ai_transcriptions_dashboard                   (created_at,model,status)
-#  index_ai_transcriptions_on_page_id                (page_id)
-#  index_ai_transcriptions_on_page_id_and_id         (page_id,id)
-#  index_ai_transcriptions_on_status                 (status)
-#  index_ai_transcriptions_on_status_and_updated_at  (status,updated_at)
+#  idx_ai_transcriptions_dashboard                               (created_at,model,status)
+#  index_ai_transcriptions_on_page_id                            (page_id)
+#  index_ai_transcriptions_on_page_id_and_id                     (page_id,id)
+#  index_ai_transcriptions_on_page_id_and_status_and_created_at  (page_id,status,created_at)
+#  index_ai_transcriptions_on_page_model_created_at              (page_id,model,created_at)
+#  index_ai_transcriptions_on_status                             (status)
+#  index_ai_transcriptions_on_status_and_updated_at              (status,updated_at)
 #
 # Foreign Keys
 #

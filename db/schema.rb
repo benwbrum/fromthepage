@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_10_18_151300) do
+ActiveRecord::Schema[7.2].define(version: 2026_10_22_191405) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -86,8 +86,9 @@ ActiveRecord::Schema[7.2].define(version: 2026_10_18_151300) do
     t.decimal "text_wer_length", precision: 10
     t.decimal "verbatim_non_stopword_accuracy", precision: 12, scale: 2
     t.index ["created_at", "model", "status"], name: "idx_ai_transcriptions_dashboard"
-    t.index ["page_id", "model", "created_at"], name: "index_ai_transcriptions_on_page_model_created_at"
     t.index ["page_id", "id"], name: "index_ai_transcriptions_on_page_id_and_id"
+    t.index ["page_id", "model", "created_at"], name: "index_ai_transcriptions_on_page_model_created_at"
+    t.index ["page_id", "status", "created_at"], name: "index_ai_transcriptions_on_page_id_and_status_and_created_at"
     t.index ["page_id"], name: "index_ai_transcriptions_on_page_id"
     t.index ["status", "updated_at"], name: "index_ai_transcriptions_on_status_and_updated_at"
     t.index ["status"], name: "index_ai_transcriptions_on_status"
@@ -371,15 +372,16 @@ ActiveRecord::Schema[7.2].define(version: 2026_10_18_151300) do
     t.string "prerender_mailer", limit: 8191
     t.boolean "is_public", default: true
     t.index ["article_id"], name: "index_deeds_on_article_id"
-    t.index ["collection_id", "created_at"], name: "index_deeds_on_collection_id_and_created_at"
-    t.index ["collection_id", "deed_type", "created_at"], name: "index_deeds_on_collection_id_and_deed_type_and_created_at"
-    t.index ["created_at", "collection_id"], name: "index_deeds_on_created_at_and_collection_id"
+    t.index ["collection_id", "created_at"], name: "index_deeds_on_collection_id_and_created_at", order: { created_at: :desc }
+    t.index ["collection_id", "deed_type", "created_at"], name: "index_deeds_on_collection_id_and_deed_type_and_created_at", order: { created_at: :desc }
+    t.index ["created_at", "collection_id"], name: "index_deeds_on_created_at_and_collection_id", order: { created_at: :desc }
     t.index ["note_id"], name: "index_deeds_on_note_id"
     t.index ["page_id"], name: "index_deeds_on_page_id"
-    t.index ["user_id", "created_at"], name: "index_deeds_on_user_id_and_created_at"
+    t.index ["updated_at", "work_id"], name: "index_deeds_on_updated_at_and_work_id"
+    t.index ["user_id", "created_at"], name: "index_deeds_on_user_id_and_created_at", order: { created_at: :desc }
     t.index ["visit_id"], name: "index_deeds_on_visit_id"
-    t.index ["work_id", "created_at"], name: "index_deeds_on_work_id_and_created_at"
-    t.index ["work_id", "deed_type", "user_id", "created_at"], name: "index_deeds_on_work_id_and_deed_type_and_user_id_and_created_at"
+    t.index ["work_id", "created_at"], name: "index_deeds_on_work_id_and_created_at", order: { created_at: :desc }
+    t.index ["work_id", "deed_type", "user_id", "created_at"], name: "index_deeds_on_work_id_and_deed_type_and_user_id_and_created_at", order: { created_at: :desc }
   end
 
   create_table "document_set_collaborators", id: false, charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
@@ -1477,6 +1479,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_10_18_151300) do
     t.datetime "most_recent_deed_created_at", precision: nil
     t.boolean "edit_metadata_after_split", default: false, null: false
     t.integer "split_from_work_id"
+    t.index ["collection_id", "title"], name: "index_works_on_collection_id_and_title", length: { title: 255 }
     t.index ["collection_id"], name: "index_works_on_collection_id"
     t.index ["metadata_description_version_id"], name: "index_works_on_metadata_description_version_id"
     t.index ["owner_user_id"], name: "index_works_on_owner_user_id"
