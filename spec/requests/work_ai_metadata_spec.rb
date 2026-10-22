@@ -74,14 +74,15 @@ describe WorkController, '#ai_metadata' do
       status: :finished,
       metadata_json: { field.id.to_s => 'Claude title' },
       reasoning: 'Claude reasoning',
-      metadata: { 'total_token_count' => 42 }
+      metadata: { 'prompt_token_count' => 20, 'candidates_token_count' => 12, 'thoughts_token_count' => 10, 'total_token_count' => 42 }
     )
     login_as owner
 
     get collection_work_ai_metadata_path(owner, collection, work, engine: 'claude')
 
     expect(response).to have_http_status(:ok)
-    expect(response.body).to include('claude-3-5-sonnet', 'Claude title', 'Claude reasoning', '42 tokens used')
+    expect(response.body).to include('claude-3-5-sonnet', 'Claude title', 'Claude reasoning')
+    expect(response.body).to include('Input tokens: 20', 'Output tokens: 12', 'Thoughts tokens: 10', 'Total tokens: 42')
     expect(response.body).to include('data-view-set="image"', 'data-view-set="transcript"', 'data-view-set="metadata"')
     expect(response.body).not_to include('data-view-set="ai"')
   end
