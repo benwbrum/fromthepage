@@ -87,6 +87,7 @@ class DisplayController < ApplicationController
       .order(:work_id, :position)
       .paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
 
+    @heading = t('.pages_that_mention', article: @article.title)
     session[:col_id] = @collection.slug
   end
 
