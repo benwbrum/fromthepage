@@ -80,7 +80,7 @@ gem 'rtl'
 
 # Email / Notifications
 gem 'postmark-rails'
-gem 'mail', '~> 2.7'
+gem 'mail', '~> 2.9'
 gem 'gravatar_image_tag', github: 'Tinix/gravatar_image_tag'
 gem 'slack-notifier'
 
