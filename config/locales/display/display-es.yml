@@ -105,7 +105,6 @@ es:
       ai_prompt: Mensaje de IA
       prompt_explanation: Esta indicación se utilizó para generar el borrador de la IA.
     read_all_works:
-      pages: Paginas
       pages_that_mention: Páginas que mencionan %{article}
     read_work:
       pages: Paginas

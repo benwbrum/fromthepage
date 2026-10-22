@@ -77,17 +77,17 @@ class DisplayController < ApplicationController
   end
 
   def read_all_works
-    if @article
-      # restrict to pages that include that subject
-      @pages = Page.order('work_id, position').joins('INNER JOIN page_article_links pal ON pages.id = pal.page_id').where(['pal.article_id = ?', @article.id]).where(work_id: @collection.works.ids).paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
-      @pages.distinct!
-      @heading = t('.pages_that_mention', article: @article.title)
-    else
-      @pages = Page.paginate :all, page: params[:page],
-                                        order: 'work_id, position',
-                                        per_page: 5
-      @heading = t('.pages')
-    end
+    @pages = Page
+      .joins(:page_article_links)
+      .where(
+        work_id: @collection.work_ids,
+        page_article_links: { article_id: @article.id }
+      )
+      .distinct
+      .order(:work_id, :position)
+      .paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
+
+    @heading = t('.pages_that_mention', article: @article.title)
     session[:col_id] = @collection.slug
   end
 
