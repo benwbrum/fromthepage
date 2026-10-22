@@ -7,6 +7,7 @@
 #  base_height             :integer
 #  base_image              :string(255)
 #  base_width              :integer
+#  cached_ai_status        :string(255)      default("not_started"), not null
 #  created_on              :datetime
 #  edit_started_at         :datetime
 #  is_first_page_candidate :boolean
@@ -37,6 +38,7 @@
 #  index_pages_on_status_and_work_id                      (status,work_id)
 #  index_pages_on_status_and_work_id_and_edit_started_at  (status,work_id,edit_started_at)
 #  index_pages_on_work_id                                 (work_id)
+#  index_pages_on_work_id_and_position                    (work_id,position)
 #  pages_search_text_index                                (search_text)
 #
 require 'search_translator'
