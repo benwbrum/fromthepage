@@ -1,0 +1,5 @@
+<% if @expand %>
+  <%= turbo_stream.replace('cookies-banner', partial: 'new') %>
+<% else %>
+  <%= turbo_stream.replace('cookies-banner', partial: 'banner') %>
+<% end %>

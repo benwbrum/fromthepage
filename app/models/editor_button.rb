@@ -23,6 +23,7 @@ class EditorButton < ApplicationRecord
   module Keys
     ABBR = 'abbr'
     ADD = 'add'
+    BOLD = 'b'
     DATE = 'date'
     DEL = 'del'
     EXPAN = 'expan'
@@ -44,7 +45,8 @@ class EditorButton < ApplicationRecord
 
   BUTTON_MAP = {
     Keys::ABBR => ['<abbr expan="">'],
-    Keys::ADD => ['<add>'],
+    Keys::ADD => ['<add>', '<ins>'],
+    Keys::BOLD => ['<hi rend="bold">', '<b>'],
     Keys::DATE => ['<date when="">'],
     Keys::DEL => ['<del>'],
     Keys::EXPAN => ['<expan abbr="">'],
@@ -76,7 +78,7 @@ class EditorButton < ApplicationRecord
 
 
   def close_tag
-    ('</' + open_tag.sub('<', '').sub(/\s.*/, '').sub('>','') + '>').html_safe
+    ('</' + open_tag.sub('<', '').sub(/\s.*/, '').sub('>', '') + '>').html_safe
   end
 
   def cursor_offset
@@ -88,7 +90,6 @@ class EditorButton < ApplicationRecord
   end
 
   def hotkey
-    "Ctrl-E"
+    'Ctrl-E'
   end
-
 end

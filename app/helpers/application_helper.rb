@@ -1,11 +1,10 @@
 module ApplicationHelper
-
   def contact_form_token
     ("#{Time.now.year}#{Time.now.month}#{Time.now.day}".to_i * 32 / 7)
   end
 
 
-  #dead code
+  # dead code
   def billing_host
     if defined? BILLING_HOST
       BILLING_HOST
@@ -26,82 +25,86 @@ module ApplicationHelper
   end
 
   def html_block(tag)
-    render({ :partial => 'page_block/html_block',
-             :locals =>
-              { :tag => tag,
-                :page_block => @html_blocks[tag],
-                :origin_controller => controller_name,
-                :origin_action => action_name
+    render({ partial: 'page_block/html_block',
+             locals:               { tag: tag,
+                page_block: @html_blocks[tag],
+                origin_controller: controller_name,
+                origin_action: action_name
               }
           })
   end
 
   def file_to_url(filename)
     if filename
-      filename.sub(/.*public/, "")
+      # Strip the path before 'public'
+      web_path = filename.sub(/.*public/, '')
+      # Split the path into directory and filename components, URL encode each part
+      # to handle special characters like # in filenames
+      path_parts = web_path.split('/')
+      encoded_parts = path_parts.map { |part| ERB::Util.url_encode(part) }
+      encoded_parts.join('/')
     else
-      ""
+      ''
     end
   end
 
   def profile_picture(user, gravatar_size = nil)
     render({
-              :partial => 'shared/profile_picture',
-              :locals => { :user => user, :gravatar_size => gravatar_size }
+              partial: 'shared/profile_picture',
+              locals: { user: user, gravatar_size: gravatar_size }
       })
   end
 
-  def svg_symbol(id, options={})
+  def svg_symbol(id, options = {})
     content_tag(:svg, options) do
-      content_tag(:use, nil, :'xlink:href' => asset_path('symbols.svg') + id)
+      content_tag(:use, nil, 'xlink:href': asset_path('symbols.svg') + id)
     end
   end
 
   # ripped off from
   # http://wiki.rubyonrails.org/rails/pages/CategoryTreeUsingActsAsTree
-  def display_categories(categories, parent_id, expanded=false, &block)
+  def display_categories(categories, parent_id, expanded = false, &block)
     ret = "<ul>\n"
       for category in categories
         if category.parent_id == parent_id
           ret << "<li#{' class="expanded"' if expanded}>"
           ret << yield(category)
           ret << display_categories(category.children, category.id, expanded, &block) if category.children.any?
-          ret << "</li>"
+          ret << '</li>'
         end
       end
     ret << "</ul>\n"
   end
 
-  def deeds_for(options={})
+  def deeds_for(options = {})
     limit = options[:limit] || 20
 
     condition = [String.new]
 
     if options[:types]
       types = options[:types]
-      types = types.map { |t| "'#{t}'"}
+      types = types.map { |t| "'#{t}'" }
       condition[0] = "deed_type IN (#{types.join(',')})"
     end
 
     if options[:user_id]
-      condition[0] << " AND " unless condition[0].length == 0
-      condition[0] << "user_id = ?"
+      condition[0] << ' AND ' unless condition[0].length == 0
+      condition[0] << 'user_id = ?'
       condition << options[:user_id]
     end
 
     if options[:not_user_id]
-      condition[0] << " AND " unless condition[0].length == 0
-      condition[0] << "user_id != ?"
+      condition[0] << ' AND ' unless condition[0].length == 0
+      condition[0] << 'user_id != ?'
       condition << options[:not_user_id]
     end
-
 
     suppress_collection = false
     if options[:collection]
       deeds = @collection.deeds.active.where(condition).order('deeds.created_at DESC').limit(limit)
       suppress_collection = true
     else
-      #restricting to visible collections first speeds up the query
+      # restricting to visible collections first speeds up the query
       limited = Deed.where(is_public: true)
       if options[:owner]
         owner = User.friendly.find(options[:owner].id)
@@ -113,7 +116,7 @@ module ApplicationHelper
       end
     end
     options[:suppress_collection] = suppress_collection
-    render({ :partial => 'deed/deeds', :locals => { :limit => limit, :deeds => deeds, :options => options} })
+    render partial: 'deed/deeds', locals: { limit: limit, deeds: deeds, options: options }
   end
 
   def show_prerender(prerender, locale)
@@ -133,11 +136,11 @@ module ApplicationHelper
 
   def validation_summary(errors)
     if errors.is_a?(Enumerable) && errors.any?
-      render({ :partial => 'shared/validation_summary', :locals => { :errors => errors } })
+      render({ partial: 'shared/validation_summary', locals: { errors: errors } })
     end
   end
 
-  def page_title(title=nil)
+  def page_title(title = nil)
     base_title = 'FromThePage'
 
     if title.blank?
@@ -170,7 +173,7 @@ module ApplicationHelper
       'dir'=>"#{direction}",
       'class'=>"#{direction}"
     }
-    return attrs
+    attrs
   end
 
   def fromthepage_version
@@ -179,40 +182,46 @@ module ApplicationHelper
 
   def value_to_html(value)
     if value.is_a? String
-      return value # scalar value
+      safe_text(value)
     elsif value.is_a? Array
       if value.first.is_a? String
-        return value.join("; ") # simple array
+        value.map { |v| safe_text(v) }.join('; ')
       else
-        # array of language pairs
-        return value.map {|e| e["@value"]}.join("; ")
+        value.map { |e| safe_text(e['@value']) }.join('; ')
       end
     elsif value.is_a? Hash
-      # is this a pre-IIIF-v3 multi-language value?
       if value.keys.include?('@language') && value.keys.include?('@value')
-        return value["@value"]
+        safe_text(value['@value'])
       else
-        return value.values.map{|value_array| value_array.first}.join('<br/>')
+        value.values.map { |value_array| safe_text(value_array.first) }.join('<br/>')
       end
     end
+  end
+
+  def safe_text(text)
+    doc = Nokogiri::HTML::DocumentFragment.parse(
+      text.to_s.tr('“”', '"')
+    )
+
+    doc.css('script').remove
+
+    doc.to_html.html_safe
   end
 
   def html_metadata_from_work(work)
-    if work.original_metadata.blank?
-      ""
-    else
-      html_metadata(JSON.parse(work.original_metadata))
-    end
+    return '' unless work.original_metadata.present?
+
+    html_metadata(JSON.parse(work.original_metadata))
   end
 
   def html_metadata(metadata_hash)
-    html = ""
+    html = ''
     metadata_hash.each do |md|
       label = md['label']
       if label.is_a? Array
         label = label.first['@value']
       elsif label.is_a? Hash
-        label = label.values.map{|label_array| label_array.first}.join(" / ")
+        label = label.values.map { |label_array| label_array.first }.join(' / ')
       end
       value = md['value']
 
@@ -223,9 +232,9 @@ module ApplicationHelper
 
   def target_collection_options(default)
     option_data = {}
-    current_user.collections.sort { |a,b| a.title <=> b.title }.each do |c|
+    current_user.collections.sort { |a, b| a.title <=> b.title }.each do |c|
       option_data[c.title]=c.id
-      c.document_sets.sort { |a,b| a.title <=> b.title }.each do |set|
+      c.document_sets.sort { |a, b| a.title <=> b.title }.each do |set|
         option_data[" -- #{set.title}"] = "D#{set.id}"
       end
     end
@@ -245,17 +254,33 @@ module ApplicationHelper
     session[:features] && session[:features][feature.to_s]
   end
 
+  def ai_work_metadata_available?(collection)
+    feature_enabled?(:ai_work_metadata) || collection.ai_work_metadata_enabled?
+  end
+
+  def ai_work_metadata_form_available?(collection)
+    feature_enabled?(:ai_work_metadata) && collection.metadata_entry? && collection.metadata_fields.exists?
+  end
+
   # makes an intro block into a snippet by removing style tag, stripping tags, and truncating
   def to_snippet(intro_block)
-    # remove style tag, Loofah.fragment.text doesn't do this (strip_tags does)
-    doc = Nokogiri::HTML(intro_block)
-    doc.xpath('//style').each { |n| n.remove }
-    # strip tags and truncate
-    truncate(Loofah.fragment(doc.to_s).text(encode_special_chars: false), length: 300, separator: ' ') || ''
+    return '' if intro_block.blank?
+
+    begin
+      # remove style tag, Loofah.fragment.text doesn't do this (strip_tags does)
+      doc = Nokogiri::HTML(intro_block)
+      doc.xpath('//style').each { |n| n.remove }
+      # strip tags and truncate
+      text = Loofah.fragment(doc.to_s).text(encode_special_chars: false)
+      truncate(text.to_s, length: 300, separator: ' ') || ''
+    rescue => e
+      # If anything goes wrong, return empty string
+      ''
+    end
   end
 
   def timeago(time, options = {})
-    options[:class] ||= "timeago"
+    options[:class] ||= 'timeago'
     content_tag(:time, time.to_s, options.merge(datetime: time.getutc.iso8601)) if time
   end
 
@@ -265,9 +290,21 @@ module ApplicationHelper
 
   def pagination_options_collection
     [
-      ['15', 15],
       ['50', 50],
+      ['200', 200],
       [I18n.t('will_paginate.all'), -1]
     ]
+  end
+
+  def default_split_title(work)
+    first_page = work.pages.order(:position).first
+    if first_page&.title.present? &&
+       first_page.title !~ /\A(Untitled Page )?\d+\z/ &&
+       first_page.title != work.title
+      return first_page.title
+    end
+    base = work.title
+    existing_count = work.collection.works.where('title LIKE ?', "#{ActiveRecord::Base.sanitize_sql_like(base)} %").count
+    "#{base} #{existing_count + 1}"
   end
 end

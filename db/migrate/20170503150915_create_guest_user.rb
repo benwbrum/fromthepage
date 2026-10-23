@@ -1,6 +1,5 @@
 class CreateGuestUser < ActiveRecord::Migration[5.0]
-
-#this functionality has been moved to a rake task
+# this functionality has been moved to a rake task
 =begin  def change
     user = User.find_by(login: "guest_user")
 

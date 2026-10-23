@@ -1,0 +1,16 @@
+-engines.each do |engine, ai_work_metadata|
+  .page-ai_engine
+    h6= t('work.describe.ai_model', model: ai_work_metadata.model)
+    -if ai_work_metadata.metadata_json.present?
+      -collection.metadata_fields.order(:line_number, :position).each do |field|
+        -value = ai_work_metadata.metadata_json[field.id.to_s]
+        -next if value.nil?
+        p
+          b ="#{field.label}: "
+          =value.is_a?(Array) ? value.join(', ') : value
+    -if ai_work_metadata.reasoning.present?
+      details
+        summary =t('work.describe.ai_reasoning')
+        p ==simple_format(ai_work_metadata.reasoning)
+    -if ai_work_metadata.metadata.is_a?(Hash) && ai_work_metadata.metadata['total_token_count'].present?
+      p.fgfaded =t('work.describe.ai_tokens_used', count: ai_work_metadata.metadata['total_token_count'])

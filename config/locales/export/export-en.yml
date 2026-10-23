@@ -1,6 +1,9 @@
 ---
 en:
   export:
+    accessible_pdf:
+      struck_through: 'struck through: %{text}'
+      table_without_headers: Table as transcribed, %{rows} rows by %{columns} columns. Column headers were not marked in the original transcription, so cells are read without them.
     edit_contentdm_credentials:
       connect: Connect
       contentdm_credentials: CONTENTdm Credentials
@@ -10,7 +13,11 @@ en:
       license_key: License key
     facing_edition:
       contributions_message: 'This document would not be possible without the editorial contributions of the following people:'
+      contributors: Contributors
       export_metadata: FromThePage export of %{work} from %{collection} made on %{time}.
+      metadata: Metadata
+      notes: Notes
+      translation: Translation
     index:
       api: API
       export_all_works: Export All Works
@@ -38,7 +45,16 @@ en:
       table_csv: Table CSV
       tei: TEI
       work_title: Work Title
+    new_grover_export:
+      ai_warning: 'Warning: This transcript is AI-generated (%{model} %{created_at}).'
+      contents: Contents
+      download: Download
+      heading: Accessible PDF Configuration
+      human_and_ai: Export Human Transcripts where available, otherwise export AI Drafts
+      human_only: Only Export Human Edited Transcripts
+      prepend_ai_warnings: 'Prepend Warning: This transcript is AI-generated to the top of the transcript.'
     show:
+      bibliography: Bibliography
       categories: 'Categories:'
       export_metadata: FromThePage export of %{work} from %{collection} made on %{time}.
       fromthepage_version: 'FromThePage version: %{version}'
@@ -51,6 +67,10 @@ en:
       subjects_and_indices: Subjects and Indices
     tei:
       administrator: Administrator of the %{collection} transcription project on FromThePage
+      ai_generated_between: Generated between %{start_date} and %{end_date}.
+      ai_generated_on: Generated on %{date}.
+      ai_page_ranges: 'Pages: %{ranges}.'
+      ai_transcription_by: 'AI transcription by:'
       changes_to_page_transcript: Changes to page transcript.
       double_proof_by: 'Double Proof by:'
       dynamic_tei_export: Dynamic TEI export from FromThePage (version %{version})

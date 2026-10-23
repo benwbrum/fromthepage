@@ -27,6 +27,8 @@ fr:
       conceal_preceding_pages: Masquer les pages précédentes
       first_line_of_ocr: Première ligne d'OCR
       first_line_of_ocr_description: "<b>La première ligne de l'OCR</b> remplace les titres de page par la première ligne du texte OCR sur chaque page. Ceci est utile pour les agendas et les livres de jour, puisque la première ligne est généralement une date."
+      generate_ai_draft_text: Générer un brouillon de texte IA à l'aide de Gemini AI
+      generate_ai_draft_text_description: Cochez cette case pour générer automatiquement le texte brouillon IA pour toutes les pages à l'aide de Gemini AI après la publication du document.
       last_line_of_ocr: Dernière ligne de l'OCR
       last_line_of_ocr_description: "<b>La dernière ligne de l'OCR</b> remplace les titres de page par la dernière ligne du texte OCR sur chaque page. Ceci est utile pour les œuvres imprimés dans lesquels les numéros de page apparaissent en bas."
       manage_archive_org_import: Gérer l'importation Archive.org

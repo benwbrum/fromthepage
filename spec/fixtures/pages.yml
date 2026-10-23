@@ -181,7 +181,7 @@ page_10:
 page_17:
   id: 17
   title: 'Page 1'
-  source_text: [[Testing]]
+  source_text: '[[Testing]]'
   base_image: <%=Rails.root.join('public/images/uploaded/2/page_0001.jpg')%>
   base_width: 2529
   base_height: 3313

@@ -169,3 +169,19 @@
     }
   }
 }
+#ai-text-table-wrapper {
+  min-width: 300px;
+  display: inline-block;
+
+  .dataTables_filter {
+    margin-bottom: 0px;
+  }
+
+  select {
+    min-width: 300px;
+    width: auto;
+    max-width: none;
+    white-space: nowrap;
+  }
+}
+

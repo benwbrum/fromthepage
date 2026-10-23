@@ -1,0 +1,893 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://digital.archives.alabama.gov/iiif/info/manifest.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 301
+      message: Moved Permanently
+    headers:
+      Date:
+      - Tue, 21 Oct 2025 19:52:45 GMT
+      Server:
+      - Apache
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Content-Type-Options:
+      - nosniff
+      X-Xss-Protection:
+      - 1; mode=block
+      Access-Control-Allow-Headers:
+      - X-Requested-With
+      Link:
+      - <http://iiif.io/api/presentation/2/context.json>; rel="http://www.w3.org/ns/json-ld#context";
+        type="application/ld+json"
+      X-Oclc-Iiif-Provider:
+      - cantaloupe
+      Location:
+      - https://digital.archives.alabama.gov/iiif/manifest.json
+      Cache-Control:
+      - max-age=0
+      Expires:
+      - Tue, 21 Oct 2025 19:52:45 GMT
+      Content-Length:
+      - '263'
+      Content-Type:
+      - text/html; charset=iso-8859-1
+    body:
+      encoding: UTF-8
+      string: |
+        <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+        <html><head>
+        <title>301 Moved Permanently</title>
+        </head><body>
+        <h1>Moved Permanently</h1>
+        <p>The document has moved <a href="https://digital.archives.alabama.gov/iiif/manifest.json">here</a>.</p>
+        </body></html>
+  recorded_at: Tue, 21 Oct 2025 19:52:45 GMT
+- request:
+    method: get
+    uri: https://digital.archives.alabama.gov/iiif/manifest.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 302
+      message: Found
+    headers:
+      Date:
+      - Tue, 21 Oct 2025 19:52:45 GMT
+      Server:
+      - Apache
+      X-Content-Type-Options:
+      - nosniff
+      X-Xss-Protection:
+      - 1; mode=block
+      Access-Control-Allow-Headers:
+      - X-Requested-With
+      Link:
+      - <http://iiif.io/api/presentation/2/context.json>; rel="http://www.w3.org/ns/json-ld#context";
+        type="application/ld+json"
+      X-Oclc-Iiif-Provider:
+      - cantaloupe
+      Location:
+      - https://digital.archives.alabama.gov/iiif/2/manifest.json
+      Cache-Control:
+      - max-age=0
+      Expires:
+      - Tue, 21 Oct 2025 19:52:45 GMT
+      Content-Length:
+      - '241'
+      Content-Type:
+      - text/html; charset=iso-8859-1
+    body:
+      encoding: UTF-8
+      string: |
+        <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+        <html><head>
+        <title>302 Found</title>
+        </head><body>
+        <h1>Found</h1>
+        <p>The document has moved <a href="https://digital.archives.alabama.gov/iiif/2/manifest.json">here</a>.</p>
+        </body></html>
+  recorded_at: Tue, 21 Oct 2025 19:52:46 GMT
+- request:
+    method: get
+    uri: https://digital.archives.alabama.gov/iiif/2/manifest.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Tue, 21 Oct 2025 19:52:46 GMT
+      Server:
+      - Apache
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Content-Type-Options:
+      - nosniff
+      - nosniff
+      X-Xss-Protection:
+      - 1; mode=block
+      - 1; mode=block
+      Access-Control-Allow-Headers:
+      - X-Requested-With
+      Link:
+      - <http://iiif.io/api/presentation/2/context.json>; rel="http://www.w3.org/ns/json-ld#context";
+        type="application/ld+json"
+      X-Oclc-Iiif-Provider:
+      - cantaloupe
+      Vary:
+      - Origin,Access-Control-Request-Method,Access-Control-Request-Headers,Accept-Encoding,User-Agent
+      Content-Type:
+      - application/json
+      Etag:
+      - '"03f9aceed2356d6bb832633f944b27a1a--gzip"'
+      X-Frame-Options:
+      - SAMEORIGIN
+      Content-Length:
+      - '9474'
+      Set-Cookie:
+      - JSESSIONID=MmVmZWNkMWUtNjJiOS00OTA1LTkxMTctYmIyYjcxMDg1Njg1; Path=/; HttpOnly;
+        SameSite=Lax
+      Cache-Control:
+      - max-age=0
+      Expires:
+      - Tue, 21 Oct 2025 19:52:46 GMT
+    body:
+      encoding: ASCII-8BIT
+      string: '{"@context":"http://iiif.io/api/presentation/2/context.json","@id":"https://cdm17217.contentdm.oclc.org/iiif/manifest.json","@type":"sc:Collection","collections":[{"@id":"https://cdm17217.contentdm.oclc.org/iiif/photo/manifest.json","@type":"sc:Collection","label":"Alabama
+        Photographs and Pictures Collection"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/voices/manifest.json","@type":"sc:Collection","label":"Alabama
+        Textual Materials Collection"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/maps/manifest.json","@type":"sc:Collection","label":"Alabama
+        Maps and Architectural Drawings Collection"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/peppler/manifest.json","@type":"sc:Collection","label":"Jim
+        Peppler Southern Courier Photograph Collection"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/amg/manifest.json","@type":"sc:Collection","label":"Alabama
+        Media Group Collection"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/robinson/manifest.json","@type":"sc:Collection","label":"Christiane
+        Robinson Photograph and Video Collection"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/p17217coll1/manifest.json","@type":"sc:Collection","label":"Alabama
+        Posters Collection"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/records/manifest.json","@type":"sc:Collection","label":"Alabama
+        Audiovisual Collection"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/wsfa/manifest.json","@type":"sc:Collection","label":"WSFA
+        Collection"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/folk/manifest.json","@type":"sc:Collection","label":"Alabama
+        Folklife Collection"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/wpa-religion/manifest.json","@type":"sc:Collection","label":"WPA
+        Church and Synagogue History Surveys"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/incarceration/manifest.json","@type":"sc:Collection","label":"Alabama
+        Incarceration Records"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/voter1867/manifest.json","@type":"sc:Collection","label":"1867
+        Voter Registration books"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/voter/manifest.json","@type":"sc:Collection","label":"1875
+        Voter Registration Books"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/constitutions/manifest.json","@type":"sc:Collection","label":"Alabama
+        Constitutions"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court/manifest.json","@type":"sc:Collection","label":"Alabama
+        Supreme Court Case Files"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/executive/manifest.json","@type":"sc:Collection","label":"Alabama
+        Governors'' Executive Orders Collection"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/cwnp/manifest.json","@type":"sc:Collection","label":"Alabama
+        Civil War and Reconstruction Newspapers"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/cwrg/manifest.json","@type":"sc:Collection","label":"Civil
+        War and Reconstruction Governors of Alabama"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/cw_flags/manifest.json","@type":"sc:Collection","label":"Alabama
+        Civil War Period Flag Collection"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/regiments/manifest.json","@type":"sc:Collection","label":"Confederate
+        Regimental History Files"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/p17217coll3/manifest.json","@type":"sc:Collection","label":"Alabama
+        World War I Service Records"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/goldstar/manifest.json","@type":"sc:Collection","label":"Alabama
+        World War I Gold Star Files"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/p17217coll16/manifest.json","@type":"sc:Collection","label":"Alabama
+        Active Military Service Reports"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/hgpub/manifest.json","@type":"sc:Collection","label":"Alabama
+        Genealogy and History Publications"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/museum/manifest.json","@type":"sc:Collection","label":"Alabama
+        Museum Collection"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/adah_pubs/manifest.json","@type":"sc:Collection","label":"Alabama
+        Archives Publications"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/reorg/manifest.json","@type":"sc:Collection","label":"State
+        Government Effectiveness and Reorganization"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/wpa/manifest.json","@type":"sc:Collection","label":"Alabama
+        Writers'' Project Collection"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/p17217coll10/manifest.json","@type":"sc:Collection","label":"Athens
+        State University"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/afa01/manifest.json","@type":"sc:Collection","label":"Alabama
+        Folklife Association"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/sylacauga/manifest.json","@type":"sc:Collection","label":"B.B.
+        Comer Library"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/asfa01/manifest.json","@type":"sc:Collection","label":"Alabama
+        School of Fine Arts"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/p17217coll2/manifest.json","@type":"sc:Collection","label":"Autauga
+        County Heritage Association"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/carlelliott/manifest.json","@type":"sc:Collection","label":"Carl
+        Elliott Regional Library"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/bbg01/manifest.json","@type":"sc:Collection","label":"Birmingham
+        Botanical Gardens"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/bcri/manifest.json","@type":"sc:Collection","label":"Birmingham
+        Civil Rights Institute"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/cherokeechm/manifest.json","@type":"sc:Collection","label":"Cherokee
+        County Historical Museum"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/p17217coll5/manifest.json","@type":"sc:Collection","label":"Cobb
+        Memorial Archives"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/franelich/manifest.json","@type":"sc:Collection","label":"Franelich
+        Collection"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/daphmuseum/manifest.json","@type":"sc:Collection","label":"Daphne
+        Museum"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/fpl01/manifest.json","@type":"sc:Collection","label":"Fairhope
+        Public Library"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/gpl01/manifest.json","@type":"sc:Collection","label":"Gadsden
+        Public Library"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/faulkneruni/manifest.json","@type":"sc:Collection","label":"Faulkner
+        University Archive"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/p17217coll9/manifest.json","@type":"sc:Collection","label":"Gulf
+        Shores Museum"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/homewood/manifest.json","@type":"sc:Collection","label":"Homewood
+        Public Library"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/huntingdon/manifest.json","@type":"sc:Collection","label":"Huntingdon
+        College"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/hodrrm/manifest.json","@type":"sc:Collection","label":"Heart
+        of Dixie Railroad Museum"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/hmps/manifest.json","@type":"sc:Collection","label":"Historic
+        Mobile Preservation Society"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/munford/manifest.json","@type":"sc:Collection","label":"Munford
+        Public Library"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/nacc1/manifest.json","@type":"sc:Collection","label":"Northeast
+        Alabama Community College"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/mjmcoll/manifest.json","@type":"sc:Collection","label":"Marietta
+        Johnson Museum"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/p17217coll8/manifest.json","@type":"sc:Collection","label":"Montgomery
+        County Archives"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/selmapl/manifest.json","@type":"sc:Collection","label":"Selma-Dallas
+        County Public Library"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/splc/manifest.json","@type":"sc:Collection","label":"Southern
+        Poverty Law Center Reports"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/StMarysChurch/manifest.json","@type":"sc:Collection","label":"St.
+        Mary''s Catholic Church"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/p17217coll4/manifest.json","@type":"sc:Collection","label":"Tupper
+        Lightfoot Memorial Library"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/troy2/manifest.json","@type":"sc:Collection","label":"Troy
+        University Library"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/tren01/manifest.json","@type":"sc:Collection","label":"Trenholm
+        State Community College"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/tgs/manifest.json","@type":"sc:Collection","label":"Tuscaloosa
+        Genealogical Society"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/tu01/manifest.json","@type":"sc:Collection","label":"Tuskegee
+        University"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/ussa/manifest.json","@type":"sc:Collection","label":"United
+        States Sports Academy"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/time_capsule/manifest.json","@type":"sc:Collection","label":"Montgomery
+        Time Capsule"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/usa01/manifest.json","@type":"sc:Collection","label":"University
+        of South Alabama, McCall Library"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/uwa/manifest.json","@type":"sc:Collection","label":"University
+        of West Alabama"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/vina1/manifest.json","@type":"sc:Collection","label":"Town
+        of Vina"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/wire01/manifest.json","@type":"sc:Collection","label":"The
+        Wiregrass Archives"}]}'
+  recorded_at: Tue, 21 Oct 2025 19:52:47 GMT
+- request:
+    method: get
+    uri: https://cdm17217.contentdm.oclc.org/iiif/info/supreme_court/7076/manifest.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 301
+      message: Moved Permanently
+    headers:
+      Date:
+      - Tue, 21 Oct 2025 19:52:47 GMT
+      Server:
+      - Apache
+      Content-Type:
+      - application/json;charset=UTF-8
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Content-Type-Options:
+      - nosniff
+      X-Xss-Protection:
+      - 1; mode=block
+      Access-Control-Allow-Headers:
+      - X-Requested-With
+      Link:
+      - <http://iiif.io/api/presentation/2/context.json>; rel="http://www.w3.org/ns/json-ld#context";
+        type="application/ld+json"
+      X-Oclc-Iiif-Provider:
+      - cantaloupe
+      Location:
+      - https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7076/manifest.json
+      Cache-Control:
+      - max-age=0
+      Expires:
+      - Tue, 21 Oct 2025 19:52:47 GMT
+      Content-Length:
+      - '281'
+    body:
+      encoding: UTF-8
+      string: |
+        <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+        <html><head>
+        <title>301 Moved Permanently</title>
+        </head><body>
+        <h1>Moved Permanently</h1>
+        <p>The document has moved <a href="https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7076/manifest.json">here</a>.</p>
+        </body></html>
+  recorded_at: Tue, 21 Oct 2025 19:52:47 GMT
+- request:
+    method: get
+    uri: https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7076/manifest.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 302
+      message: Found
+    headers:
+      Date:
+      - Tue, 21 Oct 2025 19:52:48 GMT
+      Server:
+      - Apache
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Content-Type-Options:
+      - nosniff
+      X-Xss-Protection:
+      - 1; mode=block
+      Access-Control-Allow-Headers:
+      - X-Requested-With
+      Link:
+      - <http://iiif.io/api/presentation/2/context.json>; rel="http://www.w3.org/ns/json-ld#context";
+        type="application/ld+json"
+      X-Oclc-Iiif-Provider:
+      - cantaloupe
+      Location:
+      - https://cdm17217.contentdm.oclc.org/iiif/2/supreme_court:7076/manifest.json
+      Cache-Control:
+      - max-age=0
+      Expires:
+      - Tue, 21 Oct 2025 19:52:48 GMT
+      Content-Length:
+      - '259'
+      Content-Type:
+      - text/html; charset=iso-8859-1
+    body:
+      encoding: UTF-8
+      string: |
+        <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+        <html><head>
+        <title>302 Found</title>
+        </head><body>
+        <h1>Found</h1>
+        <p>The document has moved <a href="https://cdm17217.contentdm.oclc.org/iiif/2/supreme_court:7076/manifest.json">here</a>.</p>
+        </body></html>
+  recorded_at: Tue, 21 Oct 2025 19:52:48 GMT
+- request:
+    method: get
+    uri: https://cdm17217.contentdm.oclc.org/iiif/2/supreme_court:7076/manifest.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Tue, 21 Oct 2025 19:52:49 GMT
+      Server:
+      - Apache
+      X-Content-Type-Options:
+      - nosniff
+      - nosniff
+      X-Xss-Protection:
+      - 1; mode=block
+      - 1; mode=block
+      Access-Control-Allow-Headers:
+      - X-Requested-With
+      Link:
+      - <http://iiif.io/api/presentation/2/context.json>; rel="http://www.w3.org/ns/json-ld#context";
+        type="application/ld+json"
+      X-Oclc-Iiif-Provider:
+      - cantaloupe
+      Vary:
+      - Origin,Access-Control-Request-Method,Access-Control-Request-Headers,Accept-Encoding,User-Agent
+      Content-Type:
+      - application/json
+      Etag:
+      - '"0776ecc100772ca02fd79a4068139a1bc--gzip"'
+      X-Frame-Options:
+      - SAMEORIGIN
+      Content-Length:
+      - '24269'
+      Set-Cookie:
+      - JSESSIONID=MzRiMmVkYjItYmRmYi00ZGZiLWFjNmItOWI4YTNlMjVkMTkw; Path=/; HttpOnly;
+        SameSite=Lax
+      Cache-Control:
+      - max-age=0
+      Expires:
+      - Tue, 21 Oct 2025 19:52:49 GMT
+    body:
+      encoding: ASCII-8BIT
+      string: '{"@context":"http://iiif.io/api/presentation/2/context.json","@type":"sc:Manifest","@id":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7076/manifest.json","label":"Gill
+        et al. v. Tittle","metadata":[{"label":"Case Number","value":"2566"},{"label":"Location","value":"SC00075"},{"label":"Court
+        Term","value":"1848 June"},{"label":"Catalog Record","value":"http://archives-alabama-primo.hosted.exlibrisgroup.com/01ALABAMA:default_scope:01ALABAMA_ALMA215682820002743"},{"label":"Collection
+        Creator","value":"Alabama. Supreme Court"},{"label":"Description","value":"A
+        transcription is included here, and the case is summarized in Alabama Reports,
+        volume 14, pages 528 through 533. Excerpt from the report:\r\n\r\nThe bill
+        is filed by the complainants to protect their interest in certain slaves therein
+        named, against a threatened injury on the part of the defendant, who has an
+        estate for the life of the complainants'' father and mother, and who, the
+        plaintiff''s pray, may be required to give security for the forthcoming of
+        the slaves after the termination of such estate.\r\n\r\nThe title set up by
+        complainants is derived under a deed from one Robert Freeman, which is made
+        an exhibit to the bill, and is in the following words:\r\n\r\n\"Georgia, Oglethorpe
+        county.\r\n\"To all to whom these presents may come, greeting:   \r\nKnow
+        ye, that I, Robert Freeman, of the county and state aforesaid, for, and in
+        consideration of the natural love and affection which I have and do bear towards
+        the family of children of Joseph Gill, of the county and state aforesaid:
+        that is to say, John L . Gill, Lucinda Gill, Marshall M. Gill, and Joseph
+        M. Gill, and the heirs that he, the said Joseph Gill, may have by his present
+        wife Nancy Gill, if any more there should be; that I do by these presents,
+        give and grant to the said family of children, and to the further increase,
+        if any, one negro girl Phebe, and her increase, which said negro girl, with
+        her increase, if any, at, and after his, the said Gill''s death, and the death
+        of his said wife Nancy, the above negro and increase, if any, to be equally
+        divided among the whole of the above named children, with the increase of
+        the said Nancy''s heirs, of the said Joseph; and I do, for myself, my heirs,
+        executors, administrators and assigns, and no further, warrant, and forever
+        defend, the aforesaid negro girl Phebe, to the said described heirs of Joseph
+        Gill, and their heirs forever. In witness whereof, I have hereunto set my
+        hand and seal, this 18th of December, 1812.\r\nRobert Freeman, [seal.]\"\r\n(Signed,
+        and duly attested.}\r\n\r\nThe answer of James Tittle, the defendant, avers
+        a purchase of the slaves by him from Peter Tittle, who purchased from Joseph
+        Gill, the father of the complainants, and demurs to the bill.\r\n\r\n"},{"label":"Division","value":"Northwestern
+        Division"},{"label":"Download Transcription","value":"https://archives.alabama.gov/research/docs/collections/supreme-court/SC00075_Gill_v_Tittle_transcription.pdf"},{"label":"Language","value":"English"},{"label":"Repository","value":"Alabama
+        Department of Archives and History, 624 Washington Avenue, Montgomery, Alabama
+        36130"},{"label":"Rights","value":"This material may be protected under U.
+        S. Copyright Law (Title 17, U.S. Code) which governs the making of photocopies
+        or reproductions of copyrighted materials. You may use the digitized material
+        for private study, scholarship, or research. Though ADAH has physical ownership
+        of the material in its collections, in some cases we may not own the copyright
+        to the material. It is the patron''s obligation to determine and satisfy copyright
+        restrictions when publishing or otherwise distributing materials found in
+        our collections."},{"label":"Collection Title","value":"Alabama Supreme Court
+        case files"},{"label":"Subject - Topics","value":"African Americans; Estates
+        (Law); Inheritance and succession; Slavery"},{"label":"Subject - Places","value":"Jefferson
+        County (Ala.)"},{"label":"Subject - People","value":"Freeman, Robert; Gill,
+        John L.; Gill, Joseph; Gill, Joseph M.; Gill, Lucinda; Gill, Marshall M.;
+        Gill, Nancy; Alfred, slave in Walker County, Ala., of Peter and James Tittle,
+        son of Phebe; Phebe, slave in Oglethorpe County, Ga., and Walker County, Ala.,
+        of Robert Freeman, Joseph Gill, and Peter and James Tittle; Tittle, James;
+        Tittle, Peter"},{"label":"Time Period","value":"1840-1849"},{"label":"Case","value":"Gill
+        et al. v. Tittle"},{"label":"Upload Batch","value":"SC00075_Gill_v_Tittle"},{"label":"Repository","value":"Alabama
+        Department of Archives and History"},{"label":"Source","value":"<span>From:
+        <a href=\"https://digital.archives.alabama.gov/digital/collection/supreme_court/id/7076\">Gill
+        et al. v. Tittle</a></span>"}],"attribution":["","This material may be protected
+        under U. S. Copyright Law (Title 17, U.S. Code) which governs the making of
+        photocopies or reproductions of copyrighted materials. You may use the digitized
+        material for private study, scholarship, or research. Though ADAH has physical
+        ownership of the material in its collections, in some cases we may not own
+        the copyright to the material. It is the patron''s obligation to determine
+        and satisfy copyright restrictions when publishing or otherwise distributing
+        materials found in our collections."],"within":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court/manifest.json","sequences":[{"@id":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7076/sequence/s0","@type":"sc:Sequence","label":"Gill
+        et al. v. Tittle","canvases":[{"@id":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7056/canvas/c0","@type":"sc:Canvas","label":"Page
+        1","images":[{"@id":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7056/annotation/a0","@type":"oa:Annotation","motivation":"sc:painting","resource":{"@id":"https://cdm17217.contentdm.oclc.org/iiif/2/supreme_court:7056/full/full/0/default.jpg","@type":"dctypes:Image","service":{"@context":"http://iiif.io/api/image/2/context.json","@id":"https://cdm17217.contentdm.oclc.org/iiif/2/supreme_court:7056","width":2361,"height":3913,"tiles":[{"width":2361,"scaleFactors":[1,2,4,8,16]}],"profile":"http://iiif.io/api/image/2/level1.json","protocol":"http://iiif.io/api/image"},"format":"image/jpeg","width":2361,"height":3913},"on":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7056/canvas/c0"}],"width":2361,"height":3913},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7057/canvas/c1","@type":"sc:Canvas","label":"Page
+        2","images":[{"@id":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7057/annotation/a1","@type":"oa:Annotation","motivation":"sc:painting","resource":{"@id":"https://cdm17217.contentdm.oclc.org/iiif/2/supreme_court:7057/full/full/0/default.jpg","@type":"dctypes:Image","service":{"@context":"http://iiif.io/api/image/2/context.json","@id":"https://cdm17217.contentdm.oclc.org/iiif/2/supreme_court:7057","width":2304,"height":3897,"tiles":[{"width":2304,"scaleFactors":[1,2,4,8,16]}],"profile":"http://iiif.io/api/image/2/level1.json","protocol":"http://iiif.io/api/image"},"format":"image/jpeg","width":2304,"height":3897},"on":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7057/canvas/c1"}],"width":2304,"height":3897},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7058/canvas/c2","@type":"sc:Canvas","label":"Page
+        3","images":[{"@id":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7058/annotation/a2","@type":"oa:Annotation","motivation":"sc:painting","resource":{"@id":"https://cdm17217.contentdm.oclc.org/iiif/2/supreme_court:7058/full/full/0/default.jpg","@type":"dctypes:Image","service":{"@context":"http://iiif.io/api/image/2/context.json","@id":"https://cdm17217.contentdm.oclc.org/iiif/2/supreme_court:7058","width":2321,"height":3857,"tiles":[{"width":2321,"scaleFactors":[1,2,4,8,16]}],"profile":"http://iiif.io/api/image/2/level1.json","protocol":"http://iiif.io/api/image"},"format":"image/jpeg","width":2321,"height":3857},"on":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7058/canvas/c2"}],"width":2321,"height":3857},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7059/canvas/c3","@type":"sc:Canvas","label":"Page
+        4","images":[{"@id":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7059/annotation/a3","@type":"oa:Annotation","motivation":"sc:painting","resource":{"@id":"https://cdm17217.contentdm.oclc.org/iiif/2/supreme_court:7059/full/full/0/default.jpg","@type":"dctypes:Image","service":{"@context":"http://iiif.io/api/image/2/context.json","@id":"https://cdm17217.contentdm.oclc.org/iiif/2/supreme_court:7059","width":3920,"height":2288,"tiles":[{"width":3920,"scaleFactors":[1,2,4,8,16]}],"profile":"http://iiif.io/api/image/2/level1.json","protocol":"http://iiif.io/api/image"},"format":"image/jpeg","width":3920,"height":2288},"on":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7059/canvas/c3"}],"width":3920,"height":2288},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7060/canvas/c4","@type":"sc:Canvas","label":"Page
+        5","images":[{"@id":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7060/annotation/a4","@type":"oa:Annotation","motivation":"sc:painting","resource":{"@id":"https://cdm17217.contentdm.oclc.org/iiif/2/supreme_court:7060/full/full/0/default.jpg","@type":"dctypes:Image","service":{"@context":"http://iiif.io/api/image/2/context.json","@id":"https://cdm17217.contentdm.oclc.org/iiif/2/supreme_court:7060","width":3304,"height":4921,"tiles":[{"width":3304,"scaleFactors":[1,2,4,8,16]}],"profile":"http://iiif.io/api/image/2/level1.json","protocol":"http://iiif.io/api/image"},"format":"image/jpeg","width":3304,"height":4921},"on":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7060/canvas/c4"}],"width":3304,"height":4921},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7061/canvas/c5","@type":"sc:Canvas","label":"Page
+        6","images":[{"@id":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7061/annotation/a5","@type":"oa:Annotation","motivation":"sc:painting","resource":{"@id":"https://cdm17217.contentdm.oclc.org/iiif/2/supreme_court:7061/full/full/0/default.jpg","@type":"dctypes:Image","service":{"@context":"http://iiif.io/api/image/2/context.json","@id":"https://cdm17217.contentdm.oclc.org/iiif/2/supreme_court:7061","width":3136,"height":5009,"tiles":[{"width":3136,"scaleFactors":[1,2,4,8,16]}],"profile":"http://iiif.io/api/image/2/level1.json","protocol":"http://iiif.io/api/image"},"format":"image/jpeg","width":3136,"height":5009},"on":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7061/canvas/c5"}],"width":3136,"height":5009},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7062/canvas/c6","@type":"sc:Canvas","label":"Page
+        7","images":[{"@id":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7062/annotation/a6","@type":"oa:Annotation","motivation":"sc:painting","resource":{"@id":"https://cdm17217.contentdm.oclc.org/iiif/2/supreme_court:7062/full/full/0/default.jpg","@type":"dctypes:Image","service":{"@context":"http://iiif.io/api/image/2/context.json","@id":"https://cdm17217.contentdm.oclc.org/iiif/2/supreme_court:7062","width":3201,"height":4945,"tiles":[{"width":3201,"scaleFactors":[1,2,4,8,16]}],"profile":"http://iiif.io/api/image/2/level1.json","protocol":"http://iiif.io/api/image"},"format":"image/jpeg","width":3201,"height":4945},"on":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7062/canvas/c6"}],"width":3201,"height":4945},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7063/canvas/c7","@type":"sc:Canvas","label":"Page
+        8","images":[{"@id":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7063/annotation/a7","@type":"oa:Annotation","motivation":"sc:painting","resource":{"@id":"https://cdm17217.contentdm.oclc.org/iiif/2/supreme_court:7063/full/full/0/default.jpg","@type":"dctypes:Image","service":{"@context":"http://iiif.io/api/image/2/context.json","@id":"https://cdm17217.contentdm.oclc.org/iiif/2/supreme_court:7063","width":3216,"height":4977,"tiles":[{"width":3216,"scaleFactors":[1,2,4,8,16]}],"profile":"http://iiif.io/api/image/2/level1.json","protocol":"http://iiif.io/api/image"},"format":"image/jpeg","width":3216,"height":4977},"on":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7063/canvas/c7"}],"width":3216,"height":4977},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7064/canvas/c8","@type":"sc:Canvas","label":"Page
+        9","images":[{"@id":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7064/annotation/a8","@type":"oa:Annotation","motivation":"sc:painting","resource":{"@id":"https://cdm17217.contentdm.oclc.org/iiif/2/supreme_court:7064/full/full/0/default.jpg","@type":"dctypes:Image","service":{"@context":"http://iiif.io/api/image/2/context.json","@id":"https://cdm17217.contentdm.oclc.org/iiif/2/supreme_court:7064","width":3264,"height":4897,"tiles":[{"width":3264,"scaleFactors":[1,2,4,8,16]}],"profile":"http://iiif.io/api/image/2/level1.json","protocol":"http://iiif.io/api/image"},"format":"image/jpeg","width":3264,"height":4897},"on":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7064/canvas/c8"}],"width":3264,"height":4897},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7065/canvas/c9","@type":"sc:Canvas","label":"Page
+        10","images":[{"@id":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7065/annotation/a9","@type":"oa:Annotation","motivation":"sc:painting","resource":{"@id":"https://cdm17217.contentdm.oclc.org/iiif/2/supreme_court:7065/full/full/0/default.jpg","@type":"dctypes:Image","service":{"@context":"http://iiif.io/api/image/2/context.json","@id":"https://cdm17217.contentdm.oclc.org/iiif/2/supreme_court:7065","width":3160,"height":4985,"tiles":[{"width":3160,"scaleFactors":[1,2,4,8,16]}],"profile":"http://iiif.io/api/image/2/level1.json","protocol":"http://iiif.io/api/image"},"format":"image/jpeg","width":3160,"height":4985},"on":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7065/canvas/c9"}],"width":3160,"height":4985},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7066/canvas/c10","@type":"sc:Canvas","label":"Page
+        11","images":[{"@id":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7066/annotation/a10","@type":"oa:Annotation","motivation":"sc:painting","resource":{"@id":"https://cdm17217.contentdm.oclc.org/iiif/2/supreme_court:7066/full/full/0/default.jpg","@type":"dctypes:Image","service":{"@context":"http://iiif.io/api/image/2/context.json","@id":"https://cdm17217.contentdm.oclc.org/iiif/2/supreme_court:7066","width":3368,"height":4921,"tiles":[{"width":3368,"scaleFactors":[1,2,4,8,16]}],"profile":"http://iiif.io/api/image/2/level1.json","protocol":"http://iiif.io/api/image"},"format":"image/jpeg","width":3368,"height":4921},"on":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7066/canvas/c10"}],"width":3368,"height":4921},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7067/canvas/c11","@type":"sc:Canvas","label":"Page
+        12","images":[{"@id":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7067/annotation/a11","@type":"oa:Annotation","motivation":"sc:painting","resource":{"@id":"https://cdm17217.contentdm.oclc.org/iiif/2/supreme_court:7067/full/full/0/default.jpg","@type":"dctypes:Image","service":{"@context":"http://iiif.io/api/image/2/context.json","@id":"https://cdm17217.contentdm.oclc.org/iiif/2/supreme_court:7067","width":3176,"height":4961,"tiles":[{"width":3176,"scaleFactors":[1,2,4,8,16]}],"profile":"http://iiif.io/api/image/2/level1.json","protocol":"http://iiif.io/api/image"},"format":"image/jpeg","width":3176,"height":4961},"on":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7067/canvas/c11"}],"width":3176,"height":4961},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7068/canvas/c12","@type":"sc:Canvas","label":"Page
+        13","images":[{"@id":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7068/annotation/a12","@type":"oa:Annotation","motivation":"sc:painting","resource":{"@id":"https://cdm17217.contentdm.oclc.org/iiif/2/supreme_court:7068/full/full/0/default.jpg","@type":"dctypes:Image","service":{"@context":"http://iiif.io/api/image/2/context.json","@id":"https://cdm17217.contentdm.oclc.org/iiif/2/supreme_court:7068","width":3201,"height":4913,"tiles":[{"width":3201,"scaleFactors":[1,2,4,8,16]}],"profile":"http://iiif.io/api/image/2/level1.json","protocol":"http://iiif.io/api/image"},"format":"image/jpeg","width":3201,"height":4913},"on":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7068/canvas/c12"}],"width":3201,"height":4913},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7069/canvas/c13","@type":"sc:Canvas","label":"Page
+        14","images":[{"@id":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7069/annotation/a13","@type":"oa:Annotation","motivation":"sc:painting","resource":{"@id":"https://cdm17217.contentdm.oclc.org/iiif/2/supreme_court:7069/full/full/0/default.jpg","@type":"dctypes:Image","service":{"@context":"http://iiif.io/api/image/2/context.json","@id":"https://cdm17217.contentdm.oclc.org/iiif/2/supreme_court:7069","width":3168,"height":4953,"tiles":[{"width":3168,"scaleFactors":[1,2,4,8,16]}],"profile":"http://iiif.io/api/image/2/level1.json","protocol":"http://iiif.io/api/image"},"format":"image/jpeg","width":3168,"height":4953},"on":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7069/canvas/c13"}],"width":3168,"height":4953},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7070/canvas/c14","@type":"sc:Canvas","label":"Page
+        15","images":[{"@id":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7070/annotation/a14","@type":"oa:Annotation","motivation":"sc:painting","resource":{"@id":"https://cdm17217.contentdm.oclc.org/iiif/2/supreme_court:7070/full/full/0/default.jpg","@type":"dctypes:Image","service":{"@context":"http://iiif.io/api/image/2/context.json","@id":"https://cdm17217.contentdm.oclc.org/iiif/2/supreme_court:7070","width":3233,"height":4905,"tiles":[{"width":3233,"scaleFactors":[1,2,4,8,16]}],"profile":"http://iiif.io/api/image/2/level1.json","protocol":"http://iiif.io/api/image"},"format":"image/jpeg","width":3233,"height":4905},"on":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7070/canvas/c14"}],"width":3233,"height":4905},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7071/canvas/c15","@type":"sc:Canvas","label":"Page
+        16","images":[{"@id":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7071/annotation/a15","@type":"oa:Annotation","motivation":"sc:painting","resource":{"@id":"https://cdm17217.contentdm.oclc.org/iiif/2/supreme_court:7071/full/full/0/default.jpg","@type":"dctypes:Image","service":{"@context":"http://iiif.io/api/image/2/context.json","@id":"https://cdm17217.contentdm.oclc.org/iiif/2/supreme_court:7071","width":3136,"height":4937,"tiles":[{"width":3136,"scaleFactors":[1,2,4,8,16]}],"profile":"http://iiif.io/api/image/2/level1.json","protocol":"http://iiif.io/api/image"},"format":"image/jpeg","width":3136,"height":4937},"on":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7071/canvas/c15"}],"width":3136,"height":4937},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7072/canvas/c16","@type":"sc:Canvas","label":"Page
+        17","images":[{"@id":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7072/annotation/a16","@type":"oa:Annotation","motivation":"sc:painting","resource":{"@id":"https://cdm17217.contentdm.oclc.org/iiif/2/supreme_court:7072/full/full/0/default.jpg","@type":"dctypes:Image","service":{"@context":"http://iiif.io/api/image/2/context.json","@id":"https://cdm17217.contentdm.oclc.org/iiif/2/supreme_court:7072","width":3312,"height":4905,"tiles":[{"width":3312,"scaleFactors":[1,2,4,8,16]}],"profile":"http://iiif.io/api/image/2/level1.json","protocol":"http://iiif.io/api/image"},"format":"image/jpeg","width":3312,"height":4905},"on":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7072/canvas/c16"}],"width":3312,"height":4905},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7073/canvas/c17","@type":"sc:Canvas","label":"Page
+        18","images":[{"@id":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7073/annotation/a17","@type":"oa:Annotation","motivation":"sc:painting","resource":{"@id":"https://cdm17217.contentdm.oclc.org/iiif/2/supreme_court:7073/full/full/0/default.jpg","@type":"dctypes:Image","service":{"@context":"http://iiif.io/api/image/2/context.json","@id":"https://cdm17217.contentdm.oclc.org/iiif/2/supreme_court:7073","width":3096,"height":4945,"tiles":[{"width":3096,"scaleFactors":[1,2,4,8,16]}],"profile":"http://iiif.io/api/image/2/level1.json","protocol":"http://iiif.io/api/image"},"format":"image/jpeg","width":3096,"height":4945},"on":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7073/canvas/c17"}],"width":3096,"height":4945},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7074/canvas/c18","@type":"sc:Canvas","label":"Page
+        19","images":[{"@id":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7074/annotation/a18","@type":"oa:Annotation","motivation":"sc:painting","resource":{"@id":"https://cdm17217.contentdm.oclc.org/iiif/2/supreme_court:7074/full/full/0/default.jpg","@type":"dctypes:Image","service":{"@context":"http://iiif.io/api/image/2/context.json","@id":"https://cdm17217.contentdm.oclc.org/iiif/2/supreme_court:7074","width":3272,"height":4961,"tiles":[{"width":3272,"scaleFactors":[1,2,4,8,16]}],"profile":"http://iiif.io/api/image/2/level1.json","protocol":"http://iiif.io/api/image"},"format":"image/jpeg","width":3272,"height":4961},"on":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7074/canvas/c18"}],"width":3272,"height":4961},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7075/canvas/c19","@type":"sc:Canvas","label":"Alabama
+        Reports (volume 14, pages 528-533)","images":[{"@id":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7075/annotation/a19","@type":"oa:Annotation","motivation":"sc:painting","resource":{"@id":"https://cdm17217.contentdm.oclc.org/iiif/2/supreme_court:7075/full/full/0/default.jpg","@type":"dctypes:Image","service":{"@context":"http://iiif.io/api/image/2/context.json","@id":"https://cdm17217.contentdm.oclc.org/iiif/2/supreme_court:7075","width":2361,"height":3913,"tiles":[{"width":2361,"scaleFactors":[1,2,4,8,16]}],"profile":"http://iiif.io/api/image/2/level1.json","protocol":"http://iiif.io/api/image"},"format":"image/jpeg","width":2361,"height":3913},"on":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7075/canvas/c19"}],"width":2361,"height":3913}]}],"structures":[{"@id":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7076/range/r0","@type":"sc:Range","label":"Gill
+        et al. v. Tittle","ranges":[],"canvases":["https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7056/canvas/c0","https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7057/canvas/c1","https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7058/canvas/c2","https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7059/canvas/c3","https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7060/canvas/c4","https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7061/canvas/c5","https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7062/canvas/c6","https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7063/canvas/c7","https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7064/canvas/c8","https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7065/canvas/c9","https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7066/canvas/c10","https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7067/canvas/c11","https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7068/canvas/c12","https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7069/canvas/c13","https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7070/canvas/c14","https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7071/canvas/c15","https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7072/canvas/c16","https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7073/canvas/c17","https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7074/canvas/c18","https://cdm17217.contentdm.oclc.org/iiif/supreme_court:7075/canvas/c19"],"viewingHint":"top"}]}'
+  recorded_at: Tue, 21 Oct 2025 19:52:50 GMT
+- request:
+    method: get
+    uri: https://cdm17217.contentdm.oclc.org/iiif/info/supreme_court/manifest.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 301
+      message: Moved Permanently
+    headers:
+      Date:
+      - Tue, 21 Oct 2025 19:52:50 GMT
+      Server:
+      - Apache
+      Content-Type:
+      - application/json;charset=UTF-8
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Content-Type-Options:
+      - nosniff
+      X-Xss-Protection:
+      - 1; mode=block
+      Access-Control-Allow-Headers:
+      - X-Requested-With
+      Link:
+      - <http://iiif.io/api/presentation/2/context.json>; rel="http://www.w3.org/ns/json-ld#context";
+        type="application/ld+json"
+      X-Oclc-Iiif-Provider:
+      - cantaloupe
+      Location:
+      - https://cdm17217.contentdm.oclc.org/iiif/supreme_court/manifest.json
+      Cache-Control:
+      - max-age=0
+      Expires:
+      - Tue, 21 Oct 2025 19:52:50 GMT
+      Content-Length:
+      - '276'
+    body:
+      encoding: UTF-8
+      string: |
+        <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+        <html><head>
+        <title>301 Moved Permanently</title>
+        </head><body>
+        <h1>Moved Permanently</h1>
+        <p>The document has moved <a href="https://cdm17217.contentdm.oclc.org/iiif/supreme_court/manifest.json">here</a>.</p>
+        </body></html>
+  recorded_at: Tue, 21 Oct 2025 19:52:51 GMT
+- request:
+    method: get
+    uri: https://cdm17217.contentdm.oclc.org/iiif/supreme_court/manifest.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 302
+      message: Found
+    headers:
+      Date:
+      - Tue, 21 Oct 2025 19:52:51 GMT
+      Server:
+      - Apache
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Content-Type-Options:
+      - nosniff
+      X-Xss-Protection:
+      - 1; mode=block
+      Access-Control-Allow-Headers:
+      - X-Requested-With
+      Link:
+      - <http://iiif.io/api/presentation/2/context.json>; rel="http://www.w3.org/ns/json-ld#context";
+        type="application/ld+json"
+      X-Oclc-Iiif-Provider:
+      - cantaloupe
+      Location:
+      - https://cdm17217.contentdm.oclc.org/iiif/2/supreme_court/manifest.json
+      Cache-Control:
+      - max-age=0
+      Expires:
+      - Tue, 21 Oct 2025 19:52:51 GMT
+      Content-Length:
+      - '254'
+      Content-Type:
+      - text/html; charset=iso-8859-1
+    body:
+      encoding: UTF-8
+      string: |
+        <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+        <html><head>
+        <title>302 Found</title>
+        </head><body>
+        <h1>Found</h1>
+        <p>The document has moved <a href="https://cdm17217.contentdm.oclc.org/iiif/2/supreme_court/manifest.json">here</a>.</p>
+        </body></html>
+  recorded_at: Tue, 21 Oct 2025 19:52:52 GMT
+- request:
+    method: get
+    uri: https://cdm17217.contentdm.oclc.org/iiif/2/supreme_court/manifest.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Tue, 21 Oct 2025 19:52:52 GMT
+      Server:
+      - Apache
+      X-Content-Type-Options:
+      - nosniff
+      - nosniff
+      X-Xss-Protection:
+      - 1; mode=block
+      - 1; mode=block
+      Access-Control-Allow-Headers:
+      - X-Requested-With
+      Link:
+      - <http://iiif.io/api/presentation/2/context.json>; rel="http://www.w3.org/ns/json-ld#context";
+        type="application/ld+json"
+      X-Oclc-Iiif-Provider:
+      - cantaloupe
+      Vary:
+      - Origin,Accept-Encoding,Access-Control-Request-Method,Access-Control-Request-Headers,User-Agent
+      Content-Type:
+      - application/json
+      Etag:
+      - '"06850809a9ae0c20761f70c4a847c7312-gzip"'
+      X-Frame-Options:
+      - SAMEORIGIN
+      Set-Cookie:
+      - JSESSIONID=NTJlMmJiNDItZjRmZC00NDVhLTk4YWUtYjk1MmY3ZTBjYmNk; Path=/; HttpOnly;
+        SameSite=Lax
+      Cache-Control:
+      - max-age=0
+      Expires:
+      - Tue, 21 Oct 2025 19:52:52 GMT
+      Content-Length:
+      - '291'
+    body:
+      encoding: ASCII-8BIT
+      string: '{"@context":"http://iiif.io/api/presentation/2/context.json","@id":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court/manifest.json","@type":"sc:Collection","label":"Alabama
+        Supreme Court Case Files","first":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court/p1.json","total":1497}'
+  recorded_at: Tue, 21 Oct 2025 19:52:53 GMT
+- request:
+    method: get
+    uri: https://cdm17217.contentdm.oclc.org/iiif/info/manifest.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 301
+      message: Moved Permanently
+    headers:
+      Date:
+      - Tue, 21 Oct 2025 19:52:53 GMT
+      Server:
+      - Apache
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Content-Type-Options:
+      - nosniff
+      X-Xss-Protection:
+      - 1; mode=block
+      Access-Control-Allow-Headers:
+      - X-Requested-With
+      Link:
+      - <http://iiif.io/api/presentation/2/context.json>; rel="http://www.w3.org/ns/json-ld#context";
+        type="application/ld+json"
+      X-Oclc-Iiif-Provider:
+      - cantaloupe
+      Location:
+      - https://cdm17217.contentdm.oclc.org/iiif/manifest.json
+      Cache-Control:
+      - max-age=0
+      Expires:
+      - Tue, 21 Oct 2025 19:52:53 GMT
+      Content-Length:
+      - '262'
+      Content-Type:
+      - text/html; charset=iso-8859-1
+    body:
+      encoding: UTF-8
+      string: |
+        <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+        <html><head>
+        <title>301 Moved Permanently</title>
+        </head><body>
+        <h1>Moved Permanently</h1>
+        <p>The document has moved <a href="https://cdm17217.contentdm.oclc.org/iiif/manifest.json">here</a>.</p>
+        </body></html>
+  recorded_at: Tue, 21 Oct 2025 19:52:54 GMT
+- request:
+    method: get
+    uri: https://cdm17217.contentdm.oclc.org/iiif/manifest.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 302
+      message: Found
+    headers:
+      Date:
+      - Tue, 21 Oct 2025 19:52:54 GMT
+      Server:
+      - Apache
+      X-Content-Type-Options:
+      - nosniff
+      X-Xss-Protection:
+      - 1; mode=block
+      Access-Control-Allow-Headers:
+      - X-Requested-With
+      Link:
+      - <http://iiif.io/api/presentation/2/context.json>; rel="http://www.w3.org/ns/json-ld#context";
+        type="application/ld+json"
+      X-Oclc-Iiif-Provider:
+      - cantaloupe
+      Location:
+      - https://cdm17217.contentdm.oclc.org/iiif/2/manifest.json
+      Cache-Control:
+      - max-age=0
+      Expires:
+      - Tue, 21 Oct 2025 19:52:54 GMT
+      Content-Length:
+      - '240'
+      Content-Type:
+      - text/html; charset=iso-8859-1
+    body:
+      encoding: UTF-8
+      string: |
+        <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+        <html><head>
+        <title>302 Found</title>
+        </head><body>
+        <h1>Found</h1>
+        <p>The document has moved <a href="https://cdm17217.contentdm.oclc.org/iiif/2/manifest.json">here</a>.</p>
+        </body></html>
+  recorded_at: Tue, 21 Oct 2025 19:52:54 GMT
+- request:
+    method: get
+    uri: https://cdm17217.contentdm.oclc.org/iiif/2/manifest.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Tue, 21 Oct 2025 19:52:55 GMT
+      Server:
+      - Apache
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Content-Type-Options:
+      - nosniff
+      - nosniff
+      X-Xss-Protection:
+      - 1; mode=block
+      - 1; mode=block
+      Access-Control-Allow-Headers:
+      - X-Requested-With
+      Link:
+      - <http://iiif.io/api/presentation/2/context.json>; rel="http://www.w3.org/ns/json-ld#context";
+        type="application/ld+json"
+      X-Oclc-Iiif-Provider:
+      - cantaloupe
+      Vary:
+      - Origin,Access-Control-Request-Method,Access-Control-Request-Headers,Accept-Encoding,User-Agent
+      Content-Type:
+      - application/json
+      Etag:
+      - '"03f9aceed2356d6bb832633f944b27a1a--gzip"'
+      X-Frame-Options:
+      - SAMEORIGIN
+      Content-Length:
+      - '9474'
+      Set-Cookie:
+      - JSESSIONID=ZjI3NzI2ZmQtMDI3ZC00MmEzLWE1ZWEtOTczNjU4ZmIyYWQ4; Path=/; HttpOnly;
+        SameSite=Lax
+      Cache-Control:
+      - max-age=0
+      Expires:
+      - Tue, 21 Oct 2025 19:52:55 GMT
+    body:
+      encoding: ASCII-8BIT
+      string: '{"@context":"http://iiif.io/api/presentation/2/context.json","@id":"https://cdm17217.contentdm.oclc.org/iiif/manifest.json","@type":"sc:Collection","collections":[{"@id":"https://cdm17217.contentdm.oclc.org/iiif/photo/manifest.json","@type":"sc:Collection","label":"Alabama
+        Photographs and Pictures Collection"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/voices/manifest.json","@type":"sc:Collection","label":"Alabama
+        Textual Materials Collection"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/maps/manifest.json","@type":"sc:Collection","label":"Alabama
+        Maps and Architectural Drawings Collection"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/peppler/manifest.json","@type":"sc:Collection","label":"Jim
+        Peppler Southern Courier Photograph Collection"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/amg/manifest.json","@type":"sc:Collection","label":"Alabama
+        Media Group Collection"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/robinson/manifest.json","@type":"sc:Collection","label":"Christiane
+        Robinson Photograph and Video Collection"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/p17217coll1/manifest.json","@type":"sc:Collection","label":"Alabama
+        Posters Collection"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/records/manifest.json","@type":"sc:Collection","label":"Alabama
+        Audiovisual Collection"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/wsfa/manifest.json","@type":"sc:Collection","label":"WSFA
+        Collection"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/folk/manifest.json","@type":"sc:Collection","label":"Alabama
+        Folklife Collection"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/wpa-religion/manifest.json","@type":"sc:Collection","label":"WPA
+        Church and Synagogue History Surveys"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/incarceration/manifest.json","@type":"sc:Collection","label":"Alabama
+        Incarceration Records"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/voter1867/manifest.json","@type":"sc:Collection","label":"1867
+        Voter Registration books"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/voter/manifest.json","@type":"sc:Collection","label":"1875
+        Voter Registration Books"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/constitutions/manifest.json","@type":"sc:Collection","label":"Alabama
+        Constitutions"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/supreme_court/manifest.json","@type":"sc:Collection","label":"Alabama
+        Supreme Court Case Files"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/executive/manifest.json","@type":"sc:Collection","label":"Alabama
+        Governors'' Executive Orders Collection"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/cwnp/manifest.json","@type":"sc:Collection","label":"Alabama
+        Civil War and Reconstruction Newspapers"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/cwrg/manifest.json","@type":"sc:Collection","label":"Civil
+        War and Reconstruction Governors of Alabama"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/cw_flags/manifest.json","@type":"sc:Collection","label":"Alabama
+        Civil War Period Flag Collection"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/regiments/manifest.json","@type":"sc:Collection","label":"Confederate
+        Regimental History Files"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/p17217coll3/manifest.json","@type":"sc:Collection","label":"Alabama
+        World War I Service Records"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/goldstar/manifest.json","@type":"sc:Collection","label":"Alabama
+        World War I Gold Star Files"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/p17217coll16/manifest.json","@type":"sc:Collection","label":"Alabama
+        Active Military Service Reports"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/hgpub/manifest.json","@type":"sc:Collection","label":"Alabama
+        Genealogy and History Publications"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/museum/manifest.json","@type":"sc:Collection","label":"Alabama
+        Museum Collection"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/adah_pubs/manifest.json","@type":"sc:Collection","label":"Alabama
+        Archives Publications"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/reorg/manifest.json","@type":"sc:Collection","label":"State
+        Government Effectiveness and Reorganization"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/wpa/manifest.json","@type":"sc:Collection","label":"Alabama
+        Writers'' Project Collection"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/p17217coll10/manifest.json","@type":"sc:Collection","label":"Athens
+        State University"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/afa01/manifest.json","@type":"sc:Collection","label":"Alabama
+        Folklife Association"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/sylacauga/manifest.json","@type":"sc:Collection","label":"B.B.
+        Comer Library"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/asfa01/manifest.json","@type":"sc:Collection","label":"Alabama
+        School of Fine Arts"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/p17217coll2/manifest.json","@type":"sc:Collection","label":"Autauga
+        County Heritage Association"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/carlelliott/manifest.json","@type":"sc:Collection","label":"Carl
+        Elliott Regional Library"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/bbg01/manifest.json","@type":"sc:Collection","label":"Birmingham
+        Botanical Gardens"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/bcri/manifest.json","@type":"sc:Collection","label":"Birmingham
+        Civil Rights Institute"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/cherokeechm/manifest.json","@type":"sc:Collection","label":"Cherokee
+        County Historical Museum"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/p17217coll5/manifest.json","@type":"sc:Collection","label":"Cobb
+        Memorial Archives"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/franelich/manifest.json","@type":"sc:Collection","label":"Franelich
+        Collection"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/daphmuseum/manifest.json","@type":"sc:Collection","label":"Daphne
+        Museum"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/fpl01/manifest.json","@type":"sc:Collection","label":"Fairhope
+        Public Library"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/gpl01/manifest.json","@type":"sc:Collection","label":"Gadsden
+        Public Library"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/faulkneruni/manifest.json","@type":"sc:Collection","label":"Faulkner
+        University Archive"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/p17217coll9/manifest.json","@type":"sc:Collection","label":"Gulf
+        Shores Museum"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/homewood/manifest.json","@type":"sc:Collection","label":"Homewood
+        Public Library"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/huntingdon/manifest.json","@type":"sc:Collection","label":"Huntingdon
+        College"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/hodrrm/manifest.json","@type":"sc:Collection","label":"Heart
+        of Dixie Railroad Museum"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/hmps/manifest.json","@type":"sc:Collection","label":"Historic
+        Mobile Preservation Society"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/munford/manifest.json","@type":"sc:Collection","label":"Munford
+        Public Library"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/nacc1/manifest.json","@type":"sc:Collection","label":"Northeast
+        Alabama Community College"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/mjmcoll/manifest.json","@type":"sc:Collection","label":"Marietta
+        Johnson Museum"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/p17217coll8/manifest.json","@type":"sc:Collection","label":"Montgomery
+        County Archives"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/selmapl/manifest.json","@type":"sc:Collection","label":"Selma-Dallas
+        County Public Library"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/splc/manifest.json","@type":"sc:Collection","label":"Southern
+        Poverty Law Center Reports"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/StMarysChurch/manifest.json","@type":"sc:Collection","label":"St.
+        Mary''s Catholic Church"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/p17217coll4/manifest.json","@type":"sc:Collection","label":"Tupper
+        Lightfoot Memorial Library"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/troy2/manifest.json","@type":"sc:Collection","label":"Troy
+        University Library"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/tren01/manifest.json","@type":"sc:Collection","label":"Trenholm
+        State Community College"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/tgs/manifest.json","@type":"sc:Collection","label":"Tuscaloosa
+        Genealogical Society"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/tu01/manifest.json","@type":"sc:Collection","label":"Tuskegee
+        University"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/ussa/manifest.json","@type":"sc:Collection","label":"United
+        States Sports Academy"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/time_capsule/manifest.json","@type":"sc:Collection","label":"Montgomery
+        Time Capsule"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/usa01/manifest.json","@type":"sc:Collection","label":"University
+        of South Alabama, McCall Library"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/uwa/manifest.json","@type":"sc:Collection","label":"University
+        of West Alabama"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/vina1/manifest.json","@type":"sc:Collection","label":"Town
+        of Vina"},{"@id":"https://cdm17217.contentdm.oclc.org/iiif/wire01/manifest.json","@type":"sc:Collection","label":"The
+        Wiregrass Archives"}]}'
+  recorded_at: Tue, 21 Oct 2025 19:52:55 GMT
+recorded_with: VCR 6.3.1

@@ -1,0 +1,12 @@
+tr
+  th(colspan="2")
+    =f.check_box :restrict_scribes, value: work.restrict_scribes
+    =f.label :restrict_scribes do
+      h3.settings-label[style="margin-bottom: 0px;"] =t('work.edit.restrict_collaborators')
+      -if work.restrict_scribes
+        p[style="color: red;"] =t('work.edit.restricted_work_no_collaborators_warning')
+tr: td
+tr#scribes
+  =render partial: 'scribes', locals: { collection: collection, work: work, scribes: @scribes }
+
+=f.hidden_field :collection_id, value: collection.id

@@ -1,0 +1,258 @@
+import { Controller } from "@hotwired/stimulus"
+
+import "plugins/handsontable.full.min";
+
+// Connects to data-controller="handsontable"
+export default class extends Controller {
+
+  static values = {
+    columns: Array,
+    content: Array,
+    dateTooltip: String,
+    transcriptionField: Object,
+  }
+
+  connect() {
+    this._handsontable = new Handsontable(this.element, {
+      rowHeaders: true,
+      colHeaders: this.columnHeadersConfig(),
+      filters: true,
+      comments: true,
+      data: this.dataConfig(),
+      width: '100%',
+      rowHeights: 23,
+      columnHeaderHeight: 25,
+      height: this.getHotHeight(this.dataConfig() ? this.dataConfig().length : this.transcriptionFieldValue.starting_rows),
+      stretchH: 'all',
+      contextMenu: ['row_above', 'row_below', 'remove_row', 'undo', 'redo', 'cut', 'copy'],
+      dropdownMenu: true,
+      columns: this.columnsConfig(),
+      autoWrapCol: true,
+      manualColumnResize: true,
+      manualRowResize: true,
+      startRows: this.transcriptionFieldValue.starting_rows,
+    });
+
+    this._handsontable.updateSettings({
+      afterCreateRow: this.updateHotHeight.bind(this),
+      afterRemoveRow: this.updateHotHeight.bind(this),
+      afterChange: this.afterChangeCallback.bind(this),
+      beforeKeyDown: this.beforeKeyDownCallback.bind(this),
+      afterSelection: this.afterSelectionCallback.bind(this),
+      modifyColWidth: function(width, col) {
+        if (width > 300) {
+          return 300
+        }
+      }
+    });
+
+    window.addEventListener('load', function() {
+      window.onscroll = function (e) {
+        window.freezeTableColumn();
+      }
+    })
+
+    document.getElementById(`fields-${this.transcriptionFieldValue.id}`).value = JSON.stringify(this._handsontable.getData());
+
+    this._handsontable.validateCells();
+  }
+
+  columnsConfig() {
+    if (!this._columnsConfig) {
+      this._columnsConfig = this.columnsValue.map(column => {
+        let config = {};
+
+        if (column.input_type === "select") {
+          config.type = "autocomplete";
+          config.strict = true;
+          config.allowInvalid = true;
+          config.source = column.options ? column.options.split(";") : [];
+        } else if (column.input_type === "numeric") {
+          config.type = "numeric";
+        } else if (column.input_type === "checkbox") {
+          config.type = "checkbox";
+        } else if (column.input_type === "date") {
+          config.validator = this.edtfValidator.bind(this);
+          config.placeholder = "YYYY-MM-DD";
+          config.comment = { value: this.dateTooltipValue };
+        }
+
+        return config;
+      });
+    }
+
+    return this._columnsConfig;
+  }
+
+  edtfValidator(value, callback) {
+    setTimeout(() => {
+      const validFormat = /^(1[4-9]|20)\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/;
+      callback(validFormat.test(value) || !value);
+    }, 100);
+  }
+
+  columnHeadersConfig() {
+    if (!this._columnHeadersConfig) {
+      this._columnHeadersConfig = this.columnsValue.map(column => { return column.label });
+    }
+
+    return this._columnHeadersConfig;
+  }
+
+  dataConfig() {
+    if (!this._dataConfig) {
+      this._dataConfig = this.buildGridData(this.contentValue);
+    }
+
+    return this._dataConfig
+  }
+
+  // Converts an array of row objects (keyed by spreadsheet column id, the format
+  // both the initially-saved content and an AI draft's per-field JSON use) into the
+  // row-of-arrays grid Handsontable expects, padded out to at least starting_rows.
+  buildGridData(rows) {
+    const grid = (rows || []).map(row => {
+      return this.columnsValue.map(column => {
+        let value = row[column.id];
+
+        if (column.input_type === 'checkbox') {
+          value = value === true || value === 'true' ? 'true' : 'false';
+        }
+
+        return value;
+      });
+    });
+
+    const currentLength = grid.length;
+    const requiredLength = this.transcriptionFieldValue.starting_rows;
+
+    if (currentLength < requiredLength) {
+      const rowsToAdd = requiredLength - currentLength;
+
+      for (let i = 0; i < rowsToAdd; i++) {
+        const newRow = this.columnsValue.map(col => {
+          if (col.input_type === 'checkbox') return 'false';
+          return null;
+        });
+
+        grid.push(newRow);
+      }
+    }
+
+    return grid;
+  }
+
+  // Called from the AI Draft button's click handler (transcription_field/_field_layout)
+  // to load a chosen engine's spreadsheet suggestion into this grid.
+  applyAiDraftRows(rows) {
+    this._handsontable.loadData(this.buildGridData(rows));
+
+    document.getElementById(`fields-${this.transcriptionFieldValue.id}`).value = JSON.stringify(this._handsontable.getData());
+
+    this._handsontable.updateSettings({ height: this.getHotHeight(this._handsontable.countRows()) });
+    this._handsontable.validateCells();
+  }
+
+  getHotHeight(rows) {
+    return rows * 23 + 40;
+  };
+
+  rowHasContent(rowData) {
+    return rowData.some(cellValue => cellValue !== null && cellValue !== '' && cellValue !== false && cellValue !== 'false');
+  }
+
+  ensureTrailingRow(rowIndex) {
+    if (rowIndex !== this._handsontable.countRows() - 1) {
+      return;
+    }
+
+    if (!this.rowHasContent(this._handsontable.getDataAtRow(rowIndex))) {
+      return;
+    }
+
+    this._handsontable.alter('insert_row', this._handsontable.countRows());
+  }
+
+  scheduleTrailingRow(rowIndex) {
+    setTimeout(() => {
+      this.ensureTrailingRow(rowIndex);
+    }, 0);
+  }
+
+  updateHotHeight() {
+    document.getElementById(`fields-${this.transcriptionFieldValue.id}`).value = JSON.stringify(this._handsontable.getData());
+
+    this._handsontable.updateSettings(
+      { height: this.getHotHeight(this._handsontable.countRows()) }
+    );
+  }
+
+  afterChangeCallback(changes, source) {
+    if (source === 'edit' && typeof window.sendActiveEditing === 'function') {
+      window.sendActiveEditing();
+    }
+
+    document.getElementById(`fields-${this.transcriptionFieldValue.id}`).value = JSON.stringify(this._handsontable.getData());
+
+    if (changes && source !== 'loadData') {
+      [...new Set(changes.map(change => change[0]))].forEach(row => {
+        this.scheduleTrailingRow(row);
+      });
+    }
+  }
+
+  beforeKeyDownCallback(event) {
+    if (event.key !== 'Tab' && event.key !== 'Enter') {
+      return;
+    }
+
+    const selectedCell = this._handsontable.getSelectedLast();
+
+    if (!selectedCell) {
+      return;
+    }
+
+    this.scheduleTrailingRow(selectedCell[0]);
+  }
+
+  afterSelectionCallback(row, column, row2, column2, preventScrolling, selectionLayerLevel) {
+    if (this.transcriptionFieldValue.row_highlight) {
+      this.highlightRow(
+        row,
+        this.transcriptionFieldValue.starting_row,
+        this.transcriptionFieldValue.top_offset,
+        this.transcriptionFieldValue.bottom_offset
+      );
+    }
+  }
+
+  highlightRow(rowNum, maxRows, topOffset, bottomOffset) {
+    // first calculate against a 100% high canvas
+    let rowHeightAsSpreadsheetPct = 1.0 / maxRows;
+
+    let pctOfPageThatIsSpreadsheet = (1.0 - topOffset - bottomOffset);
+    let rowHeightAsPagePct = pctOfPageThatIsSpreadsheet / maxRows;
+    let margin = 0.005;
+    let fuzzyRowHeightAsPagePct = rowHeightAsPagePct + (margin * 2);
+
+    let rowOffsetFromPageTop = topOffset + (rowHeightAsPagePct*(rowNum));
+    let fuzzyRowOffsetFromPageTop = rowOffsetFromPageTop - margin;
+
+    if (window.viewer.world.getItemCount() > 0) {
+      // now transpose for viewport coordinates
+      let viewportY = fuzzyRowOffsetFromPageTop * window.viewer.world.getItemAt(0).normHeight;
+      let viewportHeight = fuzzyRowHeightAsPagePct * window.viewer.world.getItemAt(0).normHeight;
+      // console.log("highlightRow("+rowNum+", "+maxRows+", "+topOffset+", "+bottomOffset+") setting viewportY="+viewportY);
+
+      window.viewer.removeOverlay("runtime-overlay");
+
+      var elt = document.createElement("div");
+      elt.id = "runtime-overlay";
+      elt.className = "image-row-highlight";
+      window.viewer.addOverlay({
+        element: elt,
+        location: new OpenSeadragon.Rect(0.0, viewportY, 1.0, viewportHeight)
+      });
+    }
+  };
+}

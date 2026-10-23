@@ -1,0 +1,17 @@
+=render partial: 'admin/header', locals: { selected: Admin::Ai::BaseController::ADMIN_HEADER_TAB }
+
+.collection-meta-wrapper
+  =render partial: 'admin/ai/side_nav', locals: { current_section: :errors }
+  #collection-settings
+    .collection-settings-wrapper
+      =render 'ai_transcriptions/show', \
+        ai_transcription: @ai_transcription, \
+        dashboard_path: admin_ai_errors_path, \
+        dashboard_label: t('admin.ai.errors.title')
+
+      p
+        strong =t('admin.ai.errors.collection_label')
+        =link_to @collection.title, collection_path(@collection.owner, @collection)
+      p
+        strong =t('admin.ai.errors.owner_label')
+        =link_to @collection.owner.display_name, user_profile_path(@collection.owner)

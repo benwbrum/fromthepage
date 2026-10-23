@@ -74,7 +74,7 @@ section.quotes
     =link_to 'Learn More', about_path, class: 'button big learn-more'
 
 section#transcription_count
-  span#count #{number_with_delimiter Page.where.not(status: :new).count}
+  span#count #{number_with_delimiter Page.where.not(:status=>nil).count}
   p Pages Transcribed with FromThePage
 
 section.spotlight
@@ -110,4 +110,5 @@ section.spotlight
 
           =link_to 'Learn More', '/stanforduniversityarchives/jls'
 
-javascript: mixpanel.track("Landing Page");
+-unless MIXPANEL_ID.blank?
+  javascript: mixpanel.track("Landing Page");

@@ -19,6 +19,8 @@ Rails.application.configure do
   # For large-scale production use, consider using a caching reverse proxy like nginx, varnish or squid.
   # config.action_dispatch.rack_cache = true
 
+  config.active_storage.service = ENV.fetch('ACTIVE_STORAGE_SERVICE', 'local').downcase.to_sym
+
   # Disable Rails's static asset server (Apache or nginx will already do this).
   config.serve_static_assets = false
 
@@ -46,7 +48,7 @@ Rails.application.configure do
   # BWB 2018-11-17 changed from :warn to :info
   # Set to :debug to see everything in the log.
   config.log_level = :info
-  #config.log_level = :debug
+  # config.log_level = :debug
 
   # Prepend all log lines with the following tags.
   # config.log_tags = [ :subdomain, :uuid ]
@@ -55,7 +57,7 @@ Rails.application.configure do
   # config.logger = ActiveSupport::TaggedLogging.new(SyslogLogger.new)
 
   # Use a different cache store in production.
-  # config.cache_store = :mem_cache_store
+  config.cache_store = :solid_cache_store
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
   # config.action_controller.asset_host = "http://assets.example.com"
@@ -83,7 +85,7 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
-Rails.application.routes.default_url_options[:host] = 'fromthepage.com'
+  Rails.application.routes.default_url_options[:host] = 'fromthepage.com'
   config.action_mailer.default_url_options = { host: 'fromthepage.com' }
   config.action_mailer.default_options = { from: 'support@fromthepage.com' }
   config.action_mailer.delivery_method = :postmark
@@ -93,14 +95,16 @@ Rails.application.routes.default_url_options[:host] = 'fromthepage.com'
   }
 
   Ahoy.geocode = false
-  config.action_dispatch.x_sendfile_header = "X-Sendfile" # for apache
+  config.action_dispatch.x_sendfile_header = 'X-Sendfile' # for apache
 
   RAKE = '/usr/bin/env rake'
   NEATO = '/usr/bin/neato'
   TEX_PATH='/usr/local/texlive/2017/bin/x86_64-linux/'
   UPGRADE_FORM_LINK='https://app.bentonow.com/f/6247d0278bfbafc3ef75b753f26a46d2/red-tree-885/'
-#  BILLING_HOST_DEVELOPMENT = 'billing.fromthepage.com'
-#  Disable IIIF search while Pontiiif is down
-#  config.pontiiif_server = 'http://pontiiif.brumfieldlabs.com/'
+  # BILLING_HOST_DEVELOPMENT = 'billing.fromthepage.com'
+  # Disable IIIF search while Pontiiif is down
+  # config.pontiiif_server = 'http://pontiiif.brumfieldlabs.com/'
 
+  config.active_job.queue_adapter = :solid_queue
+  config.solid_queue.logger = ActiveSupport::Logger.new(Rails.root.join('log/queue.log'))
 end

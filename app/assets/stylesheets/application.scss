@@ -1,7 +1,5 @@
 @import "base/ftp_color_scheme";
 
-
-
 // ---------------------------
 // TYPOGRAPHY
 // ---------------------------
@@ -241,10 +239,29 @@ $thredded-topic-header-font-size-tablet-and-up: $fontSize;
 }
 
 
-.thredded--main-navigation { 
-//  display: none; 
+.thredded--main-navigation {
+//  display: none;
 }
 
+.thredded--navigation-breadcrumbs a,
+.thredded--new-topic-accordion > summary.thredded--navigation-link {
+  color: darken($fgLink, 10%);
+  text-decoration: underline;
+  text-underline-offset: 0.1em;
+}
+
+.thredded--navigation-breadcrumbs a:hover,
+.thredded--new-topic-accordion > summary.thredded--navigation-link:hover {
+  color: $fgLink;
+}
+
+.thredded--navigation-breadcrumbs.breadcrumbs li + li::before {
+  content: ' → ';
+}
+
+.thredded--navigation-breadcrumbs.breadcrumbs li::after {
+  content: none;
+}
 
 
 // our h3 are h1 in Thredded
@@ -350,7 +367,16 @@ h3, .thredded--post-form--title {
 
   &[data-layout-mode='ttb'],
   &[data-layout-mode='btt'] {
-    
+
+    .page-column {
+      flex: 0 0 auto;
+    }
+
+    #leftColumn {
+      // Don't use !important - allow JavaScript to override when dragging splitter
+      flex: 0 0 auto;
+    }
+
     .splitter {
       margin-top: -2rem;
       margin-bottom: -2rem;
@@ -387,7 +413,22 @@ h3, .thredded--post-form--title {
       display: block;
       z-index: 101;
     }
-  } 
+
+    // Override max-height constraint for image container in overview/display page
+    // Allow the image to fill the full height of its parent panel instead of being capped at 50vh
+    .page-imagescan {
+      max-height: 100%;
+      height: 100%;
+    }
+  }
+}
+
+thead th.bang {
+  display: none !important;
+}
+
+.bs {
+  @import "bootstrap.min";
 }
 
 @import "datepicker/datepicker";

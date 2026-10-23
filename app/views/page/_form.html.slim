@@ -1,0 +1,7 @@
+.collection-settings-wrapper.page-settings
+  p= t('.here_you_can_edit')
+  =form_for page, url: page_path(page), method: :put, html: { multipart: true, data: { controller: 'form', action: 'change->form#requestSubmit', turbo: true } } do |f|
+    =render 'shared/validation_summary', errors: page.errors
+    =f.submit t('.save_changes'), id: 'collection-settings-save', hidden: true
+    #page-settings-form
+      =render partial: "#{scope}_form", locals: { page: page, collection: collection, work: work, f: f }

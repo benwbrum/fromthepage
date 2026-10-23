@@ -1,4 +1,6 @@
 ---
 es:
   errors:
+    error: Algo salió mal
     html_syntax_error: sintaxis html inválida
+    unsupported_file_type: tipo de archivo no compatible

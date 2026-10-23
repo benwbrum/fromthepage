@@ -17,7 +17,6 @@ de:
       older_activity: Ältere Aktivität
       owner_title: 'Projektinhaber:in: %{title}'
       time: Zeit
-      time_ago_in_words: Vor %{time}
       type: Typ
       user_title: 'Benutzer:in: %{title}'
     needs_review: Seite muss überprüft werden

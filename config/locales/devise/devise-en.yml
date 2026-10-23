@@ -7,6 +7,7 @@ en:
     email_address: Email Address
     errors:
       keys:
+        display_name: Organization Name
         email: Email
         login: Username
         password: Password
@@ -57,11 +58,13 @@ en:
     receive_activity_emails: Receive activity emails
     registrations:
       choose_saml:
+        dartmouth_university: Dartmouth Libraries
         harvard_university: Harvard University
         illinois_state: Illinois State University
         institution: Institution
         johns_hopkins_university: Johns Hopkins University
         lds_full_name: Church of Jesus Christ of Latter Day Saints
+        nebraska_university: University of Nebraska–Lincoln
         sign_in_with_institution: Sign in with your Institution
         utah_id: UtahID
       destroyed: Bye! Your account has been successfully cancelled. We hope to see you again soon.

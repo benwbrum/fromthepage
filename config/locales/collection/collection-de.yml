@@ -1,15 +1,66 @@
 ---
 de:
   collection:
+    ai_transcriptions:
+      create:
+        success: KI-Transkriptionsauftrag gestartet.
+      form:
+        ai_transcription: KI-Transkription
+        contact_us: Wenden Sie sich an %{email}, um auf einen Tarif mit KI-Entwürfen aufzurüsten.
+        description: Starte einen KI-Transkriptionsauftrag für Seiten in dieser Sammlung.
+        description_complete: Alle Seiten dieser Sammlung enthalten KI-Transkriptionen.
+        failed: Fehlgeschlagen
+        failed_transcription_errors: Fehlgeschlagene Transkriptionsfehler
+        failed_transcription_errors_hidden: "%{count} zusätzliche Transkriptionsfehler werden nicht angezeigt."
+        finished: Fertig
+        generate: Erstellen Sie KI-Entwürfe für Seiten ohne diese.
+        in_progress: Im Gange
+        not_started: Nicht gestartet
+        pages: Seiten
+        queued: In der Warteschlange
+        retry: Fehlgeschlagene Aufträge erneut versuchen
+        total_tokens_used: Gesamte verwendete Tokens
+      update:
+        success: KI-Transkriptionsauftrag wird wiederholt.
+    ai_work_metadata:
+      create:
+        success: KI-Metadaten-Entwurfsauftrag gestartet.
+      form:
+        description: Starten Sie KI-Metadatenentwurfsaufträge für Werke ohne diese.
+        description_complete: Alle Werke dieser Sammlung enthalten KI-Metadatenentwürfe.
+        failed: Fehlgeschlagen
+        failed_work_metadata_errors: Fehlgeschlagene Metadatenentwurfsfehler
+        failed_work_metadata_errors_hidden: "%{count} zusätzliche Metadatenentwurfsfehler werden nicht angezeigt."
+        finished: Fertig
+        generate: Erstellen Sie KI-Metadatenentwürfe für Werke ohne diese.
+        heading: KI-Metadatenentwurf
+        in_progress: Im Gange
+        no_metadata_fields: Bitte konfigurieren Sie Metadatenfelder unter Aufgabenkonfiguration, bevor Sie KI-Metadatenentwürfe erstellen.
+        not_started: Nicht gestartet
+        queued: In der Warteschlange
+        total_tokens_used: Gesamte verwendete Tokens
+        works: Werke
+      show:
+        back: Zurück zu KI-Einstellungen
+        fields_heading: Entwurfsfelder
+        heading: 'KI-Metadatenentwurf (%{model}): %{work}'
+        reasoning_heading: Begründung
+        status: 'Status: %{status}'
+        tokens_used: 'Verwendete Token: %{count}'
     approve_all:
       approved_n_pages: Freigegebene %{page_count} Seiten.
+    blank_collection:
+      notice: Die Sammlung wurde zurückgesetzt.
     collection_works:
       all_works: Alles funktioniert
+      collaboration: Zusammenarbeit
       most_recent_activity: Neueste Aktivität
       n_pages:
         one: '1 Seite:'
         other: "%{count} Seiten;"
       progress: Fortschritt
+      restricted: Eingeschränkt
+      unrestricted: Uneingeschränkt
       work_title: Werktitel
       works_that_need_transcription: Werke, die einer Transkription bedürfen
     complete: vollständig
@@ -52,10 +103,13 @@ de:
     corrected: korrigiert
     create:
       notice: Sammlung wurde erstellt
+    delete:
+      notice: Sammlung erfolgreich gelöscht.
     disable_ocr:
       notice: Die OCR-Korrektur wurde für alle Werke deaktiviert.
     edit:
       add_button: Hinzufügen
+      collection_findable_instruction: Damit Sammlungen in FromThePage gefunden werden können, stellen Sie sicher, dass sie über Tags, ein Bild und eine Beschreibung verfügen.
       collection_image: Profilbild der Sammlung
       collection_image_description: Ein Bild zur Veranschaulichung der Sammlungsbeschreibung.
       copy_url: In die Zwischenablage kopieren
@@ -89,12 +143,13 @@ de:
       abbr_label: Abkürzung
       add_description: Markiert Text, der nachträglich vom Autor/von der Autorin eingefügt wurde. <br><i>Empfohlen</i>
       add_label: Ergänzung
+      b_description: Markiert fett gesetzten Text.
+      b_label: Deutlich
       date_description: Markiert Datumsangaben mit standardisierter Form im when-Attribut.
       date_label: Datum
       del_description: Markiert Text, der durch Löschen oder Durchstreichen entfernt wurde. <br><i>Empfohlen</i>
       del_label: Streichung
       description: FromThePage kann Auszeichnungen in Transkripten für TEI-XML oder HTML unterstützen. Wir empfehlen, nicht mehr als sechs Buttons auszuwählen, die im Transkriptionseditor angezeigt werden. Überlegen Sie, ob andere Systeme diese Art von Mark-up verwenden können; wenn nur plain text unterstützt wird, sollten Projekte die Buchdruck-Konventionen anstelle von Mark-up verwenden.
-      documentation: Dokumentation
       expan_description: Kennzeichnet erweiterte Abkürzungen mit Originalformen im orig-Attribut (Alternative Form des abbr-Tags).
       expan_label: Erweiterung
       fig_description: Kennzeichnet eine Abbildung oder eine horizontale Linie.
@@ -148,21 +203,24 @@ de:
       delete_collection_description: Durch Drücken dieser Schaltfläche wird die Sammlung und ihr gesamter Inhalt gelöscht. Diese Aktion kann nicht rückgängig gemacht werden.
       destroy_everything: Alles zerstören
       inactive: Inaktiv
-      save_changes: Änderungen speichern
     edit_help:
       help: Grundlegender Hilfstext
       link_help: Hilfstext zur Entitätenverlinkung (wird nicht angezeigt, wenn Entitäten deaktiviert sind)
       link_help_description: Wird nicht angezeigt, wenn Themen deaktiviert sind.
-      save_changes: Änderungen speichern
       suggestions_help_tab: Vorschläge für Ihren Hilfe-Tab.
       suggestions_transcription_conventions: Vorschläge für Ihre Transkriptionskonventionen.
       transcription_conventions: Transkriptionskonventionen
       transcription_conventions_description: Diese Anweisungen werden unter dem Transkriptionsformular für jede Seite angezeigt, die transkribiert oder indiziert wird.
+      works_with_custom_conventions:
+        one: "%{title} hat benutzerdefinierte Transkriptionskonventionen"
+        other: "%{title} und %{count} andere haben benutzerdefinierte Transkriptionskonventionen"
     edit_look:
-      alphabetize_works: Die Anzeige erfolgt alphabetisch und nicht in der Reihenfolge der erforderlichen Arbeiten.
+      alphabetize_works: Werke alphabetisch auflisten.
       alphabetize_works_description: Die Anzeige erfolgt alphabetisch und nicht nach der Menge der verbleibenden Arbeit.
       default_orientation: Wählen Sie die standardmäßige Seitenausrichtung für die Transkription aus
       default_orientation_description: Wählen Sie die Ausrichtung, die am besten zu den meisten Werken dieser Sammlung passt. Benutzer können die Ausrichtung nach Belieben ändern.
+      default_overview_orientation: Standard-Übersichtsbildschirmausrichtung
+      default_overview_orientation_description: Wählen Sie die Ausrichtung für die Anzeige der Seitenübersichtsregisterkarte.
       document_sets_description: Dokumentensets sind Teilsets der Werke dieser Sammlung, die die Aufmerksamkeit auf ein bestimmtes Merkmal des Editionsprojekts lenken können oder zur Erstellung einer öffentlichen Sammlung mit einem bestimmten Fokus verwendet werden können.
       edit_document_sets: Sätze bearbeiten
       edit_facets: Facetten bearbeiten
@@ -173,6 +231,10 @@ de:
       forums_description: Ermöglicht Mitarbeitern die Diskussion von Themen untereinander und mit Projektinhabern über Message Boards.
       hide_completed: Abgeschlossene Werke standardmäßig ausblenden
       hide_completed_description: Verstecken Sie standardmäßig vollständig transkribierte oder übersetzte Werke.
+      hide_notes: Notizen, Bearbeitungen und Statistiken vor Nicht-Mitarbeitern ausblenden
+      hide_notes_description: Blenden Sie den Abschnitt „Notizen und Fragen“, die letzten Bearbeitungen und den Tab „Statistiken“ für alle außer Sammlungsinhabern und Mitarbeitern aus.
+      legend: Legende
+      legend_description: HTML-Inhalt zur Anzeige in jeder Seitenansicht, um den Lesern Kontext zu bieten. Dies wird unter der Transkription in der Seitenübersicht angezeigt.
       metadata: Metadaten
       metadata_description: Laden Sie Metadaten für Werke in dieser Sammlung in großen Mengen hoch.
       metadata_facets_description: Erlauben Sie Mitarbeitenden, Werke innerhalb dieser Sammlung über Metadaten zu durchsuchen.
@@ -183,7 +245,6 @@ de:
       page_on_the_top: Seite ganz oben
       refresh_metadata: Metadaten aktualisieren
       refresh_metadata_description: Aktualisieren Sie die Metadaten aus den ursprünglichen IIIF-Manifesten.
-      save_changes: Änderungen speichern
       spellcheck_description: Nicht geeignet für Texte mit unregelmäßiger Schreibweise.
       upload_metadata: Metadaten hochladen
       user_download: Mitarbeitenden erlauben, Werke herunterzuladen.
@@ -206,15 +267,13 @@ de:
       collection_restricted_description: Die Sammlung kann nur von den unten aufgeführten Eigentümern und Mitarbeitern eingesehen werden. Sie können die Sammlung öffentlich lesbar machen.
       edit_collaborators: Mitarbeitende bearbeiten
       edit_owners: Projektinhaber:innen bearbeiten
-      make_collection_private: Sammlung privat setzen
-      make_collection_public: Sammlung öffentlich setzen
       open_api: API öffnen
       private: Privat
       public: Öffentlich
+      read_only: Nur lesbar
       restrict_completed_works: Sperren Sie die Bearbeitung abgeschlossener Werke
       restrict_editing: Bearbeitung einschränken
       restricted_completed_works_description: Dieser Button schränkt die Bearbeitung von %{work_count} Werken ein, die abgeschlossen sind, aber derzeit nicht auf Projektinhaber:innen oder bestimmte Mitarbeitende beschränkt sind. Sie können diese Einstellung ändern und in den Werk-Einstellungen Mitarbeitende hinzufügen.
-      save_changes: Änderungen speichern
     edit_quality_control:
       authorized_reviewers: Autorisierte Reviewer:innen
       collection_reviewers: Autorisierte Reviewer:innen
@@ -228,8 +287,8 @@ de:
       review_type_required_description: Alle ersten Transkriptionen werden als prüfungsbedürftig markiert. (Die Überprüfung kann von jedermann durchgeführt werden.)
       review_type_restricted: " Eingeschränkt: Alle Transkriptionen müssen überprüft werden und nur autorisierte Reviewer:innen können Transkriptionen genehmigen bzw. freigeben."
       review_type_restricted_description: Alle Transkriptionen müssen überprüft werden, und nur autorisierte Prüfer können Transkriptionen genehmigen.
-      save_changes: Änderungen speichern
     edit_tabs:
+      ai: KI
       danger_zone: Gefahrenzone
       general: Allgemein
       help_text: Hilfstext
@@ -238,7 +297,15 @@ de:
       quality_control: Qualitätskontrolle
       task_configuration: Aufgabenkonfiguration
     edit_tasks:
+      ai_draft_disabled: KI-Entwürfe deaktivieren
+      ai_draft_disabled_description: Deaktivieren Sie AI Drafts für alle Benutzer außer dem Sammlungsinhaber.
       alert: Bitte passen Sie die Felder an oder wählen Sie unter Transkriptionstyp die dokumentbasierte Transkription aus.
+      allow_transcriber_segmentation: Transkribierenden das Aufteilen von Werken erlauben
+      allow_transcriber_segmentation_ai_hint: Sollen wahrscheinliche erste Seiten lieber von der KI markiert werden? Führen Sie die Segmentierung über die %{link} des Werks aus.
+      allow_transcriber_segmentation_ai_hint_plain: Sollen wahrscheinliche erste Seiten lieber von der KI markiert werden? Öffnen Sie die Einstellungen eines Werks und führen Sie die Segmentierung über dessen KI-Tab aus.
+      allow_transcriber_segmentation_ai_link: KI-Einstellungen
+      allow_transcriber_segmentation_description: 'Zeigt auf jeder Seite ein Scheren-Symbol. Transkribierende können ein Werk an jeder Seite aufteilen: Die Seiten vor dieser Seite werden in ein neues Werk verschoben, der Rest bleibt im aktuellen Werk.'
+      allow_transcriber_segmentation_unavailable: Diese Einstellung ist für aktive, textbasierte Sammlungen in Organisationstarifen verfügbar.
       disable_ocr: OCR deaktivieren
       document_based_transcription: Dokumentbasierte Transkription
       document_based_transcription_description: Jede Seite in der Sammlung verfügt über einen einzigen Freiform-Texteingabebereich für die Transkription. Auch als „dokumentbasierte Transkription“ bekannt.
@@ -252,7 +319,6 @@ de:
       metadata_description_description: Mithilfe der Metadatenbeschreibung werden strukturierte Metadaten zu Werken in der Sammlung erstellt. Sie müssen konfigurieren, welche Metadatenfelder angezeigt werden.
       ocr_correction: OCR-Korrektur
       ocr_description: Aktivieren oder deaktivieren Sie die OCR-Korrektur für alle Werke in dieser Sammlung.
-      save_changes: Änderungen speichern
       subjects_enabled: Entitätenindexierung aktivieren
       subjects_enabled_description: Themen werden verwendet, um Seiten in der Sammlung zu indizieren.
       text_language: Wählen Sie die Sprache des Transkriptionstextes aus
@@ -324,6 +390,8 @@ de:
       recent_contributor_title: Aktuelle Mitarbeitende
       review: Review
       user: Mitarbeiter:in
+    restrict_scribes:
+      success: Abgeschlossene Werke wurden erfolgreich eingeschränkt
     reviewer_dashboard:
       one_off_contributions: Einmalige Beiträge
       pages_needing_review: Zu überprüfende Seiten
@@ -333,10 +401,14 @@ de:
       transcribed_page: Transkribierte Seite
       unreviewed_contributors: Neue Mitarbeitende
       works_to_review: Zu überprüfende Werke
+    search:
+      search: Suchen
+      search_in_collection: Suche in der Sammlung
     show:
       about: Info
       add_a_new_work: Neues Werk hinzufügen
       all_complete: Alle Werke sind vollständig transkribiert.
+      document_sets: Dokumentensets
       help_create_metadata: Aushelfen!
       help_transcribe_or_correct: Aushelfen!
       n_pages:
@@ -353,6 +425,7 @@ de:
       search: Suche
       search_by_title: Nach Titel oder Metadaten suchen...
       search_by_title_1: Nach Titel suchen
+      search_in_collection: Suche in der Sammlung
       search_the_text: Den Text durchsuchen...
       search_the_text_1: Den Text durchsuchen
       show_more: Mehr zeigen
@@ -361,7 +434,6 @@ de:
       subject_categories: Entitätenkategorien
       this_work_has_not_been_described: Dieses Werk benötigt bessere Metadaten.
       this_work_has_pages_that_need_work: Einige Seiten müssen noch bearbeitet werden.
-      time_ago_in_words: Vor %{time}
       user_wrote_note: "%{user} hat %{note} geschrieben"
       works: Werke
     start_transcribing:
@@ -369,6 +441,7 @@ de:
     transcribed: transkribiert
     translated: übersetzt
     update:
+      error: Aktualisierung der Sammlung fehlgeschlagen
       notice: Die Sammlung wurde aktualisiert
     update_buttons:
       editor_buttons_updated: Editor-Buttons aktualisiert

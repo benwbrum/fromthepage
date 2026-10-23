@@ -1,4 +1,8 @@
 FactoryBot.define do
-  # You will need to declare a `deed_type` within the spec
-  factory :deed
+  factory :deed do
+    deed_type { DeedType::PAGE_TRANSCRIPTION }
+    association :user
+    association :collection
+    association :work
+  end
 end

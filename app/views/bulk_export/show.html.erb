@@ -37,7 +37,11 @@
 
 <h4>Zip File</h4>
 <p>
-  <%= link_to('Download', bulk_export_download_path(@bulk_export)) %>
+  <% if @bulk_export.output.attached? %>
+    <%= link_to('Download', url_for(@bulk_export.output)) %>
+  <% else %>
+    <%= link_to('Download', bulk_export_download_path(@bulk_export)) %>
+  <% end %>
 </p>
 
 

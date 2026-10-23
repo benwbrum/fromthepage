@@ -6,15 +6,12 @@ en:
       subject_tags: Subject tags
   dashboard:
     collaborator: Collaborator Dashboard
-    new_landing_page:
+    landing_page:
       all_collections: All collections
       next_image: Next image
       previous_image: Previous image
       recent_activity: Recent activity
-      search: Search
-      search_for_collections: Search for collections
-      search_for_collections_or_owners: Search for collections or owners
-      transcribe_a_page: Transcribe a page
+      search_for_collections_or_owners: Search for collections or institutions
     plain: Dashboard
   date:
     formats:

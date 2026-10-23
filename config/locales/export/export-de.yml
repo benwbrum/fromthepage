@@ -1,6 +1,9 @@
 ---
 de:
   export:
+    accessible_pdf:
+      struck_through: 'durchgestrichen: %{text}'
+      table_without_headers: Tabelle wie transkribiert, %{rows} Zeilen und %{columns} Spalten. Im Original wurden keine Spaltenüberschriften markiert, daher werden die Zellen ohne sie gelesen.
     edit_contentdm_credentials:
       connect: Verbinden
       contentdm_credentials: CONTENTdm-Berechtigung
@@ -10,7 +13,11 @@ de:
       license_key: Lizenzschlüssel
     facing_edition:
       contributions_message: 'Dieses Dokument wäre ohne die Beiträge der folgenden Personen nicht möglich:'
+      contributors: Mitwirkende
       export_metadata: FromThePage-Export von %{work} aus %{collection} von %{time}.
+      metadata: Metadaten
+      notes: Hinweise
+      translation: Übersetzung
     index:
       api: API
       export_all_works: Alle Werke exportieren
@@ -38,7 +45,16 @@ de:
       table_csv: Tabelle CSV
       tei: TEI
       work_title: Werktitel
+    new_grover_export:
+      ai_warning: 'Warnung: Dieses Transkript wurde von einer KI generiert (%{model} %{created_at}).'
+      contents: Inhalt
+      download: Herunterladen
+      heading: Konfiguration für barrierefreies PDF
+      human_and_ai: Sofern verfügbar, menschliche Transkripte exportieren, andernfalls KI-Entwürfe exportieren.
+      human_only: Nur von Menschen bearbeitete Transkripte exportieren
+      prepend_ai_warnings: 'Vorangestellter Warnhinweis: Dieses Transkript wurde von einer KI generiert und oben im Transkript eingefügt.'
     show:
+      bibliography: Bibliographie
       categories: 'Kategorien:'
       export_metadata: FromThePage-Export von %{work} aus %{collection} von %{time}.
       fromthepage_version: 'FromThePage-Version: %{version}'
@@ -51,6 +67,10 @@ de:
       subjects_and_indices: Entitäten und Indizes
     tei:
       administrator: Administrator:in des Transkriptionsprojekts %{collection} auf FromThePage
+      ai_generated_between: Erzeugt zwischen %{start_date} und %{end_date}.
+      ai_generated_on: Generiert auf %{date}.
+      ai_page_ranges: 'Seiten: %{ranges}.'
+      ai_transcription_by: 'KI-Transkription durch:'
       changes_to_page_transcript: Änderungen am Seitentranskript.
       double_proof_by: 'Doppelte Kontrolle durch:'
       dynamic_tei_export: Dynamischer TEI-Export von FromThePage (Version %{version})

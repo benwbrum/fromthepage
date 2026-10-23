@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+
+require "shellwords"
+
+index = ENV.fetch("CI_NODE_INDEX").to_i
+total = ENV.fetch("CI_NODE_TOTAL").to_i
+
+files = Dir["spec/**/*_spec.rb"].sort
+
+groups = Array.new(total) { [] }
+
+files.each_with_index do |file, i|
+  groups[i % total] << file
+end
+
+exec(
+  "bundle",
+  "exec",
+  "rspec",
+  *groups[index]
+)

@@ -1,0 +1,17 @@
+-ai_transcription = local_assigns.fetch(:ai_transcription)
+-dashboard_path = local_assigns.fetch(:dashboard_path)
+-dashboard_label = local_assigns.fetch(:dashboard_label)
+
+ul.breadcrumbs
+  li =link_to dashboard_label, dashboard_path
+  li AI Transcription Error
+
+.page-columns(data-layout-mode="ltr")
+  .page-column(id="leftColumn")
+    .page-imagescan
+      =render partial: '/shared/osd_div'
+
+  .splitter(id="splitter")
+
+  .page-column(id="rightColumn")
+    =render 'ai_transcriptions/error_details', ai_transcription: ai_transcription

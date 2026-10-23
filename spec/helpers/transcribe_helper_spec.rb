@@ -1,42 +1,29 @@
 require 'spec_helper'
 
 RSpec.describe TranscribeHelper, type: :helper do
-  describe '#excerpt_subject' do
-    let(:page) { FactoryBot.build_stubbed(:page,
-      source_text: "5\n4\n3\n2\n1\n[[Transcription]]\n1\n2\n3\n4\n5",
-      source_translation: "5\n4\n3\n2\n1\n[[Translation]]\n1\n2\n3\n4\n5",
-    ) }
-    it 'should default to transcription match with three lines of context' do
-      expected = "3\n2\n1\n<b>[[Transcription]]</b>\n1\n2\n3"
-      expect(helper.excerpt_subject(page, 'Transcription')).to eq(expected)
+  describe '#get_active_tab_path' do
+    let(:owner) { 'owner' }
+    let(:collection) { 'collection' }
+    let(:work) { 'work' }
+    let(:item) { 'page' }
+
+    before do
+      allow(helper).to receive(:collection_display_page_path).with(owner, collection, work, item).and_return('/display')
+      allow(helper).to receive(:collection_transcribe_page_path).with(owner, collection, work, item).and_return('/transcribe')
+      allow(helper).to receive(:collection_translate_page_path).with(owner, collection, work, item).and_return('/translate')
+      allow(helper).to receive(:collection_help_page_path).with(owner, collection, work, item).and_return('/help')
+      allow(helper).to receive(:collection_page_version_path).with(owner, collection, work, item).and_return('/version')
+      allow(helper).to receive(:collection_edit_page_path).with(owner, collection, work, item).and_return('/edit')
     end
 
-    it 'should match translation based on option' do
-      expected = "3\n2\n1\n<b>[[Translation]]</b>\n1\n2\n3"
-      expect(helper.excerpt_subject(page, 'Translation', {:text_type => 'translation'}))
-        .to eq(expected)
-    end
-
-    it 'should match the title and one line on either side' do
-      expected = "1\n<b>[[Transcription]]</b>\n1"
-      expect(helper.excerpt_subject(page, 'Transcription', {:radius => 1}))
-        .to eq(expected)
-    end
-
-    it 'should match only the title with radius 0' do
-      expected = "<b>[[Transcription]]</b>"
-      expect(helper.excerpt_subject(page, 'Transcription', {:radius => 0}))
-        .to eq(expected)
-    end
-    it 'should return only title with invalid parameter' do
-      expected = "<b>[[Transcription]]</b>"
-      expect(helper.excerpt_subject(page, 'Transcription', {:radius => -1}))
-        .to eq(expected)
-    end
-    it "should return only title if there's no match" do
-      expected = "<b>BADMATCH</b>"
-      expect(helper.excerpt_subject(page, 'BADMATCH'))
-        .to eq(expected)
+    it 'returns the route for each known tab and falls back to transcribe' do
+      expect(helper.get_active_tab_path('display', owner, collection, work, item)).to eq('/display')
+      expect(helper.get_active_tab_path('transcribe', owner, collection, work, item)).to eq('/transcribe')
+      expect(helper.get_active_tab_path('transcribe-translate', owner, collection, work, item)).to eq('/translate')
+      expect(helper.get_active_tab_path('transcribe-help', owner, collection, work, item)).to eq('/help')
+      expect(helper.get_active_tab_path('page_version', owner, collection, work, item)).to eq('/version')
+      expect(helper.get_active_tab_path('page', owner, collection, work, item)).to eq('/edit')
+      expect(helper.get_active_tab_path('unknown', owner, collection, work, item)).to eq('/transcribe')
     end
   end
 end

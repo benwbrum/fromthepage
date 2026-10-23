@@ -1,0 +1,34 @@
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "Springfield, Ills. June 11<sup>th</sup> 1860\nRev. W<sup>m</sup> C. Whitcomb\nMy dear Sir:\n\nYours of the 15<sup>th</sup> inquir-\ning whether I am of, or related to,\nthe New-England family of Lincolns,\nis received— M<hi rend=\"superscript\">r</hi>. Solomon Lincoln\nof Hingham, Mass. once enlisted me\nin an inquiry of the same kind,\nwhich ended in an impression, on\nmy part that we are remotely re-\nlated, but that our ancestry parted\nin Old England— Yours, a puritan\nstock, coming to New-England, and\nmine, a quaker stock, coming to\nPennsylvania— There is no great\ncertainty in this, but it is the strong-\nest impression I now have upon the\nsubject—\n\nVery Respectfully\nA. Lincoln"
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "index": 0
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 498,
+    "candidatesTokenCount": 199,
+    "totalTokenCount": 2493,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 240
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 258
+      }
+    ],
+    "thoughtsTokenCount": 1796
+  },
+  "modelVersion": "gemini-2.5-pro",
+  "responseId": "-fpBadn8CdiU1e8Pl52USA"
+}

@@ -1,34 +1,31 @@
 module StaticSiteExporter
   include AbstractXmlHelper
 
-
-
-  def export_static_site(dirname:, out:, collection:)
-    write_gemfile(dirname,out,collection)
-    write_subject_layout(dirname,out,collection)
-    write_work_layout(dirname,out,collection)
-    write_listing_layout(dirname,out,collection)
-    write_tree_include(dirname,out,collection)
-    write_footer_include(dirname,out,collection)
-    write_index_markdown(dirname, out, collection)
-    write_config_yaml(dirname, out, collection)
-    write_navigation_yaml(dirname, out, collection)
-    write_work_listing(dirname, out, collection)
-    write_subject_listing(dirname, out, collection)
-    write_contributor_page(dirname, out, collection)
+  def export_static_site(dirname:, path:, collection:)
+    write_gemfile(dirname, path, collection)
+    write_subject_layout(dirname, path, collection)
+    write_work_layout(dirname, path, collection)
+    write_listing_layout(dirname, path, collection)
+    write_tree_include(dirname, path, collection)
+    write_footer_include(dirname, path, collection)
+    write_index_markdown(dirname, path, collection)
+    write_config_yaml(dirname, path, collection)
+    write_navigation_yaml(dirname, path, collection)
+    write_work_listing(dirname, path, collection)
+    write_subject_listing(dirname, path, collection)
+    write_contributor_page(dirname, path, collection)
 
     collection.works.each do |work|
-      write_work_page(dirname, out, collection, work)
+      write_work_page(dirname, path, collection, work)
     end
 
     collection.articles.each do |subject|
-       write_subject_page(dirname, out, collection, subject)
+       write_subject_page(dirname, path, collection, subject)
     end
   end
 
-
-
 private
+
   GEMFILE_CONTENTS = <<EOF
 source "https://rubygems.org"
 
@@ -57,7 +54,7 @@ layout: archive
 <ul>
   {% for page_link in page.page_links %}
     <li>
-      <a href="{{page_link.work_url  | relative_url}}REPLACEME{{page_link.page_anchor}}">{{ page_link.work_title }} {{ page_link.page_title }}</a> 
+      <a href="{{page_link.work_url  | relative_url}}REPLACEME{{page_link.page_anchor}}">{{ page_link.work_title }} {{ page_link.page_title }}</a>#{' '}
     </li>
   {% endfor %}
 </ul>
@@ -139,8 +136,7 @@ EOF_TREE_INCLUDE
 
 EOF_FOOTER_INCLUDE
 
-
-  def category_to_tree(category) 
+  def category_to_tree(category)
     element = {}
     element['title'] = category.title
     children = []
@@ -165,77 +161,90 @@ EOF_FOOTER_INCLUDE
     element
   end
 
-  def write_gemfile(dirname, out, collection)
-    path = File.join dirname, "Gemfile"
-    out.put_next_entry(path)
-    out.write(GEMFILE_CONTENTS)
+  def write_gemfile(dirname, path, collection)
+    write_static_artifact(
+      base: path,
+      relative: "#{dirname}/Gemfile",
+      content: GEMFILE_CONTENTS
+    )
   end
 
-  def write_work_layout(dirname, out, collection)
-    path = File.join dirname, '_layouts', 'work.html'
-    out.put_next_entry(path)
-    out.write(WORK_LAYOUT_CONTENTS)
+  def write_work_layout(dirname, path, collection)
+    write_static_artifact(
+      base: path,
+      relative: "#{dirname}/_layouts/work.html",
+      content: WORK_LAYOUT_CONTENTS
+    )
   end
 
-  def write_subject_layout(dirname, out, collection)
-    path = File.join dirname, '_layouts', 'subject.html'
-    out.put_next_entry(path)
-    out.write(SUBJECT_LAYOUT_CONTENTS.gsub('REPLACEME', '#'))
+  def write_subject_layout(dirname, path, collection)
+    write_static_artifact(
+      base: path,
+      relative: "#{dirname}/_layouts/subject.html",
+      content: SUBJECT_LAYOUT_CONTENTS.gsub('REPLACEME', '#')
+    )
   end
 
-  def write_listing_layout(dirname, out, collection)
-    path = File.join dirname, '_layouts', 'listing.html'
-    out.put_next_entry(path)
-    out.write(LISTING_LAYOUT_CONTENTS)
+  def write_listing_layout(dirname, path, collection)
+    write_static_artifact(
+      base: path,
+      relative: "#{dirname}/_layouts/listing.html",
+      content: LISTING_LAYOUT_CONTENTS
+    )
   end
 
-  def write_tree_include(dirname, out, collection)
-    path = File.join dirname, '_includes', 'tree.html'
-    out.put_next_entry(path)
-    out.write(TREE_INCLUDE_CONTENTS)
+  def write_tree_include(dirname, path, collection)
+    write_static_artifact(
+      base: path,
+      relative: "#{dirname}/_includes/tree.html",
+      content: TREE_INCLUDE_CONTENTS
+    )
   end
 
-  def write_footer_include(dirname, out, collection)
-    path = File.join dirname, '_includes', 'footer.html'
-    out.put_next_entry(path)
-    out.write(FOOTER_INCLUDE_CONTENTS)
+  def write_footer_include(dirname, path, collection)
+    write_static_artifact(
+      base: path,
+      relative: "#{dirname}/_includes/footer.html",
+      content: FOOTER_INCLUDE_CONTENTS
+    )
   end
 
-  def write_config_yaml(dirname, out, collection)
-    path = File.join dirname, "_config.yml"
-    out.put_next_entry(path)
+  def write_config_yaml(dirname, path, collection)
     site_config = {
       'title' => collection.title,
       'email' => collection.owner.email,
       'owner' => collection.owner.display_name,
       'description' => collection.intro_block,
-      'plugins' => ['jekyll-feed', 'jekyll-remote-theme', 'jekyll-include-cache'], 
-      'remote_theme' => "mmistakes/minimal-mistakes",
+      'plugins' => ['jekyll-feed', 'jekyll-remote-theme', 'jekyll-include-cache'],
+      'remote_theme' => 'mmistakes/minimal-mistakes',
       'defaults' => [
-        { 'scope' => 
-          { 
+        { 'scope' =>
+          {
             'path' => ''
           },
-          'values' => 
-          { 
-            'layout' => 'archive', 
+          'values' =>
+          {
+            'layout' => 'archive'
           }
         }
       ]
     }
-    out.write(site_config.to_yaml)
+    write_static_artifact(
+      base: path,
+      relative: "#{dirname}/_config.yml",
+      content: site_config.to_yaml
+    )
   end
 
-  def write_index_markdown(dirname, out, collection)
-    path = File.join dirname, "index.md"
-    out.put_next_entry(path)
-    out.write("---\n"+collection.intro_block)
+  def write_index_markdown(dirname, path, collection)
+    write_static_artifact(
+      base: path,
+      relative: "#{dirname}/index.md",
+      content: "---\n"+(collection.intro_block || '')
+    )
   end
 
-  def write_navigation_yaml(dirname, out, collection)
-    path = File.join dirname, "_data", "navigation.yml"
-    out.put_next_entry(path)
-
+  def write_navigation_yaml(dirname, path, collection)
     work_nav = []
     collection.works.sort.each do |work|
       work_nav << {
@@ -253,7 +262,7 @@ EOF_FOOTER_INCLUDE
     end
 
     nav_contents = [
-      { 
+      {
         'title' => 'Works',
         'url' => '/pages/work-list',
         'children' => work_nav
@@ -269,7 +278,7 @@ EOF_FOOTER_INCLUDE
         }
     end
 
-    nav_contents << 
+    nav_contents <<
       {
         'title' => 'Contributors',
         'url' => '/pages/about'
@@ -278,28 +287,35 @@ EOF_FOOTER_INCLUDE
     navigation = {
       'main' => nav_contents
     }
-    out.write(navigation.to_yaml)
+
+    write_static_artifact(
+      base: path,
+      relative: "#{dirname}/_data/navigation.yml",
+      content: navigation.to_yaml
+    )
   end
 
-  def write_work_listing(dirname, out, collection)
-    path = File.join dirname, "pages", "work-list.md"
-    out.put_next_entry(path)
+  def write_work_listing(dirname, path, collection)
     work_listing_frontmatter = {
       'layout' => 'listing',
       'title' => 'Works'
     }
-    work_listing_frontmatter['listing'] = collection.works.map do |work| 
-      { 
-        'title' => work.title, 
+
+    work_listing_frontmatter['listing'] = collection.works.map do |work|
+      {
+        'title' => work.title,
         'url' => "/pages/works/#{work.slug}"
-      } 
+      }
     end
-    out.write(work_listing_frontmatter.to_yaml+"\n---\n")
+
+    write_static_artifact(
+      base: path,
+      relative: "#{dirname}/pages/work-list.md",
+      content: work_listing_frontmatter.to_yaml+"\n---\n"
+    )
   end
 
-  def write_subject_listing(dirname, out, collection)
-    path = File.join dirname, "pages", "subject-list.md"
-    out.put_next_entry(path)
+  def write_subject_listing(dirname, path, collection)
     subject_listing_frontmatter = {
       'layout' => 'listing',
       'title' => 'Subjects'
@@ -309,7 +325,7 @@ EOF_FOOTER_INCLUDE
       tree << category_to_tree(category)
     end
 
-    uncategorized_articles = collection.articles.where.not(:id => collection.articles.joins(:categories).pluck(:id))
+    uncategorized_articles = collection.articles.where.not(id: collection.articles.joins(:categories).pluck(:id))
     if uncategorized_articles.count > 0
       children = []
       uncategorized_articles.each do |subject|
@@ -319,7 +335,7 @@ EOF_FOOTER_INCLUDE
          }
       end
 
-      uncategorized = { 
+      uncategorized = {
         'title' => 'Uncategorized',
         'has_children' => true,
         'children' => children
@@ -328,34 +344,39 @@ EOF_FOOTER_INCLUDE
     end
 
     subject_listing_frontmatter['listing'] = tree
-    out.write(subject_listing_frontmatter.to_yaml+"\n---\n")
+
+    write_static_artifact(
+      base: path,
+      relative: "#{dirname}/pages/subject-list.md",
+      content: subject_listing_frontmatter.to_yaml+"\n---\n"
+    )
   end
 
-  def write_contributor_page(dirname, out, collection)
-    path = File.join dirname, "pages", "about.md"
-    out.put_next_entry(path)
+  def write_contributor_page(dirname, path, collection)
     contributor_listing_frontmatter = {
       'layout' => 'listing',
       'title' => 'Contributors'
     }
-    contributor_ids = collection.deeds.group(:user_id).count.sort{|a,b| b[1] <=> a[1]}.map{|e| e[0]}
+    contributor_ids = collection.deeds.group(:user_id).count.sort { |a, b| b[1] <=> a[1] }.map { |e| e[0] }
     listing = []
     contributor_ids.each do |user_id|
       user = User.find(user_id)
       if user.real_name.blank?
-        listing << { 'title' => user.display_name}
+        listing << { 'title' => user.display_name }
       else
-        listing << { 'title' => user.real_name}
+        listing << { 'title' => user.real_name }
       end
     end
     contributor_listing_frontmatter['listing'] = listing
-    out.write(contributor_listing_frontmatter.to_yaml+"\n---\n")
+
+    write_static_artifact(
+      base: path,
+      relative: "#{dirname}/pages/about.md",
+      content: contributor_listing_frontmatter.to_yaml+"\n---\n"
+    )
   end
 
-  def write_work_page(dirname, out, collection, work)
-    path = File.join dirname, 'pages', 'works', "#{work.slug}.md"
-    out.put_next_entry path
-
+  def write_work_page(dirname, path, collection, work)
     metadata = work.merge_metadata
 
     frontmatter = {
@@ -365,28 +386,32 @@ EOF_FOOTER_INCLUDE
     }
 
     text = ApplicationController.new.render_to_string(
-      :template => 'export/show', 
-      :formats => [:html], 
-      :work_id => work.id, 
-      :layout => false, 
-      :encoding => 'utf-8',
-      :assigns => {
-        :collection => work.collection,
-        :work => work,
-        :export_user => nil,
-        :target => :jekyll
+      template: 'export/show',
+      formats: [:html],
+      work_id: work.id,
+      layout: false,
+      encoding: 'utf-8',
+      assigns: {
+        collection: work.collection,
+        work: work,
+        export_user: nil,
+        target: :jekyll
       }
     )
-    text.gsub!(/^\s+/,'')
+    text.gsub!(/^\s+/, '')
     markdown = frontmatter.to_yaml+"\n---\n"+text
-    out.write(markdown)
+
+    write_static_artifact(
+      base: path,
+      relative: "#{dirname}/pages/works/#{work.slug}.md",
+      content: markdown
+    )
   end
 
-  def write_subject_page(dirname, out, collection, subject)
-    path = File.join dirname, 'pages', 'subjects', "#{subject.id}.md"
-    out.put_next_entry path
+  def write_subject_page(dirname, path, collection, subject)
+    # TODO convert to HTML
+    text = xml_to_html(subject.xml_text, false, :jekyll, collection)
 
-    text = xml_to_html(subject.xml_text, false, :jekyll, collection) # TODO convert to HTML
     page_links = []
     subject.page_article_links.each do |link|
       page_links << {
@@ -402,12 +427,22 @@ EOF_FOOTER_INCLUDE
       'page_links' => page_links
     }
 
-
     markdown = frontmatter.to_yaml+"\n---\n"+text
-    out.write(markdown)
+
+    write_static_artifact(
+      base: path,
+      relative: "#{dirname}/pages/subjects/#{subject.id}.md",
+      content: markdown
+    )
   end
 
+  def write_static_artifact(base:, relative:, content:)
+    full = File.join(base, relative)
 
+    FileUtils.mkdir_p(File.dirname(full))
 
-
+    File.open(full, 'wb') do |f|
+      f.write(content)
+    end
+  end
 end

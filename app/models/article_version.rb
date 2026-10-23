@@ -28,11 +28,11 @@ class ArticleVersion < ApplicationRecord
   end
 
   def prev
-    article.article_versions.where("id < ?", id).first
+    article.article_versions.where('id < ?', id).first
   end
 
   def next
-    article.article_versions.where("id > ?", id).last
+    article.article_versions.where('id > ?', id).last
   end
 
   def current_version?
@@ -46,9 +46,9 @@ class ArticleVersion < ApplicationRecord
       if previous_version
         #   copy the previous version's contents into the page and save without callbacks
         article.update_columns(
-          :title => previous_version.title,
-          :source_text => previous_version.source_text,
-          :xml_text => previous_version.xml_text
+          title: previous_version.title,
+          source_text: previous_version.source_text,
+          xml_text: previous_version.xml_text
         )
       else
         article.destroy! # this also deletes the article versions
@@ -57,7 +57,7 @@ class ArticleVersion < ApplicationRecord
       #   renumber subsequent versions
       this_version = self
       while next_version = this_version.next do
-        next_version.article_version -= 1
+        next_version.version -= 1
         next_version.save!
         this_version = next_version
       end

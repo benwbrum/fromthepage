@@ -20,7 +20,11 @@ module TranscribeHelper
   end
 
   def canonical_subjects_for_autocomplete
-    @collection.articles.pluck(:title)
+    if @collection.is_a? Collection
+      @collection.articles.pluck(:title).sort
+    else
+      @collection.collection.articles.pluck(:title).sort
+    end
   end
 
   def excerpt_subject(page, title, options = {})
@@ -28,13 +32,13 @@ module TranscribeHelper
     options[:radius] ||= 3
 
     search_text = case options[:text_type]
-                  when 'translation'
+    when 'translation'
                     page.source_translation
-                  when 'transcription'
+    when 'transcription'
                     page.source_text
-                  else
+    else
                     "[[#{title}]]"
-                  end
+    end
     subject_context(search_text, title, options[:radius])
   end
 
@@ -45,7 +49,8 @@ module TranscribeHelper
     line_radius += 1 # Makes the "radius" make more sense as a value
 
     output = "<b>#{title}</b>" # have something to return if the match fails
-    regexed_title = /(\[\[#{title.gsub('(', '\(').gsub(')', '\)').gsub(/\s+/, '\s+')}.*?\]\])/m
+    regex_safe_title=Regexp.escape(title).gsub(/\s+/, '\s+')
+    regexed_title = /(\[\[#{regex_safe_title}.*?\]\])/m
     match = text.match(regexed_title)
 
     unless match.nil?
@@ -78,27 +83,32 @@ module TranscribeHelper
   end
 
   def osd_source(page, work)
+    should_proxy = ::ACTIVE_STORAGE_PROXY_LIST.include?(work.collection.owner.slug)
+
     if page.nil?
-      sources = []
-      work.pages.each do |page|
-        sources += osd_source(page, work)
-      end
-      sources
+      work.pages.map { |p| single_osd_source(p, proxy: should_proxy) }
     else
-      if page.sc_canvas
-        if page.sc_canvas.sc_service_id
-          service_id = page.sc_canvas.sc_service_id.sub(/\/$/,'')
-          ["#{service_id}/info.json"]
-        else
-          [{type: 'image', url: page.sc_canvas.sc_resource_id}.to_json]
-        end
-      elsif page.ia_leaf
-        [page.ia_leaf.iiif_image_info_url]
-      elsif browser.platform.ios? && browser.webkit?
-        ["#{url_for(:root)}image-service/#{page.id}/info.json"]
+      [single_osd_source(page, proxy: should_proxy)]
+    end
+  end
+
+  def single_osd_source(page, proxy: false)
+    if page.sc_canvas
+      page.sc_canvas.iiif_image_info_url
+    elsif page.ia_leaf
+      page.ia_leaf.iiif_image_info_url
+    elsif browser.platform.ios? && browser.webkit?
+      "#{url_for(:root)}image-service/#{page.id}/info.json"
+    elsif page.image.attached?
+      image_url = if proxy
+        Rails.application.routes.url_helpers.rails_storage_proxy_url(page.image)
       else
-        [{type: 'image', url: file_to_url(page.canonical_facsimile_url)}.to_json]
+        Rails.application.routes.url_helpers.url_for(page.image)
       end
+
+      { type: 'image', url: image_url }.to_json
+    else
+      { type: 'image', url: file_to_url(page.canonical_facsimile_url) }.to_json
     end
   end
 end

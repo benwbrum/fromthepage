@@ -39,6 +39,10 @@ p =t('.description')
     =f.label :include_contributors
       =f.check_box 'include_contributors'
       =f.label "include_contributors",  t('.include_contributors')
+  .bulk-export_options
+    =f.label :include_notes
+      =f.check_box 'include_notes'
+      =f.label "include_notes",  t('.include_notes')
 
 
   =f.submit t('.export')

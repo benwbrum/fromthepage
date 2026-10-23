@@ -50,6 +50,9 @@
   -path.push(@user.display_name)
 
 -if path.present?
-  ul.breadcrumbs
-    -path.each do |item|
-      li ==item
+  -if selection == :reviewer_dashboard
+    h2 ==path.first
+  -else
+    ul.breadcrumbs
+      -path.each do |item|
+        li ==item

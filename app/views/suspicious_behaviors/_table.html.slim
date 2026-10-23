@@ -1,0 +1,21 @@
+table.datagrid.striped.dataTable.no-footer
+  thead
+    th
+    th.suspicious-behavior-user-cell =t('suspicious_behaviors.table.user')
+    th.suspicious-behavior-page-cell =t('suspicious_behaviors.table.page')
+    th =t('suspicious_behaviors.table.metadata')
+    th =t('suspicious_behaviors.table.resolved_by')
+    =fe_sortable_header(key: :resolved_at, sorting: @sorting, ordering: @ordering) do
+      =t('suspicious_behaviors.table.resolved_at')
+    =fe_sortable_header(key: :created_at, sorting: @sorting, ordering: @ordering) do
+      =t('suspicious_behaviors.table.flagged_at')
+    th =t('suspicious_behaviors.table.type')
+    th =t('suspicious_behaviors.table.status')
+    th.suspicious-behavior-actions-cell =t('suspicious_behaviors.table.actions')
+
+  tbody
+    -if @suspicious_behaviors.any?
+      -@suspicious_behaviors.each do |item|
+        =render partial: 'item', locals: { item: item }
+
+=render partial: 'shared/pagination', locals: { model: @suspicious_behaviors, entries_info: true, controller: 'suspicious_behaviors', action: 'index' }

@@ -1,0 +1,8 @@
+p= t('user_mailer.greeting', user: @user.display_name)
+
+-if @result.rowset_errors.any?
+  p= t('.fail', count: @result.content, error_count: @result.rowset_errors.size)
+-else
+  p= t('.success', count: @result.content)
+
+p== t('user_mailer.html.closing', from: t('user_mailer.fromthepage'))

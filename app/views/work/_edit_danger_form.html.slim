@@ -1,0 +1,11 @@
+tr
+  td(colspan="2")
+    .danger-warning
+      =svg_symbol '#icon-warning-sign', class: 'icon'
+      =t('collection.edit_danger.danger_zone_description')
+tr
+  td(colspan="2")
+    h3 =t('work.edit.destroy_everything')
+    =link_to(work_delete_path(work_id: work.id), class: 'button action-btn', data: { turbo_method: :delete, turbo_confirm: t('work.edit.confirm_delete_work') }) do
+      span =t('work.edit.delete_work')
+    p =t('work.edit.delete_work_description')

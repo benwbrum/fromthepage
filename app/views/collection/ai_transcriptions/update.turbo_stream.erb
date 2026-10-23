@@ -1,0 +1,6 @@
+<% if @result.success? %>
+  <%= turbo_flash(t('.success'), :notice) %>
+  <%= turbo_stream.update('collection-settings', partial: 'form', locals: { collection: @collection }) %>
+<% else %>
+  <%= turbo_flash(t('errors.error'), :error) %>
+<% end %>

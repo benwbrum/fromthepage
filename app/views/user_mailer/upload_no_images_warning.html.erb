@@ -1,0 +1,15 @@
+<h2 style="color:#453939; margin:0; font-weight:normal;"><%= t('.upload_processed_no_images') %></h2>
+<p>
+  <%= t('.html.message', file: @document_upload.name) %>
+</p>
+<p>
+  <%= t('.html.supported_formats') %>
+</p>
+<p>
+  <%= t('.html.collection_link_message') %>
+  <%= link_to @document_upload.collection.title, {
+      controller: 'collection',
+      action: 'show',
+      collection_id: @document_upload.collection.id,
+      only_path: false } %>.
+</p>

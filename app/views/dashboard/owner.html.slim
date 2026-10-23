@@ -13,14 +13,11 @@
             h4.collection_title
               =link_to c.title, collection_path(c.owner, c) unless c.owner.nil?
               span.visibility
-                -if c.is_public
-                  =t('.public')
-                -else
-                  =t('.private')
+                =t(".#{c.visibility}")
             -unless c.works.empty?
               -collection_stats(c)
               .collection-work_stats
-                span 
+                span
                   =t('.n_works', count: c.works.count)
                   =@wording
                 span
@@ -32,9 +29,11 @@
                 p.nodata_text =t('.you_can_upload_documents', start_project: start_project).html_safe
             -unless c.document_sets.empty?
               h3 =t('.document_sets')
-              -c.document_sets.each do |s|
-                h5.collection_title
-                  =link_to s.title, collection_path(s.owner, s)
+              ul
+                -c.document_sets.each do |s|
+                  li
+                    h5.collection_title
+                      =link_to s.title, collection_path(s.owner, s)
 
     -else
       -new_collection = link_to t('.create_a_collection'), collection_new_path
@@ -46,4 +45,5 @@
 
   aside.sidecol
     h3 =t('.your_activity')
-    =deeds_for({ :user_id => current_user.id, :limit => 10 })
+    turbo-frame id="lazy_deeds" src=dashboard_deeds_path(limit: 10) loading="lazy"
+      = render partial: 'shared/components/loading'

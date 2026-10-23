@@ -1,133 +1,281 @@
 module AbstractXmlHelper
   require 'rexml/document'
 
-  SANITIZE_ALLOWED_TAGS = %w(table tr td th thead tbody tfoot caption colgroup col a abbr acronym address b big blockquote br cite code del dfn div em font h1 h2 h3 h4 h5 h6 hr i img ins kbd li ol p pre q s samp small span strike strong sub sup tt u ul var time)
-  SANITIZE_ALLOWED_ATTRIBUTES = %w(id name class data-tooltip title src alt width height style href)
+  SANITIZE_ALLOWED_TAGS = %w[table tr td th thead tbody tfoot caption colgroup col a abbr acronym address b big blockquote br cite code del dfn div em font h1 h2 h3 h4 h5 h6 hr i img ins kbd li ol p pre q s samp small span strike strong sub sup tt u ul var time]
+
+  SANITIZE_ALLOWED_ATTRIBUTES = [
+    'abbr',
+    'alt',
+    'aria-describedby',
+    'break',
+    'class',
+    'data-controller',
+    'data-tooltip',
+    'datetime',
+    'depth',
+    'expan',
+    'height',
+    'href',
+    'id',
+    'marker',
+    'name',
+    'orig',
+    'position',
+    'rend',
+    'src',
+    'style',
+    'tabindex',
+    'target',
+    'target_id',
+    'target_title',
+    'time',
+    'title',
+    'type',
+    'when',
+    'width'
+  ]
+
+  SANITIZE_SINGLE_QUOTE_TAGS = %w[b strong i em u s mark q code pre kbd]
 
   def source_to_html(source)
-    html = source.gsub(/\n/, "<br/>")
-    return html
+    html = source.gsub(/\n/, '<br/>')
+    html
   end
 
-  def xml_to_html(xml_text, preserve_lb=true, flatten_links=false, collection=nil, highlight_article_id=nil)
-    return "" if xml_text.blank?
-    xml_text.gsub!(/\n/, "")
+  def preprocess_bibliography_xml(bibliography_text)
+    # Check if content appears to be plain HTML rather than TEI markup
+    # TEI elements include: bibl, hi, lb, pb, cb, add, del, unclear, etc.
+    tei_elements = %w[ab bibl hi lb pb cb add del unclear expan abbr reg footnote entryHeading head figure marginalia catchword gap stamp table row cell texFigure link date]
+    has_tei_elements = tei_elements.any? { |element| bibliography_text.include?("<#{element}") }
+
+    # If it looks like plain HTML (no TEI elements), handle it directly
+    unless has_tei_elements
+      # For plain HTML content, just sanitize it without XML processing
+      html_result = ActionController::Base.helpers.sanitize(
+        bibliography_text.strip,
+        tags: SANITIZE_ALLOWED_TAGS,
+        attributes: SANITIZE_ALLOWED_ATTRIBUTES
+      ).gsub('<br>', '<br/>').gsub('<hr>', '<hr/>')
+
+      # Ensure empty HTML results return empty string
+      cleaned_html = html_result.gsub(/<[^>]*>/, '').strip
+      return cleaned_html.empty? ? '' : html_result
+    end
+
+    # For TEI content, clean up malformed elements
+    xml_text = bibliography_text.dup
+
+    # Clean up malformed lb elements and other self-closing tags
+    xml_text.gsub!(/<lb><\/lb>/, '<lb/>')
+    xml_text.gsub!(/<lb>\s*<\/lb>/, '<lb/>')
+    # Remove orphaned closing lb tags (like </lb></lb></lb>)
+    xml_text.gsub!(/<\/lb>/, '')
+    # Convert non-self-closing lb tags to self-closing
+    xml_text.gsub!(/<lb>/, '<lb/>')
+    xml_text.gsub!(/<lb\s+/, '<lb ')  # Handle <lb attributes>
+    xml_text.gsub!(/<lb\s+([^>]*)>/, '<lb \1/>')
+
+    # Handle XML fragments that need wrapping:
+    # 1. Multiple root elements: <elem>...</elem><elem>...
+    # 2. Content with text before first XML element
+    # 3. TEI content that doesn't have a single root element
+    # Use Unicode-aware whitespace removal to handle non-breaking spaces and other Unicode whitespace
+    cleaned_text = xml_text.strip.gsub(/\A[[:space:]]+|[[:space:]]+\z/, '')
+
+    needs_wrapping = cleaned_text.match(/^<\w+.*?>.*<\/\w+>\s*<\w+/) || # Multiple roots
+                     cleaned_text.match(/^[^<]/) || # Starts with text
+                     !cleaned_text.match(/^<\w+.*?>.*<\/\w+>$/) # Not a single well-formed element
+
+    wrapped_xml = if needs_wrapping
+      "<root>#{xml_text}</root>"
+    else
+      cleaned_text  # Use cleaned text when no wrapping is needed
+    end
+
+    # Test if the XML can be parsed
+    begin
+      test_doc = REXML::Document.new(wrapped_xml)
+      wrapped_xml
+    rescue REXML::ParseException => e
+      # If XML parsing fails, fall back to treating as plain HTML
+      # This handles cases where URLs with parameters or other content
+      # cause XML parsing issues
+      Rails.logger.warn "XML parsing failed for bibliography content, falling back to HTML processing: #{e.message}" if defined?(Rails)
+
+      fallback_result = ActionController::Base.helpers.sanitize(
+        bibliography_text.strip,
+        tags: SANITIZE_ALLOWED_TAGS,
+        attributes: SANITIZE_ALLOWED_ATTRIBUTES
+      ).gsub('<br>', '<br/>').gsub('<hr>', '<hr/>')
+
+      # Ensure empty fallback results return empty string
+      cleaned_fallback = fallback_result.gsub(/<[^>]*>/, '').strip
+      cleaned_fallback.empty? ? '' : fallback_result
+    end
+  end
+
+  def bibliography_to_html(bibliography_text, preserve_lb = true, flatten_links = false, collection = nil, highlight_article_id = nil, suppress_tooltips = false)
+    return '' if bibliography_text.blank?
+
+    # Preprocess bibliography content to handle special cases
+    processed_result = preprocess_bibliography_xml(bibliography_text)
+
+    # If preprocessing returned plain HTML (not XML), return it directly
+    if processed_result.is_a?(String) && !processed_result.include?('<root>') && !processed_result.match(/^<\w+.*?>.*<\/\w+>$/)
+      # Check if result is effectively empty (just whitespace, empty tags, etc.)
+      cleaned_result = processed_result.gsub(/<[^>]*>/, '').strip
+      return cleaned_result.empty? ? '' : processed_result
+    end
+
+    # Use existing xml_to_html method for the actual XML processing
+    begin
+      result = xml_to_html(processed_result, preserve_lb, flatten_links, collection, highlight_article_id, suppress_tooltips)
+      # Remove the temporary root wrapper if we added one
+      result.gsub!(/<\/?root>/, '') if processed_result.include?('<root>')
+
+      # Ensure truly empty content returns empty string to maintain UI behavior
+      # (e.g., showing edit description links when content is empty)
+      # Check if result is effectively empty (just whitespace, empty tags, etc.)
+      cleaned_result = result.gsub(/<[^>]*>/, '').strip
+      cleaned_result.empty? ? '' : result
+    rescue REXML::ParseException => e
+      # Final fallback if xml_to_html still fails
+      Rails.logger.warn "Final fallback: xml_to_html failed for bibliography content: #{e.message}" if defined?(Rails)
+
+      fallback_result = ActionController::Base.helpers.sanitize(
+        bibliography_text.strip,
+        tags: SANITIZE_ALLOWED_TAGS,
+        attributes: SANITIZE_ALLOWED_ATTRIBUTES
+      ).gsub('<br>', '<br/>').gsub('<hr>', '<hr/>')
+
+      # Ensure empty fallback results return empty string
+      cleaned_fallback = fallback_result.gsub(/<[^>]*>/, '').strip
+      cleaned_fallback.empty? ? '' : fallback_result
+    end
+  end
+
+  def xml_to_html(xml_text, preserve_lb = true, flatten_links = false, collection = nil, highlight_article_id = nil, suppress_tooltips = false)
+    return '' if xml_text.blank?
+    xml_text.gsub!(/\n/, '')
     xml_text.gsub!('ISO-8859-15', 'UTF-8')
 
     if preserve_lb
-      xml_text.gsub!("<lb break='no'/> ", "-<br />")
+      xml_text.gsub!("<lb break='no'/> ", '-<br />')
     end
 
-    @collection ||= collection
+    collection ||= @collection
 
     doc = REXML::Document.new(xml_text)
-    #unless subject linking is disabled, do this
-    unless @collection.subjects_disabled
-      doc.elements.each("//link") do |e|
-
+    # unless subject linking is disabled, do this
+    unless collection.subjects_disabled
+      doc.elements.each('//link') do |e|
         title = e.attributes['target_title']
         id = e.attributes['target_id']
         # first find the articles
-        anchor = REXML::Element.new("a")
-        #anchor.text = display_text
+        anchor = REXML::Element.new('a')
+        anchor.add_attribute('title', title)
         if id
           if flatten_links
             if flatten_links == :jekyll
-              anchor.add_attribute("href", "../subjects/#{id}")
+              anchor.add_attribute('href', "../subjects/#{id}")
             else
-              anchor.add_attribute("href", "#article-#{id}")
+              anchor.add_attribute('href', "#article-#{id}")
             end
-            anchor.add_attribute("title", title)
           else
-            anchor.add_attribute("data-tooltip", url_for(:controller => 'article', :action => 'tooltip', :article_id => id, :collection_id => @collection.slug))
-            anchor.add_attribute("href", url_for(:controller => 'article', :action => 'show', :article_id => id))
+            unless suppress_tooltips
+              anchor.add_attribute('data-controller', 'tooltip')
+              anchor.add_attribute('data-tooltip', url_for(controller: 'article', action: 'tooltip', article_id: id, collection_id: collection.slug))
+              # Add ARIA attributes for accessibility
+              anchor.add_attribute('aria-describedby', "tooltip-#{id}")
+              anchor.add_attribute('tabindex', '0')
+            end
+            anchor.add_attribute('href', url_for(controller: 'article', action: 'show', article_id: id, only_path: false))
             if highlight_article_id && id == highlight_article_id
-              anchor.add_attribute("class", "highlighted")  # Add the class attribute for highlighting
+              anchor.add_attribute('class', 'highlighted')  # Add the class attribute for highlighting
             end
           end
         else
           # preview mode for this link
-          anchor.add_attribute("href", "#")
-          anchor.add_attribute("title", title)
+          anchor.add_attribute('href', '#')
         end
         e.children.each { |c| anchor.add(c) }
         e.replace_with(anchor)
       end
     end
 
-    doc.elements.each("//date") do |e|
-      when_value = e.attributes["when"]
-      time = REXML::Element.new("time")
-      time.add_attribute("datetime", when_value)
-      e.children.each{|e| time.add(e)}
+    doc.elements.each('//date') do |e|
+      when_value = e.attributes['when']
+      time = REXML::Element.new('time')
+      time.add_attribute('datetime', when_value)
+      e.children.each { |e| time.add(e) }
       e.replace_with(time)
     end
 
-    doc.elements.each("//abbr") do |e|
+    doc.elements.each('//abbr') do |e|
       expan = e.attributes['expan']
-      span = REXML::Element.new("span")
-      span.add_attribute("class", "expanded-abbreviation")
+      span = REXML::Element.new('span')
+      span.add_attribute('class', 'expanded-abbreviation')
       span.add_text(expan)
-      inner_span = REXML::Element.new("span")
-      inner_span.add_attribute("class", "original-abbreviation")
+      inner_span = REXML::Element.new('span')
+      inner_span.add_attribute('class', 'original-abbreviation')
       e.children.each { |c| inner_span.add(c) }
       span.add(inner_span)
       e.replace_with(span)
     end
 
-    doc.elements.each("//expan") do |e|
+    doc.elements.each('//expan') do |e|
       orig = e.attributes['abbr'] || e.attributes['orig']
-      span = REXML::Element.new("span")
-      span.add_attribute("class", "expanded-abbreviation")
+      span = REXML::Element.new('span')
+      span.add_attribute('class', 'expanded-abbreviation')
       e.children.each { |c| span.add(c) }
       unless orig.blank?
-        inner_span = REXML::Element.new("span")
-        inner_span.add_attribute("class", "original-abbreviation")
+        inner_span = REXML::Element.new('span')
+        inner_span.add_attribute('class', 'original-abbreviation')
         inner_span.add_text(orig)
         span.add(inner_span)
       end
       e.replace_with(span)
     end
 
-    doc.elements.each("//reg") do |e|
+    doc.elements.each('//reg') do |e|
       orig = e.attributes['orig']
 
-      span = REXML::Element.new("span")
-      span.add_attribute("class", "expanded-abbreviation")
+      span = REXML::Element.new('span')
+      span.add_attribute('class', 'expanded-abbreviation')
       e.children.each { |c| span.add(c) }
       unless orig.blank?
-        inner_span = REXML::Element.new("span")
-        inner_span.add_attribute("class", "original-abbreviation")
+        inner_span = REXML::Element.new('span')
+        inner_span.add_attribute('class', 'original-abbreviation')
         inner_span.add_text(orig)
         span.add(inner_span)
       end
       e.replace_with(span)
     end
 
-    doc.elements.each("//footnote") do |e|
+    doc.elements.each('//footnote') do |e|
       marker = e.attributes['marker'] || '*'
-      span = REXML::Element.new("sup")
-      span.add_attribute("class", "footnote-marker")
+      span = REXML::Element.new('sup')
+      span.add_attribute('class', 'footnote-marker')
       span.add_text(marker)
-      inner_span = REXML::Element.new("span")
-      inner_span.add_attribute("class", "footnote-body")
+      inner_span = REXML::Element.new('span')
+      inner_span.add_attribute('class', 'footnote-body')
       e.children.each { |c| inner_span.add(c) }
       span.add(inner_span)
       e.replace_with(span)
     end
 
     # get rid of line breaks within other html mark-up
-    doc.elements.delete_all("//table/lb")
-    doc.elements.delete_all("//table/row/lb")
+    doc.elements.delete_all('//table/lb')
+    doc.elements.delete_all('//table/row/lb')
 
     # convert line breaks to br or nothing, depending
-    doc.elements.each("//lb") do |e|
+    doc.elements.each('//lb') do |e|
       lb = REXML::Element.new('span')
 
       lb.add_attribute('class', 'line-break')
 
       if preserve_lb
-        if e.attributes['break'] == "no"
+        if e.attributes['break'] == 'no'
           if e.has_text?
             sigil = e.get_text.to_s
           else
@@ -142,7 +290,7 @@ module AbstractXmlHelper
         end
         e.replace_with(REXML::Element.new('br'))
       else
-          if e.attributes['break'] == "no"
+          if e.attributes['break'] == 'no'
             lb.add_text('')
           else
             lb.add_text(' ')
@@ -153,37 +301,58 @@ module AbstractXmlHelper
       e.replace_with(lb) unless preserve_lb
     end
 
-    doc.elements.each("//entryHeading") do |e|
+    # convert indent elements to spans or spaces, depending on preserve_lb
+    doc.elements.each('//indent') do |e|
+      spaces_attr = e.attributes['spaces']
+      # Defensive coding: default to 0 if attribute is somehow missing from malformed XML
+      # In normal operation, all indent elements should have the spaces attribute
+      spaces_count = (spaces_attr || '0').to_i
+
+      if preserve_lb
+        # Create a span with inline style for indentation
+        # Use 0.5em per space for more compact indentation
+        indent_span = REXML::Element.new('span')
+        indent_span.add_attribute('class', 'indent')
+        indent_span.add_attribute('style', "padding-left: #{spaces_count * 0.5}em;")
+        e.replace_with(indent_span)
+      else
+        # When not preserving line breaks, just replace with a single space
+        text_node = REXML::Text.new(' ')
+        e.replace_with(text_node)
+      end
+    end
+
+    doc.elements.each('//entryHeading') do |e|
       # convert to a span
-      depth = e.attributes["depth"]
-      title = e.attributes["title"]
-      
+      depth = e.attributes['depth']
+      title = e.attributes['title']
+
       span = e
       e.name = 'span'
       span.add_attribute('class', "depth#{depth}")
     end
 
-    doc.elements.each("//head") do |e|
+    doc.elements.each('//head') do |e|
       # convert to a span
-      depth = 2      
+      depth = 2
       span = e
       e.name = 'span'
       span.add_attribute('class', "depth#{depth}")
     end
 
-    doc.elements.each("//hi") do |e|
-      rend = e.attributes["rend"]
+    doc.elements.each('//hi') do |e|
+      rend = e.attributes['rend']
       span=e
       case rend
       when 'sup'
         span.name='sup'
       when 'underline'
         span.name='u'
-      when 'italics'
+      when 'italics', 'italic'
         span.name='i'
         span.attributes.delete 'rend'
       when 'bold'
-        span.name='i'
+        span.name='b'
       when 'sub'
         span.name='sub'
       when 'str'
@@ -191,13 +360,17 @@ module AbstractXmlHelper
       end
     end
 
-    doc.elements.each("//add") do |e|
-      e.name='span'
-      e.add_attribute('class', "addition")
+    doc.elements.each('//add') do |e|
+      e.name='ins'
+      e.add_attribute('class', 'addition')
     end
 
-    doc.elements.each("//figure") do |e|
-      rend = e.attributes["rend"]
+    doc.elements.each('//ins') do |e|
+      e.add_attribute('class', 'addition')
+    end
+
+    doc.elements.each('//figure') do |e|
+      rend = e.attributes['rend'] || e.attributes['type']
       if rend == 'hr'
         e.name='hr'
       else
@@ -207,42 +380,79 @@ module AbstractXmlHelper
       end
     end
 
-    doc.elements.each("//unclear") do |e|
+    doc.elements.each('//unclear') do |e|
       unclear = REXML::Element.new('span')
-      unclear.add_text("[")
+      unclear.add_text('[')
       unclear.add_attribute('class', 'unclear')
       e.children.each { |c| unclear.add(c) }
-      unclear.add_text("]")
+      unclear.add_text(']')
       e.replace_with(unclear)
     end
 
-    doc.elements.each("//marginalia") do |e|
+    doc.elements.each('//cb') do |e|
+      number = e.attributes['n']
+      if number.blank?
+        text='{column}'
+      else
+        text="{column #{number}}"
+      end
+
+      cb = REXML::Element.new('span')
+      rend = e.attributes['rend']
+      cb.add(REXML::Element.new('br'))
+      cb.add_text(text)
+      e.children.each { |c| unclear.add(c) }
+      cb.add(REXML::Element.new('br'))
+
+      cb.add_attribute('class', 'cb')
+      e.replace_with(cb)
+    end
+
+    doc.elements.each('//pb') do |e|
+      number = e.attributes['n']
+      if number.blank?
+        text='{page break}'
+      else
+        text="{page break #{number}}"
+      end
+
+      pb = REXML::Element.new('span')
+      rend = e.attributes['rend']
+      pb.add(REXML::Element.new('br'))
+      pb.add_text(text)
+      pb.add(REXML::Element.new('br'))
+
+      pb.add_attribute('class', 'pb')
+      e.replace_with(pb)
+    end
+
+    doc.elements.each('//marginalia') do |e|
       span = REXML::Element.new('span')
-      span.add_text("{")
+      span.add_text('{')
       span.add_attribute('class', 'marginalia')
       e.children.each { |c| span.add(c) }
-      span.add_text("}")
+      span.add_text('}')
       e.replace_with(span)
     end
 
-    doc.elements.each("//catchword") do |e|
+    doc.elements.each('//catchword') do |e|
       span = REXML::Element.new('span')
-      span.add_text("{")
+      span.add_text('{')
       span.add_attribute('class', 'catchword')
       e.children.each { |c| span.add(c) }
-      span.add_text("}")
+      span.add_text('}')
       e.replace_with(span)
     end
 
-    doc.elements.each("//gap") do |e|
+    doc.elements.each('//gap') do |e|
       gap = REXML::Element.new('span')
-      gap.add_text("[...]")
+      gap.add_text('[...]')
       gap.add_attribute('class', 'gap')
       e.replace_with(gap)
     end
 
-    doc.elements.each("//stamp") do |e|
-      stamp_type = e.attributes["type"] || ''
+    doc.elements.each('//stamp') do |e|
+      stamp_type = e.attributes['type'] || ''
       stamp = REXML::Element.new('span')
       stamp.add_text("{#{stamp_type.titleize} Stamp}")
       stamp.add_attribute('class', 'stamp')
@@ -251,44 +461,105 @@ module AbstractXmlHelper
 
 
 
-    doc.elements.each("//table") do |e|
-      rend = e.attributes["rend"]
+    doc.elements.each('//table') do |e|
+      rend = e.attributes['rend']
       if rend == 'ruled'
         e.add_attribute('class', 'tabular')
       end
     end
 
-    doc.elements.each("//row") do |e|
+    doc.elements.each('//row') do |e|
       e.name='tr'
     end
 
 
-    doc.elements.each("//cell") do |e|
+    doc.elements.each('//cell') do |e|
       e.name='td'
     end
 
     if @page
-      doc.elements.each("//texFigure") do |e|
-        position = e.attributes["position"]
-        
+      doc.elements.each('//texFigure') do |e|
+        position = e.attributes['position']
+
         span = REXML::Element.new('img')
-        span.add_attribute('src', (file_to_url(TexFigure.artifact_file_path(@page.id, position)) + "?timestamp=" + Time.now.to_i.to_s))
-        
+        span.add_attribute('src', (file_to_url(TexFigure.artifact_file_path(@page.id, position)) + '?timestamp=' + Time.now.to_i.to_s))
+
         e.replace_with(span)
       end
-      
+
+    end
+
+    # \textquotesingle fix
+    SANITIZE_SINGLE_QUOTE_TAGS.each do |tag|
+      doc.elements.each("//#{tag}") do |e|
+        if e.text
+          e.text = e.text.gsub("'", '`')
+        end
+      end
     end
 
     # now our doc is correct - what do we do with it?
-    my_display_html = ""
+    my_display_html = ''
     doc.write(my_display_html)
-    my_display_html.gsub!("</p>", "</p>\n\n")
-    my_display_html.gsub!("<br/>","<br/>\n")
-    my_display_html.gsub!("<?xml version='1.0' encoding='UTF-8'?>","")
-    my_display_html.gsub!('<p/>','')
-    my_display_html.gsub!(/<\/?page>/,'')
+    my_display_html.gsub!('</p>', "</p>\n\n")
+    my_display_html.gsub!('<br/>', "<br/>\n")
+    # Add newlines before and after div elements
+    my_display_html.gsub!('<div', "\n<div")
+    my_display_html.gsub!('</div>', "</div>\n")
+    my_display_html.gsub!("<?xml version='1.0' encoding='UTF-8'?>", '')
+    my_display_html.gsub!('<p/>', '')
+    my_display_html.gsub!(/<\/?page>/, '')
 
-    return ActionController::Base.helpers.sanitize(my_display_html.strip, :tags => SANITIZE_ALLOWED_TAGS, :attributes => SANITIZE_ALLOWED_ATTRIBUTES).gsub('<br>','<br/>').gsub('<hr>','<hr/>')
+    result = ActionController::Base.helpers.sanitize(
+      my_display_html.strip,
+      tags: SANITIZE_ALLOWED_TAGS,
+      attributes: SANITIZE_ALLOWED_ATTRIBUTES
+    ).gsub('<br>', '<br/>').gsub('<hr>', '<hr/>')
+
+    # Fix double-escaped XML entities from legacy data
+    result.gsub('&amp;lt;', '&lt;')
+          .gsub('&amp;gt;', '&gt;')
+          .gsub('&amp;quot;', '&quot;')
+          .gsub('&amp;amp;', '&amp;')
+          .gsub('&amp;apos;', '&apos;')
   end
 
+  def cached_record_xml_to_html(record, attribute, preserve_lb: true, collection: nil, highlight_article_id: nil)
+    xml_text = record.public_send(attribute)
+    return '' if xml_text.blank?
+
+    collection ||= @collection
+    xml_text_digest = Digest::MD5.hexdigest(xml_text)
+
+    if highlight_article_id.present?
+      return xml_to_html(xml_text.to_s.dup, preserve_lb, false, collection, highlight_article_id)
+    end
+
+    Rails.cache.fetch([
+      'xml_to_html',
+      record.class.name,
+      record.cache_key_with_version,
+      xml_text_digest,
+      attribute,
+      preserve_lb,
+      collection&.class&.name,
+      collection&.cache_key_with_version
+    ]) do
+      xml_to_html(xml_text.to_s.dup, preserve_lb, false, collection)
+    end
+  end
+
+  def cached_page_xml_to_html(page, attribute, preserve_lb: true, collection: nil, highlight_article_id: nil)
+    cached_record_xml_to_html(
+      page,
+      attribute,
+      preserve_lb: preserve_lb,
+      collection: collection,
+      highlight_article_id: highlight_article_id
+    )
+  end
+
+  def cached_article_xml_to_html(article, preserve_lb: true, collection: nil)
+    cached_record_xml_to_html(article, :xml_text, preserve_lb: preserve_lb, collection: collection)
+  end
 end

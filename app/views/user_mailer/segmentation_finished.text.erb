@@ -1,0 +1,9 @@
+<%= t('.heading', work: @work.title) %>
+
+<%= t('.greeting', user: @user.display_name) %>
+
+<%= t('.body', work: @work.title, collection: @collection.title) %>
+
+<%= t('.candidate_count_label') %> <%= @work.pages.where(is_first_page_candidate: true).count %>
+
+<%= t('.view_work') %>: <%= collection_read_work_url(@collection.owner, @collection, @work) %>

@@ -1,6 +1,29 @@
 ---
 fr:
   display:
+    ai_text:
+      ai_draft: Brouillon IA
+      ai_text: Texte IA
+      ai_text_edit_notice: Pour modifier ce texte, utilisez le bouton « Brouillon IA » dans l'onglet de transcription.
+      ai_text_generated_with: Texte généré par IA avec %{model} sur %{date}
+      facsimile: Facsimilé
+      human_transcription: Transcription humaine
+      show_comparison_with_transcription: Afficher la comparaison avec la transcription
+    cer_stats:
+      accuracy_explanation: Ces statistiques comparent le texte généré par l'IA à la transcription vérifiée par un humain, fournissant ainsi des informations sur la précision de la transcription par l'IA.
+      accuracy_statistics: Statistiques de précision
+      character_error_rate: Taux d'erreur de caractères (CER)
+      character_error_rate_tooltip: Le CER mesure le pourcentage de modifications au niveau des caractères (insertions, suppressions, substitutions) nécessaires pour transformer le texte généré par l'IA en texte de référence. Plus la valeur est basse, plus la précision est élevée.
+      non_stopword_accuracy: Précision des mots non vides (NSA)
+      non_stopword_accuracy_tooltip: Mesure le pourcentage de mots clés (à l'exclusion des mots courants comme « le/la/les », « un/une/les », « est/sa/les ») qui correspondent entre l'IA et les données de référence. Plus la valeur est élevée, meilleure est la reconnaissance du contenu.
+      statistics_unavailable: Les statistiques de précision ne sont pas disponibles pour cette page.
+      statistics_unavailable_reason: Les statistiques ne peuvent être calculées que pour les pages avec transcription humaine.
+      text_only_comparison: Comparaison textuelle uniquement
+      text_only_description: Statistiques calculées après suppression de la ponctuation, des espaces superflus et normalisation de la casse.
+      verbatim_comparison: Comparaison littérale
+      verbatim_description: Statistiques calculées sur le texte original avec toute la mise en forme conservée.
+      word_error_rate: Taux d'erreur sur les mots (WER)
+      word_error_rate_tooltip: Le WER mesure le pourcentage de corrections au niveau des mots nécessaires pour transformer le texte généré par l'IA en texte de référence. Plus la valeur est basse, plus la précision est élevée.
     display_page:
       collaboration_is_restricted: La collaboration est restreinte pour cette collection. Veuillez contacter le propriétaire du projet si vous souhaitez aider à la transcription.
       collection_is_not_active: Ce projet n'est pas actif. Veuillez contacter le propriétaire du projet pour toute question.
@@ -9,6 +32,7 @@ fr:
       help_correct: aider à corriger
       help_transcribe: aider à transcrire
       help_translate: aider à traduire
+      legend: Légende
       mark_the_page_blank: marquer la page comme vierge
       or_mark_blank: "<br>ou %{mark_blank}"
       page_notes: Notes et questions
@@ -77,6 +101,9 @@ fr:
       transcribed: transcrite
       translation: Traduction
       unable_to_find_pages: Nous n'avons trouvé aucune page correspondant à votre demande
+    prompt:
+      ai_prompt: Invite IA
+      prompt_explanation: Cette invite a servi à générer l'ébauche de l'IA.
     read_all_works:
       pages: Pages
       pages_that_mention: Pages qui mentionnent %{article}
@@ -89,11 +116,22 @@ fr:
       pages_need_translation: Pages à traduire
       translations_need_indexing: Traductions nécessitant une indexation
       translations_need_review: Traductions à revoir
+    reasoning:
+      ai_reasoning: Étapes du raisonnement en IA
+      reasoning_explanation: Explication du raisonnement
+    token_usage:
+      ai_token_usage: Utilisation des tokens IA
+      cached_token_count: 'Jetons mis en cache : %{count}'
+      candidates_token_count: 'Tokens de sortie : %{count}'
+      prompt_token_count: 'Tokens d''entrée : %{count}'
+      thoughts_token_count: 'Jetons de pensées : %{count}'
+      total_token_count: 'Total des tokens : %{count}'
   display_helper:
     page_action:
       blank_page: Page vierge
       completed: Complété
       correct: Corriger
+      incomplete: Incomplet
       index: Indice
       review: Examen
       transcribe: Transcrire

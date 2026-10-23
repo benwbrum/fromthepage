@@ -20,11 +20,16 @@ RSpec.describe AdminMailer::OwnerCollectionActivity do
           created_at: 2.days.ago
         })
       end
-  
+
       after :each do
         @new_collaborator_deed.destroy if @new_collaborator_deed
+        @suspicious_behavior&.destroy
+        @page&.destroy
+        @work&.destroy
+        @page = nil
+        @work = nil
       end
-  
+
       after :all do
         @owner.destroy
         @collection.destroy
@@ -33,17 +38,17 @@ RSpec.describe AdminMailer::OwnerCollectionActivity do
         @new_deed.destroy
         @old_deed.destroy
       end
-  
+
       it "stores the owner as an attribute" do
         activity = AdminMailer::OwnerCollectionActivity.build(@owner)
         expect(activity.owner).to eq(@owner)
       end
-      
+
       it "retrieves owner collections and sets as an attribute" do
         activity = AdminMailer::OwnerCollectionActivity.build(@owner)
         expect(activity.collections.first).to eq(@collection)
       end
-      
+
       it "retrieves new owner collaborators and sets as an attribute" do
         @new_collaborator_deed = create(:deed, {
           deed_type: DeedType::WORK_ADDED,
@@ -55,5 +60,136 @@ RSpec.describe AdminMailer::OwnerCollectionActivity do
         # Make sure the old collaborator isn't listed
         expect(activity.collaborators.length).to eq(1)
       end
+
+     it "retrieves recent suspicious behaviors and groups them by collection" do
+       @work = create(:work, collection_id: @collection.id, owner_user_id: @owner.id)
+       @page = create(:page, work_id: @work.id)
+       @suspicious_behavior = create(:suspicious_behavior, {
+         collection_id: @collection.id,
+         page_id: @page.id,
+         user_id: @old_collaborator.id,
+         resolved_by_user_id: @owner.id
+       })
+
+       activity = AdminMailer::OwnerCollectionActivity.build(@owner)
+
+       expect(activity.suspicious_behaviors[@collection]).to eq([@suspicious_behavior])
+     end
+
+     it "does not retrieve old suspicious behaviors" do
+       @work = create(:work, collection_id: @collection.id, owner_user_id: @owner.id)
+       @page = create(:page, work_id: @work.id)
+       @suspicious_behavior = create(:suspicious_behavior, {
+         collection_id: @collection.id,
+         page_id: @page.id,
+         user_id: @old_collaborator.id,
+         resolved_by_user_id: @owner.id,
+         created_at: 2.days.ago
+       })
+
+       activity = AdminMailer::OwnerCollectionActivity.build(@owner)
+
+       expect(activity.suspicious_behaviors).to be_blank
+     end
+  end
+
+  describe "#has_activity?" do
+    before :all do
+      @activity_owner = create(:user)
+      @activity_collection = create(:collection, owner_user_id: @activity_owner.id)
+      @activity_work = create(:work, collection_id: @activity_collection.id)
+      @activity_page = create(:page, work_id: @activity_work.id)
+      @activity_collaborator = create(:user)
+    end
+
+    after :each do
+      @activity_deed&.destroy
+      @activity_suspicious_behavior&.destroy
+    end
+
+    after :all do
+      @activity_page.destroy
+      @activity_work.destroy
+      @activity_collection.destroy
+      @activity_collaborator.destroy
+      @activity_owner.destroy
+    end
+
+    context "when there are new collaborators" do
+      it "returns true" do
+        @activity_deed = create(:deed, {
+          deed_type: DeedType::WORK_ADDED,
+          collection_id: @activity_collection.id,
+          user_id: @activity_collaborator.id
+        })
+        activity = AdminMailer::OwnerCollectionActivity.build(@activity_owner)
+        expect(activity.has_activity?).to be true
+      end
+    end
+
+    context "when there are new comments" do
+      it "returns true" do
+        @activity_deed = create(:deed, {
+          deed_type: DeedType::NOTE_ADDED,
+          collection_id: @activity_collection.id,
+          page_id: @activity_page.id,
+          work_id: @activity_work.id,
+          user_id: @activity_collaborator.id
+        })
+        activity = AdminMailer::OwnerCollectionActivity.build(@activity_owner)
+        expect(activity.has_activity?).to be true
+      end
+    end
+
+    context "when there is new activity (non-comment deeds)" do
+      it "returns true" do
+        @activity_deed = create(:deed, {
+          deed_type: DeedType::PAGE_TRANSCRIPTION,
+          collection_id: @activity_collection.id,
+          page_id: @activity_page.id,
+          work_id: @activity_work.id,
+          user_id: @activity_collaborator.id
+        })
+        activity = AdminMailer::OwnerCollectionActivity.build(@activity_owner)
+        expect(activity.has_activity?).to be true
+      end
+    end
+
+    context "when there are recent suspicious behaviors" do
+      it "returns true" do
+        @activity_suspicious_behavior = create(:suspicious_behavior, {
+          collection_id: @activity_collection.id,
+          page_id: @activity_page.id,
+          user_id: @activity_collaborator.id,
+          resolved_by_user_id: @activity_owner.id
+        })
+
+        activity = AdminMailer::OwnerCollectionActivity.build(@activity_owner)
+
+        expect(activity.has_activity?).to be true
+      end
+    end
+
+    context "when there is no new activity" do
+      it "returns false" do
+        activity = AdminMailer::OwnerCollectionActivity.build(@activity_owner)
+        expect(activity.has_activity?).to be false
+      end
+    end
+
+    context "when there are old deeds but no recent activity" do
+      it "returns false" do
+        @activity_deed = create(:deed, {
+          deed_type: DeedType::PAGE_TRANSCRIPTION,
+          collection_id: @activity_collection.id,
+          page_id: @activity_page.id,
+          work_id: @activity_work.id,
+          user_id: @activity_collaborator.id,
+          created_at: 2.days.ago
+        })
+        activity = AdminMailer::OwnerCollectionActivity.build(@activity_owner)
+        expect(activity.has_activity?).to be false
+      end
+    end
   end
 end

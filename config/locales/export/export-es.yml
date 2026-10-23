@@ -1,6 +1,9 @@
 ---
 es:
   export:
+    accessible_pdf:
+      struck_through: 'tachado: %{text}'
+      table_without_headers: Tabla según la transcripción, %{rows} filas por %{columns} columnas. Los encabezados de columna no se marcaron en la transcripción original, por lo que las celdas se leen sin ellos.
     edit_contentdm_credentials:
       connect: Conectar
       contentdm_credentials: Credenciales CONTENTdm
@@ -10,7 +13,11 @@ es:
       license_key: Clave de licencia
     facing_edition:
       contributions_message: 'Este documento no sería posible sin las contribuciones editoriales de las siguientes personas:'
+      contributors: Colaboradores
       export_metadata: Exportación FromThePage de %{work} desde %{collection} realizada en %{time}.
+      metadata: Metadatos
+      notes: Notas
+      translation: Traducción
     index:
       api: API
       export_all_works: Exportar todo el contenido
@@ -38,7 +45,16 @@ es:
       table_csv: Tabla en formato CSV
       tei: IET
       work_title: Título de la obra
+    new_grover_export:
+      ai_warning: 'Advertencia: Esta transcripción ha sido generada por IA (%{model} %{created_at}).'
+      contents: Contenido
+      download: Descargar
+      heading: Configuración de PDF accesible
+      human_and_ai: Exportar transcripciones humanas cuando estén disponibles; de lo contrario, exportar borradores de IA.
+      human_only: Exportar únicamente transcripciones editadas por humanos.
+      prepend_ai_warnings: 'Advertencia: Esta transcripción ha sido generada por IA y se añade al principio de la transcripción.'
     show:
+      bibliography: Bibliografía
       categories: 'Categorías:'
       export_metadata: Exportar desde FromThePage de %{work} de %{collection} realizada en %{time}.
       fromthepage_version: 'Versión FromThePage: %{version}'
@@ -51,6 +67,10 @@ es:
       subjects_and_indices: Asuntos e índices
     tei:
       administrator: Administrador de %{collection} proyecto de transcripción en FromThePage
+      ai_generated_between: Generado entre %{start_date} y %{end_date}.
+      ai_generated_on: Generado en %{date}.
+      ai_page_ranges: 'Páginas: %{ranges}.'
+      ai_transcription_by: 'Transcripción por IA realizada por:'
       changes_to_page_transcript: Cambios en la transcripción de página.
       double_proof_by: 'Doble prueba por:'
       dynamic_tei_export: Exportación dinámica TEI de FromThePage (versión %{version})

@@ -1,0 +1,33 @@
+=render partial: '/shared/page_tabs', locals: { selected: 5, page_id: @page.id }
+
+.page-headlines
+  .headline
+    h3.headline_title =t('.facsimile')
+  .headline
+    h3.headline_title =t('.ai_text')
+    -if @finished_transcription_count > 1
+      .page_info
+        =fe_filter_table_wrapper(selector: 'ai-text-table') do
+          =fe_filter_form_wrapper(url: collection_ai_text_page_path(@collection.owner, @collection, @work, @page), selector: 'ai-text-table', sorting: nil, ordering: nil) do
+            =fe_filter_select(key: :ai_transcription_id, value: params[:ai_transcription_id], options: @ai_transcription_options)
+    -else
+      .page_info
+        =t('.ai_text_generated_with', model: @ai_transcription.model, date: @ai_transcription.created_at.strftime("%B %e, %Y"))
+
+#ai-text.page-columns(data-layout-mode="ltr")
+  .page-column(id="leftColumn")
+    .page-imagescan
+      =render partial: '/shared/osd_div'
+
+  .splitter(id="splitter")
+
+  =render partial: 'ai_text'
+
+=render partial: 'cer_stats_container'
+
+=render partial: 'reasoning'
+
+=render partial: 'token_usage'
+
+-if @ai_transcription&.supports_prompt? && @ai_transcription&.prompt&.present?
+  =render partial: 'prompt', locals: { prompt: @ai_transcription.prompt }

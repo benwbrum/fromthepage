@@ -1,14 +1,14 @@
-=render({ :partial => 'owner_header', :locals => { :selected => 3 } })
+=render partial: 'owner_header', locals: { selected: 3 }
 
-=render({ partial: 'statistics/statistics',
-          locals:   { subjects_disabled: @subjects_disabled }})
+=render partial: 'statistics/statistics', locals: { subjects_disabled: @subjects_disabled }
 
-=render({ partial: 'statistics/collaborator_time'})
+=render partial: 'statistics/collaborator_time'
 
-=render({ partial: 'statistics/collaborators',
-  :locals =>  { :transcribers   => @statistics_object.transcribers_with_count,
-                :indexers       => @statistics_object.indexers_with_count, 
-                :editors        => @statistics_object.editors_with_count, 
-                :reviewers      => @statistics_object.reviewers_with_count, 
-                :subjects_disabled => @subjects_disabled,
-                :mailing_list_export => true } })
+=render partial: 'statistics/collaborators', \
+        locals: { \
+          transcribers:        @statistics_object.transcribers_with_count, \
+          indexers:            @statistics_object.indexers_with_count, \
+          editors:             @statistics_object.editors_with_count, \
+          reviewers:           @statistics_object.reviewers_with_count, \
+          subjects_disabled:   @subjects_disabled, \
+          mailing_list_export: true }

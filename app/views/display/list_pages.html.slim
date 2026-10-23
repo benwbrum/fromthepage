@@ -1,4 +1,4 @@
-=render({ :partial => '/shared/work_tabs', :locals => { :selected => 2, :work_id => @work }})
+=render partial: '/shared/work_tabs', locals: { selected: 2, work_id: @work }
 
 -if @work.pages.empty?
   .nodata
@@ -7,11 +7,14 @@
 -else
   -if @work.description.present? && !@work.ia_work
     .big =raw(@work.description.gsub(/Metadata:.*/m,""))
+
+  -can_transcribe = current_user&.can_transcribe?(@work, @collection)
   table.datagrid.work-contents
     tr
       th.w100 =t('.page_title')
       th =t('.user_notes')
-      th =t('.actions')
+      -if can_transcribe
+        th =t('.actions')
     -@work.pages.each do |page|
       tr
         td
@@ -23,10 +26,11 @@
           =link_to(display_display_page_path(:page_id => page.id, :anchor => 'notes'), class: note_link_class)
             =svg_symbol '#icon-comment', class: 'icon'
             span =(page.notes.empty? ? t('.no_notes') : t('.n_notes', count: page.notes.size))
-        td
-          -page_action(page)
-          =link_to @wording, @path, class: 'button small outline'
-    -if @collection.metadata_entry?
+        -if can_transcribe
+          td
+            -page_action(page)
+            =link_to @wording, @path, class: 'button small outline'
+    -if @collection.metadata_entry? && can_transcribe
       tr
         td
           =link_to(describe_collection_work_path(@work.slug))

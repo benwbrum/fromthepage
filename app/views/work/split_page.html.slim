@@ -1,0 +1,5 @@
+= turbo_frame_tag "segmentation-banner-#{@split_page.id}"
+  =render partial: 'transcribe/segmentation_success', locals: { page: @split_page, new_work_title: @new_work_title, count: @split_count, collection: @collection, new_work: @new_work, edit_metadata_after_split: @edit_metadata_after_split }
+
+= turbo_frame_tag "segmentation-split-strip-#{@split_page.id}"
+  =render partial: 'transcribe/segmentation_success', locals: { page: @split_page, new_work_title: @new_work_title, count: @split_count, collection: @collection, new_work: @new_work, edit_metadata_after_split: @edit_metadata_after_split }

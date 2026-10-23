@@ -1,43 +1,74 @@
+# frozen_string_literal: true
 
 require 'spec_helper'
 
-describe "collection settings js tasks", :order => :defined do
+describe 'deed list' do
+  let(:owner) { create(:unique_user, :owner) }
+  let(:contributor) { create(:unique_user) }
+  let(:restricted) { false }
+  let(:collection) do
+    create(
+      :collection,
+      owner_user_id: owner.id,
+      works: [],
+      visibility: restricted ? :private : :public
+    )
+  end
+  let(:work) { create(:work, owner: owner, collection: collection) }
+  let(:work_page) { create(:page, work: work, title: 'Deed List Test Page') }
+  let(:deed) do
+    create(
+      :deed,
+      deed_type: DeedType::PAGE_TRANSCRIPTION,
+      user: contributor,
+      collection: collection,
+      work: work,
+      page: work_page
+    )
+  end
 
-  # it "Deed view displays public deeds" do
-  #   visit collections_list_path
-  #   page.click_link("Show More")
-  #   expect(page).to have_content("eleanor transcribed 2 in MS_641-642 in CS Pierce")
-  # end
-  # it "Deed view hides deeds for private collections" do
-  #   visit collections_list_path
-    
-  #   csp = Collection.find(1)
-  #   csp.restricted = true
-  #   csp.save
+  before do
+    DatabaseCleaner.start
+    deed
+  end
 
-  #   page.click_link("Show More")
-  #   expect(page).to_not have_content("eleanor transcribed 2 in MS_641-642 in CS Pierce")
-    
-  #   # We need to enable transactional fixtures so we don't have to reset this stuff all the time
-  #   csp.restricted = false
-  #   csp.save
-  # end
-  # it "Deed view shows deeds to private collections to owners" do
-  #   owner = User.find_by(login: OWNER)
-  #   login_as(owner, :scope => :user)
-    
-  #   visit collections_list_path
-    
-  #   csp = Collection.find(1)
-  #   csp.restricted = true
-  #   csp.save
+  after do
+    DatabaseCleaner.clean
+  end
 
-  #   page.click_link("Show More")
-  #   expect(page).to have_content("eleanor transcribed 2 in MS_641-642 in CS Pierce")
-    
-  #   # We need to enable transactional fixtures so we don't have to reset this stuff all the time
-  #   csp.restricted = false
-  #   csp.save
-  # end
+  it 'displays deeds for a public collection' do
+    visit deed_list_path(collection_id: collection.slug)
 
+    expect(page).to have_selector('h1', text: 'Activity Stream')
+    expect(page).to have_selector('h3', text: "Collection: #{collection.title}")
+    within '#deeds-list' do
+      expect(page).to have_content(contributor.display_name)
+      expect(page).to have_content(work_page.title)
+      expect(page).to have_content(work.title)
+    end
+  end
+
+  context 'when the collection is private' do
+    let(:restricted) { true }
+
+    it 'hides its deeds from visitors' do
+      visit deed_list_path(collection_id: collection.slug)
+
+      expect(page.current_path).to eq(user_profile_path(owner))
+      expect(page).not_to have_selector('#deeds-list')
+      expect(page).not_to have_content(work_page.title)
+    end
+
+    it 'displays its deeds to the collection owner' do
+      login_as(owner, scope: :user)
+      visit deed_list_path(collection_id: collection.slug)
+
+      expect(page).to have_selector('#deeds-list')
+      within '#deeds-list' do
+        expect(page).to have_content(contributor.display_name)
+        expect(page).to have_content(work_page.title)
+        expect(page).to have_content(work.title)
+      end
+    end
+  end
 end

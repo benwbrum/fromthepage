@@ -35,6 +35,14 @@ en:
         Thanks, <br><br>
         %{from}
       turn_off_notification: " to turn off this notification"
+    metadata_csv_import_finished:
+      fail: Your upload has finished processing. %{count} works were updated successfully; %{error_count} rows encountered errors.
+      subject: Your metadata CSV import is finished.
+      success: Your upload has finished processing. %{count} works were updated successfully.
+    metadata_refresh_finished:
+      fail: Metadata refresh finished with errors.
+      subject: Metadata refresh for %{type}:%{id} is finished.
+      success: Metadata refresh finished successfully.
     new_mobile_user:
       html:
         continue_transcribing: " to continue transcribing."
@@ -55,6 +63,13 @@ en:
         to_view_note: 'To view the note on page %{work}: %{page}, visit the following URL: %{url}'
         to_view_work: 'To view %{collection}: %{work}, visit the following URL: %{url}'
       work_added: "%{owner} added %{work} to the collection %{collection}. "
+    segmentation_finished:
+      body: The segmentation of "%{work}" in the collection "%{collection}" is complete. Pages identified as possible document starts are highlighted in the transcription view.
+      candidate_count_label: 'Pages identified as possible document starts:'
+      greeting: Hi %{user},
+      heading: Segmentation of "%{work}" is complete
+      subject: Segmentation of "%{work}" is complete
+      view_work: View work
     text:
       closing: |-
         Thanks,
@@ -66,6 +81,16 @@ en:
       text:
         message: 'Your upload of "%{file}" has been processed and is ready at this URL:'
       your_upload_is_ready: Your upload is ready!
+    upload_no_images_warning:
+      html:
+        collection_link_message: You can still visit your collection at
+        message: Your upload of "%{file}" has been processed, but no supported image files were found.
+        supported_formats: 'Supported image formats are: JPG, JPEG, PNG'
+      text:
+        collection_link_message: 'You can still visit your collection at this URL:'
+        message: Your upload of "%{file}" has been processed, but no supported image files were found.
+        supported_formats: 'Supported image formats are: JPG, JPEG, PNG'
+      upload_processed_no_images: Upload processed - no images found
     work_collaborator:
       html:
         to_view: " to view %{collection} - %{work}."

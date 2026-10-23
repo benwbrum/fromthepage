@@ -61,9 +61,9 @@
               p.nodata_text==t('.this_page_is_blank')
         -elsif text.present?
           ==text
-        -else
+        -elsif !@collection.visibility_read_only?
           -help_link = link_to(help_word, { :controller => 'transcribe', :action => action, :page_id => @page.id })
-          -mark_blank = link_to(t('.mark_the_page_blank'), transcribe_mark_page_blank_path(:page_id => @page.id))
+          -mark_blank = link_to(t('.mark_the_page_blank'), transcribe_mark_page_blank_path(page_id: @page.id), data: { turbo: true, turbo_method: :post, turbo_stream: true })
           .centered
             .centered_content
               h5.nodata_title =t('.this_page_is_not', text_type: text_type)
@@ -88,7 +88,7 @@ h2.legend =t('.page_notes')
   =render :partial => "notes/notes"
 
 -unless @collection.voice_recognition
-  =render({ :partial => '/shared/codemirror', :locals => { :textarea => "page_source_translation", :text_direction => 'ltr' } })
+  =render({ :partial => '/shared/codemirror', :locals => { :textarea => "page_source_translation", :text_direction => 'ltr', :height => '', :show_line_numbers => true } })
 
 
 -content_for :javascript
@@ -114,6 +114,8 @@ h2.legend =t('.page_notes')
         transcribe_active_editing();
       }
     }
+
+    window.sendActiveEditing = sendActiveEditing;
 
     var lang = "#{@collection.language}";
     var fromImage = JSON.parse("#{@fromImage}") || false;

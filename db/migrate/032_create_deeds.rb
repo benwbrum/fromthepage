@@ -2,7 +2,7 @@ class CreateDeeds < ActiveRecord::Migration[5.0]
   def self.up
     create_table :deeds do |t|
       # type key
-      t.column :deed_type, :string, :limit => 10
+      t.column :deed_type, :string, limit: 10
       # associations to just about everything in the system
       t.column :page_id, :integer
       t.column :work_id, :integer
@@ -36,7 +36,6 @@ class CreateDeeds < ActiveRecord::Migration[5.0]
     add_index :deeds,  :user_id
     add_index :deeds,  :note_id
     add_index :deeds,  :created_at
-
   end
 
   def self.down
@@ -52,6 +51,6 @@ class CreateDeeds < ActiveRecord::Migration[5.0]
     deed.collection_id = pv.page.work.collection.id
     deed.user_id = pv.user.id
     deed.created_at = pv.created_on
-    return deed
+    deed
   end
 end

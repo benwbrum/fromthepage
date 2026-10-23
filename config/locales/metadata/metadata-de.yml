@@ -1,6 +1,14 @@
 ---
 de:
   metadata:
+    create:
+      is_processing: Ihr Upload wird verarbeitet. Sie erhalten eine E-Mail mit der Statusaktualisierung.
+    import_csv:
+      errors:
+        filename_blank: In der hochgeladenen Datei waren keine Arbeitsdateinamen oder Arbeits-ID-Werte enthalten
+        not_existing_work: Es ist kein Werk mit dem Dateinamen %{work_filename} vorhanden.
+        not_existing_work_id: Es ist kein Werk mit der ID %{work_id} vorhanden
+        not_in_collection: In der Sammlung %{collection_title} befindet sich kein Werk mit der ID %{work_id}
     refresh:
       is_processing: Die IIIF-Sammlung wird importiert. Laden Sie diese Seite in wenigen Minuten neu, um importierte Werke zu sehen.
     upload:
@@ -9,4 +17,4 @@ de:
       template_file_anchor: diese Vorlage
       upload: Hochladen
       upload_metadata: Metadaten hochladen
-      upload_metadata_description: Um Metadaten für mehrere Werke in dieser Sammlung zu aktualisieren, laden Sie eine Tabelle mit einer Zeile pro Werk hoch. Bitte laden Sie %{link} herunter, um zu beginnen.
+      upload_metadata_description: Um Metadaten für mehrere Werke in dieser Sammlung zu aktualisieren, laden Sie eine Tabelle mit einer Zeile pro Werk hoch. <br> Spalten mit <i>Sternen</i> können nicht geändert werden. Ignorieren oder löschen Sie alle Spalten, die Sie nicht ändern. <br> Bitte laden Sie %{link} herunter, um zu beginnen.

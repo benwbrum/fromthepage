@@ -82,6 +82,20 @@
 }
 
 
+// AI metadata editor
+
+.ai-metadata-editor {
+  padding-top: 2rem;
+
+  .page-headlines {
+    display: flex;
+
+    .source-selector {
+      padding-right: 2px;
+    }
+  }
+}
+
 // Page toolbar
 
 .page-toolbar {
@@ -332,6 +346,104 @@
   }
 }
 
+.field-input {
+  &.ai-draft-agree {
+    background-color: #eaf6ec;
+    border-color: #6cb26c !important;
+  }
+
+  &.ai-draft-disagree-input {
+    border-color: #e0a942 !important;
+  }
+}
+
+.ai-draft-status {
+  position: absolute;
+  top: 0;
+  font-size: 12px;
+
+  &.ai-draft-status-agree {
+    color: #2e7d32;
+  }
+}
+
+// Rendered after the .fields-row (not inside the field's own field-wrapper column) so neither a
+// "both agree" note nor a disagreement panel ever makes .fields-row taller than its actual fields.
+// Each note/panel is absolutely positioned within this shared, relatively-positioned container and
+// sized/offset in JS (see _field_layout.html.slim) to line up under its own field's column — that
+// way several notes on one row sit side by side instead of stacking on top of each other.
+//
+// .field-wrapper's own margin-bottom (10px) and .fields-row's own margin-bottom (10px) both still
+// apply before this container even starts, since neither is ours to change (they're the baseline
+// spacing used between every pair of field rows in the app). The negative margin-top here pulls
+// this container back up out of that 20px gap so the note/panel reads as attached to its field
+// rather than as a whole separate row, leaving a tight ~8px gap overall.
+.ai-draft-notes-row {
+  position: relative;
+  margin-top: -12px;
+  margin-bottom: 10px;
+}
+
+.ai-draft-disagree {
+  position: absolute;
+  top: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+  border: 1px solid #f0c869;
+  border-radius: 4px;
+  background: #fff9ec;
+
+  .ai-draft-disagree-header {
+    padding: 5px 10px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #8a6116;
+    background: #fdedc8;
+  }
+
+  .ai-draft-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    font-size: 13px;
+    cursor: pointer;
+
+    &:not(:last-child) {
+      border-bottom: 1px solid #f3e0ae;
+    }
+
+    &:hover {
+      background: #fdedc8;
+    }
+
+    &.selected {
+      background: #eaf6ec;
+    }
+
+    &:focus-visible {
+      outline: 2px solid #8a6116;
+      outline-offset: -2px;
+    }
+  }
+
+  .ai-draft-option-label {
+    flex: 0 0 auto;
+    font-size: 11px;
+    font-weight: bold;
+    color: #8a6116;
+  }
+
+  .ai-draft-option-text {
+    flex: 1 1 auto;
+    word-break: break-word;
+
+    .ai-diff-word {
+      color: #c0392b;
+    }
+  }
+}
+
 .page-preview {
   height: 100%;
   padding: 1.5rem;
@@ -374,8 +486,13 @@
       padding: 0.25em 0.5em;
       border: 1px solid $borderColor;
     }
+
+    td, th {
+      vertical-align: top;
+    }
   }
 }
+
 .ai-toolbar {
   top: 0;
   right: 2%;
@@ -518,6 +635,33 @@
   &_subject:before { color: $bodyFgLight; }
 }
 
+// Page legend
+
+.page-legend {
+  margin: 2em auto 0 auto;
+  max-width: 800px;
+  padding: 1.5em;
+  background-color: mix(#FFF, $bodyBg, 35%);
+  border: 1px solid $borderColor;
+  border-radius: 0.5em;
+
+  .page-legend-title {
+    margin: 0 0 1em 0;
+    color: $bodyFg;
+    font-size: $fontSize;
+  }
+
+  .page-legend-content {
+    color: $bodyFgFaded;
+    line-height: 1.6;
+
+    p {
+      margin: 0 0 1em 0;
+      &:last-child { margin-bottom: 0; }
+    }
+  }
+}
+
 
 // Page notes
 
@@ -545,6 +689,7 @@
 
 .page-image-preview {
   text-align: center;
+  margin-bottom: 50px;
   img {
     height: auto;
     max-width: 100%;
@@ -553,4 +698,352 @@
 
 .page-indent {
   margin-left: 30px;
+}
+
+  // reasoning styles
+.ai-reasoning {
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  background-color: $highlightBoxBg;
+  border: 1px solid $borderColor;
+  border-radius: 4px;
+
+  h4 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    color: $fgH1;
+  }
+
+  .reasoning-content {
+    background-color: $bgWhite;
+    padding: 1rem;
+    border-radius: 4px;
+    border: 1px solid $borderColor;
+  }
+}
+
+.ai-prompt {
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  background-color: $highlightBoxBg;
+  border: 1px solid $borderColor;
+  border-radius: 4px;
+
+  h4 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    color: $fgH1;
+  }
+
+  .prompt-content {
+    background-color: $bgWhite;
+    padding: 1rem;
+    border-radius: 4px;
+    border: 1px solid $borderColor;
+
+    .prompt-text {
+      margin: 0;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      font-family: monospace;
+    }
+  }
+}
+
+.ai-token-usage {
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  background-color: $highlightBoxBg;
+  border: 1px solid $borderColor;
+  border-radius: 4px;
+
+  h4 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    color: $fgH1;
+  }
+
+  .token-usage-content {
+    background-color: $bgWhite;
+    padding: 1rem;
+    border-radius: 4px;
+    border: 1px solid $borderColor;
+
+    p {
+      margin: 0.25rem 0;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+// AI Text specific styles
+.ai-accuracy-statistics {
+  padding: 1.5rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  background-color: $highlightBoxBg;
+  border: 1px solid $borderColor;
+  border-radius: 4px;
+  position: relative;
+
+  .loading {
+    background: rgba(#111, 0.5);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    transform: translate3d(0,0,0);
+    transition: opacity 0.3s, visibility 0.3s;
+    top: 0;
+    left: 0;
+
+    .spinner {
+      top: 50%;
+      left: 50%;
+      width: 48px;
+      height: 48px;
+      margin: -24px 0 0 -24px;
+      transform-origin: 24px 24px;
+      position: absolute;
+      animation: spinner 1s infinite steps(12);
+      @include background-svg(48, 48, svg-spinner());
+    }
+  }
+
+  h4 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    color: $fgH1;
+  }
+
+  .accuracy-explanation {
+    margin-bottom: 1.5rem;
+    color: $bodyFgLight;
+    line-height: 1.5;
+  }
+
+  .statistics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .stat-section {
+    background-color: $bgWhite;
+    padding: 1rem;
+    border-radius: 4px;
+    border: 1px solid $borderColor;
+
+    h5 {
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+      color: $fgH2;
+    }
+
+    .section-description {
+      margin-bottom: 1rem;
+      color: $bodyFgLight;
+      line-height: 1.4;
+    }
+  }
+
+  .stat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    background-color: $highlightBoxBg;
+    border-radius: 4px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .stat-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    color: $bodyFg;
+  }
+
+  .help-icon {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    line-height: 18px;
+    text-align: center;
+    background-color: $bodyFgLight;
+    color: $fgWhite;
+    border-radius: 50%;
+    font-weight: bold;
+    cursor: help;
+    flex-shrink: 0;
+  }
+
+  .stat-value {
+    font-weight: 600;
+    color: $bodyFg;
+    min-width: 80px;
+    text-align: right;
+  }
+}
+
+.ai-accuracy-unavailable {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background-color: $bgOrange;
+  border-left: 4px solid $fgOrange;
+  border-radius: 4px;
+
+  .info-message {
+    margin: 0 0 0.5rem 0;
+    color: $bodyFgDark;
+    font-weight: 600;
+    font-size: $fontSize;
+  }
+
+  p {
+    margin: 0;
+    color: $bodyFgDark;
+    font-size: $fontSize;
+    line-height: 1.5;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.ai-text-notice {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background-color: $bgBlue;
+  border-left: 4px solid $fgBlue;
+  border-radius: 4px;
+
+  .info-message {
+    margin: 0;
+    color: $bodyFgDark;
+    font-size: $fontSize;
+  }
+}
+
+.ai-text-content {
+  .ai-plaintext {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: $fontSize;
+    line-height: 1.6;
+    background-color: $highlightBoxBg;
+    padding: 1rem;
+    border-radius: 4px;
+    margin: 0;
+    color: $bodyFg;
+  }
+}
+
+
+// Segmentation banner
+.segmentation-banner {
+  background: #fff8e1;
+  border: 1px solid #f0c040;
+  border-radius: 4px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+
+  .segmentation-banner-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .segmentation-banner-message {
+    margin: 0;
+    flex: 1;
+    font-weight: bold;
+  }
+
+  .segmentation-banner-actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  // programmatic focus target for the success state — no focus ring
+  &[tabindex]:focus {
+    outline: none;
+  }
+}
+
+// Shared: title label/input used by both the popover (1a) and the
+// human-in-the-loop split strip (1b)
+.segmentation-title-label {
+  display: block;
+  margin-bottom: 0.375rem;
+  font-weight: bold;
+  font-size: 0.85em;
+  color: $bodyFgDark;
+}
+
+.segmentation-title-input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.segmentation-title-field {
+  margin: 0.5rem 0;
+}
+
+// Segmentation: human-in-the-loop split control (1b).
+// Plain display toggling — no opacity/visibility/animation gating, so there is
+// never a focusable-but-invisible in-between state.
+.segmentation-split-strip {
+  display: none;
+
+  &.open { display: block; }
+
+  .segmentation-banner-actions {
+    justify-content: flex-end;
+    margin-top: 0.625rem;
+
+    button, a { flex-shrink: 0; width: auto; padding: 0 1.25em; }
+  }
+}
+
+// Segmentation: AI confirm popover (1a)
+.segmentation-popover-anchor {
+  position: relative;
+  display: inline-block;
+}
+
+.segmentation-popover {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  width: 300px;
+  max-width: calc(100vw - 1rem);
+  padding: 0.875rem;
+  background: #fff;
+  border-radius: 6px;
+  border: 1px solid rgba(#000, 0.15);
+  box-shadow: 0 8px 24px rgba(#000, 0.2);
+
+  &.open { display: block; }
+
+  form { margin: 0; }
+
+  .segmentation-popover-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 0.625rem;
+
+    button, input[type="submit"] { flex-shrink: 0; width: auto; padding: 0 1.25em; }
+  }
 }

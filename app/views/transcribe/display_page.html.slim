@@ -1,4 +1,6 @@
 =javascript_include_tag "transcribe"
+-if @work.page_segmentation_enabled?
+  =render partial: 'transcribe/segmentation_banner', locals: { page: @page, work: @work, collection: @collection }
 -if current_page?(collection_oneoff_review_page_path(@collection.owner, @collection, @page)) || @quality_sampling || @user
   =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 12, :collection_id => @collection.id }})
   .review-breadcrumbs
@@ -11,7 +13,6 @@
 -else
   =render({ :partial => '/shared/page_tabs', :locals => { :selected => 3, :page_id => @page.id }})
 
-
 =render({ :partial => '/shared/insert_table_modal' })
 
 -editor_class = 'page-editor' + (@auto_fullscreen == 'yes' ? ' fullscreen' : '')
@@ -21,6 +22,7 @@
   =hidden_field_tag(:page_id, @page.id)
   =hidden_field_tag(:flow, params[:flow])
   =hidden_field_tag(:quality_sampling_id, params[:quality_sampling_id])
+  =hidden_field_tag(:ai_draft_used, @ai_draft_used)
   =validation_summary @page.errors
 
   .page-toolbar
@@ -30,7 +32,7 @@
           =svg_symbol "#icon-expand", class: 'icon'
           span.hide-l =t('.fullscreen')
         -layout_modes = { 'ltr' => t('.image_at_the_left'), 'rtl' => t('.image_at_the_right'), 'ttb' => t('.image_at_the_top'), 'btt' => t('.image_at_the_bottom') }
-        dl.dropdown.page-columns-layout(data-dropdown='{ "selectable": true }')
+        dl.dropdown.page-columns-layout(data-controller='dropdown' data-dropdown-selectable-value='true')
           dt.button.outline
             =svg_symbol "#icon-layout-#{@layout_mode}", class: 'icon'
             span.hide-l =t('.layout')
@@ -52,16 +54,27 @@
 
       .flex-toolbar_group.push-right
 
-      .flex-toolbar_group
-        =f.label 'mark_blank', t('.mark_as_blank')
-        =f.check_box('mark_blank', {checked: @page.status_blank?})
+      -if @preview_xml.blank?
+        .flex-toolbar_group
+          =f.label 'mark_blank', t('.mark_as_blank')
+          =f.check_box('mark_blank', {checked: @page.status_blank?})
+      -else
+        =f.hidden_field(:mark_blank, value: @page.status_blank?)
 
       -if !@collection.review_workflow
         .flex-toolbar_group
           =f.label 'needs_review', t('.needs_review')
           =f.check_box('needs_review', {checked: @page.status_needs_review?})
 
-      =render(:partial => 'save_buttons')
+      -if @page.position > 1 && @work.page_segmentation_enabled?
+        .flex-toolbar_group
+          button.button.outline(type='button' data-segmentation-split-toggle aria-controls="segmentation-split-strip-#{@page.id}" title=t('.split_into_new_work') aria-label=t('.split_into_new_work'))
+            =svg_symbol "#icon-scissors", class: 'icon'
+
+      =render partial: 'save_buttons'
+
+  -if @page.position > 1 && @work.page_segmentation_enabled?
+    =render partial: 'transcribe/segmentation_split_strip', locals: { page: @page, work: @work, collection: @collection }
 
   -if @page.status_needs_review? && current_user.can_review?(@collection)
     .page-review
@@ -70,7 +83,10 @@
       -else
         =t('.this_page_marked_needs_review')
 
-  .page-columns(data-layout-mode="#{@layout_mode}")
+  -data_attrs = {}
+  -if current_user.id != @collection.owner_user_id
+    -data_attrs = { 'data-controller' => 'behavior-flagger', 'data-behavior-flagger-url-value' => transcribe_suspicious_behaviors_path(collection_id: @collection.id, page_id: @page.id) }
+  .page-columns(data-layout-mode="#{@layout_mode}" *data_attrs)
     .page-column.page-imagescan(id="leftColumn")
       =render :partial => '/shared/osd_div'
     .splitter(id="splitter")
@@ -87,7 +103,7 @@
         -if @preview_xml
           .page-preview[*language_attrs(@collection)] ==xml_to_html(@preview_xml)
 
-        .page-editarea(style=("display:none" if @preview_xml) *language_attrs(@collection))
+        .page-editarea(style=('display:none' if @preview_xml) data-behavior-flagger-target='editArea' *language_attrs(@collection))
           -if @work.scribes_can_edit_titles
             .page-editarea_title
               =f.label :title, t('.title'), class: 'a50'
@@ -95,18 +111,19 @@
           -if !@collection.field_based
             =f.text_area(:source_text, class: 'page-editarea_textarea', autocomplete: "off", autocorrect: "off", autocapitalize: "off", spellcheck: @collection.enable_spellcheck, 'aria-label': t('.edit_transcription'))
             -text_direction = Rtl.rtl?(@collection.text_language) ? 'rtl' : 'ltr'
-            =render({ :partial => '/shared/codemirror', :locals => { :textarea => "page_source_text", :text_direction => text_direction} })
+            =render({ :partial => '/shared/codemirror', :locals => { :textarea => "page_source_text", :text_direction => text_direction, :height => '', :show_line_numbers => true} })
           -else
-            =render ({partial: 'transcription_field/field_layout', locals: {collection_id: @collection, transcribe: true}})
+            =render partial: 'transcription_field/field_layout', locals: { collection_id: @collection, transcribe: true }
 
-.fgfaded
-  ==@work.set_transcription_conventions
-  =render :partial => 'shared/markup_help'
-  p =link_to t('.more_help'), collection_work_help_path(@collection.owner, @collection, @page.work), target: '_blank'
+  .fgfaded
+    ==@work.set_transcription_conventions
+    =render partial: 'shared/markup_help'
+    p =link_to t('.more_help'), collection_work_help_path(@collection.owner, @collection, @page.work), target: '_blank'
 
-h2.legend =t('.notes_and_questions')
-.page-notes
-  =render :partial => "notes/notes"
+-if notes_visible?(@collection, current_user)
+  h2.legend =t('.notes_and_questions')
+  .page-notes
+    =render partial: "notes/notes"
 
 
 #custom-alert
@@ -128,12 +145,10 @@ h2.legend =t('.notes_and_questions')
                 // user has been logged out
                 var flash_message = "#{{escape_javascript(render(:partial => '/shared/flash', :locals => { type: 'alert', message: 'Your session may have expired while you were editing.  You may want to copy your work to prevent it getting lost.' }))}}";
                 $('#flash_wrapper').html(flash_message);
-                $('.flash').flashclose();
               } else {
                 // some connection problem
                 var flash_message = "#{{escape_javascript(render(:partial => '/shared/flash', :locals => { type: 'alert', message: 'Your connection to the website is unstable.  You may want to copy your work to prevent it getting lost.' }))}}";
                 $('#flash_wrapper').html(flash_message);
-                $('.flash').flashclose();
               }
             },
             complete: function() {
@@ -170,6 +185,7 @@ h2.legend =t('.notes_and_questions')
       }
     }
 
+    window.sendActiveEditing = sendActiveEditing;
 
     $('.field-wrapper .field-input').each(function() {
       $(this).change(function() {
@@ -194,6 +210,7 @@ h2.legend =t('.notes_and_questions')
         }
 
         resizableSplitter[(mode === 'ltr' || mode === 'rtl')?'initVertical':'initHorizontal']('#splitter', leftPanel, rightPanel, mode, {
+          splitterContext: 'transcribe',
           onPositionChange: function (pos) {
             window.localStorage.setItem('splitterPos', pos)
 
@@ -256,10 +273,17 @@ h2.legend =t('.notes_and_questions')
 
       $('#page_needs_review').click(function(){
         $('#page_mark_blank').prop('checked', false);
+        $('button[name="preview"], input[name="preview"]').prop('disabled', false);
       });
 
       $('#page_mark_blank').click(function(){
         $('#page_needs_review').prop('checked', false);
+
+        if ($(this).is(':checked')) {
+          $('button[name="preview"], input[name="preview"]').prop('disabled', true);
+        } else {
+          $('button[name="preview"], input[name="preview"]').prop('disabled', false);
+        }
       });
     });
 
@@ -292,7 +316,7 @@ h2.legend =t('.notes_and_questions')
             showCustomAlert();
         }
 
-      $('form').submit(function(event) {
+      $('#custom_form_id').submit(function(event) {
         var isMarkedBlank = $('#page_mark_blank').is(':checked');
         var hasTranscribedvalue = $('.page-editarea_textarea').length < 0;
         var hasTranscribedText = $('.page-editarea_textarea').length > 0 && $('.page-editarea_textarea').val().trim().length > 0;

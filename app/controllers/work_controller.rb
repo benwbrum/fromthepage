@@ -1,9 +1,9 @@
-# handles administrative tasks for the work object
 class WorkController < ApplicationController
   # require 'ftools'
+  include ApplicationHelper
   include XmlSourceProcessor
 
-  protect_from_forgery :except => [:set_work_title,
+  protect_from_forgery except: [:set_work_title,
                                    :set_work_description,
                                    :set_work_physical_description,
                                    :set_work_document_history,
@@ -14,30 +14,29 @@ class WorkController < ApplicationController
   # tested
   before_action :authorized?, only: [
     :edit,
+    :edit_tasks,
+    :edit_metadata,
+    :edit_privacy,
+    :edit_danger,
     :pages_tab,
     :delete,
     :new,
     :create,
+    :update,
     :edit_scribes,
     :add_scribe,
     :remove_scribe,
-    :search_scribes
+    :search_scribes,
+    :restore_description_version
   ]
+  before_action :authorized_to_describe?, only: [:describe, :save_description]
 
   # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, only: [:new, :create, :configurable_printout, :edit_scribes, :remove_scribe]
-
-  def authorized?
-    if !user_signed_in? || !current_user.owner
-      ajax_redirect_to dashboard_path
-    elsif @work && !current_user.like_owner?(@work)
-      ajax_redirect_to dashboard_path
-    end
-  end
+  layout :dynamic_layout, only: [:new, :create, :configurable_printout, :edit_scribes, :remove_scribe]
 
   def metadata_overview_monitor
     @is_monitor_view = true
-    render :template => "transcribe/monitor_view"
+    render template: 'transcribe/monitor_view'
   end
 
   def configurable_printout
@@ -47,13 +46,49 @@ class WorkController < ApplicationController
     @bulk_export.text_pdf_work = true
     @bulk_export.report_arguments['include_contributors'] = true
     @bulk_export.report_arguments['include_metadata'] = true
+    @bulk_export.report_arguments['include_notes'] = true
     @bulk_export.report_arguments['preserve_linebreaks'] = false
   end
 
+  def search
+    @search_string = search_params[:term]
+
+    @es_query = Elasticsearch::MultiQuery.new(
+      query: @search_string,
+      query_params: {
+        mode: 'work',
+        slug: @work.slug
+      },
+      page: params[:page] || 1,
+      scope: search_params[:filter],
+      user: current_user
+    ).call
+
+    @breadcrumb_scope = { work: true }
+    @work_filter = @es_query.work_filter
+
+    @search_results = @es_query.results
+    @full_count = @es_query.total_count
+    @type_counts = @es_query.type_counts
+  end
 
   def describe
     @layout_mode = cookies[:transcribe_layout_mode] || @collection.default_orientation
     @metadata_array = JSON.parse(@work.metadata_description || '[]')
+  end
+
+  def ai_metadata
+    if !user_signed_in? || !@work.ai_metadata_draft_available? ||
+      (@collection.ai_draft_disabled && !(user_signed_in? && current_user.like_owner?(@collection)))
+      redirect_to metadata_overview_collection_work_path(@collection.owner, @collection, @work)
+
+      return
+    end
+
+    @finished_ai_work_metadata_by_engine = @work.finished_ai_work_metadata_by_engine
+    @selected_ai_engine = params[:engine].presence_in(@finished_ai_work_metadata_by_engine.keys) || @finished_ai_work_metadata_by_engine.keys.first
+    @ai_work_metadata = @finished_ai_work_metadata_by_engine[@selected_ai_engine]
+    @layout_mode = cookies[:transcribe_layout_mode] || @collection.default_orientation
   end
 
   def needs_review_checkbox_checked
@@ -75,8 +110,6 @@ class WorkController < ApplicationController
       # unexpected state
     end
 
-
-
     if @work.save
       # TODO record_description_deed(@work)
       if @work.saved_change_to_description_status?
@@ -90,7 +123,6 @@ class WorkController < ApplicationController
     else
       render :describe
     end
-
   end
 
   def description_versions
@@ -98,14 +130,14 @@ class WorkController < ApplicationController
     # @previous_version = params[:compare_version_id] ? PageVersion.find(params[:compare_version_id]) : @selected_version.prev
     selected_version_id = params[:metadata_description_version_id]
     if selected_version_id
-      @selected_version= MetadataDescriptionVersion.find(selected_version_id)
+      @selected_version= @work.metadata_description_versions.find(selected_version_id)
     else
       @selected_version= @work.metadata_description_versions.first
     end
     # NB: Unlike in page versions (which are created when we first create the page), metadata description versions may be nil
     compare_version_id = params[:compare_version_id]
     if compare_version_id
-      @previous_version = MetadataDescriptionVersion.find(compare_version_id)
+      @previous_version = @work.metadata_description_versions.find(compare_version_id)
     else
       if @selected_version.version_number > 1
         @previous_version = @work.metadata_description_versions.second
@@ -116,21 +148,53 @@ class WorkController < ApplicationController
     # again, both may be blank here
   end
 
-  def delete
-    @work.destroy
-    redirect_to dashboard_owner_path
+  def restore_description_version
+    version = @work.metadata_description_versions.find_by(id: params[:metadata_description_version_id])
+
+    if version.nil?
+      flash[:error] = t('.version_not_found')
+      redirect_to description_versions_collection_work_path(@collection.owner, @collection, @work)
+      return
+    end
+
+    @work.update!(metadata_description: version.metadata_description)
+
+    flash[:notice] = t('.restored')
+    redirect_to describe_collection_work_path(@collection.owner, @collection, @work)
   end
 
-  def new
-    @work = Work.new
-    @collections = current_user.all_owner_collections
+  def delete
+    @result = Work::Delete.new(
+      work: @work,
+      user: current_user
+    ).call
+
+    respond_to(&:turbo_stream)
   end
 
   def edit
     @collections = current_user.collections
-    # set subjects to true if there are any articles/page_article_links
-    @subjects = !@work.articles.blank?
+    @document_sets = @work.collection.document_sets
+    @subjects_exist = @work.articles.any?
+
+    @document_sets_options = @document_sets.map { |ds| [ds.title, ds.id] }
+  end
+
+  def edit_tasks
+  end
+
+  def edit_metadata
+  end
+
+  def edit_privacy
     @scribes = @work.scribes
+  end
+
+  def edit_ai
+    calculate_counts
+  end
+
+  def edit_danger
   end
 
   def edit_scribes
@@ -151,12 +215,15 @@ class WorkController < ApplicationController
   def add_scribe
     scribe = User.find_by(id: params[:scribe_id])
     @work.scribes << scribe
+
     if scribe.notification.add_as_collaborator && SMTP_ENABLED
       begin
         UserMailer.work_collaborator(scribe, @work).deliver!
+      # :nocov:
       rescue StandardError => e
         print "SMTP Failed: Exception: #{e.message}"
       end
+      # :cov:
     end
 
     redirect_to work_edit_scribes_path(@collection, @work)
@@ -171,7 +238,7 @@ class WorkController < ApplicationController
 
   def update_work
     @work.update(work_params)
-    redirect_to :action => 'edit', :work_id => @work.id
+    redirect_to work_edit_path(work_id: @work.id)
   end
 
   # tested
@@ -186,88 +253,45 @@ class WorkController < ApplicationController
     if @work.save
       record_deed(@work, DeedType::WORK_ADDED, work.owner)
       flash[:notice] = t('.work_created')
-      ajax_redirect_to(work_pages_tab_path(:work_id => @work.id, :anchor => 'create-page'))
+      ajax_redirect_to(work_pages_tab_path(work_id: @work.id, anchor: 'create-page'))
     else
       render :new
     end
   end
 
   def update
-    @work = Work.find(params[:id].to_i)
-    id = @work.collection_id
-    @collection = @work.collection if @collection.nil?
-    #check the work transcription convention against the collection version
-    #if they're the same, don't update that attribute of the work
-    params_convention = params[:work][:transcription_conventions]
-    collection_convention = @work.collection.transcription_conventions
+    work = Work.find(params[:id])
+    @collection ||= work.collection
 
-    if params_convention == collection_convention
-      @work.attributes = work_params.except(:transcription_conventions)
-    else
-      @work.attributes = work_params
+    @result = Work::Update.new(work: work, work_params: work_params).call
+
+    @work = @result.work
+
+    if @result.success? && @result.original_collection_id != @result.collection.id
+      record_deed(@work, DeedType::WORK_ADDED, @work.owner)
+      @collection = @work.collection
     end
 
-    #if the slug field param is blank, set slug to original candidate
-    if work_params[:slug].blank?
-      @work.slug = @work.title.parameterize
-    end
-
-    if params[:work][:collection_id] != id.to_s
-      if @work.save
-        change_collection(@work)
-        flash[:notice] = t('.work_updated')
-        #find new collection to properly redirect
-        col = Collection.find_by(id: @work.collection_id)
-        redirect_to edit_collection_work_path(col.owner, col, @work)
-      else
+    respond_to do |format|
+      template = case params[:scope]
+      when 'edit_tasks'
+        'work/update_tasks'
+      when 'edit_metadata'
+        'work/update_metadata'
+      when 'edit_privacy'
         @scribes = @work.scribes
-        @nonscribes = User.all - @scribes
-        @collections = current_user.collections
-        #set subjects to true if there are any articles/page_article_links
-        @subjects = !@work.articles.blank?
-        render :edit
-      end
-    else
-      if @work.save
-        flash[:notice] = t('.work_updated')
-        redirect_to edit_collection_work_path(@collection.owner, @collection, @work)
+        'work/update_privacy'
       else
-        @scribes = @work.scribes
-        @nonscribes = User.all - @scribes
         @collections = current_user.collections
-        #set subjects to true if there are any articles/page_article_links
-        @subjects = !@work.articles.blank?
-        render :edit
+        @document_sets = @collection.document_sets
+        @subjects_exist = @work.articles.any?
+
+        @document_sets_options = @document_sets.map { |ds| [ds.title, ds.id] }
+        'work/update_general'
       end
+
+      format.turbo_stream { render template }
     end
-  end
-
-  def change_collection(work)
-    record_deed(work, DeedType::WORK_ADDED, work.owner)
-    unless work.articles.blank?
-      #delete page_article_links for this work
-      page_ids = work.pages.ids
-      links = PageArticleLink.where(page_id: page_ids)
-      links.destroy_all
-
-      #remove links from pages in this work
-      work.pages.each do |p|
-        unless p.source_text.nil?
-          p.remove_transcription_links(p.source_text)
-        end
-        unless p.source_translation.nil?
-          p.remove_translation_links(p.source_translation)
-        end
-      end
-      work.save!
-    end
-    work.update_deed_collection
-  end
-
-  def revert
-    work = Work.find_by(id: params[:work_id])
-    work.update_attribute(:transcription_conventions, nil)
-    render :plain => work.collection.transcription_conventions
   end
 
   def update_featured_page
@@ -293,7 +317,155 @@ class WorkController < ApplicationController
     update_search_attempt_contributions
   end
 
+  def show
+    # Set meta information for work pages for better archival
+    @page_title = "#{@work.title} - #{@collection.title}"
+    @meta_description = "Historical document: #{@work.title}#{@work.author.present? ? " by #{@work.author}" : ""} in the #{@collection.title} collection. #{@work.description}".truncate(160)
+    @meta_keywords = [@work.title, @work.author, @collection.title, 'historical document', 'digital archive'].compact.join(', ')
+
+    # Generate structured data for work
+    @structured_data = {
+      '@context' => 'https://schema.org',
+      '@type' => 'DigitalDocument',
+      'name' => @work.title,
+      'description' => @work.description,
+      'inLanguage' => @collection.text_language || 'en',
+      'isPartOf' => {
+        '@type' => 'Collection',
+        'name' => @collection.title,
+        'description' => to_snippet(@collection.intro_block)
+      },
+      'url' => request.original_url,
+      'dateModified' => @work.most_recent_deed_created_at&.iso8601,
+      'publisher' => {
+        '@type' => 'Organization',
+        'name' => @collection.owner&.display_name || 'FromThePage'
+      }
+    }
+
+    # Add optional fields conditionally
+    @structured_data['author'] = @work.author if @work.author.present?
+    @structured_data['dateCreated'] = @work.document_date if @work.document_date.present?
+
+    # Add archival-friendly headers
+    respond_to do |format|
+      format.html do
+        response.headers['X-Robots-Tag'] = 'index, follow, archive'
+      end
+    end
+  end
+
+  public
+
+  def split_page
+    unless user_signed_in? && current_user.can_transcribe?(@work, @collection) && @work.page_segmentation_enabled?
+      redirect_to dashboard_path, alert: t('work.split_page.unauthorized')
+      return
+    end
+
+    page = @work.pages.find(params[:page_id])
+    new_work_title = params[:new_work_title].presence || default_split_title
+
+    pages_to_move = @work.pages.where('position < ?', page.position).order(:position).to_a
+
+    if pages_to_move.empty?
+      redirect_to collection_transcribe_page_path(@collection.owner, @collection, @work, page),
+        alert: t('work.split_page.no_previous_pages')
+      return
+    end
+
+    new_work = Work.new(
+      title: new_work_title,
+      collection_id: @work.collection_id,
+      owner_user_id: @work.owner_user_id,
+      split_from_work_id: @work.id,
+      supports_translation: @work.supports_translation,
+      restrict_scribes: @work.restrict_scribes,
+      scribes_can_edit_titles: @work.scribes_can_edit_titles,
+      pages_are_meaningful: @work.pages_are_meaningful
+    )
+
+    unless new_work.save
+      redirect_to collection_transcribe_page_path(@collection.owner, @collection, @work, page),
+        alert: t('work.split_page.create_failed', errors: new_work.errors.full_messages.join(', '))
+      return
+    end
+
+    pages_to_move.each_with_index do |p, idx|
+      p.update_columns(work_id: new_work.id, position: idx + 1)
+    end
+
+    @work.pages.reload.order(:position).each_with_index do |p, idx|
+      p.update_column(:position, idx + 1)
+    end
+
+    page.update_column(:is_first_page_candidate, false)
+
+    new_work.update_statistic
+    @work.update_statistic
+
+    @split_page     = page
+    @new_work       = new_work
+    @new_work_title = new_work_title
+    @split_count    = pages_to_move.count
+    @edit_metadata_after_split = @work.edit_metadata_after_split? &&
+      @collection.metadata_entry? &&
+      @collection.metadata_fields.exists?
+    render :split_page
+  end
+
+  def dismiss_segmentation
+    unless user_signed_in? && current_user.can_transcribe?(@work, @collection) && @work.page_segmentation_enabled?
+      head :forbidden
+      return
+    end
+
+    page = @work.pages.find(params[:page_id])
+    page.update_column(:is_first_page_candidate, false)
+
+    respond_to do |format|
+      format.turbo_stream { render turbo_stream: turbo_stream.remove("segmentation-banner-#{page.id}") }
+      format.html { redirect_back fallback_location: collection_transcribe_page_path(@collection.owner, @collection, @work, page) }
+    end
+  end
+
   private
+
+  def authorized_to_describe?
+    return if user_signed_in? && current_user.can_transcribe?(@work, @collection)
+
+    redirect_to metadata_overview_collection_work_path(@collection.owner, @collection, @work)
+  end
+
+  def require_segmentation_feature
+    return if @collection&.segmentation_feature_enabled?
+
+    redirect_to dashboard_path, alert: t('work.split_page.unauthorized')
+  end
+
+  def authorized?
+    if !user_signed_in? || !current_user.owner
+      ajax_redirect_to dashboard_path
+    elsif @work && !current_user.like_owner?(@work)
+      ajax_redirect_to dashboard_path
+    end
+  end
+
+  def default_split_title
+    first_page = @work.pages.order(:position).first
+    if first_page&.title.present? &&
+       first_page.title !~ /\A(Untitled Page )?\d+\z/ &&
+       first_page.title != @work.title
+      return first_page.title
+    end
+    base = @work.title
+    existing_count = @work.collection.works.where('title LIKE ?', "#{ActiveRecord::Base.sanitize_sql_like(base)} %").count
+    "#{base} #{existing_count + 1}"
+  end
+
+  def search_params
+    params.permit(:term, :page, :filter, :work_id, :collection_id, :user_id)
+  end
 
   def work_params
     params.require(:work).permit(
@@ -323,8 +495,12 @@ class WorkController < ApplicationController
       :in_scope,
       :editorial_notes,
       :document_date,
+      :term,
       document_set_ids: []
     )
   end
 
+  def dynamic_layout
+    request.xhr? ? false : 'application'
+  end
 end

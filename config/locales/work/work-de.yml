@@ -1,6 +1,62 @@
 ---
 de:
   work:
+    ai_metadata:
+      generated_with: Erstellt mit %{model}
+      heading: KI-Metadatenentwurf
+      imported_metadata: Importierte Metadaten
+      reasoning: Begründung
+      select_model: KI-Modell auswählen
+      source_material: Quellmaterial
+    ai_transcriptions:
+      create:
+        success: KI-Transkriptionsauftrag gestartet.
+      form:
+        ai_transcription: KI-Transkription
+        contact_us: Wenden Sie sich an %{email}, um auf einen Tarif mit KI-Entwürfen aufzurüsten.
+        description: Starten Sie einen KI-Transkriptionsauftrag für die Seiten dieses Werkes.
+        description_complete: Alle Seiten dieses Werkes enthalten KI-Transkriptionen.
+        edit_metadata_after_split: Metadaten nach dem Teilen bearbeiten
+        edit_metadata_after_split_description: Gehen Sie nach der Inline-Bestätigung der Teilung direkt zum Metadatenformular des neuen Werkes.
+        edit_metadata_after_split_disabled: Bitte aktivieren und konfigurieren Sie die Metadatenerstellung unter %{link}.
+        edit_metadata_after_split_disabled_link: Aufgabenkonfiguration
+        failed: Fehlgeschlagen
+        failed_transcription_errors: Fehlgeschlagene Transkriptionsfehler
+        failed_transcription_errors_hidden: "%{count} zusätzliche Transkriptionsfehler werden nicht angezeigt."
+        finished: Fertig
+        generate: Erstelle KI-Entwürfe für Seiten ohne Inhalt.
+        in_progress: Im Gange
+        not_started: Nicht gestartet
+        pages: Seiten
+        queued: In der Warteschlange
+        retry: Fehlgeschlagene Aufträge erneut versuchen
+        segment_collection: Sammlung segmentieren
+        segmentation: Sammlung segmentieren
+        segmentation_description: Wenn Sie eine Reihe von Bildern (z. B. einen Ordner) hochladen und anschließend segmentieren, schlagen wir Stellen vor, an denen die Dokumente in einzelne Werke aufgeteilt werden sollten.
+        segmentation_tokens_used: Für die Segmentierung verwendete Token
+        total_tokens_used: Insgesamt verwendete Token
+      segment:
+        success: Der Segmentierungsauftrag wurde gestartet. Sie erhalten eine E-Mail, sobald er abgeschlossen ist.
+      segmentation_setting:
+        success: Segmentierungseinstellung gespeichert.
+      update:
+        success: KI-Transkriptionsauftrag wird wiederholt.
+    ai_work_metadata:
+      create:
+        success: KI-Metadaten-Entwurfsauftrag gestartet.
+      form:
+        description: Erstellen Sie KI-Entwürfe der Metadaten dieses Werks mit Gemini und Claude.
+        drafts_heading: Entwürfe
+        generate: KI-Metadatenentwurf erstellen
+        heading: KI-Metadatenentwurf
+        no_metadata_fields: Bitte konfigurieren Sie Metadatenfelder unter Aufgabenkonfiguration, bevor Sie KI-Metadatenentwürfe erstellen.
+      show:
+        back: Zurück zu KI-Einstellungen
+        fields_heading: Entwurfsfelder
+        heading: KI-Metadatenentwurf (%{model})
+        reasoning_heading: Begründung
+        status: 'Status: %{status}'
+        tokens_used: 'Verwendete Token: %{count}'
     configurable_printout:
       description: Exportieren Sie diese Werk in einem druckbaren Format
       export: Export
@@ -9,9 +65,10 @@ de:
       heading: Ausdruckkonfiguration
       include_contributors: Mitwirkende einbeziehen
       include_metadata: Metadaten einschließen
+      include_notes: Notizen einschließen
       preserve_linebreaks: Zeilenumbrüche beibehalten
       text_contents: Inhalt
-      text_contents_description: Der druckbare Export enthält den Text der Transkription und kann auch Informationen über die Mitwirkenden des Projekts oder Metadaten über die Arbeit enthalten.
+      text_contents_description: Der druckbare Export enthält den Text der Transkription und kann auch Informationen über die Mitwirkenden des Projekts oder Metadaten über das Werk enthalten.
       text_format: Textformatierung
       text_format_description: Optionen zum Formatieren von Text.
       text_format_docx: MS-Word (.docx)
@@ -19,7 +76,14 @@ de:
       word_wrap: Zeilenumbruch
     create:
       work_created: Werk erfolgreich erstellt
+    delete:
+      success: Werk erfolgreich gelöscht
     describe:
+      ai_draft_fields: KI-Entwurf
+      ai_draft_fields_tooltip: KI-generierte Metadaten in die Felder kopieren
+      ai_model: "%{model}"
+      ai_reasoning: Begründung
+      ai_tokens_used: "%{count} Tokens verwendet"
       always_show_fullscreen: Immer Vollbild anzeigen
       approve: Freigeben
       approve_to_transcribed_tooltip: Diese Metadaten speichern und freigeben
@@ -49,12 +113,19 @@ de:
       author_contributed_at: "%{author} am %{date}"
       compared_with: Im Vergleich zu
       help_description: Anzeige und Vergleich der Änderungen, die in jeder Revision an dem Metadaten des Werkes vorgenommen wurden. Die linke Spalte zeigt die Metadaten in der ausgewählten Revision, die rechte Spalte zeigt, was geändert wurde. Unveränderter Text wird <span>weiß hervorgehoben</span>, gelöschter Text wird <del>rot hervorgehoben</del> und eingefügter Text wird <ins>grün hervorgehoben</ins>.
+      restore: Wiederherstellen
+      restore_confirm: Möchten Sie diese Version der Werkmetadaten wirklich wiederherstellen? Sie werden zur Metadatenseite weitergeleitet, um sie zu überprüfen.
+      restore_tooltip: Die aktuellen Werkmetadaten durch diese Version ersetzen
       revision: Revision
     download:
+      accessible_pdf: Barrierefreies PDF
+      accessible_pdf_download_description: Laden Sie eine für Bildschirmleseprogramme und assistive Technologien optimierte PDF-Version dieses Werkes herunter.
+      accessible_pdf_export_description: Laden Sie eine für Bildschirmleseprogramme und assistive Technologien optimierte PDF-Version dieses Werkes herunter.
       analyze: Analysieren
       configurable_printout: Konfigurierbarer Ausdruck
       configurable_printout_button: Konfigurieren
       configurable_printout_description: PDF- oder MS-Word-Export mit konfigurierbaren Inhalten und Formatierungen
+      configure: Konfigurieren
       docx_download_description: Laden Sie eine DOCX-Version dieses Werkes herunter.
       download: Download
       expanded_plaintext: Erweiterter Klartext
@@ -92,15 +163,16 @@ de:
       additional_metadata: Zusätzliche Metadaten
       additional_metadata_description: Diese Metadatenfelder werden in der Projektinfo dieses Werkes und in TEI-Exporten angezeigt, beeinträchtigen jedoch nicht die Funktionalität von FromThePage.
       allowed_collaborators: Erlaubte Mitwirkende
-      apply: Anwenden
       author: Autor:in
       collaborators_can_edit_titles: Erlauben Sie Mitarbeitenden, Seitentitel zu bearbeiten
       collection: Sammlung
       confirm_delete_work: Möchten Sie dieses Werk wirklich löschen? Nach dem Löschen können Sie es nicht wiederherstellen!
       current_url: Die aktuelle URL für dieses Werk ist %{current_url}. Wenn Sie den Abschnitt zum Werk in der URL bearbeiten möchten, verwenden Sie bitte Kleinbuchstaben und Bindestriche zwischen den Wörtern.
       delete_work: Werk löschen
+      delete_work_description: Durch Drücken dieser Schaltfläche werden das Dokument und alle zugehörigen Seiten gelöscht. Dieser Vorgang kann nicht rückgängig gemacht werden.
       description: Beschreibung
       description_message: Die Beschreibung wird auf der Projektübersichtsseite und in der Projektinfo angezeigt. Ein abgekürzter Teil der Beschreibung wird auf dem Startbildschirm der Organisation und unter „Projekt suchen“ angezeigt.
+      destroy_everything: Zerstöre alles
       document_date: Datum des Dokuments
       document_date_hint: Datum des Dokuments ist im EDTF-Format anzugeben (z. B. 1843, 2001-02, 1643-06-30)
       document_history: Dokumentenverlauf
@@ -131,6 +203,7 @@ de:
       source_box_folder: Quellverzeichnis
       source_collection_name: Name der ursprünglichen Sammlung der Quelle
       source_location: Standort der Quelle
+      subject_change_warning: Sind Sie sicher, dass Sie dieses Werk in eine neue Sammlung verschieben möchten? Dabei gehen alle thematischen Verknüpfungen verloren.
       support_translation: Übersetzung aktivieren
       support_translation_description: Ein Werk kann sowohl übersetzt als auch transkribiert werden. Wenn diese Option aktiviert ist, verfügt das Werk über einen Tab „Übersetzung“ für jede Seite.
       transcription_conventions: Transkriptionskonventionen
@@ -146,7 +219,14 @@ de:
     edit_scribes:
       remove_collaborator: Mitarbeiter entfernen
       work_collaborators: Arbeitskollaborateure
-      work_collaborators_description: Mitarbeiter können private Arbeiten transkribieren und bearbeiten.
+      work_collaborators_description: Mitarbeiter können private Werke transkribieren und bearbeiten.
+    edit_tabs:
+      ai: KI
+      danger_zone: Gefahrenzone
+      general: Allgemein
+      metadata: Metadaten
+      privacy_access: Datenschutz und Zugriff
+      task_configuration: Aufgabenkonfiguration
     incomplete: Unvollständige Metadaten.
     metadata_overview:
       notes_and_questions: Anmerkungen und Fragen
@@ -184,8 +264,13 @@ de:
       transcribe: Transkribieren
       upload: Hochladen
       upload_page_image: "%{upload} Faksimile"
+    restore_description_version:
+      restored: Die Werkmetadaten wurden auf die ausgewählte Version zurückgesetzt. Bitte überprüfen Sie sie.
+      version_not_found: Metadatenversion nicht gefunden.
     save_description:
       work_described: Ihre Beschreibung wurde gespeichert
+    search:
+      search_in_work: Suche im Dokument
     show:
       author_name: Name des Autors/der Autorin
       description: Beschreibung
@@ -207,6 +292,12 @@ de:
       source_collection_name: Name der ursprünglichen Sammlung der Quelle
       source_location: Ort der Quelle
       uploaded_by: hochgeladen von
+    split_page:
+      create_failed: 'Das neue Werk konnte nicht erstellt werden: %{errors}'
+      no_previous_pages: Es gibt keine Seiten vor dieser, die in ein neues Werk aufgeteilt werden könnten.
+      unauthorized: Sie sind nicht berechtigt, dieses Werk zu teilen.
     undescribed: Keine Metadaten.
     update:
       work_updated: Werk erfolgreich aktualisiert
+    users_list:
+      no_users_collaborators: Keine Mitarbeiter

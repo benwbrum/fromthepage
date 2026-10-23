@@ -22,6 +22,8 @@
 #  index_sc_manifests_on_work_id           (work_id)
 #
 class ScManifest < ApplicationRecord
+  # Custom error for version mismatches
+  class VersionMismatchError < StandardError; end
   belongs_to :work, optional: true
   belongs_to :sc_collection, optional: true
   belongs_to :collection, optional: true
@@ -31,14 +33,38 @@ class ScManifest < ApplicationRecord
   attr_accessor :service
   attr_accessor :v3_hash
 
+  # Detect IIIF manifest version from @context field
+  # Returns '2' or '3' based on the context URL
+  def self.detect_manifest_version(manifest_hash)
+    return '2' if manifest_hash.nil?
+
+    context = manifest_hash['@context']
+    return '2' if context.nil?
+
+    # Handle array contexts (IIIF v3 can have array of contexts)
+    # Search through all contexts to find the presentation context
+    contexts_to_check = context.is_a?(Array) ? context : [context]
+
+    # Check if any context is v3 (uses presentation/3)
+    # Using regex for more precise matching
+    contexts_to_check.each do |ctx|
+      return '3' if ctx.to_s.match?(%r{iiif\.io/api/presentation/3/context\.json})
+    end
+
+    # Default to v2 for presentation/2 or other contexts
+    '2'
+  end
 
   def self.manifest_for_at_id(at_id)
-    connection = URI.open(at_id)
+    uri = URI.parse(at_id)
+    raise ArgumentError, 'manifest URL must use HTTP or HTTPS' unless uri.is_a?(URI::HTTP)
+
+    connection = uri.open
     manifest_json = connection.read
-    #manifest_json = TEST_MANIFEST
+    # manifest_json = TEST_MANIFEST
     service = IIIF::Service.parse(manifest_json)
 
-    if service['@type'] == "sc:Collection"
+    if service['@type'] == 'sc:Collection'
       raise ArgumentError, "#{at_id} contains a collection, not an item"
     end
     sc_manifest = ScManifest.new
@@ -53,9 +79,16 @@ class ScManifest < ApplicationRecord
     if v3.is_a? String
       v3 = JSON.parse(v3)
     end
+
+    # Validate that this is actually a v3 manifest
+    detected_version = detect_manifest_version(v3)
+    if detected_version != '3'
+      raise VersionMismatchError, "Expected v3 manifest but detected v#{detected_version} based on @context"
+    end
+
     sc_manifest = ScManifest.new
     sc_manifest.at_id = v3['id']
-    sc_manifest.label = v3['label'].values.first.first
+    sc_manifest.label = pluck_language_value(v3['label'])
     sc_manifest.metadata = v3['metadata']
     sc_manifest.v3_hash = v3
     sc_manifest.version = '3'
@@ -71,7 +104,7 @@ class ScManifest < ApplicationRecord
     if v3?
       v3_hash['requiredStatement']
     else
-      ""
+      ''
     end
   end
 
@@ -88,14 +121,13 @@ class ScManifest < ApplicationRecord
     if v3?
       summary = v3_hash['summary']
       if summary.blank?
-        ""
+        ''
       else
         ScManifest.pluck_language_value v3_hash['summary']
       end
     else
       service.description
     end
-
   end
 
   def convert_with_sc_collection(user, sc_collection, annotation_ocr)
@@ -127,7 +159,7 @@ class ScManifest < ApplicationRecord
     end
   end
 
-  def convert_with_collection(user, collection, document_set=nil, annotation_ocr=false)
+  def convert_with_collection(user, collection, document_set = nil, annotation_ocr = false)
     self.save!
 
     work = Work.new
@@ -167,9 +199,9 @@ class ScManifest < ApplicationRecord
   def self.cleanup_label(label)
     label = flatten_element(label)
     new_label = label.truncate(255, separator: ' ', omission: '')
-    new_label.gsub!("&quot;", "'")
-    new_label.gsub!("&amp;", "&")
-    new_label.gsub!("&apos;", "'")
+    new_label.gsub!('&quot;', "'")
+    new_label.gsub!('&amp;', '&')
+    new_label.gsub!('&apos;', "'")
 
     new_label
   end
@@ -186,14 +218,14 @@ class ScManifest < ApplicationRecord
   end
 
   def normalize_metadata(raw)
-    if (raw)
+    if raw
       raw.map do |hash|
         # test for v3-style elements
         label = hash['label'] || hash['@label']
         label= ScManifest.pluck_language_value(label)
         value = hash['value'] || hash['@value']
         value = ScManifest.pluck_language_value(value)
-        { 'label' => label, 'value' => value}
+        { 'label' => label, 'value' => value }
       end
     end
   end
@@ -209,7 +241,7 @@ class ScManifest < ApplicationRecord
   end
 
 
-  def sc_canvas_to_page(sc_canvas, annotation_ocr=false)
+  def sc_canvas_to_page(sc_canvas, annotation_ocr = false)
     page = Page.new
     page.title = ScManifest.flatten_element(sc_canvas.sc_canvas_label)
     if annotation_ocr && sc_canvas.has_annotation?
@@ -224,7 +256,7 @@ class ScManifest < ApplicationRecord
     return false if v3?
 
     self.service.sequences.first.canvases.detect do |canvas|
-      canvas.other_content && canvas.other_content.detect { |e| e['@type'] == "sc:AnnotationList" }
+      canvas.other_content && canvas.other_content.detect { |e| e['@type'] == 'sc:AnnotationList' }
     end
   end
 
@@ -258,7 +290,7 @@ class ScManifest < ApplicationRecord
       sc_canvas.sc_canvas_label =         canvas.label
       sc_canvas.height = canvas.height
       sc_canvas.width = canvas.width
-      if canvas.other_content && canvas.other_content.detect { |e| e['@type'] == "sc:AnnotationList" }
+      if canvas.other_content && canvas.other_content.detect { |e| e['@type'] == 'sc:AnnotationList' }
         sc_canvas.annotations = canvas.other_content.to_json
       end
     end
@@ -286,7 +318,7 @@ class ScManifest < ApplicationRecord
   def self.lang_keys_from_object(object)
     lang_keys = []
     if object.is_a? Array
-      lang_keys = object.map{ |hash| lang_keys_from_hash(hash) }.flatten
+      lang_keys = object.map { |hash| lang_keys_from_hash(hash) }.flatten
     else
       lang_keys = lang_keys_from_hash(hash)
     end

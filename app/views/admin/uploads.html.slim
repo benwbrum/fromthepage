@@ -12,30 +12,39 @@ table.admin-grid.datagrid.striped
     -@document_uploads.each do |document|
       tr
         td
-          =link_to(user_profile_path(document.user), class: 'userpic userpic-small')
-            =profile_picture(document.user)
+          -if document.user
+            =link_to(user_profile_path(document.user), class: 'userpic userpic-small')
+              =profile_picture(document.user)
+          -else
+            span.userpic.userpic-small
         td.nowrap.toleft
-          div =link_to document.user.login, user_profile_path(document.user)
-          small =document.user.email
+          -if document.user
+            div =link_to document.user.login, user_profile_path(document.user)
+            small =document.user.email
+          -else
+            div Deleted user
         td
           -if document.collection.present?
             p.fgfaded(data-prefix="Collection: ")
               =link_to(document.collection.title, collection_url(document.user, document.collection))
           .small.fgfaded(data-prefix="File Name: ")
-            =link_to(document.file, document.file.to_s, target: '_blank')
+            -if document.attachment.attached?
+              =link_to(document.attachment.filename, document.attachment, target: '_blank')
+            -elsif document.file.present?
+              =link_to(document.file, document.file.to_s, target: '_blank')
         td.nowrap
           p
             =document.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")
         td.nowrap
           small.label(class="upload-status-#{document.status}") =document.status.titleize
         td.nowrap
-          dl.dropdown.right
+          dl.dropdown.right data-controller='dropdown'
             dt tabindex=0
               span Actions
               =svg_symbol '#icon-list', class: 'icon'
             dd
               -if document.status == 'new'
-                =link_to(t('.process_upload'), { :action => 'process_upload', :id => document.id })
+                =link_to(t('.process_upload'), admin_process_upload_path(:id => document.id))
                 hr
               -if document.status_processing? || document.status_finished? || document.status_error?
                 =link_to(t('.show_processing_log'), admin_view_processing_log_path(:id => document.id), target: '_blank')

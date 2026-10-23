@@ -19,6 +19,7 @@ if ENV['COVERAGE'] == 'true'
 
   SimpleCov.start 'rails' do
     add_group 'Interactors', '/app/interactors/'
+    add_group 'Indexes', '/app/chewy_indexes/'
 
     enable_coverage :branch
 
@@ -26,5 +27,6 @@ if ENV['COVERAGE'] == 'true'
     add_filter '/config/'
     add_filter '/vendor/'
     add_filter '/.bundle/'
+    add_filter '/lib/tasks/'
   end
 end

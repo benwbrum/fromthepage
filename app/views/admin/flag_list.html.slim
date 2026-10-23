@@ -41,7 +41,7 @@ table.admin-grid.datagrid.striped
           .instack
             =link_to t('.ok'), admin_ok_flag_path(:flag_id => flag.id, :page => params[:page]), { :alt => t('.mark_this_content_as_not_abusive')}
             =link_to t('.remove'), admin_revert_flag_path(:flag_id => flag.id, :page => params[:page]), { :alt => t('.delete_the_abusive_content')}
-            =link_to t('.expunge_user'), admin_expunge_confirmation_path(:user_id => flag.author_user_id, :flag_id => flag.id), :data => { litebox: { hash: "" }}, :alt => t('.delete_the_user_and_remove_all_contributions')
+            =link_to t('.expunge_user'), admin_expunge_confirmation_path(user_id: flag.author_user_id, flag_id: flag.id), data: { controller: 'litebox', litebox: { hash: '' } }, alt: t('.delete_the_user_and_remove_all_contributions')
             =link_to t('.ok_user'), admin_ok_user_path(:flag_id => flag.id, :page => params[:page]), { :alt => t('.mark_this_users_content_as_not_abusive')}
 
 =render(:partial => 'shared/pagination', :locals => { :model => @flags, :entries_info => true })

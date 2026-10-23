@@ -14,4 +14,6 @@
 #  index_collection_reviewers_on_user_id        (user_id)
 #
 class CollectionReviewer < ApplicationRecord
+  belongs_to :collection
+  belongs_to :user
 end

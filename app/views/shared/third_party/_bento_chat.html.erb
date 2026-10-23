@@ -1,0 +1,11 @@
+<script>
+  window.addEventListener("bentochat:ready", function () {
+    <% unless current_user.nil? %>
+      window.$bentoChat.setUser('<%= j current_user.id %>', {
+        email: '<%= j current_user.email %>',
+        name: '<%= j current_user.display_name %>'
+      });
+    <% end %>
+    bento.showChat();
+  });
+</script>

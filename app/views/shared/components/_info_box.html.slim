@@ -1,0 +1,5 @@
+.info-box class="info-box info-#{type}"
+  - if icon
+    =svg_symbol icon, class: 'icon'
+  span
+    = yield

@@ -1,6 +1,62 @@
 ---
 es:
   work:
+    ai_metadata:
+      generated_with: Generado con %{model}
+      heading: Borrador de Metadatos de IA
+      imported_metadata: Metadatos importados
+      reasoning: Razonamiento
+      select_model: Seleccionar modelo de IA
+      source_material: Material de origen
+    ai_transcriptions:
+      create:
+        success: Se ha lanzado un servicio de transcripción con IA.
+      form:
+        ai_transcription: Transcripción por IA
+        contact_us: Contacta con %{email} para actualizar a un plan que incluya borradores de IA.
+        description: Iniciar la transcripción mediante IA para las páginas de esta obra.
+        description_complete: Todas las páginas de esta obra cuentan con transcripciones mediante IA.
+        edit_metadata_after_split: Editar metadatos después de dividir
+        edit_metadata_after_split_description: Después de la confirmación en línea de la división, ir directamente al formulario de metadatos de la nueva obra.
+        edit_metadata_after_split_disabled: Habilite y configure la creación de metadatos en %{link}.
+        edit_metadata_after_split_disabled_link: Configuración de tareas
+        failed: Fallido
+        failed_transcription_errors: Errores de transcripción fallidos
+        failed_transcription_errors_hidden: No se muestran los errores de transcripción adicionales %{count}.
+        finished: Finalizado
+        generate: Crea borradores de IA para páginas que no los tengan.
+        in_progress: En curso
+        not_started: No ha comenzado
+        pages: Páginas
+        queued: En cola
+        retry: Reintentar trabajos fallidos
+        segment_collection: Segmentar Colección
+        segmentation: Segmentar Colección
+        segmentation_description: Al subir un conjunto de imágenes (por ejemplo, una carpeta) y luego segmentarlo, sugeriremos los lugares donde los documentos deben dividirse en obras individuales.
+        segmentation_tokens_used: Tokens utilizados para la segmentación
+        total_tokens_used: Total de tokens utilizados
+      segment:
+        success: Se inició el trabajo de segmentación. Recibirá un correo electrónico cuando haya finalizado.
+      segmentation_setting:
+        success: Configuración de segmentación guardada.
+      update:
+        success: Reintentando la tarea de transcripción de IA.
+    ai_work_metadata:
+      create:
+        success: Se ha lanzado un trabajo de borrador de metadatos con IA.
+      form:
+        description: Genera borradores de IA de los metadatos de esta obra usando Gemini y Claude.
+        drafts_heading: Borradores
+        generate: Generar borrador de metadatos con IA
+        heading: Borrador de metadatos con IA
+        no_metadata_fields: Configure los campos de metadatos en Configuración de tareas antes de generar borradores de metadatos con IA.
+      show:
+        back: Volver a la configuración de IA
+        fields_heading: Campos del borrador
+        heading: Borrador de metadatos con IA (%{model})
+        reasoning_heading: Razonamiento
+        status: 'Estado: %{status}'
+        tokens_used: 'Tokens utilizados: %{count}'
     configurable_printout:
       description: Exportar esta obra en un formato imprimible
       export: Exportar
@@ -9,6 +65,7 @@ es:
       heading: Configuración de impresión
       include_contributors: Incluir colaboradores
       include_metadata: Incluir metadatos
+      include_notes: Incluir notas
       preserve_linebreaks: Conservar saltos de línea
       text_contents: Contenido
       text_contents_description: La exportación imprimible incluirá el texto de la transcripción y también puede incluir información sobre los colaboradores del proyecto o metadatos sobre la obra.
@@ -19,7 +76,14 @@ es:
       word_wrap: Ajuste de línea
     create:
       work_created: Obra creada con éxito
+    delete:
+      success: Obra eliminado correctamente
     describe:
+      ai_draft_fields: Borrador de IA
+      ai_draft_fields_tooltip: Copiar metadatos generados por IA en los campos
+      ai_model: "%{model}"
+      ai_reasoning: Razonamiento
+      ai_tokens_used: "%{count} tokens usados"
       always_show_fullscreen: Mostrar siempre pantalla completa
       approve: Aprobar
       approve_to_transcribed_tooltip: Guardar y aprobar estos metadatos
@@ -49,12 +113,19 @@ es:
       author_contributed_at: "%{author} a %{date}"
       compared_with: Comparado con
       help_description: Vea y compara los cambios que se han realizado en cada revisión a los metadatos de obra. La columna de la izquierda muestra los metadatos en la revisión seleccionada, la columna de la derecha muestra lo que se ha cambiado. El texto que no ha cambiado está <span>resaltado en blanco</span>, el texto eliminado está <del>resaltado en rojo</del> y el texto insertado está <ins>resaltado en color verde</ins>.
+      restore: Restaurar
+      restore_confirm: "¿Está seguro de que desea restaurar esta versión de los metadatos de la obra? Se le llevará a la pantalla de metadatos para revisarla."
+      restore_tooltip: Reemplazar los metadatos actuales de la obra con esta versión
       revision: revisión
     download:
+      accessible_pdf: PDF accesible
+      accessible_pdf_download_description: Descargue una versión en PDF de esta obra optimizada para lectores de pantalla y tecnologías de asistencia.
+      accessible_pdf_export_description: Descargue una versión en PDF de esta obra optimizada para lectores de pantalla y tecnologías de asistencia.
       analyze: Analizar
       configurable_printout: Impresión configurable
       configurable_printout_button: Configurar
       configurable_printout_description: Exportación a PDF o MS Word con contenido y formato configurables
+      configure: Configurar
       docx_download_description: Descarga una versión DOCX de esta obra.
       download: Descargar
       expanded_plaintext: Texto sin formato expandido
@@ -92,15 +163,16 @@ es:
       additional_metadata: Metadatos adicionales
       additional_metadata_description: Estos campos de metadatos se muestran en la pantalla Acerca de de esta obra y en las exportaciones de TEI, pero no afectan la funcionalidad de FromThePage.
       allowed_collaborators: Colaboradores permitidos
-      apply: Aplicar
       author: Autor
       collaborators_can_edit_titles: Permitir que los colaboradores editen los títulos de las páginas
       collection: Recopilación
       confirm_delete_work: "¿Estás seguro de que desea eliminar esta obra? ¡Después de borrar no podrás recuperarlo!"
       current_url: La URL actual para esta obra es %{current_url}. Si deseas editar la sección de obra de la URL, utiliza  letras minúsculas y guiones entre las palabras.
       delete_work: Eliminar obra
+      delete_work_description: Al pulsar este botón se eliminará la obra y todas sus páginas. Esta acción es irreversible.
       description: Descripción
       description_message: La descripción se mostrará en la pantalla Resumen del proyecto y en la pantalla Acerca del proyecto. Se mostrará una parte abreviada de la descripción en la pantalla de inicio de la organización y en la pantalla Buscar un proyecto.
+      destroy_everything: Destruir todo
       document_date: Fecha del documento
       document_date_hint: La fecha del documento está en el formato EDTF (por ejemplo, 1843, 2001-02, 1643-06-30)
       document_history: Historia del documento
@@ -131,6 +203,7 @@ es:
       source_box_folder: Caja/carpeta de origen
       source_collection_name: Nombre de la colección de origen
       source_location: Ubicación de origen
+      subject_change_warning: "¿Está seguro de que desea trasladar esta obra a una nueva colección? Perderá todos los vínculos temáticos."
       support_translation: Traducción de soporte
       support_translation_description: Una obra puede traducirse y transcribirse. Cuando esté marcado, la obra tendrá una pestaña de Traducción para cada página.
       transcription_conventions: Convenciones de transcripción
@@ -145,8 +218,15 @@ es:
       work_title: Título de obra
     edit_scribes:
       remove_collaborator: Quitar colaborador
-      work_collaborators: Colaboradores de trabajo
+      work_collaborators: Colaboradores de obra
       work_collaborators_description: Los colaboradores podrán transcribir y editar obras privadas.
+    edit_tabs:
+      ai: AI
+      danger_zone: Zona de peligro
+      general: General
+      metadata: Metadatos
+      privacy_access: Privacidad y acceso
+      task_configuration: Configuración de tareas
     incomplete: Metadatos incompletos.
     metadata_overview:
       notes_and_questions: notas y preguntas
@@ -184,8 +264,13 @@ es:
       transcribe: transcribir
       upload: Subir
       upload_page_image: Imagen de la página %{upload}
+    restore_description_version:
+      restored: Los metadatos de la obra se han restaurado a la versión seleccionada. Revísela.
+      version_not_found: No se encontró la versión de los metadatos.
     save_description:
       work_described: Tu descripción ha sido guardada
+    search:
+      search_in_work: Buscar en el documento
     show:
       author_name: Nombre del Autor
       description: Descripción
@@ -207,6 +292,12 @@ es:
       source_collection_name: Nombre de la colección de la fuente
       source_location: Ubicación de la fuente
       uploaded_by: Subido por
+    split_page:
+      create_failed: 'No se pudo crear la nueva obra: %{errors}'
+      no_previous_pages: No hay páginas antes de esta para dividir en una obra nueva.
+      unauthorized: No tiene permiso para dividir esta obra.
     undescribed: Sin metadatos.
     update:
       work_updated: Obra actualizada con éxito
+    users_list:
+      no_users_collaborators: Sin colaboradores

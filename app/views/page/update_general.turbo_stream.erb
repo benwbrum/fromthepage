@@ -1,0 +1,8 @@
+<%= turbo_stream.update('page-settings', partial: 'form', locals: { page: @page, work: @work, collection: @collection, scope: 'edit' }) %>
+
+<% if @result.success? %>
+  <%= turbo_stream.update('page-tabs', partial: '/shared/page_tabs', locals: { selected: 4, page_id: @page.id }) %>
+  <%= turbo_flash(t('page.update.notice'), :notice) %>
+<% else %>
+  <%= turbo_flash(t('page.update.error'), :error) %>
+<% end %>

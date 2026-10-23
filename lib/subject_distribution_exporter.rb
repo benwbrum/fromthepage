@@ -23,21 +23,21 @@ module SubjectDistributionExporter
 
 
       raw_metadata_strings = collection.works.pluck(:original_metadata)
-      @metadata_headers = raw_metadata_strings.map{|raw| raw.nil? ? [] : JSON.parse(raw).map{|element| element["label"] } }.flatten.uniq
+      @metadata_headers = raw_metadata_strings.map { |raw| raw.nil? ? [] : JSON.parse(raw).map { |element| element['label'] } }.flatten.uniq
     end
 
     def export
       # we actually want to find all the works this subject is mentioned in,
       # then get all the pages in those works and all the subjects in those pages.
       work_ids = @article.pages.pluck(:work_id)
-      work_ids = work_ids & @collection.works.pluck("works.id")
+      work_ids = work_ids & @collection.works.pluck('works.id')
       page_in_works_ids = Page.where(work_id: work_ids).pluck(:id)
 
       if page_in_works_ids.empty?
         article_links=[]
       else
 
-        sql = 
+        sql =
           'select count(*) as link_count, '+
           '  works.id as work_id, '+
           'works.original_metadata as work_original_metadata, '+
@@ -66,19 +66,19 @@ module SubjectDistributionExporter
 
 
 
-      sql = "SELECT articles_categories.article_id as article_id, 
-              categories.title as title 
+      sql = "SELECT articles_categories.article_id as article_id,
+              categories.title as title
               FROM articles_categories
-              INNER JOIN articles 
-                ON articles_categories.article_id = articles.id 
-              INNER JOIN categories 
-                ON articles_categories.category_id = categories.id 
+              INNER JOIN articles
+                ON articles_categories.article_id = articles.id
+              INNER JOIN categories
+                ON articles_categories.category_id = categories.id
               WHERE articles.collection_id = #{@collection.id}"
       categories = Article.connection.select_all(sql)
       category_map = {}
-      categories.each do |element| 
-        category_map[element["article_id"]] ||= []
-        category_map[element["article_id"]] << element["title"]
+      categories.each do |element|
+        category_map[element['article_id']] ||= []
+        category_map[element['article_id']] << element['title']
       end
 
       csv_string = CSV.generate(force_quotes: true) do |csv|
@@ -87,7 +87,7 @@ module SubjectDistributionExporter
         article_links.each do |coocurrence|
           current_categories = category_map[coocurrence['to_article_id']]
           if current_categories
-            current_category_stragg = current_categories.uniq.join (" | ")
+            current_category_stragg = current_categories.uniq.join (' | ')
           else
             current_category_stragg = ''
           end
@@ -106,7 +106,7 @@ module SubjectDistributionExporter
           ]
           unless coocurrence['work_original_metadata'].blank?
             metadata = {}
-            JSON.parse(coocurrence['work_original_metadata']).each {|e| metadata[e['label']] = e['value'] }
+            JSON.parse(coocurrence['work_original_metadata']).each { |e| metadata[e['label']] = e['value'] }
 
             @metadata_headers.each do |header|
               # look up the value for this index
@@ -116,12 +116,10 @@ module SubjectDistributionExporter
 
 
 
-          csv << row   
+          csv << row
         end
       end
       csv_string
-
     end
-
   end
 end

@@ -14,7 +14,7 @@ table.admin-grid.datagrid.striped
   thead
     tr
       th =t('.query')
-      th 
+      th
         =t('.type')
         br
         =form_tag admin_searches_path, method: :get do
@@ -29,20 +29,20 @@ table.admin-grid.datagrid.striped
       th(colspan="2") =t('.user')
       th =link_to t('.owner'), admin_searches_path(:filter => 'nonowner'), class: 'acenter', title: t('.owner_filter')
 
-  tbody 
+  tbody
     -@searches.each do |search|
       tr
         td.toleft
-          div =link_to search.query, search.results_link
+          div =link_to search.query, search.generate_link
         td.nowrap =t(".search_type.#{search.search_type}")
         td
-          -if search.collection 
+          -if search.collection
             =link_to search.collection.title, collection_path(search.collection.owner, search.collection)
-          -elsif search.document_set 
+          -elsif search.document_set
             =link_to search.document_set.title, collection_path(search.document_set.owner, search.document_set)
           -elsif search.work
             =link_to search.work.collection.title, collection_path(search.work.collection.owner, search.work.collection)
-        td 
+        td
           -if search.work
             =link_to search.work.title, collection_read_work_path(search.work.collection.owner, search.work.collection, search.work)
         td.nowrap =search.hits
@@ -67,39 +67,40 @@ br
 br
 section.export-searches
   h2=t('.export_searches')
-  =form_for :bulk_export, url: bulk_export_create_for_owner_path do |f| 
+  =form_for :bulk_export, url: bulk_export_create_for_owner_path do |f|
     =f.hidden_field :admin_searches, value: true
     =f.label(:start_date, t('.start_date'))
-    |  
+    |
     =f.text_field('report_arguments[start_date]', value: l(@start_date.to_date), style: "width:30%", id: 'start_date')
-    |  
+    |
     =f.label(:end_date, t('.end_date'))
-    |  
+    |
     =f.text_field('report_arguments[end_date]', value: l(@end_date.to_date), style: "width:30%", id: 'end_date')
     |
     =f.submit t('.export'), id: 'searches-export-submit'
   br
 
 -content_for :javascript
-=javascript_include_tag 'datepicker/datepicker'
-javascript:
-  var today = new Date()
-  var yesterday = new Date(today)
-  yesterday.setDate(yesterday.getDate() - 1)
-  
-  //Attach a date picker for start and end dates
-  datePickerController.createDatePicker({
-      formElements:{
-          "start_date":"%M %d, %Y"
-      },
-      rangeHigh: yesterday,
-      noFadeEffect: true
-  });
+  =javascript_include_tag 'datepicker/datepicker'
 
-  datePickerController.createDatePicker({
-      formElements:{
-          "end_date":"%M %d, %Y"
-      },
-      rangeHigh: yesterday,
-      noFadeEffect: true      
-  });
+  javascript:
+    var today = new Date()
+    var yesterday = new Date(today)
+    yesterday.setDate(yesterday.getDate() - 1)
+
+    //Attach a date picker for start and end dates
+    datePickerController.createDatePicker({
+        formElements:{
+            "start_date":"%M %d, %Y"
+        },
+        rangeHigh: yesterday,
+        noFadeEffect: true
+    });
+
+    datePickerController.createDatePicker({
+        formElements:{
+            "end_date":"%M %d, %Y"
+        },
+        rangeHigh: yesterday,
+        noFadeEffect: true
+    });

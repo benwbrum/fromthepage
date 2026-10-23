@@ -1,15 +1,66 @@
 ---
 en:
   collection:
+    ai_transcriptions:
+      create:
+        success: AI transcription job launched.
+      form:
+        ai_transcription: AI Transcription
+        contact_us: Contact %{email} to upgrade to a plan that includes AI drafts.
+        description: Launch AI transcription job for pages in this collection.
+        description_complete: All pages in this collection have AI transcriptions.
+        failed: Failed
+        failed_transcription_errors: Failed transcription errors
+        failed_transcription_errors_hidden: "%{count} additional failed transcription errors are not shown."
+        finished: Finished
+        generate: Create AI drafts for pages without them.
+        in_progress: In progress
+        not_started: Not started
+        pages: Pages
+        queued: Queued
+        retry: Retry failed jobs
+        total_tokens_used: Total tokens used
+      update:
+        success: Retrying AI transcription job.
+    ai_work_metadata:
+      create:
+        success: AI metadata draft job launched.
+      form:
+        description: Launch AI metadata draft jobs for works without them.
+        description_complete: All works in this collection have AI metadata drafts.
+        failed: Failed
+        failed_work_metadata_errors: Failed metadata draft errors
+        failed_work_metadata_errors_hidden: "%{count} additional failed metadata draft errors are not shown."
+        finished: Finished
+        generate: Create AI metadata drafts for works without them.
+        heading: AI Metadata Draft
+        in_progress: In progress
+        no_metadata_fields: Please configure metadata fields under Task Configuration before generating AI metadata drafts.
+        not_started: Not started
+        queued: Queued
+        total_tokens_used: Total tokens used
+        works: Works
+      show:
+        back: Back to AI Settings
+        fields_heading: Draft fields
+        heading: 'AI Metadata Draft (%{model}): %{work}'
+        reasoning_heading: Reasoning
+        status: 'Status: %{status}'
+        tokens_used: 'Tokens used: %{count}'
     approve_all:
       approved_n_pages: Approved %{page_count} pages.
+    blank_collection:
+      notice: Collection has been reset.
     collection_works:
       all_works: All Works
+      collaboration: Collaboration
       most_recent_activity: Most recent activity
       n_pages:
         one: '1 page: '
         other: "%{count} pages; "
       progress: Progress
+      restricted: Restricted
+      unrestricted: Unrestricted
       work_title: Work title
       works_that_need_transcription: Works That Need Transcription
     complete: complete
@@ -52,10 +103,13 @@ en:
     corrected: corrected
     create:
       notice: Collection has been created
+    delete:
+      notice: Collection deleted successfully.
     disable_ocr:
       notice: OCR correction has been disabled for all works.
     edit:
       add_button: Add
+      collection_findable_instruction: For collections to be findable in FromThePage, please ensure they have tags, an image, and a description.
       collection_image: Collection image
       collection_image_description: A picture to be used to illustrate the collection description.
       copy_url: Copy to clipboard
@@ -89,12 +143,13 @@ en:
       abbr_label: Abbreviation
       add_description: Marks text inserted after-the-fact by the writer. <br><i>Recommended</i>
       add_label: Addition
+      b_description: Marks text typeset in bold.
+      b_label: Bold
       date_description: Marks dates, with standardized form in the when attribute.
       date_label: Date
       del_description: Marks text that has been removed by erasure or strike-through. <br><i>Recommended</i>
       del_label: Deletion
       description: FromThePage can support mark-up within transcripts in either TEI-XML or HTML forms.  We recommend configuring no more than six buttons to appear on the transcription editor.  Consider whether other systems will be able to use this kind of mark-up; if only plaintext is supported, projects should use letterpress conventions instead of mark-up.
-      documentation: Documentation
       expan_description: Marks expanded abbreviations with original forms in the orig attribute.  (Alternate form of abbr tag.)
       expan_label: Expansion
       fig_description: Indicates a figure or a horizontal line.
@@ -148,21 +203,24 @@ en:
       delete_collection_description: Pressing this button will delete the collection and all its contents. This action cannot be undone.
       destroy_everything: Destroy everything
       inactive: Inactive
-      save_changes: Save Changes
     edit_help:
       help: Basic help text
       link_help: Subject linking help text
       link_help_description: Not displayed if subjects are disabled.
-      save_changes: Save Changes
       suggestions_help_tab: Suggestions for your help tab.
       suggestions_transcription_conventions: Suggestions for your transcription conventions.
       transcription_conventions: Transcription conventions
       transcription_conventions_description: These instructions will be displayed under the transcription form for each page being transcribed or indexed.
+      works_with_custom_conventions:
+        one: "%{title} has custom transcription conventions"
+        other: "%{title} and %{count} others have custom transcription conventions"
     edit_look:
       alphabetize_works: List works alphabetically.
       alphabetize_works_description: Display works alphabetically rather than in order of amount of work remaining.
       default_orientation: Default transcription screen orientation
       default_orientation_description: Choose the orientation that best matches the majority of the works in this collection.  Users will be able to change the orientation to one that they prefer.
+      default_overview_orientation: Default overview screen orientation
+      default_overview_orientation_description: Choose the orientation for the page overview tab display.
       document_sets_description: Document sets are sub-sets of the works in this collection, which can be used to focus an editing project or to create a public exhibition about a particular focus of the documents.
       edit_document_sets: Edit Sets
       edit_facets: Edit Facets
@@ -173,6 +231,10 @@ en:
       forums_description: Allows collaborators to discuss topics with each other and project owners via message boards.
       hide_completed: Hide completed works by default
       hide_completed_description: Hide works that are fully transcribed or translated by default.
+      hide_notes: Hide notes, edits and statistics from non-collaborators
+      hide_notes_description: Hide the Notes and Questions section, recent edits, and Statistics tab from everyone except collection owners and collaborators.
+      legend: Legend
+      legend_description: HTML content to display on each page view to provide context for readers. This will appear below the transcription in the page overview.
       metadata: Metadata
       metadata_description: Upload metadata for items in this collection in bulk.
       metadata_facets_description: Allow users to browse works within this collection via metadata.
@@ -183,7 +245,6 @@ en:
       page_on_the_top: Image on the top
       refresh_metadata: Refresh Metadata
       refresh_metadata_description: Refresh metadata from original IIIF manifests.
-      save_changes: Save Changes
       spellcheck_description: Not suitable for texts with irregular spelling.
       upload_metadata: Upload Metadata
       user_download: Allow users to download works
@@ -206,15 +267,13 @@ en:
       collection_restricted_description: The collection can only be viewed by the owners and collaborators listed below. You may make the collection publicly readable.
       edit_collaborators: Edit Collaborators
       edit_owners: Edit Owners
-      make_collection_private: Make Collection Private
-      make_collection_public: Make Collection Public
       open_api: Open API
       private: Private
       public: Public
+      read_only: Read-only
       restrict_completed_works: Restrict Completed Works
       restrict_editing: Restrict editing
       restricted_completed_works_description: This button will restrict the %{work_count} works that are completed but not currently resticted to project owners or designated collaborators.  You may change this setting and add collaborators in each work's settings page.
-      save_changes: Save Changes
     edit_quality_control:
       authorized_reviewers: Authorized reviewers
       collection_reviewers: Authorized Reviewers
@@ -228,8 +287,8 @@ en:
       review_type_required_description: All initial transcriptions will be marked as needing review. (Review may be performed by anyone.)
       review_type_restricted: Restricted
       review_type_restricted_description: All transcriptions need review, and only authorized reviewers may approve transcriptions.
-      save_changes: Save Changes
     edit_tabs:
+      ai: AI
       danger_zone: Danger Zone
       general: General
       help_text: Help Text
@@ -238,7 +297,15 @@ en:
       quality_control: Quality Control
       task_configuration: Task Configuration
     edit_tasks:
+      ai_draft_disabled: Disable AI Drafts
+      ai_draft_disabled_description: Disable AI Drafts for all users except the collection owner.
       alert: Please configure fields or choose document based transcription under Transcription Type.
+      allow_transcriber_segmentation: Let transcribers split works
+      allow_transcriber_segmentation_ai_hint: Prefer to have AI flag likely first pages? Run segmentation from the work's %{link}.
+      allow_transcriber_segmentation_ai_hint_plain: Prefer to have AI flag likely first pages? Open a work's settings and run segmentation from its AI tab.
+      allow_transcriber_segmentation_ai_link: AI settings
+      allow_transcriber_segmentation_description: 'Shows a scissors control on every page. Transcribers can split a work at any page: the pages before that page move into a new work, and the rest stay in the current one.'
+      allow_transcriber_segmentation_unavailable: This setting is available for active, text-based collections on organizational plans.
       disable_ocr: Disable OCR Correction
       document_based_transcription: Document-based transcription
       document_based_transcription_description: Each page in the collection will have a single free-form text entry area for transcription. Also known as "document based transcription".
@@ -252,7 +319,6 @@ en:
       metadata_description_description: Metadata description is used to create structured metadata about works in the collection.  You will need to configure which metadata fields will be displayed.
       ocr_correction: OCR Correction
       ocr_description: Enable or disable OCR correction for all works in this collection.
-      save_changes: Save Changes
       subjects_enabled: Enable subject indexing
       subjects_enabled_description: Subjects are used to index pages in the collection.
       text_language: Transcription text language
@@ -324,6 +390,8 @@ en:
       recent_contributor_title: Recent Contributors
       review: Review
       user: User
+    restrict_scribes:
+      success: Completed works have been successfully restricted
     reviewer_dashboard:
       one_off_contributions: One-off Contributions
       pages_needing_review: Pages to Review
@@ -333,10 +401,14 @@ en:
       transcribed_page: Transcribed Page
       unreviewed_contributors: New Contributors
       works_to_review: Works to Review
+    search:
+      search: Search
+      search_in_collection: Search in collection
     show:
       about: About
       add_a_new_work: Add a new work
       all_complete: All works are fully transcribed.
+      document_sets: Document Sets
       help_create_metadata: Help out!
       help_transcribe_or_correct: Help out!
       n_pages:
@@ -353,6 +425,7 @@ en:
       search: Search
       search_by_title: Search by title or metadata...
       search_by_title_1: Search by title
+      search_in_collection: Search in collection
       search_the_text: Search the text...
       search_the_text_1: Search the text
       show_more: Show More
@@ -361,7 +434,6 @@ en:
       subject_categories: Subject Categories
       this_work_has_not_been_described: This work needs better metadata.
       this_work_has_pages_that_need_work: Some pages still need work.
-      time_ago_in_words: "%{time} ago"
       user_wrote_note: "%{user} wrote %{note}"
       works: Works
     start_transcribing:
@@ -369,6 +441,7 @@ en:
     transcribed: transcribed
     translated: translated
     update:
+      error: Failed to update collection
       notice: Collection has been updated
     update_buttons:
       editor_buttons_updated: Editor Buttons Updated

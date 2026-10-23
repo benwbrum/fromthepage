@@ -1,0 +1,397 @@
+require 'spec_helper'
+
+describe DisplayController do
+  let(:owner) { create(:unique_user, :owner) }
+  let!(:collection) { create(:collection, owner_user_id: owner.id) }
+  let!(:work) { create(:work, collection: collection, owner_user_id: owner.id) }
+  let!(:pages) do
+    (1..10).map do |i|
+      create(:page, work: work, position: i, title: "Page #{i}")
+    end
+  end
+
+  before do
+    Current.user = owner
+  end
+
+  describe '#ai_text' do
+    before do
+      login_as owner
+    end
+
+    let!(:page) { pages.first }
+    let!(:ai_transcription) { create(:ai_transcription, page: page, source_text: 'AI generated text content', status: :finished) }
+
+    let(:action_path) { collection_ai_text_page_path(owner, collection, work, page) }
+
+    let(:subject) { get action_path }
+
+    context 'when page has AI plaintext' do
+      it 'renders the AI text page' do
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:ai_text)
+      end
+
+      it 'displays AI model name and date' do
+        subject
+
+        expect(response.body).to include(ai_transcription.model)
+        expect(response.body).to include(ai_transcription.created_at.strftime("%B"))
+      end
+
+      context 'with completed transcription' do
+        before do
+          page.status = :transcribed
+          page.save!
+          allow_any_instance_of(Page).to receive(:ai_accuracy_statistics).and_return({
+            verbatim: { cer: 5.0, wer: 10.0 },
+            text_only: { cer: 3.0, wer: 8.0 }
+          })
+
+          ai_transcription.update!(status: :finished)
+        end
+
+        context 'when switching ai_transcription' do
+          let!(:ai_transcription_2) { create(:ai_transcription, page: page, source_text: 'Other AI generated text content', status: :finished) }
+
+          let(:params) { { ai_transcription_id: ai_transcription_2.id } }
+
+          let(:subject) { get action_path, params: params, as: :turbo_stream }
+
+          it 'renders status and template' do
+            subject
+
+            expect(response).to have_http_status(:ok)
+            expect(response).to render_template(:ai_text)
+          end
+        end
+
+        context 'with multiple finished transcriptions' do
+          let!(:older_transcription) { create(:ai_transcription, page: page, source_text: 'Older AI text', status: :finished, created_at: 2.days.ago) }
+          let!(:newer_transcription) { create(:ai_transcription, page: page, source_text: 'Newer AI text', status: :finished, created_at: 1.minute.from_now) }
+
+          it 'defaults to the most recent transcription' do
+            subject
+
+            expect(assigns(:ai_transcription)).to eq(newer_transcription)
+          end
+        end
+      end
+
+      context 'without completed transcription' do
+        before do
+          page.status = :incomplete
+          page.save!
+        end
+
+        it 'does not provide accuracy statistics' do
+          subject
+
+          expect(assigns(:ai_accuracy_stats)).to be_nil
+        end
+      end
+    end
+
+    context 'when page only has an ALTO transcription' do
+      let!(:page_alto_only) { create(:page, work: work) }
+      let!(:alto_transcription) do
+        create(:ai_transcription, page: page_alto_only, model: AiTranscription::ALTO_MODEL,
+                                  source_text: 'ALTO text', status: :finished)
+      end
+      let(:action_path) { collection_ai_text_page_path(owner, collection, work, page_alto_only) }
+
+      it 'renders the AI text page' do
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:ai_text)
+      end
+    end
+
+    context 'when page does not have AI plaintext' do
+      let!(:page_without_transcription) { create(:page, work: work) }
+      let(:action_path) { collection_ai_text_page_path(owner, collection, work, page_without_transcription) }
+
+      it 'redirects' do
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(collection_display_page_path(owner, collection, work, page_without_transcription))
+      end
+    end
+
+    context 'when the most recent AI transcription has an error but an older one is finished' do
+      let!(:page_with_error) { create(:page, work: work) }
+      let!(:finished_transcription) { create(:ai_transcription, page: page_with_error, source_text: 'Older successful AI text', status: :finished, created_at: 2.days.ago) }
+      let!(:error_transcription) { create(:ai_transcription, page: page_with_error, source_text: nil, status: :error, created_at: 1.minute.ago) }
+      let(:action_path) { collection_ai_text_page_path(owner, collection, work, page_with_error) }
+
+      it 'renders the AI text page instead of redirecting' do
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:ai_text)
+      end
+
+      it 'loads the finished transcription' do
+        subject
+
+        expect(assigns(:ai_transcription)).to eq(finished_transcription)
+      end
+    end
+  end
+
+  describe '#ai_stats' do
+    let!(:page) { pages.first }
+    let!(:ai_transcription) { create(:ai_transcription, page: page, source_text: 'AI generated text content', status: :finished) }
+
+    let(:action_path) { collection_ai_stats_page_path(owner, collection, work, page, ai_transcription_id: ai_transcription.id) }
+
+    let(:subject) { get action_path }
+
+    it 'renders the AI text page' do
+      login_as owner
+
+      subject
+
+      expect(response).to have_http_status(:ok)
+      expect(response).to render_template(:_cer_stats)
+    end
+
+    context 'with completed transcription' do
+      before do
+        page.status = :transcribed
+        page.save!
+        allow_any_instance_of(Page).to receive(:ai_accuracy_statistics).and_return({
+          verbatim: { cer: 5.0, wer: 10.0 },
+          text_only: { cer: 3.0, wer: 8.0 }
+        })
+
+        ai_transcription.update!(status: :finished)
+      end
+
+      it 'renders the AI text page' do
+        login_as owner
+
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:_cer_stats)
+      end
+    end
+  end
+
+  describe '#read_work' do
+    let(:action_path) { collection_read_work_path(owner, collection, work) }
+
+    context 'without page range' do
+      it 'renders all pages' do
+        get action_path
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:read_work)
+        expect(assigns(:pages)).to be_present
+        expect(assigns(:page_range_filter)).to be_falsy
+        expect(assigns(:heading)).to eq('Pages')
+      end
+    end
+
+    context 'when logged out and requesting a work queue filter' do
+      it 'returns not found and discourages indexing' do
+        get action_path, params: { needs_review: 'transcription' }
+
+        expect(response).to have_http_status(:not_found)
+        expect(response.headers['X-Robots-Tag']).to eq('noindex, nofollow, noarchive')
+      end
+    end
+
+    context 'with valid page range' do
+      let(:action_path) { collection_read_work_with_range_path(owner, collection, work, '3-7') }
+
+      it 'filters pages by range' do
+        get action_path
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:read_work)
+        expect(assigns(:page_range_filter)).to be_truthy
+        expect(assigns(:start_page)).to eq(3)
+        expect(assigns(:end_page)).to eq(7)
+        expect(assigns(:heading)).to eq('Pages (3-7)')
+      end
+    end
+
+    context 'with page range prefixed with "pp"' do
+      let(:action_path) { collection_read_work_with_range_path(owner, collection, work, 'pp3-7') }
+
+      it 'filters pages by range' do
+        get action_path
+
+        expect(response).to have_http_status(:ok)
+        expect(assigns(:page_range_filter)).to be_truthy
+        expect(assigns(:start_page)).to eq(3)
+        expect(assigns(:end_page)).to eq(7)
+        expect(assigns(:heading)).to eq('Pages (3-7)')
+      end
+    end
+
+    context 'with page range prefixed with "p"' do
+      let(:action_path) { collection_read_work_with_range_path(owner, collection, work, 'p3-7') }
+
+      it 'filters pages by range' do
+        get action_path
+
+        expect(response).to have_http_status(:ok)
+        expect(assigns(:page_range_filter)).to be_truthy
+        expect(assigns(:start_page)).to eq(3)
+        expect(assigns(:end_page)).to eq(7)
+        expect(assigns(:heading)).to eq('Pages (3-7)')
+      end
+    end
+
+    context 'with invalid page range format' do
+      let(:action_path) { collection_read_work_with_range_path(owner, collection, work, 'invalid') }
+
+      it 'ignores invalid range and works normally' do
+        # This should not match our route constraint, so it won't reach the controller
+        expect { get action_path }.to raise_error(ActionController::UrlGenerationError)
+      end
+    end
+
+    context 'with invalid page range (start > end)' do
+      let(:action_path) { collection_read_work_with_range_path(owner, collection, work, '7-3') }
+
+      it 'handles invalid range gracefully' do
+        get action_path
+
+        expect(response).to have_http_status(:ok)
+        expect(assigns(:page_range_filter)).to be_falsy
+        expect(assigns(:heading)).to eq('Pages')
+      end
+    end
+
+    context 'with page range and review filter' do
+      let(:action_path) { collection_read_work_with_range_path(owner, collection, work, '3-7') }
+      let(:params) { { needs_review: 'review' } }
+
+      before do
+        login_as owner
+      end
+
+      it 'applies both filters' do
+        get action_path, params: params
+
+        expect(response).to have_http_status(:ok)
+        expect(assigns(:page_range_filter)).to be_truthy
+        expect(assigns(:start_page)).to eq(3)
+        expect(assigns(:end_page)).to eq(7)
+        expect(assigns(:heading)).to eq('Pages That Need Review (3-7)')
+      end
+    end
+  end
+
+  describe '#read_all_works' do
+    let!(:article) { create(:article, collection: collection) }
+    let!(:page_article_link) { create(:page_article_link, article: article, page: pages.first) }
+    let(:action_path) { display_read_all_works_path(article_id: article.id) }
+
+    context 'when user is not logged in' do
+      before do
+        Current.user = nil
+      end
+
+      it 'renders successfully without raising an error' do
+        get action_path
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:read_all_works)
+      end
+
+      context 'when a work has description_status of NEEDS_REVIEW' do
+        before do
+          work.update!(description_status: Work::DescriptionStatus::NEEDS_REVIEW)
+        end
+
+        it 'renders successfully and does not display the review metadata button' do
+          get action_path
+
+          expect(response).to have_http_status(:ok)
+          expect(response.body).not_to include('review-button')
+        end
+      end
+    end
+
+    context 'when user is logged in' do
+      it 'renders successfully' do
+        get action_path
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:read_all_works)
+      end
+    end
+  end
+
+  describe '#parse_page_range' do
+    let(:controller) { described_class.new }
+
+    context 'with valid ranges' do
+      it 'parses simple range' do
+        result = controller.send(:parse_page_range, '3-7')
+        expect(result).to eq([3, 7])
+      end
+
+      it 'parses range with pp prefix' do
+        result = controller.send(:parse_page_range, 'pp3-7')
+        expect(result).to eq([3, 7])
+      end
+
+      it 'parses range with p prefix' do
+        result = controller.send(:parse_page_range, 'p3-7')
+        expect(result).to eq([3, 7])
+      end
+
+      it 'parses single digit range' do
+        result = controller.send(:parse_page_range, '1-2')
+        expect(result).to eq([1, 2])
+      end
+
+      it 'parses multi-digit range' do
+        result = controller.send(:parse_page_range, '15-25')
+        expect(result).to eq([15, 25])
+      end
+    end
+
+    context 'with invalid ranges' do
+      it 'returns nil for empty string' do
+        result = controller.send(:parse_page_range, '')
+        expect(result).to be_nil
+      end
+
+      it 'returns nil for nil' do
+        result = controller.send(:parse_page_range, nil)
+        expect(result).to be_nil
+      end
+
+      it 'returns nil for invalid format' do
+        result = controller.send(:parse_page_range, 'invalid')
+        expect(result).to be_nil
+      end
+
+      it 'returns nil when start > end' do
+        result = controller.send(:parse_page_range, '7-3')
+        expect(result).to be_nil
+      end
+
+      it 'returns nil when start is 0' do
+        result = controller.send(:parse_page_range, '0-5')
+        expect(result).to be_nil
+      end
+
+      it 'returns nil for non-numeric values' do
+        result = controller.send(:parse_page_range, 'a-b')
+        expect(result).to be_nil
+      end
+    end
+  end
+end

@@ -1,0 +1,14 @@
+#dynamic-scripts
+  -if analytics_enabled?
+    -if GA_ACCOUNT.present?
+      =render partial: 'shared/third_party/ga'
+
+    -if MIXPANEL_ID.present?
+      =render partial: 'shared/third_party/mixpanel'
+
+    -if CLARITY.present?
+      =render partial: 'shared/third_party/clarity'
+
+  -if marketing_enabled?
+    -if defined?(BENTO_ENABLED) && BENTO_ENABLED && !user_masquerade?
+      =render partial: 'shared/third_party/bento'

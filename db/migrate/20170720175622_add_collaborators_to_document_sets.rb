@@ -1,6 +1,6 @@
 class AddCollaboratorsToDocumentSets < ActiveRecord::Migration[5.0]
   def self.up
-    create_table :document_set_collaborators, :id => false do |t|
+    create_table :document_set_collaborators, id: false do |t|
       t.integer :user_id
       t.integer :document_set_id
     end

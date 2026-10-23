@@ -1,0 +1,8 @@
+<%= turbo_stream.update('document-set-settings', partial: 'form', locals: { document_set: @document_set, scope: 'edit' }) %>
+
+<% if @result.success? %>
+  <%= turbo_stream.update('collection-tabs', partial: '/shared/collection_tabs', locals: { selected: 5, collection_id: @document_set.id }) %>
+  <%= turbo_flash(t('document_sets.update.document_updated'), :notice) %>
+<% else %>
+  <%= turbo_flash(t('document_sets.update.document_failed_update'), :error) %>
+<% end %>

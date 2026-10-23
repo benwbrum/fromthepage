@@ -4,9 +4,6 @@ class IaController < ApplicationController
 
   before_action :load_ia_work_from_params
 
-  # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:ia_book_form, :confirm_import]
-
   def load_ia_work_from_params
     unless params[:ia_work_id].blank?
       @ia_work = IaWork.find(params[:ia_work_id])
@@ -30,7 +27,7 @@ class IaController < ApplicationController
       work.collection = @collection
       work.save!
     else
-      #collection is required, but if something goes wrong due to browser version, create a collection
+      # collection is required, but if something goes wrong due to browser version, create a collection
       collection = Collection.new
       collection.owner = current_user
       collection.title = @ia_work.title.truncate(255, separator: ' ', omission: '')
@@ -39,7 +36,19 @@ class IaController < ApplicationController
       work.save!
     end
 
-    redirect_to :controller => 'work', :action => 'edit', :work_id => work.id
+    # Trigger AI Draft generation if requested
+    if params[:generate_ai_draft] && work
+      # make sure import folder exists
+      Dir.mkdir("#{Rails.root}/public/imports") unless Dir.exist?("#{Rails.root}/public/imports")
+
+      log_file = "#{Rails.root}/public/imports/work_#{work.id}_ai_draft.log"
+      rake_call = "#{RAKE} fromthepage:gemini:transcribe_work[#{work.id}] --trace >> #{log_file} 2>&1 &"
+      logger.info rake_call
+      system(rake_call)
+      flash[:notice] = (flash[:notice] || '') + ' AI Draft text generation has been started.'
+    end
+
+    redirect_to controller: 'work', action: 'edit', work_id: work.id
   end
 
 
@@ -61,7 +70,7 @@ class IaController < ApplicationController
     target_leaves.each { |leaf| leaf.destroy }
 
     flash[:notice] = t('.preceding_the_beginning')
-    redirect_to :action => 'manage', :ia_work_id => @ia_work.id
+    redirect_to action: 'manage', ia_work_id: @ia_work.id
   end
 
   def mark_end
@@ -82,44 +91,44 @@ class IaController < ApplicationController
     target_leaves.each { |leaf| leaf.destroy }
 
     flash[:notice] = t('.pages_following_the_end')
-    redirect_to :action => 'manage', :ia_work_id => @ia_work.id
+    redirect_to action: 'manage', ia_work_id: @ia_work.id
   end
 
   def title_from_ocr_top
     @ia_work.title_from_ocr(:top)
 
     flash[:notice] = t('.pages_has_been_renamed')
-    redirect_to :action => 'manage', :ia_work_id => @ia_work.id
+    redirect_to action: 'manage', ia_work_id: @ia_work.id
   end
 
   def title_from_ocr_bottom
     @ia_work.title_from_ocr(:bottom)
 
     flash[:notice] = t('.pages_has_been_renamed')
-    redirect_to :action => 'manage', :ia_work_id => @ia_work.id
+    redirect_to action: 'manage', ia_work_id: @ia_work.id
   end
 
   def confirm_import
     @detail_url = params[:detail_url]
-    #id = detail_url.split('/').last
+    # id = detail_url.split('/').last
 
     if @detail_url =~ /https?:\/\/(www\.)?archive\.org\/.+/
       @detail_url.sub!(/\/mode\/.*/, '')
-      @matches = IaWork.where(:detail_url => @detail_url)
+      @matches = IaWork.where(detail_url: @detail_url)
       if @matches.size() == 0
         # nothing to do here
-        ajax_redirect_to :action => 'import_work', :detail_url => @detail_url
-        return
+        ajax_redirect_to action: 'import_work', detail_url: @detail_url
+        nil
       end
     else
       errors.add(:base, t('.please_enter_valid_url'))
-      render :action => 'ia_book_form'
+      render action: 'ia_book_form'
     end
   end
 
   def import_work
     detail_url = params[:detail_url]
-    id = detail_url.sub(/.*archive.org\/details\//,'').sub(/\/.*/,'')
+    id = detail_url.sub(/.*archive.org\/details\//, '').sub(/\/.*/, '')
 
     # pull relevant info about the work from here
     @ia_work = IaWork.new
@@ -128,7 +137,6 @@ class IaController < ApplicationController
     @ia_work.ingest_work(id)
 
     flash[:notice] = t('.imported_into_staging', title: @ia_work.title)
-    ajax_redirect_to :action => 'manage', :ia_work_id => @ia_work.id
+    ajax_redirect_to action: 'manage', ia_work_id: @ia_work.id
   end
-
 end

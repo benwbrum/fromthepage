@@ -1,4 +1,4 @@
-=render(:partial => 'admin/header', :locals => { :selected => 6 })
+=render partial: 'admin/header', locals: { selected: 6 }
 .columns
   article.maincol
 
@@ -31,14 +31,13 @@
             td.nowrap
               small.label(class="upload-status-#{bulk_export.status}") =bulk_export.status.titleize
             td.nowrap
-              dl.dropdown.right
+              dl.dropdown.right data-controller='dropdown'
                 dt tabindex=0
                   span= t('.actions')
                   =svg_symbol '#icon-list', class: 'icon'
                 dd
-                  =link_to(t('.show_details'), bulk_export_show_path(:bulk_export_id => bulk_export.id))
+                  =link_to(t('.show_details'), bulk_export_show_path(bulk_export_id: bulk_export.id))
 
         .toolbar_group =will_paginate @bulk_exports
 
-    =render(:partial => 'shared/pagination', :locals => { :model => @bulk_exports, :entries_info => true })
-
+    =render partial: 'shared/pagination', locals: { model: @bulk_exports, entries_info: true }

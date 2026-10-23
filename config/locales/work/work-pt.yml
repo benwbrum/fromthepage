@@ -1,6 +1,62 @@
 ---
 pt:
   work:
+    ai_metadata:
+      generated_with: Gerado com %{model}
+      heading: Rascunho de Metadados de IA
+      imported_metadata: Metadados importados
+      reasoning: Raciocínio
+      select_model: Selecionar modelo de IA
+      source_material: Material de origem
+    ai_transcriptions:
+      create:
+        success: Vaga de transcrição por IA aberta.
+      form:
+        ai_transcription: Transcrição por IA
+        contact_us: Entre em contato com %{email} para atualizar para um plano que inclua rascunhos de IA.
+        description: Inicie uma transcrição por IA para páginas nesta obra.
+        description_complete: Todas as páginas desta obra possuem transcrições feitas por IA.
+        edit_metadata_after_split: Editar metadados após dividir
+        edit_metadata_after_split_description: Após a confirmação em linha da divisão, ir direto para o formulário de metadados da nova obra.
+        edit_metadata_after_split_disabled: Habilite e configure a criação de metadados em %{link}.
+        edit_metadata_after_split_disabled_link: Configuração da tarefa
+        failed: Fracassado
+        failed_transcription_errors: Erros de transcrição
+        failed_transcription_errors_hidden: "%{count} erros adicionais de transcrição não são exibidos."
+        finished: Finalizado
+        generate: Crie rascunhos com IA para páginas que não os possuem.
+        in_progress: Em andamento
+        not_started: Não iniciado
+        pages: Páginas
+        queued: Em fila
+        retry: Tentar novamente trabalhos com falha
+        segment_collection: Segmentar Coleção
+        segmentation: Segmentar Coleção
+        segmentation_description: Ao enviar um conjunto de imagens (por exemplo, uma pasta) e depois segmentá-lo, sugeriremos os locais onde os documentos devem ser divididos em obras individuais.
+        segmentation_tokens_used: Fichas utilizadas para a segmentação
+        total_tokens_used: Total de fichas utilizadas
+      segment:
+        success: O trabalho de segmentação foi iniciado. Você receberá um e-mail quando ele for concluído.
+      segmentation_setting:
+        success: Configuração de segmentação salva.
+      update:
+        success: Tentando novamente a tarefa de transcrição por IA.
+    ai_work_metadata:
+      create:
+        success: Trabalho de rascunho de metadados por IA iniciado.
+      form:
+        description: Gere rascunhos de metadados desta obra usando IA com Gemini e Claude.
+        drafts_heading: Rascunhos
+        generate: Gerar rascunho de metadados com IA
+        heading: Rascunho de metadados com IA
+        no_metadata_fields: Configure os campos de metadados em Configuração de tarefas antes de gerar rascunhos de metadados com IA.
+      show:
+        back: Voltar às configurações de IA
+        fields_heading: Campos do rascunho
+        heading: Rascunho de metadados com IA (%{model})
+        reasoning_heading: Raciocínio
+        status: 'Status: %{status}'
+        tokens_used: 'Fichas utilizadas: %{count}'
     configurable_printout:
       description: Exporte esta obra em um formato para impressão
       export: Exportar
@@ -9,9 +65,10 @@ pt:
       heading: Configuração de impressão
       include_contributors: Incluir colaboradores
       include_metadata: Incluir metadados
+      include_notes: Incluir notas
       preserve_linebreaks: Preservar quebras de linha
       text_contents: Conteúdo
-      text_contents_description: A exportação imprimível incluirá o texto da transcrição e também pode incluir informações sobre os colaboradores do projeto ou metadados sobre a obra.
+      text_contents_description: A versão para impressão incluirá o texto da transcrição e também pode incluir informações sobre os colaboradores do projeto ou metadados sobre a obra.
       text_format: Formatação de texto
       text_format_description: Opções para formatar texto.
       text_format_docx: MS Word (.docx)
@@ -19,7 +76,14 @@ pt:
       word_wrap: Quebra de linha
     create:
       work_created: Obra criado com sucesso
+    delete:
+      success: Obra excluído com sucesso
     describe:
+      ai_draft_fields: Rascunho de IA
+      ai_draft_fields_tooltip: Copiar metadados gerados por IA para os campos
+      ai_model: "%{model}"
+      ai_reasoning: Raciocínio
+      ai_tokens_used: "%{count} tokens usados"
       always_show_fullscreen: Sempre mostrar tela cheia
       approve: Aprovar
       approve_to_transcribed_tooltip: Salve e aprove estes metadados
@@ -49,12 +113,19 @@ pt:
       author_contributed_at: "%{author} em %{date}"
       compared_with: Comparado com
       help_description: Visualize e compare as alterações que foram feitas em cada revisão aos metadados da obra. A coluna da esquerda mostra os metadados na revisão selecionada, a coluna da direita mostra o que foi alterado. O texto inalterado é <span>destacado em branco</span>, o texto excluído é <del>destacado em vermelho</del> e o texto inserido é <ins>destacado em verde</ins>.
+      restore: Restaurar
+      restore_confirm: Tem certeza de que deseja restaurar esta versão dos metadados da obra? Você será levado à tela de metadados para revisá-la.
+      restore_tooltip: Substituir os metadados atuais da obra por esta versão
       revision: revisão
     download:
+      accessible_pdf: PDF acessível
+      accessible_pdf_download_description: Baixe uma versão em PDF deste obra otimizada para leitores de tela e tecnologias assistivas.
+      accessible_pdf_export_description: Baixe uma versão em PDF desta obra otimizada para leitores de tela e tecnologias assistivas.
       analyze: Analisar
       configurable_printout: Impressão Configurável
       configurable_printout_button: configurar
       configurable_printout_description: Exportação para PDF ou MS Word com conteúdo e formatação configuráveis
+      configure: Configurar
       docx_download_description: Baixe uma versão DOCX desta obra.
       download: Download
       expanded_plaintext: Texto simples expandido
@@ -92,15 +163,16 @@ pt:
       additional_metadata: Metadados adicionais
       additional_metadata_description: Esses campos de metadados são exibidos na tela Sobre desta obra e nas exportações de TEI, mas não afetam a funcionalidade de FromThePage.
       allowed_collaborators: Colaboradores permitidos
-      apply: Aplicar
       author: Autor
       collaborators_can_edit_titles: Permitir que os colaboradores editem os títulos das páginas
       collection: Coleção
       confirm_delete_work: Tem certeza de que deseja excluir esta obra? Após a exclusão, você não poderá recuperá-lo!
       current_url: A URL atual para esta obra é %{current_url}. Se você quiser editar a seção da obra do URL, use letras minúsculas e traços entre as palavras.
       delete_work: Excluir obra
+      delete_work_description: Ao pressionar este botão, a obra e todas as suas páginas serão apagados. Esta ação é irreversível.
       description: Descrição
       description_message: A descrição será exibida na tela Visão geral do projeto e na tela Sobre do projeto. Uma parte abreviada da descrição será exibida na tela inicial da organização e na tela Find A Project.
+      destroy_everything: Destrua tudo
       document_date: Data do documento
       document_date_hint: A data do documento está no formato EDTF (por exemplo, 1843, 2001-02, 1643-06-30)
       document_history: Documento histórico
@@ -131,6 +203,7 @@ pt:
       source_box_folder: Caixa/Pasta de Origem
       source_collection_name: Nome da coleção de origem
       source_location: Local de origem
+      subject_change_warning: Tem certeza de que deseja mover esta obra para uma nova coleção? Você perderá todos os links relacionados ao assunto.
       support_translation: Tradução de suporte
       support_translation_description: Uma obra pode ser traduzida assim como transcrita. Quando marcada, a obra terá uma guia Tradução para cada página.
       transcription_conventions: Convenções de transcrição
@@ -140,13 +213,20 @@ pt:
       uploaded_by: Enviado por
       url: URL
       work_image: Imagem da obra
-      work_image_description: Uma imagem a ser usada para ilustrar a obra. Se nenhuma imagem for carregada, uma imagem da página será usada.
+      work_image_description: Uma imagem utilizada para ilustrar a obra. Caso nenhuma imagem seja carregada, será usada uma imagem da página.
       work_thumbnail: Miniatura da obra
       work_title: Título da obra
     edit_scribes:
       remove_collaborator: Remover colaborador
-      work_collaborators: Colaboradores de trabalho
-      work_collaborators_description: Os colaboradores podem transcrever e editar trabalhos privados.
+      work_collaborators: Colaboradores de obra
+      work_collaborators_description: Os colaboradores podem transcrever e editar obras privadas.
+    edit_tabs:
+      ai: IA
+      danger_zone: Zona de Perigo
+      general: Em geral
+      metadata: Metadados
+      privacy_access: Privacidade e acesso
+      task_configuration: Configuração da tarefa
     incomplete: Metadados incompletos.
     metadata_overview:
       notes_and_questions: Notas e perguntas
@@ -156,7 +236,7 @@ pt:
     new:
       collection: Coleção
       create_empty_work: Criar obra vazia
-      create_empty_work_description: Isso cria uma obra vazio. Depois de criar a obra, você pode adicionar imagens de páginas individuais. Se você tiver um arquivo zip ou pdf com várias imagens, você deve criar a obra e fazer upload do arquivo em %{start_project}.
+      create_empty_work_description: Cria uma obra vazia. Após criar a obra, é possível adicionar imagens de páginas individuais. Caso possua um arquivo ZIP ou PDF com várias imagens, crie a obra e envie o arquivo em %{start_project}.
       create_work: Criar obra
       description: Descrição
       description_message: A descrição será exibida na tela Visão geral do projeto e na tela Sobre do projeto. Uma parte abreviada da descrição será exibida na tela inicial da organização e na tela Find A Project.
@@ -166,7 +246,7 @@ pt:
     pages_tab:
       actions: Ações
       add_new_page: Adicionar nova página
-      confirm_delete_page: Tem certeza de que deseja excluir esta página? Após a exclusão, você não poderá recuperá-lo!
+      confirm_delete_page: Tem certeza de que deseja excluir esta página? Após a exclusão, você não poderá recuperá-la!
       delete: Excluir
       featured_page: Página em destaque
       image_status: Status da imagem
@@ -174,18 +254,23 @@ pt:
       move_down: Mover para baixo
       move_up: Subir
       no_pages_found: Nenhuma página encontrada
-      no_pages_found_description: Esta obra ainda não contém páginas
-      no_works_found_description: Não há nenhum obra presente neste momento
+      no_pages_found_description: Esta obra ainda não possui páginas
+      no_works_found_description: Não há nenhuma obra neste momento
       page_title: Título da página
-      pages_tab_description: Aqui você vê a lista de todas as páginas da obra. Se você quiser alterar a posição de uma página, use as setas para cima e para baixo à direita. Para criar uma nova página para esta obra clique no botão Adicionar Nova Página. Depois que uma nova página em branco for criada, encontre-a na lista abaixo e prossiga para as configurações onde você pode fazer upload da imagem da página.
+      pages_tab_description: Aqui é possível visualizar a lista de todas as páginas da obra. Para alterar a posição de uma página, utilize as setas para cima e para baixo à direita. Para criar uma nova página, clique no botão Adicionar Nova Página. Após criar uma nova página em branco, localize-a na lista abaixo e acesse as configurações para enviar a imagem da página.
       position: Posição
       ready_to_transcribe: Pronto para %{transcribe}
       settings: Definições
-      transcribe: transcrever
+      transcribe: Transcrever
       upload: Envio
       upload_page_image: "%{upload} imagem da página"
+    restore_description_version:
+      restored: Os metadados da obra foram restaurados para a versão selecionada. Revise-os.
+      version_not_found: Versão dos metadados não encontrada.
     save_description:
       work_described: Sua descrição foi salva
+    search:
+      search_in_work: Pesquisar no documento
     show:
       author_name: Nome do Autor
       description: Descrição
@@ -206,7 +291,13 @@ pt:
       source_box_folder: Caixa de fontes
       source_collection_name: Nome de coleção fonte
       source_location: Localização de fonte
-      uploaded_by: Subido por
+      uploaded_by: Enviado por
+    split_page:
+      create_failed: 'Não foi possível criar a nova obra: %{errors}'
+      no_previous_pages: Não há páginas antes desta para dividir em uma nova obra.
+      unauthorized: Você não tem permissão para dividir esta obra.
     undescribed: Sem metadados.
     update:
       work_updated: Obra atualizada com sucesso
+    users_list:
+      no_users_collaborators: Sem colaboradores

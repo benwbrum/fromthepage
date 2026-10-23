@@ -1,6 +1,23 @@
 ---
 en:
   admin:
+    ai:
+      errors:
+        collection_label: 'Collection: '
+        none: No AI transcription errors found.
+        owner_label: 'Owner: '
+        table:
+          collection: Collection
+          error: Error
+          flagged_at: Flagged At
+          model: Model
+          owner: Owner
+          page: Page
+          work: Work
+        title: AI Transcription Errors
+      nav:
+        errors: Errors
+        suspicious_behaviors: Suspicious Behaviors
     autoflag:
       flag_message: Looking for additional content to flag.  Revisit this page in a few minutes.
     collection_activity:
@@ -59,7 +76,9 @@ en:
     header:
       abuse: Abuse
       administration: Administration
+      ai: AI
       exports: Exports
+      jobs: Jobs
       logfile: Logfile
       owners: Owners
       settings: Settings
@@ -74,7 +93,6 @@ en:
       acct_expiration: Acct Expiration
       acct_type: Acct Type
       action: Action
-      active_pages: Active Pages
       are_you_sure: Are you sure you want to delete user? After deleting you won't be able to recover it!
       collections: Collections
       delete: Delete
@@ -112,6 +130,14 @@ en:
       flag_blacklist: 'Terms to flag as potential abusive content:'
       save_changes: Save Changes
       welcome_text: 'Project owner welcome email text:'
+    suspicious_behaviors:
+      table:
+        collection: Collection
+        flagged_at: Flagged at
+        owner: Owner
+        page: Page
+        type: Type
+        user: User
     tail_logfile:
       last_lines_of_development_logfile: Last %{lines} lines of development logfile
       last_lines_of_production_logfile: Last %{lines} lines of production logfile

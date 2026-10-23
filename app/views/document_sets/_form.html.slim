@@ -1,0 +1,6 @@
+.collection-settings-wrapper
+  =form_for document_set, url: document_set_path(document_set, collection_id: document_set, scope: scope), method: :put, html: { multipart: true, data: { controller: 'form', action: 'change->form#requestSubmit', turbo: true } } do |f|
+    =render 'shared/validation_summary', errors: document_set.errors
+    =f.submit t('document_sets.edit.save_changes'), id: 'collection-settings-save', hidden: true
+    table.form.collection-settings
+      =render partial: "#{scope}_form", locals: { document_set: document_set, f: f }

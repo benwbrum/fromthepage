@@ -1,0 +1,5 @@
+<% if @result.success? %>
+  <%= turbo_flash(t('document_sets.update.document_updated'), :notice) %>
+<% else %>
+  <%= turbo_flash(t('document_sets.update.document_failed_update'), :error) %>
+<% end %>

@@ -22,10 +22,11 @@ class DeedType
   COLLECTION_ACTIVE = 'coll_act'
   COLLECTION_INACTIVE = 'coll_inact'
   COLLECTION_JOINED = 'coll_join'
-  PAGE_REVIEWED = "pg_revd"
+  PAGE_REVIEWED = 'pg_revd'
   TRANSLATION_REVIEWED = 'xlat_revd'
   DESCRIBED_METADATA = 'md_desc'
   EDITED_METADATA = 'md_edit'
+  AI_DRAFT = 'ai_draft'
 
   COMPLETED_TYPES = [
     PAGE_MARKED_BLANK,
@@ -58,7 +59,8 @@ class DeedType
     PAGE_REVIEWED => 'deed.page_reviewed',
     TRANSLATION_REVIEWED => 'deed.translation_reviewed',
     DESCRIBED_METADATA => 'deed.described_metadata',
-    EDITED_METADATA => 'deed.edited_metadata'
+    EDITED_METADATA => 'deed.edited_metadata',
+    AI_DRAFT => 'deed.ai_draft'
   }
 
   # This `class << self` inherited group replaces the need to call `self.` on
@@ -89,7 +91,8 @@ class DeedType
         PAGE_TRANSLATED,
         PAGE_TRANSLATION_EDIT,
         DESCRIBED_METADATA,
-        EDITED_METADATA
+        EDITED_METADATA,
+        AI_DRAFT
       ]
     end
 

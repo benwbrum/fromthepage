@@ -12,7 +12,6 @@ es:
       cancel: Cancelar
       continue: Continuar
       manage_categories: Administrar Categorías
-      options: Opciones
       subject: 'Tema: '
       uncategorized_subjects: Temas Sin Categoría
       uncategorized_subjects_mentioned: Hay temas sin categorizar mencionados en la transcripción de la página. Por favor revisa los temas a continuación y asigna las categorías apropiadas para ellos.
@@ -32,6 +31,18 @@ es:
       more_help: Más ayuda....
       needs_review: Necesita Revisión
       notes_and_questions: Notas y Preguntas
+      previous_work_title: Título para las páginas 1–%{n}
+      segmentation_cancel: Cancelar
+      segmentation_candidate: Esto parece un documento nuevo. ¿Separarlo en una obra nueva?
+      segmentation_confirm: Dividir
+      segmentation_dismiss: Descartar
+      segmentation_edit_work_metadata: Editar metadatos de la nueva obra
+      segmentation_no: 'No'
+      segmentation_split_confirm_message: "¿Dividir esto en una obra nueva a partir de aquí?"
+      segmentation_success: Se creó "%{title}" con %{count} páginas.
+      segmentation_view_work: Ver la nueva obra
+      segmentation_yes: Sí, dividir aquí
+      split_into_new_work: Dividir en una obra nueva
       this_page_marked_blank: Esta página está en blanco
       this_page_marked_needs_review: Esta página ha sido marcada como "necesita revisión". Puedes mejorar esta página corrigiéndola con el original y agregando o corrigiendo texto. Cuando hayas terminado, desmarca "necesita revisión" y guarda la página.
       this_page_marked_needs_review_workflow_version: Esta página necesita revisión. Puedes mejorar esta página revisándola con el original y añadiendo o corrigiendo el texto y. Después, aprueba el texto.
@@ -47,13 +58,16 @@ es:
       sign_up_now_to_transcribe: Regístrate ahora para transcribir.
       transcribe_as_guest: Transcribir como visitante
     mark_page_blank:
+      saved_and_next_notice: Guardado. Pasando a la siguiente página.
       saved_notice: Guardado
     save_buttons:
+      ai_draft_fields: Borrador de IA
+      ai_draft_fields_tooltip: Copie el texto generado por IA en los campos
       approve: Aprobar
       approve_to_transcribed_tooltip: Guardar y aprobar esta página
       autolink: Enlace automático
       autolink_tooltip: Sugerir etiquetas de asunto automáticamente
-      copy_ai_plaintext: Texto de IA
+      copy_ai_plaintext: Borrador de IA
       copy_ai_plaintext_tooltip: Copie el texto generado por IA al editor
       done: Terminado
       edit: Editar
@@ -69,6 +83,7 @@ es:
       save_to_transcribed_tooltip: Guardar tus cambios
     save_transcription:
       error_message: 'Se produjo un error al analizar el formato en la transcripción. Este tipo de error a menudo ocurre si falta un corchete angular o si se deja una etiqueta de HTML abierta. Verifica cualquier instancia de < or=""> símbolos en el texto. (El error del analizador fue: %{error_message})'
+      saved_and_next_notice: Guardado. Pasando a la siguiente página.
       saved_notice: Guardado
       you_may_save_notice: Puedes guardar hasta %{guest_deed_count} transcripciones como visitante.
     save_translation:

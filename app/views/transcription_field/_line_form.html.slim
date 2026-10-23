@@ -1,6 +1,9 @@
 -@line = local_assigns[:line_number]
 tr
-  th.field-form_line colspan="6" #{@line}
+  th.field-form_line colspan="6"
+    span #{@line}
+    span.field-form_icon.reorder.line-reorder-handle title=t('transcription_field.new_field_form.reorder_field')
+      =svg_symbol '#icon-reorder', class: 'icon', title: t('transcription_field.new_field_form.reorder_field')
 tr
   th.field-form_label =t('.label')
   th.field-form_type =t('.input_type')

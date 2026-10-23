@@ -9,6 +9,10 @@ de:
       document_set:
         slug: URL
         title: Titel
+      document_upload:
+        attachment: Datei
+      page:
+        base_image: Seitenbild
       work:
         slug: URL
         title: Titel
@@ -24,6 +28,14 @@ de:
             slug:
               blank: erforderlich
               invalid: muss mindestens einen Buchstaben beinhalten
+        document_upload:
+          attributes:
+            attachment:
+              content_type_invalid: 'Sie dürfen keine "%{human_content_type}"-Dateien hochladen, zulässige Typen: %{authorized_human_content_types}'
+        user:
+          attributes:
+            email:
+              spammy: stammt aus einer Domäne, für die keine Anmeldung zulässig ist
         work:
           attributes:
             slug:

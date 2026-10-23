@@ -1,0 +1,33 @@
+=render partial: 'admin/header', locals: { selected: Admin::Ai::BaseController::ADMIN_HEADER_TAB }
+
+.collection-meta-wrapper
+  =render partial: 'admin/ai/side_nav', locals: { current_section: :errors }
+  #collection-settings
+    .collection-settings-wrapper
+      h3 =t('admin.ai.errors.title')
+      -if @ai_transcriptions.any?
+        table.datagrid.striped.dataTable.no-footer
+          thead
+            tr
+              th =t('admin.ai.errors.table.flagged_at')
+              th =t('admin.ai.errors.table.work')
+              th =t('admin.ai.errors.table.page')
+              th =t('admin.ai.errors.table.collection')
+              th =t('admin.ai.errors.table.owner')
+              th =t('admin.ai.errors.table.model')
+              th =t('admin.ai.errors.table.error')
+          tbody
+            -@ai_transcriptions.each do |ai_transcription|
+              -work = ai_transcription.page.work
+              -collection = work.collection
+              tr
+                td =ai_transcription.updated_at.strftime('%D %H:%M:%S')
+                td =link_to work.title, collection_path(collection.owner, collection)
+                td =link_to ai_transcription.page.title, collection_display_page_path(collection.owner, collection, work, ai_transcription.page)
+                td =link_to collection.title, collection_path(collection.owner, collection)
+                td =link_to collection.owner.display_name, user_profile_path(collection.owner)
+                td =ai_transcription.model
+                td =link_to ai_transcription.short_error_message, admin_ai_error_path(ai_transcription)
+        =render partial: 'shared/pagination', locals: { model: @ai_transcriptions, entries_info: true, controller: 'admin/ai/errors', action: 'index' }
+      -else
+        p =t('admin.ai.errors.none')

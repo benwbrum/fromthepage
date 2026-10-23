@@ -1,0 +1,7 @@
+<%= turbo_stream.update('collection-settings', partial: 'form', locals: { collection: @collection, work: @work, scope: 'edit_metadata' }) %>
+
+<% if @result.success? %>
+  <%= turbo_flash(t('work.update.work_updated'), :notice) %>
+<% else %>
+  <%= turbo_flash(t('errors.error'), :error) %>
+<% end %>

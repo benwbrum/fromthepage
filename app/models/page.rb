@@ -9,6 +9,7 @@
 #  base_width              :integer
 #  created_on              :datetime
 #  edit_started_at         :datetime
+#  is_first_page_candidate :boolean
 #  last_note_updated_at    :datetime
 #  line_count              :integer
 #  lock_version            :integer          default(0)
@@ -20,6 +21,7 @@
 #  source_translation      :text(16777215)
 #  status                  :string(255)      default("new"), not null
 #  title                   :string(255)
+#  transcription_json      :text(4294967295)
 #  translation_status      :string(255)      default("new"), not null
 #  xml_text                :text(16777215)
 #  xml_translation         :text(16777215)
@@ -41,38 +43,52 @@ require 'search_translator'
 require 'transkribus/page_processor'
 
 class Page < ApplicationRecord
+  AI_FULL_RESOLUTION_LIMIT = 8000
+
   ActiveRecord::Base.lock_optimistically = false
 
   include XmlSourceProcessor
   include ApplicationHelper
+  include AiAccuracyCalculator
 
+  before_create :set_default_transcription_json
   before_update :validate_blank_page
   before_update :process_source
   before_update :populate_search
   before_update :update_line_count
   before_save :calculate_last_editor
-  before_save :calculate_approval_delta
+  after_save :calculate_approval_delta
+
   validate :validate_source, :validate_source_translation
 
   belongs_to :work, optional: true
-  acts_as_list :scope => :work
-  belongs_to :last_editor, :class_name => 'User', :foreign_key => 'last_editor_user_id', optional: true
+  acts_as_list scope: :work
+  belongs_to :last_editor, class_name: 'User', foreign_key: 'last_editor_user_id', optional: true
 
   has_many :page_article_links, dependent: :destroy
   has_many :articles, through: :page_article_links
-  has_many :page_versions, -> { order 'page_version DESC' }, :dependent => :destroy
+  has_many :page_versions, -> { order(page_version: :desc) }, dependent: :destroy
 
-  belongs_to :current_version, :class_name => 'PageVersion', :foreign_key => 'page_version_id', optional: true
+  has_many :ai_transcriptions, class_name: 'AiTranscription'
+  has_one :ai_transcription, -> { order(created_at: :desc) }, class_name: 'AiTranscription'
+  has_one :finished_ai_transcription, -> { status_finished.order(created_at: :desc) }, class_name: 'AiTranscription'
+  has_many :segmentation_logs, dependent: :destroy
 
+  has_many :alto_transcriptions, -> { alto }, class_name: 'AiTranscription'
+  has_one :alto_transcription, -> { alto.order(created_at: :desc) }, class_name: 'AiTranscription'
+
+  has_many :suspicious_behaviors, dependent: :destroy
+
+  belongs_to :current_version, class_name: 'PageVersion', foreign_key: 'page_version_id', optional: true
   has_and_belongs_to_many :sections
 
-  has_many :notes, -> { order 'created_at' }, :dependent => :destroy
-  has_one :ia_leaf, :dependent => :destroy
-  has_one :sc_canvas, :dependent => :destroy
-  has_many :table_cells, :dependent => :destroy
-  has_many :tex_figures, :dependent => :destroy
-  has_many :deeds, :dependent => :destroy
-  has_many :external_api_requests, :dependent => :destroy
+  has_many :notes, -> { order(:created_at) }, dependent: :destroy
+  has_one :ia_leaf, dependent: :destroy
+  has_one :sc_canvas, dependent: :destroy
+  has_many :table_cells, dependent: :destroy
+  has_many :tex_figures, dependent: :destroy
+  has_many :deeds, dependent: :destroy
+  has_many :external_api_requests, dependent: :destroy
 
   after_save :create_version
   after_save :update_sections_and_tables
@@ -85,22 +101,46 @@ class Page < ApplicationRecord
   after_initialize :defaults
   after_destroy :update_work_stats
   # after_destroy :delete_deeds
-  after_destroy :update_featured_page, if: Proc.new {|page| page.work.featured_page == page.id}
+  after_destroy :update_featured_page, if: Proc.new { |page| page.work.featured_page == page.id }
 
-  serialize :metadata, Hash
+  serialize :metadata, type: Hash
 
-  STATUS_VALUES = {
+  # TODO: We need to upgrade our DB version to utilize native json column field.
+  # Right now we are technically using long-text field and serializing to JSON
+  if (col = columns_hash['transcription_json']) &&
+    !col.sql_type_metadata.sql_type.match?(/\bjson\b/i)
+    serialize :transcription_json, coder: JSON
+  end
+
+  attribute :ai_draft_used, :boolean, default: false
+
+  ACCEPTED_FILE_TYPES = [
+    'image/jpeg',
+    'image/png',
+    'image/gif',
+    'image/bmp',
+    'image/tiff'
+  ].freeze
+
+  validates :image, content_type: ACCEPTED_FILE_TYPES
+  has_one_attached :image
+
+  enum :status, {
     new: 'new',
     blank: 'blank',
     incomplete: 'incomplete',
     indexed: 'indexed',
     needs_review: 'review',
-    transcribed: 'transcribed',
-    translated: 'translated'
-  }.freeze
+    transcribed: 'transcribed'
+  }, prefix: :status
 
-  enum status: STATUS_VALUES, _prefix: :status
-  enum translation_status: STATUS_VALUES, _prefix: :translation_status
+  enum :translation_status, {
+    new: 'new',
+    blank: 'blank',
+    indexed: 'indexed',
+    needs_review: 'review',
+    translated: 'translated'
+  }, prefix: :translation_status
 
   scope :review, -> { where(status: :needs_review) }
   scope :incomplete, -> { where(status: :incomplete) }
@@ -116,29 +156,144 @@ class Page < ApplicationRecord
     TRANSLATION = 'translation'
   end
 
-  ALL_STATUSES = STATUS_VALUES.values
-  MAIN_STATUSES = ALL_STATUSES - [STATUS_VALUES[:translated]]
-  TRANSLATION_STATUSES = ALL_STATUSES - [STATUS_VALUES[:incomplete], STATUS_VALUES[:transcribed]]
   COMPLETED_STATUSES = [
-    STATUS_VALUES[:blank],
-    STATUS_VALUES[:indexed],
-    STATUS_VALUES[:transcribed],
-    STATUS_VALUES[:translated]
+    Page.statuses[:blank],
+    Page.statuses[:indexed],
+    Page.statuses[:transcribed],
+    Page.translation_statuses[:translated]
   ].freeze
-  NOT_INCOMPLETE_STATUSES = COMPLETED_STATUSES + [STATUS_VALUES[:needs_review]]
-  NEEDS_WORK_STATUSES = [STATUS_VALUES[:new], STATUS_VALUES[:incomplete]].freeze
+
+  NOT_INCOMPLETE_STATUSES = COMPLETED_STATUSES + [Page.statuses[:needs_review]]
+  NEEDS_WORK_STATUSES = [Page.statuses[:new], Page.statuses[:incomplete]].freeze
+
+  # Expected format for `transcription_json`
+  # {
+  #   "transcription_field_id" => "content",
+  #   "transcription_field_id" => "content",
+  #   ...
+  # }
+  #
+  # For spreadsheet fields, we expect array of key-value pairs for
+  # each spreadsheet_column ID PER ROW
+  # {
+  #   "transcription_field_id_of_spreadsheet_type" => [
+  #     // This is row 1
+  #     {
+  #       "spreadsheet_column_id" => "column_content",
+  #       "spreadsheet_column_id" => "column_content",
+  #       ...
+  #     },
+  #     // This is row 2
+  #     {
+  #       "spreadsheet_column_id" => "column_content",
+  #       "spreadsheet_column_id" => "column_content",
+  #       ...
+  #     },
+  #     ...
+  #   ]
+  # }
+
+  update_index('pages', if: -> { ELASTIC_ENABLED && !destroyed? }) { self }
+  after_destroy :handle_index_deletion
+
+  def self.es_search(query:, user: nil, is_public: true)
+    blocked_collections = []
+    collection_collabs = []
+    docset_collabs = []
+
+    if user.present?
+      blocked_collections = user.blocked_collections.pluck(:id)
+      collection_collabs  = user.collection_collaborations.pluck(:id)
+      collection_collabs += user.owned_collections.pluck(:id)
+      docset_collabs      = user.document_set_collaborations.pluck(:id)
+    end
+
+    search_fields = [
+      'title^2',
+      'title.no_underscores^1.3',
+      'search_text^1.5',
+      'content_english',
+      'content_french',
+      'content_german',
+      'content_spanish',
+      'content_portuguese',
+      'content_swedish'
+    ]
+
+    PagesIndex.query(
+      bool: {
+        must: {
+          bool: {
+            # Run same query as phrase and regular tokenized
+            # Phrase matches will have higher impact
+            should: [
+              {
+                simple_query_string: {
+                  query: query,
+                  boost: 3.0,
+                  type: 'phrase',
+                  fields: search_fields
+                }
+              },
+              {
+                simple_query_string: {
+                  query: query,
+                  boost: 1.0,
+                  type: 'most_fields',
+                  fields: search_fields
+                }
+              }
+            ]
+          }
+        },
+        filter: [
+          {
+            bool: {
+              must_not: [
+                { terms: { collection_id: blocked_collections } }
+              ],
+              # At least one of the following must be true
+              should: [
+                { term: { is_public: is_public } },
+                { term: { owner_user_id: user&.id || -1 } },
+                { terms: { collection_id: collection_collabs } },
+                { terms: { docset_id: docset_collabs } }
+              ],
+              minimum_should_match: 1
+            }
+          }
+        ]
+      }
+    )
+  end
 
   # tested
   def collection
-    work.collection
+    work&.collection
   end
 
   def field_based
     self.collection.field_based
   end
 
+  def field_ai_draft_available?
+    field_based &&
+      finished_ai_transcription.present?
+  end
+
+  # Latest finished, non-ALTO AiTranscription per engine (e.g. "gemini", "claude"),
+  # used to compare AI drafts field-by-field when more than one engine has transcribed the page.
+  def finished_ai_transcriptions_by_engine
+    @finished_ai_transcriptions_by_engine ||= ai_transcriptions
+      .status_finished
+      .not_alto
+      .order(created_at: :desc)
+      .group_by(&:engine)
+      .transform_values(&:first)
+  end
+
   def articles_with_text
-    articles :conditions => ['articles.source_text is not null']
+    articles conditions: ['articles.source_text is not null']
   end
 
   def defaults
@@ -176,146 +331,107 @@ class Page < ApplicationRecord
       self.ia_leaf.facsimile_url
     elsif self.sc_canvas
       self.sc_canvas.facsimile_url
+    elsif self.image.attached?
+      Rails.application.routes.url_helpers.url_for(image)
     else
       base_image
     end
   end
 
-  def base_height
-    if self[:base_height].blank?
-      if self.sc_canvas
-        self.sc_canvas.height
-      elsif self.ia_leaf
-        self.ia_leaf.page_h
-      else
-        nil
-      end
-    else
-      self[:base_height]
-    end
-  end
-
-  def base_width
-    if self[:base_width].blank?
-      if self.sc_canvas
-        self.sc_canvas.width
-      elsif self.ia_leaf
-        self.ia_leaf.page_w
-      else
-        nil
-      end
-    else
-      self[:base_width]
-    end
-  end
-
   def base_image
-    self[:base_image] || ""
-  end
-
-  def shrink_factor
-    self[:shrink_factor] || 0
-  end
-
-  def scaled_image(factor = 2)
-    if 0 == factor
-      self.base_image
-    else
-      self.base_image.sub(/.jpg/, "_#{factor}.jpg")
-    end
+    self[:base_image] || ''
   end
 
   # Returns the thumbnail filename
-  # creates the image if it's not present
   def thumbnail_image
-    if self.ia_leaf
-      return nil
+    return if self.ia_leaf
+    return if self.base_image.blank? && !self.image.attached?
+
+    if image.attached?
+      return Rails.application.routes.url_helpers.url_for(
+        image.variant(resize_to_limit: [nil, 400])
+      )
     end
-    if self.base_image.blank?
-      return nil
-    end
-    if !File.exists?(thumbnail_filename())
-      if File.exists?(modernize_absolute(self.base_image))
+
+    # TODO: Deprecate this in favor of image.variant
+    if !File.exist?(thumbnail_filename())
+      if File.exist?(modernize_absolute(self.base_image))
         generate_thumbnail
       end
     end
-    return thumbnail_filename
+    thumbnail_filename
   end
 
   def thumbnail_url
     if self.ia_leaf
       self.ia_leaf.thumb_url
-    elsif self.sc_canvas
+    elsif self.sc_canvas && !self.image.attached? && self[:base_image].blank?
       self.sc_canvas.thumbnail_url
+    elsif self.image.attached? && ::ACTIVE_STORAGE_PROXY_LIST.include?(work.collection.owner.slug)
+      Rails.application.routes.url_helpers.rails_storage_proxy_url(
+        image.variant(resize_to_limit: [nil, 400])
+      )
+    elsif self.image.attached?
+      Rails.application.routes.url_helpers.url_for(
+        image.variant(resize_to_limit: [nil, 400])
+      )
     else
+      # TODO: Deprecate this in favor of image.variant
       file_to_url(self.thumbnail_image)
     end
   end
 
   def calculate_last_editor
     unless COMPLETED_STATUSES.include? self.status
-      self.last_editor = User.current_user
+      self.last_editor = Current.user
     end
   end
 
   def calculate_approval_delta
-    if source_text_changed?
-      if COMPLETED_STATUSES.include? self.status
-        most_recent_not_approver_version = self.page_versions.where.not(user_id: User.current_user.id).first
-        if most_recent_not_approver_version
-          old_transcription = most_recent_not_approver_version.transcription || ''
-        else
-          old_transcription = ''
-        end
-        new_transcription = self.source_text
+    return Current.user.present? && saved_change_to_source_text?
 
-        if new_transcription.blank? && old_transcription.blank?
-          self.approval_delta = nil
-        else
-          self.approval_delta =
-            Text::Levenshtein.distance(old_transcription, new_transcription).to_f /
-              (old_transcription.size + new_transcription.size).to_f
-        end
-      else # zero out deltas if the page is not complete
-        self.approval_delta = nil
-      end
-    end
+    Page::CalculateApprovalDeltaJob.perform_later(
+      page_id: self.id,
+      user_id: Current.user.id
+    )
   end
 
   def create_version
-      return unless self.saved_change_to_source_text? || self.saved_change_to_title? || self.saved_changes.present?
+    return unless self.saved_change_to_source_text? ||
+                  self.saved_change_to_title? ||
+                  self.saved_change_to_xml_text? ||
+                  self.saved_change_to_source_translation? ||
+                  self.saved_change_to_xml_translation? ||
+                  self.saved_change_to_transcription_json? ||
+                  self.saved_change_to_status? ||
+                  self.saved_change_to_translation_status?
 
-      version = PageVersion.new
-      version.page = self
-      version.title = self.title
-      version.transcription = self.source_text
-      version.xml_transcription = self.xml_text
-      version.source_translation = self.source_translation
-      version.xml_translation = self.xml_translation
-      version.status = self.status
+    version = PageVersion.new(
+      page: self,
+      title: self.title,
+      transcription: self.source_text,
+      xml_transcription: self.xml_text,
+      source_translation: self.source_translation,
+      xml_translation: self.xml_translation,
+      status: self.status,
+      transcription_json: self.transcription_json,
+      ai_draft_used: self.ai_draft_used? && self.saved_change_to_source_text?
+    )
 
-      # Add other attributes as needed
+    # Add other attributes as needed
 
-      unless User.current_user.nil?
-        version.user = User.current_user
-      else
-        version.user = User.find_by(id: self.work.owner_user_id)
-      end
+    version.user = Current.user || User.find_by(id: self.work.owner_user_id)
 
-      # now do the complicated version update thing
-      version.work_version = self.work.transcription_version
-      self.work.increment!(:transcription_version)
+    # now do the complicated version update thing
+    version.work_version = self.work.transcription_version
+    self.work.increment!(:transcription_version)
 
-      previous_version = PageVersion.where("page_id = ?", self.id).order("page_version DESC").first
-      if previous_version
-        version.page_version = previous_version.page_version + 1
-      end
-      version.save!
+    previous_version = PageVersion.where('page_id = ?', self.id).order('page_version DESC').first
+    version.page_version = previous_version.page_version.to_i + 1 if previous_version
+    version.save!
 
-      self.update_column(:page_version_id, version.id) # set current_version
-
+    self.update_column(:page_version_id, version.id)
   end
-
 
   def update_sections_and_tables
     if @sections
@@ -331,9 +447,9 @@ class Page < ApplicationRecord
       @tables.each do |table|
         table[:rows].each_with_index do |row, rownum|
           row.each_with_index do |cell, cell_index|
-            tc = TableCell.new(:row => rownum,
-                               :content => cell,
-                               :header => table[:header][cell_index] )
+            tc = TableCell.new(row: rownum,
+                               content: cell,
+                               header: table[:header][cell_index])
             tc.work = self.work
             tc.page = self
             tc.section = table[:section]
@@ -346,9 +462,9 @@ class Page < ApplicationRecord
   end
 
   def submit_background_processes(type)
-    if type == "transcription"
+    if type == 'transcription'
       latex = self.source_text.scan(LATEX_SNIPPET)
-    elsif type == "translation"
+    elsif type == 'translation'
       latex = self.source_translation.scan(LATEX_SNIPPET)
     end
 
@@ -379,7 +495,7 @@ class Page < ApplicationRecord
         if self.source_text.nil?
           0
         else
-          self.source_text.lines.select{|line| line.match(/\S/)}.count
+          self.source_text.lines.select { |line| line.match(/\S/) }.count
         end
       end
     else
@@ -393,7 +509,11 @@ class Page < ApplicationRecord
   # once to reset the previous links, once to reset new links
   def clear_article_graphs
     article_ids = self.page_article_links.pluck(:article_id)
-    Article.where(id: article_ids).update_all(:graph_image=>nil)
+
+    Article.where(id: article_ids).each do |article|
+      article.graph_attachment.purge
+      article.d3js_attachment.purge
+    end
   end
 
   def populate_search
@@ -402,6 +522,11 @@ class Page < ApplicationRecord
 
   def verbatim_transcription_plaintext
     formatted_plaintext(self.xml_text)
+  end
+
+  def ground_truth_for_comparison
+    return verbatim_transcription_plaintext unless collection.field_based && transcription_json.present?
+    field_values_for_comparison(transcription_json)
   end
 
   def verbatim_translation_plaintext
@@ -416,107 +541,12 @@ class Page < ApplicationRecord
     emended_plaintext(self.xml_translation)
   end
 
-
-  def process_spreadsheet(field, cell_data)
-    # returns a formatted string
-    formatted = String.new
-    new_table_cells = []
-
-    # read spreadsheet-wide data like table heading
-    formatted << "<table class=\"tabular\"><thead>"
-
-    # read column-specific data like column heading
-    column_configs = field.spreadsheet_columns.to_a
-    column_configs.each do |column|
-      formatted << "<th>#{column.label}</th>"
-    end
-    checkbox_headers = column_configs.select{|cc| cc.input_type == 'checkbox'}.map{|cc| cc.label }.flatten
-
-    formatted << "</thead><tbody>"
-    # write out
-    parsed_cell_data = JSON.parse(cell_data.values.first)
-    parsed_cell_data.each_with_index do |row, rownum|
-      unless this_and_following_rows_empty?(parsed_cell_data, rownum)
-        # row = parsed_cell_data[row_key]
-        formatted_row = "<tr>"
-        row.each_with_index do |cell, colnum|
-          column = column_configs[colnum]
-          # save the table cell object
-          tc = TableCell.new(row: rownum+1)
-          tc.work = self.work
-          tc.page = self
-          tc.transcription_field_id = field.id
-          tc.header = column.label
-          if cell.blank?
-            cell = ''
-          elsif cell.to_s.scan('<').count != cell.to_s.scan('>').count # broken tags or actual < / > signs
-            cell = ERB::Util.html_escape(cell)
-          end
-          if checkbox_headers.include? tc.header
-            tc.content = (cell == 'true' || cell == true).to_s
-          else
-            tc.content = cell
-          end
-          new_table_cells << tc
-
-          # format the cell
-          formatted_row << "<td>#{cell}</td>"
-        end
-        formatted_row << "</tr>"
-        formatted << formatted_row
-      end
-    end
-    formatted << "</tbody></table>"
-
-    [formatted, new_table_cells]
-  end
-
   def this_and_following_rows_empty?(cell_data, rownum)
     remaining_rows = cell_data[rownum..(cell_data.count - 1)]
 
-    row_with_value = remaining_rows.detect { |row|  row.detect{|cell| !cell.blank? } }
+    row_with_value = remaining_rows.detect { |row|  row.detect { |cell| !cell.blank? } }
 
     row_with_value.nil?
-  end
-
-  def replace_table_cells(new_table_cells)
-    self.table_cells.insert_all(new_table_cells.map{|obj| obj.attributes.merge({created_at: Time.now, updated_at: Time.now})})
-  end
-
-  #create table cells if the collection is field based
-  def process_fields(field_cells)
-    new_table_cells = []
-    string = String.new
-    unless field_cells.blank?
-      field_cells.each do |id, cell_data|
-        field = TranscriptionField.find(id.to_i)
-        input_type = field.input_type
-        if input_type == 'spreadsheet'
-          spreadsheet_string, spreadsheet_cells = process_spreadsheet(field, cell_data)
-          string << spreadsheet_string
-          new_table_cells += spreadsheet_cells
-        else
-          tc = TableCell.new(row: 1)
-          tc.work = self.work
-          tc.page = self
-          tc.transcription_field_id = id.to_i
-
-          cell_data.each do |key, value|
-            if value.scan('<').count != value.scan('>').count # broken tags or actual < / > signs
-              value = ERB::Util.html_escape(value)
-            end
-            tc.header = key
-            tc.content = value
-            key = (input_type == "description") ? (key + " ") : (key + ": ")
-            string << "<span class=\"field__label\">" + key + "</span>" + value + "\n\n"
-          end
-
-          new_table_cells << tc
-        end
-      end
-    end
-    self.source_text = string
-    new_table_cells
   end
 
   #######################
@@ -528,29 +558,29 @@ class Page < ApplicationRecord
     if self.page_article_links.present?
       self.clear_article_graphs
       # clear out the existing links to this page
-      PageArticleLink.where("page_id = #{self.id} and text_type = '#{text_type}'").destroy_all
+      PageArticleLink.where("page_id = #{self.id} and text_type = '#{text_type}'").delete_all
     end
   end
 
-  # tested
   def create_link(article, display_text, text_type)
-    link = PageArticleLink.new(page: self, article: article,
+    link = PageArticleLink.new(page: self, article: article, work: self.work,
                                display_text: display_text, text_type: text_type)
     link.save!
-    return link.id
+    link.id
   end
 
+  # TODO: Deprecate in favor of active_storage
   def thumbnail_filename
     filename=modernize_absolute(self.base_image)
     ext=File.extname(filename)
-    filename.sub(/#{ext}$/,"_thumb#{ext}")
+    filename.sub(/#{ext}$/, "_thumb#{ext}")
   end
 
   def remove_transcription_links(text)
     self.update_columns(source_text: remove_square_braces(text))
     @text_dirty = true
     process_source
-    self.status = STATUS_VALUES[:transcribed]
+    self.status = :transcribed
     self.save!
   end
 
@@ -558,13 +588,13 @@ class Page < ApplicationRecord
     self.update_columns(source_translation: remove_square_braces(text))
     @translation_dirty = true
     process_source
-    self.status = STATUS_VALUES[:translated]
+    self.translation_status = :translated
     self.save!
   end
 
   def validate_blank_page
     unless self.status_blank?
-      self.status = STATUS_VALUES[:new] if self.source_text.blank?
+      self.status = :new if self.source_text.blank?
     end
   end
 
@@ -588,70 +618,188 @@ class Page < ApplicationRecord
     users
   end
 
-  def has_ai_plaintext?
-    File.exists?(ai_plaintext_path)
+  # TODO: Remove this on different PR after running migration
+  def has_ai_plaintext?(ai_transcription_to_use: nil)
+    ai_transcription_to_use ||= self.finished_ai_transcription
+
+    (ai_transcription_to_use.present? && ai_plaintext(ai_transcription_to_use: ai_transcription_to_use).present?) || File.exist?(self.ai_plaintext_path)
   end
 
-  def ai_plaintext
-    if has_ai_plaintext?
-      File.read(ai_plaintext_path)
+  # TODO: Remove this on different PR after running migration
+  def ai_plaintext(ai_transcription_to_use: nil)
+    ai_transcription_to_use ||= self.finished_ai_transcription
+
+    if self.alto_transcription.present?
+      self.alto_transcription.source_text
+    elsif ai_transcription_to_use.present?
+      text = ai_transcription_to_use.source_text
+      if text.blank? && ai_transcription_to_use.transcription_json.present?
+        text = field_transcription_json_to_plaintext(ai_transcription_to_use.transcription_json)
+      end
+      text
+    elsif File.exist?(self.ai_plaintext_path)
+      File.read(self.ai_plaintext_path)
     else
-      ""
+      ''
     end
   end
 
-  def ai_plaintext=(text)
-    FileUtils.mkdir_p(File.dirname(ai_plaintext_path)) unless Dir.exist? File.dirname(ai_plaintext_path)
-    File.write(ai_plaintext_path, text)
+  def ai_plaintext_has_emoji_placeholders?
+    self.ai_plaintext.include?('🤔')
   end
 
-
+  # TODO: Remove this on different PR after running migration
   def has_alto?
-    File.exists?(alto_path)
+    self.alto_transcription.present? || File.exist?(self.alto_path)
   end
 
-
+  # TODO: Remove this on different PR after running migration
   def alto_xml
-    if has_alto?
-      File.read(alto_path)
+    if self.alto_transcription.present?
+      self.alto_transcription.prompt
+    elsif self.has_alto?
+      File.read(self.alto_path)
     else
-      ""
+      ''
     end
   end
-
-  def alto_xml=(xml)
-    FileUtils.mkdir_p(File.dirname(alto_path)) unless Dir.exist? File.dirname(alto_path)
-    File.write(alto_path, xml)
-  end
-
 
   def image_url_for_download
     if sc_canvas
       self.sc_canvas.sc_resource_id
     elsif self.ia_leaf
       self.ia_leaf.facsimile_url
+    elsif self.image.attached?
+      Rails.application.routes.url_helpers.url_for(image)
     else
-      uri = URI.parse(file_to_url(self.canonical_facsimile_url).gsub(" ","+"))
-      # if we are in test, we will be http://localhost:3000 and need to separate out the port from the host
-      raw_host = Rails.application.config.action_mailer.default_url_options[:host]
-      host = raw_host.split(":")[0]
-      uri.host = host
-      port = raw_host.split(":")[1]
-      if port
-        uri.scheme = 'http'
-        uri.port = port
-      else
-        uri.scheme = 'https'
-      end
-      uri.to_s
+      image_url_from_web_path(self.canonical_facsimile_url)
     end
   end
 
+  def image_url_for_ai(max_dim: 7900)
+    size = "!#{max_dim},#{max_dim}"
+    if sc_canvas
+      if sc_canvas.sc_service_id.present?
+        service_id = sc_canvas.sc_service_id.sub(/\/$/, '')
+        begin
+          info = JSON.parse(URI.open("#{service_id}/info.json").read)
+          advertised_sizes = [info, *Array(info['sizes'])].filter_map do |image_info|
+            width, height = image_info.values_at('width', 'height').map(&:to_i)
+            [width, height] if width.positive? && height.positive?
+          end
+          maximum_width = advertised_sizes.map(&:first).max
+          maximum_height = advertised_sizes.map(&:last).max
+          dimensions_are_small = maximum_width.present? && maximum_height.present? &&
+                                 maximum_width < AI_FULL_RESOLUTION_LIMIT &&
+                                 maximum_height < AI_FULL_RESOLUTION_LIMIT
+          size = 'full' if dimensions_are_small
+        rescue StandardError => e
+          Rails.logger.warn("Unable to read IIIF image dimensions from #{service_id}/info.json: #{e.message}")
+        end
+
+        "#{service_id}/full/#{size}/0/default.jpg"
+      else
+        sc_canvas.sc_resource_id
+      end
+    elsif ia_leaf
+      "https://iiif.archive.org/iiif/#{work.ia_work.book_id}$#{ia_leaf.leaf_number}/full/#{size}/0/default.jpg"
+    elsif image.attached?
+      Rails.application.routes.url_helpers.url_for(image)
+      # CarrierWave local files: return nil — callers use local_image_path for disk read
+    end
+  end
+
+  def local_image_path
+    return nil if ia_leaf || sc_canvas
+    return nil if self[:base_image].blank?
+    path = modernize_absolute(self[:base_image])
+    File.exist?(path) ? path : nil
+  end
+
+  def normalized_image_url_for_download
+    return image_url_for_download if image.attached?
+
+    # TODO: Deprecate once move to active storage is completed
+    return unless image_url_for_download.present?
+
+    normalized_dir = "#{Rails.root}/public/images/working/upload"
+    FileUtils.mkdir_p(normalized_dir)
+
+    filename = "#{normalized_dir}/#{id}_normalized.jpg"
+
+    original_url = image_url_for_download
+    begin
+      img = Magick::Image.from_blob(URI.open(original_url).read).first
+    rescue => e
+      Rails.logger.error("Failed to load image for normalization: #{original_url} – #{e.message}")
+
+      return image_url_for_download
+    end
+
+    img = img.auto_orient
+    img.write(filename)
+
+    image_url_from_web_path(filename)
+  end
+
+  # TODO: Deprecate once move to active storage is completed
+  def image_url_from_web_path(raw_path)
+    web_path = file_to_url(raw_path)
+    uri = URI.parse(web_path)
+
+    # if we are in test, we will be http://localhost:3000 and need to separate out the port from the host
+    raw_host = Rails.application.config.action_mailer.default_url_options[:host]
+    host = raw_host.split(':')[0]
+    uri.host = host
+    port = raw_host.split(':')[1]
+    if port
+      uri.scheme = 'http'
+      uri.port = port
+    else
+      uri.scheme = 'https'
+    end
+
+    uri.to_s
+  end
+
+  def base_width
+    if self.sc_canvas
+      self.sc_canvas.width
+    elsif self.ia_leaf
+      self.ia_leaf.page_w
+    elsif image.attached?
+      image.analyze unless image.analyzed?
+      image.metadata[:width]
+    else
+      self[:base_width]
+    end
+  end
+
+  def base_height
+    if self.sc_canvas
+      self.sc_canvas.height
+    elsif self.ia_leaf
+      self.ia_leaf.page_h
+    elsif image.attached?
+      image.analyze unless image.analyzed?
+      image.metadata[:height]
+    else
+      self[:base_height]
+    end
+  end
+
+  def is_public?
+    work.nil? || work.is_public?
+  end
+
   private
+
+  # TODO: Remove this on different PR after running migration
   def ai_plaintext_path
     File.join(Rails.root, 'public', 'text', self.work_id.to_s, "#{self.id}_ai_plaintext.txt")
   end
 
+  # TODO: Remove this on different PR after running migration
   def alto_path
     File.join(Rails.root, 'public', 'text', self.work_id.to_s, "#{self.id}_alto.xml")
   end
@@ -660,21 +808,20 @@ class Page < ApplicationRecord
     '/not/implemented/yet/placeholder.xml'
   end
 
-
   def emended_plaintext(source)
     doc = Nokogiri::XML(source)
-    doc.xpath("//link").each { |n| n.replace(n['target_title'])}
-    doc.xpath("//abbr").each { |n| n.replace(n['expan'])}
+    doc.xpath('//link').each { |n| n.replace(n['target_title']) }
+    doc.xpath('//abbr').each { |n| n.replace(n['expan']) }
     formatted_plaintext_doc(doc)
   end
 
   def formatted_plaintext(source)
     doc = Nokogiri::XML(source)
-    doc.xpath("//expan").each do |n|
+    doc.xpath('//expan').each do |n|
       replacement = n['abbr'] || n['orig'] || n.text
       n.replace(replacement)
     end
-    doc.xpath("//reg").each do |n|
+    doc.xpath('//reg').each do |n|
       replacement = n['orig'] || n.text
       n.replace(replacement)
     end
@@ -682,7 +829,7 @@ class Page < ApplicationRecord
   end
 
   def formatted_plaintext_doc(doc)
-    doc.xpath("//p").each { |n| n.add_next_sibling("\n\n")}
+    doc.xpath('//p').each { |n| n.add_next_sibling("\n\n") }
     doc.xpath("//lb[@break='no']").each do |n|
       if n.text.blank?
         sigil = '-'
@@ -691,35 +838,82 @@ class Page < ApplicationRecord
       end
       n.replace("#{sigil}\n")
     end
-    doc.xpath("//table").each { |n| formatted_plaintext_table(n) }
-    doc.xpath("//lb").each { |n| n.replace("\n")}
-    doc.xpath("//br").each { |n| n.replace("\n")}
-    doc.xpath("//div").each { |n| n.add_next_sibling("\n")}
-    doc.xpath("//footnote").each { |n| n.replace('')}
+    doc.xpath('//table').each { |n| formatted_plaintext_table(n) }
+    doc.xpath('//lb').each { |n| n.replace("\n") }
+    doc.xpath('//br').each { |n| n.replace("\n") }
+    doc.xpath('//div').each { |n| n.add_next_sibling("\n") }
+    doc.xpath('//footnote').each { |n| n.replace('') }
 
-    doc.text.sub(/^\s*/m, '').gsub(/ *$/m,'')
+    doc.text.sub(/^\s*/m, '').gsub(/ *$/m, '')
   end
 
   def formatted_plaintext_table(table_element)
-    text_table = xml_table_to_markdown_table(table_element)
+    text_table = xml_table_to_markdown_table(table_element, false, true)
     table_element.replace(text_table)
   end
 
+  def field_values_for_comparison(json)
+    fields = collection.transcription_fields
+                       .includes(:spreadsheet_columns)
+                       .order(:line_number, :position)
+    values = []
+    fields.each do |field|
+      next if %w[description instruction].include?(field.input_type)
+      value = json[field.id.to_s]
+      next if value.blank?
+      if field.input_type == 'spreadsheet' && value.is_a?(Array)
+        cols = field.spreadsheet_columns
+        value.each do |row|
+          row_text = cols.map { |c| row[c.id.to_s].to_s }.reject(&:blank?).join(' ')
+          values << row_text if row_text.present?
+        end
+      else
+        values << value.to_s
+      end
+    end
+    values.join(' ')
+  end
+
+  def field_transcription_json_to_plaintext(transcription_json)
+    fields = collection.transcription_fields
+                       .includes(:spreadsheet_columns)
+                       .order(:line_number, :position)
+    lines = []
+
+    fields.each do |field|
+      next if %w[description instruction].include?(field.input_type)
+
+      value = transcription_json[field.id.to_s]
+      next if value.blank?
+
+      if field.input_type == 'spreadsheet' && value.is_a?(Array)
+        cols = field.spreadsheet_columns
+        value.each do |row|
+          row_text = cols.map { |c| row[c.id.to_s].to_s }.reject(&:blank?).join(' ')
+          lines << "#{field.label}: #{row_text}" if row_text.present?
+        end
+      else
+        lines << "#{field.label}: #{value}"
+      end
+    end
+
+    lines.join("\n\n")
+  end
 
   def modernize_absolute(filename)
     if filename
       File.join(Rails.root, 'public', filename.sub(/.*public/, ''))
     else
-      ""
+      ''
     end
   end
 
+  # TODO: Deprecate once move to active storage is completed
   def generate_thumbnail
     image = Magick::ImageList.new(modernize_absolute(self[:base_image]))
     factor = 400.to_f / self[:base_height].to_f
     image.thumbnail!(factor)
     image.write(thumbnail_filename)
-    image = nil
   end
 
   def delete_deeds
@@ -730,4 +924,20 @@ class Page < ApplicationRecord
     self.work.update_columns(featured_page: nil)
   end
 
+  def set_default_transcription_json
+    self.transcription_json ||= {}
+  end
+
+  def handle_index_deletion
+    return unless ELASTIC_ENABLED
+
+    Chewy.client.delete(
+      index: PagesIndex.index_name,
+      id: id
+    )
+  rescue StandardError => _e
+    # Make sure it does not fail
+  end
+
+  public :handle_index_deletion
 end

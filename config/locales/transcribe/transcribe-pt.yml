@@ -12,7 +12,6 @@ pt:
       cancel: Cancelar
       continue: Continuar
       manage_categories: Controlar Categorias
-      options: opções
       subject: 'Tema: '
       uncategorized_subjects: Temas Não Categorizados
       uncategorized_subjects_mentioned: Você tem temas não categorizados mencionados na transcrição da página. Por favor, revisa os temas abaixo e atribua as categorias apropriadas para eles.
@@ -32,6 +31,18 @@ pt:
       more_help: Mais ajuda....
       needs_review: Precisa de Revisão
       notes_and_questions: Notas e perguntas
+      previous_work_title: Título para as páginas 1–%{n}
+      segmentation_cancel: Cancelar
+      segmentation_candidate: Isto parece ser um novo documento. Separar isto em uma nova obra?
+      segmentation_confirm: Dividir
+      segmentation_dismiss: Descartar
+      segmentation_edit_work_metadata: Editar metadados da nova obra
+      segmentation_no: Não
+      segmentation_split_confirm_message: Dividir isto em uma nova obra a partir daqui?
+      segmentation_success: Criou-se "%{title}" com %{count} páginas.
+      segmentation_view_work: Ver a nova obra
+      segmentation_yes: Sim, dividir aqui
+      split_into_new_work: Dividir em uma nova obra
       this_page_marked_blank: Esta página foi marcada como em branco
       this_page_marked_needs_review: Esta página foi marcada como "precisa de revisão\". Você pode melhorar esta página, revisando-a contra o original e adicionando ou corrigindo o texto. Quando terminar, desfaça a opção "precisa de revisão" e salve a página.
       this_page_marked_needs_review_workflow_version: Esta página precisa de revisão. Você pode melhorar esta página revisando-a em relação ao original e adicionando ou corrigindo o texto e, em seguida, aprove o texto.
@@ -47,13 +58,16 @@ pt:
       sign_up_now_to_transcribe: Inscreva-se agora para transcrever.
       transcribe_as_guest: Transcrever como hóspede
     mark_page_blank:
+      saved_and_next_notice: Salvo. Passando para a próxima página.
       saved_notice: Guardada
     save_buttons:
+      ai_draft_fields: Rascunho de IA
+      ai_draft_fields_tooltip: Copie o texto gerado pela IA para os campos
       approve: Confirmar
       approve_to_transcribed_tooltip: Salve e aprove esta página
       autolink: Autolink
       autolink_tooltip: Sugerir tags de assunto automaticamente
-      copy_ai_plaintext: Texto de IA
+      copy_ai_plaintext: Rascunho de IA
       copy_ai_plaintext_tooltip: Copie o texto gerado pela IA para o editor
       done: Feito
       edit: Editar
@@ -69,6 +83,7 @@ pt:
       save_to_transcribed_tooltip: Salve suas alterações
     save_transcription:
       error_message: 'Houve um erro ao analisar as marcas na sua transcrição. Este tipo de erro muitas vezes ocorre se um colchete angular está faltando ou se uma tag HTML é deixada aberta. Verifique quaisquer instâncias de < or=""> símbolos no seu texto. (O erro do analisador foi: %{error_message})'
+      saved_and_next_notice: Salvo. Passando para a próxima página.
       saved_notice: Guardada
       you_may_save_notice: Você pode guardar até %{guest_deed_count} transcrições como hóspede.
     save_translation:

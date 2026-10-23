@@ -1,0 +1,29 @@
+class AiTranscription::BulkGenerateJob < ApplicationJob
+  queue_as :ai_transcriptions
+
+  retry_on StandardError, attempts: 1
+
+  # TODO: Exclude user_id for lint checks on unused vars for app/jobs/**/*
+  def perform(user_id:, collection_id:, scope: nil)
+    user = User.find(user_id)
+    collection = Collection.find(collection_id)
+    pages = collection.pages.includes(:ai_transcription)
+
+    if scope.present?
+      pages = pages.where(work_id: scope[:work_ids] || [])
+    end
+
+    ai_transcriptions = pages.includes(:ai_transcription)
+                             .map(&:ai_transcription)
+                             .compact
+
+    ai_transcriptions.each do |ai_transcription|
+      next unless ai_transcription.status_processing? || ai_transcription.status_new?
+
+      AiTranscription::GenerateJob.perform_later(
+        ai_transcription_id: ai_transcription.id,
+        user_id: user.id
+      )
+    end
+  end
+end

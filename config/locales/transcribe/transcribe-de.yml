@@ -12,7 +12,6 @@ de:
       cancel: Stornieren
       continue: Weitermachen
       manage_categories: Kategorien verwalten
-      options: Optionen
       subject: 'Entität:'
       uncategorized_subjects: Nicht kategorisierte Entitäten
       uncategorized_subjects_mentioned: Sie haben nicht kategorisierte Entitäten, die in der Seitentranskription erwähnt werden. Bitte überprüfen Sie die folgenden Entitäten und weisen Sie ihnen die entsprechenden Kategorien zu.
@@ -32,6 +31,18 @@ de:
       more_help: Mehr Hilfe....
       needs_review: Überprüfung erforderlich
       notes_and_questions: Anmerkungen und Fragen
+      previous_work_title: Titel für Seiten 1–%{n}
+      segmentation_cancel: Abbrechen
+      segmentation_candidate: Das sieht nach einem neuen Dokument aus. Soll es in ein neues Werk aufgeteilt werden?
+      segmentation_confirm: Teilen
+      segmentation_dismiss: Verwerfen
+      segmentation_edit_work_metadata: Metadaten des neuen Werkes bearbeiten
+      segmentation_no: Nein
+      segmentation_split_confirm_message: Soll dies ab hier in ein neues Werk aufgeteilt werden?
+      segmentation_success: "„%{title}“ mit %{count} Seiten erstellt."
+      segmentation_view_work: Neues Werk ansehen
+      segmentation_yes: Ja, hier teilen
+      split_into_new_work: In ein neues Werk teilen
       this_page_marked_blank: Diese Seite ist als leer gekennzeichnet
       this_page_marked_needs_review: Diese Seite wurde mit "Überprüfung erforderlich" markiert. Sie können diese Seite verbessern, indem Sie sie anhand des Originals Korrektur lesen und den Text ergänzen oder korrigieren. Wenn Sie fertig sind, deaktivieren Sie das Auswahlkästchen „Überprüfung erforderlich“ und speichern Sie die Seite.
       this_page_marked_needs_review_workflow_version: Diese Seite muss überprüft werden. Sie können diese Seite verbessern, indem Sie sie anhand des Originals Korrektur lesen und den Text hinzufügen oder korrigieren, und am Ende den Text dann freigeben.
@@ -47,13 +58,16 @@ de:
       sign_up_now_to_transcribe: Registrieren Sie sich jetzt, um zu transkribieren.
       transcribe_as_guest: Als Gast transkribieren
     mark_page_blank:
+      saved_and_next_notice: Gespeichert. Zur nächsten Seite wechseln.
       saved_notice: Gespeichert
     save_buttons:
+      ai_draft_fields: KI-Entwurf
+      ai_draft_fields_tooltip: KI-generierten Text in die Felder kopieren
       approve: Freigeben
       approve_to_transcribed_tooltip: Diese Seite speichern und freigeben
       autolink: Autolink
       autolink_tooltip: Entitäten-Tags automatisch vorschlagen
-      copy_ai_plaintext: KI-Text
+      copy_ai_plaintext: KI-Entwurf
       copy_ai_plaintext_tooltip: Kopieren Sie KI-generierten Text in den Editor
       done: Fertig
       edit: Bearbeiten
@@ -69,6 +83,7 @@ de:
       save_to_transcribed_tooltip: Änderungen speichern
     save_transcription:
       error_message: 'Bei der Analyse des Mark-ups in Ihrem Transkript ist ein Fehler aufgetreten. Diese Art von Fehler tritt häufig auf, wenn eine spitze Klammer fehlt oder wenn ein HTML-Tag offen gelassen wird. Überprüfen Sie alle < oder > in Ihrem Text. (Fehler beim Parsen: %{error_message})'
+      saved_and_next_notice: Gespeichert. Zur nächsten Seite wechseln.
       saved_notice: Gespeichert
       you_may_save_notice: Als Gast können Sie bis zu %{guest_deed_count} Transkriptionen speichern.
     save_translation:

@@ -1,0 +1,87 @@
+.collection-settings-wrapper
+  table.form.collection-settings
+    -if current_user.individual_researcher?
+      tr
+        td(colspan="2")
+          h3
+            =t('.ai_transcription')
+          p =t('.contact_us', email: mail_to(SUPPORT_EMAIL)).html_safe
+    -else
+      tr
+        td(colspan="2")
+          h3
+            =t('.ai_transcription')
+          -if @not_started_transcriptions_count.positive? || @failed_transcriptions_count.positive?
+            p =t('.description')
+          -else
+            p =t('.description_complete')
+          div[style='margin: 5px 0']
+            -if @not_started_transcriptions_count.positive?
+              =link_to(collection_work_ai_transcriptions_path(collection.owner, collection, work), class: 'button action-btn', data: { turbo: true, turbo_method: :post }, style: 'margin-right: 10px;')
+                span =t('.generate')
+
+            -if @failed_transcriptions_count.positive?
+              =link_to(collection_work_ai_transcriptions_path(collection.owner, collection, work), class: 'button action-btn', data: { turbo: true, turbo_method: :put }, style: 'margin-right: 10px;')
+                span =t('.retry')
+
+      tr
+        td(colspan="2")
+          =fe_stacked_bar(title: 'Pages', labels: [t('.finished'), t('.in_progress'), t('.failed'), t('.not_started')], \
+            values: [@finished_transcriptions_count, @queued_transcriptions_count, @failed_transcriptions_count, @not_started_transcriptions_count], colors: AiTranscription::FE_COLOR_STATUSES.values, \
+            options: { legend_position: 'bottom', tooltip_enabled: true, border_radius: 20 })
+
+      tr
+        td(colspan="2")
+          section.collection-stats
+            .collection-stats_counters
+              .counter [data-prefix=@pages_count]
+                =t('.pages')
+            .collection-stats_counters
+              .counter [data-prefix=@finished_transcriptions_count]
+                =t('.finished')
+              .counter [data-prefix=@queued_transcriptions_count]
+                =t('.queued')
+              .counter [data-prefix=@failed_transcriptions_count]
+                =t('.failed')
+              .counter [data-prefix=@not_started_transcriptions_count]
+                =t('.not_started')
+          -if @total_token_count.to_i > 0
+            .collection-stats_counters
+              .counter [data-prefix=@total_token_count]
+                =t('.total_tokens_used')
+
+      -if collection.segmentation_feature_enabled?
+        tr
+          td(colspan="2")
+            h3 =t('.segmentation')
+            p =t('.segmentation_description')
+            =link_to(segment_collection_work_ai_transcriptions_path(collection.owner, collection, work), class: 'button action-btn', data: { turbo: true, turbo_method: :post })
+              span =t('.segment_collection')
+            -if @segmentation_token_count.to_i > 0
+              .collection-stats_counters[style='margin-top: 10px;']
+                .counter [data-prefix=@segmentation_token_count]
+                  =t('.segmentation_tokens_used')
+            =form_for :work, url: segmentation_setting_collection_work_ai_transcriptions_path(collection.owner, collection, work), method: :patch, html: { style: 'margin-top: 10px;', data: { controller: 'form', action: 'change->form#requestSubmit', turbo: true } } do |f|
+              =f.check_box :edit_metadata_after_split, checked: work.edit_metadata_after_split?, disabled: !collection.metadata_entry? || !collection.metadata_fields.exists?
+              =f.label :edit_metadata_after_split
+                =t('.edit_metadata_after_split')
+              p =t('.edit_metadata_after_split_description')
+              -unless collection.metadata_entry? && collection.metadata_fields.exists?
+                -task_configuration_link = link_to(t('.edit_metadata_after_split_disabled_link'), edit_tasks_collection_path(collection.owner, collection))
+                p.fglight =t('.edit_metadata_after_split_disabled', link: task_configuration_link).html_safe
+      -if @failed_ai_transcriptions.present?
+        tr
+          td(colspan="2")
+            h4 =t('.failed_transcription_errors')
+            ul
+              -@failed_ai_transcriptions.each do |ai_transcription|
+                li
+                  =link_to ai_transcription.page.title, collection_display_page_path(collection.owner, collection, work, ai_transcription.page)
+                  |  —
+                  =link_to ai_transcription.short_error_message, collection_work_ai_transcription_path(user_slug: collection.owner.to_param, collection_id: collection.to_param, work_id: work.to_param, id: ai_transcription.id)
+            -if @failed_ai_transcriptions_hidden_count.positive?
+              p =t('.failed_transcription_errors_hidden', count: @failed_ai_transcriptions_hidden_count)
+
+  -if ai_work_metadata_form_available?(collection)
+    #ai-work-metadata-settings
+      =render partial: 'work/ai_work_metadata/form', locals: { collection: collection, work: work }

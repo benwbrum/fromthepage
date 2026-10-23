@@ -12,14 +12,14 @@
         .counter(data-prefix="#{number_with_delimiter @pages_needing_review}") #{t('.pages_needing_review')}
 
       -if user_signed_in?
-        -if current_user.like_owner?(@collection) || (@collection.review_type == Collection::ReviewType::RESTRICTED && current_user.can_review?(@collection))
+        -if current_user.like_owner?(@collection) || (@collection.review_type_restricted? && current_user.can_review?(@collection))
           .collection-stats_counters
             .samplings
               h4 =link_to t('.quality_sampling'), collection_quality_samplings_path
               p =t('.quality_sampling_desc')
 
         .collection-stats_counters
-          -if current_user.like_owner?(@collection) || (@collection.review_type == Collection::ReviewType::RESTRICTED && current_user.can_review?(@collection))
+          -if current_user.like_owner?(@collection) || (@collection.review_type_restricted? && current_user.can_review?(@collection))
             -unreviewed_users = @collection.never_reviewed_users
             =link_to collection_recent_contributor_list_path, class: 'counter', 'data-prefix': number_with_delimiter(unreviewed_users.count) do
               span =t('.unreviewed_contributors').pluralize(unreviewed_users.count)

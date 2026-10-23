@@ -5,17 +5,14 @@ pt:
     edit:
       subject_tags: Tags de assunto
   dashboard:
-    collaborator: Painel de Controle do Colaborador
-    new_landing_page:
+    collaborator: Painel do colaborador
+    landing_page:
       all_collections: Todas as coleções
       next_image: Próxima imagem
       previous_image: Imagem anterior
       recent_activity: Atividade recente
-      search: Procurar
-      search_for_collections: Pesquisar coleções
       search_for_collections_or_owners: Pesquise coleções ou proprietários
-      transcribe_a_page: Transcrever uma página
-    plain: Painel de Controle
+    plain: Painel de controle
   date:
     formats:
       default: "%d de %b de %Y"
@@ -23,12 +20,12 @@ pt:
   en: English
   es: Español
   fr: Français
-  message_boards_are_disabled: O fórum para %{project} foi desativado.
+  message_boards_are_disabled: O fórum do projeto %{project} foi desativado.
   pt: Português
   time:
     formats:
       default: "%d de %b de %Y, %H:%M"
       short: "%d/%m/%Y às %H:%M"
   time_ago_in_words: Há %{time}
-  unauthorized_collection: Você não tem acesso a %{project}. Faça login ou entre em contato com o proprietário do projeto para ser adicionado.
+  unauthorized_collection: Você não tem acesso ao projeto %{project}. Faça login ou entre em contato com o proprietário para ser adicionado.
   unsaved_changes_confirmation: Você tem alterações não salvas. Tem certeza de que deseja sair desta tela?

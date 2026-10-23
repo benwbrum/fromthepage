@@ -1,0 +1,45 @@
+tr
+  td(colspan="2")
+    .danger-warning
+      =svg_symbol '#icon-warning-sign', class: 'icon'
+      =t('collection.edit_danger.danger_zone_description')
+tr
+  td(colspan="2")
+    .collection-active(style=('display:none' if !collection.is_active))
+      h3
+        =t('collection.edit_danger.collection_status')
+        i =t('collection.edit_danger.active')
+      p =t('collection.edit_danger.collection_active_description')
+    .collection-inactive(style=('display:none' if collection.is_active))
+      h3
+        =t('collection.edit_danger.collection_status')
+        i =t('collection.edit_danger.inactive')
+      p =t('collection.edit_danger.collection_inactive_description')
+tr
+  td(colspan="2")
+    =f.radio_button :is_active, true
+    =f.label :is_active_true, t('collection.edit_danger.active'), class: 'big'
+    br
+    =f.radio_button :is_active, false
+    =f.label :is_active_false, t('collection.edit_danger.inactive'), class: 'big'
+tr: td
+tr
+  td(colspan="2")
+    h3 =t('collection.edit_danger.clear_transcripts')
+    =link_to(collection_blank_collection_path(collection.id), \
+             class: 'button action-btn exits', \
+             data: { confirm: t('collection.edit_danger.confirm_blank_collection') }, \
+             method: :post, \
+             disabled: !collection.text_entry?)
+      span =t('collection.edit_danger.blank_collection')
+    p =t('collection.edit_danger.blank_collection_description')
+tr: td
+tr
+  td(colspan="2")
+    h3 =t('collection.edit_danger.destroy_everything')
+    =link_to(collection_delete_collection_path(collection.id), \
+             class: 'button action-btn', \
+             data: { confirm: t('collection.edit_danger.confirm_delete_collection') }, \
+             method: :delete)
+      span =t('collection.edit_danger.delete_collection')
+    p =t('collection.edit_danger.delete_collection_description')

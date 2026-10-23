@@ -1,4 +1,6 @@
 ---
 de:
   errors:
+    error: Da ist etwas schiefgelaufen
     html_syntax_error: ungültige html-syntax
+    unsupported_file_type: nicht unterstützter Dateityp

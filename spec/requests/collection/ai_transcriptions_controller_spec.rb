@@ -1,0 +1,228 @@
+require 'spec_helper'
+
+describe Collection::AiTranscriptionsController do
+  before do
+    Current.user = owner
+  end
+
+  let!(:user) { create(:unique_user) }
+  let!(:owner) { create(:unique_user, :owner) }
+  let!(:admin) { create(:unique_user, :admin) }
+  let!(:user) { create(:unique_user) }
+  let!(:collection) { create(:collection, owner_user_id: owner.id, works: []) }
+  let!(:work) { create(:work, owner_user_id: owner.id, pages: [], collection: collection) }
+
+  let!(:page) { create(:page, work: work) }
+  let!(:ai_transcription) { create(:ai_transcription, page_id: page.id, status: :processing, source_text: nil, reasoning: nil) }
+
+  describe '#edit' do
+    let(:action_path) { edit_collection_ai_transcriptions_path(owner, collection) }
+
+    let(:subject) { get action_path }
+
+    it 'redirects' do
+      subject
+
+      expect(response).to have_http_status(:redirect)
+      expect(response).to redirect_to(dashboard_path)
+    end
+
+    context 'when accessed by owner' do
+      it 'renders status and template' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:edit)
+      end
+
+      it 'places metadata draft settings beneath transcription settings' do
+        login_as owner
+        get '/feature/ai_work_metadata/enable'
+        collection.update!(data_entry_type: 'text_and_metadata')
+        create(:transcription_field, :as_metadata, :text_field, collection: collection)
+        subject
+
+        metadata_settings = response.parsed_body.at_css('#ai-work-metadata-settings')
+
+        expect(response.parsed_body.css('#ai-work-metadata-settings').size).to eq(1)
+        expect(metadata_settings.ancestors('.collection-settings-wrapper').size).to eq(1)
+        expect(metadata_settings.css('.collection-settings-wrapper')).to be_empty
+        expect(response.parsed_body.css('#collection-settings > .collection-settings-wrapper').size).to eq(1)
+      end
+
+      it 'hides metadata draft settings when the feature is disabled' do
+        login_as owner
+        subject
+
+        expect(response.parsed_body.at_css('#ai-work-metadata-settings')).not_to be_present
+      end
+
+      it 'hides metadata draft settings without the feature flag when drafts are already enabled' do
+        create(:ai_work_metadata, work: work, status: :finished)
+        collection.update!(data_entry_type: 'text_and_metadata')
+        create(:transcription_field, :as_metadata, :text_field, collection: collection)
+        login_as owner
+        subject
+
+        expect(response.parsed_body.at_css('#ai-work-metadata-settings')).not_to be_present
+      end
+
+      it 'hides metadata draft settings when metadata description is disabled' do
+        create(:transcription_field, :as_metadata, :text_field, collection: collection)
+        login_as owner
+        get '/feature/ai_work_metadata/enable'
+        subject
+
+        expect(response.parsed_body.at_css('#ai-work-metadata-settings')).not_to be_present
+      end
+
+      it 'hides metadata draft settings when no metadata fields exist' do
+        collection.update!(data_entry_type: 'text_and_metadata')
+        login_as owner
+        get '/feature/ai_work_metadata/enable'
+        subject
+
+        expect(response.parsed_body.at_css('#ai-work-metadata-settings')).not_to be_present
+      end
+
+      context 'with more than 1 result' do
+        let!(:page_2) { create(:page, work: work) }
+        let!(:ai_transcription_2) { create(:ai_transcription, page_id: page_2.id, status: :finished, source_text: nil, reasoning: nil) }
+
+        let!(:page_3) { create(:page, work: work) }
+        let!(:ai_transcription_3) { create(:ai_transcription, page_id: page_3.id, status: :error, source_text: nil, reasoning: nil) }
+
+        let!(:page_4) { create(:page, work: work) }
+
+        it 'renders status and template' do
+          login_as owner
+          subject
+
+          expect(response).to have_http_status(:ok)
+          expect(response).to render_template(:edit)
+        end
+      end
+
+      context 'with failed transcriptions' do
+        let!(:work_2) { create(:work, owner_user_id: owner.id, collection: collection, title: 'Failed Work') }
+        let!(:failed_page) { create(:page, work: work_2, title: 'Failed Collection Page') }
+        let!(:failed_ai_transcription) do
+          create(:ai_transcription, page_id: failed_page.id, status: :error, metadata: { error_message: 'RECITATION' })
+        end
+
+        it 'renders failed transcription details with work title' do
+          login_as owner
+          subject
+
+          expect(response.body).to include('Failed transcription errors')
+          expect(response.body).to include('RECITATION')
+          expect(response.body).to include('Failed Collection Page')
+          expect(response.body).to include('Failed Work')
+          expect(response.body).to include(collection_display_page_path(owner, collection, work_2, failed_page))
+        end
+      end
+
+      context 'with failed ai work metadata' do
+        let!(:metadata_field) { create(:transcription_field, :as_metadata, :text_field, collection_id: collection.id) }
+        let!(:failed_ai_work_metadata) do
+          create(:ai_work_metadata, work_id: work.id, status: :error, metadata: { error_message: 'RECITATION' })
+        end
+
+        it 'renders failed work metadata draft details alongside the transcription section' do
+          login_as owner
+          get '/feature/ai_work_metadata/enable'
+          collection.update!(data_entry_type: 'text_and_metadata')
+          subject
+
+          expect(response.body).to include('Failed metadata draft errors')
+          expect(response.body).to include('RECITATION')
+        end
+      end
+    end
+
+    context 'when accessed by non-owner user' do
+      it 'redirects' do
+        login_as user
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(collection_path(owner, collection))
+      end
+    end
+
+    context 'when accessed by admin' do
+      it 'renders status and template' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:edit)
+      end
+    end
+  end
+
+  describe '#create' do
+    let(:action_path) { collection_ai_transcriptions_path(owner, collection) }
+
+    let(:subject) { post action_path, as: :turbo_stream }
+
+    it 'renders status and template' do
+      login_as owner
+      subject
+
+      expect(response).to have_http_status(:ok)
+      expect(response).to render_template(:create)
+    end
+
+    context 'with errors' do
+      before do
+        stub_const('AiTranscription::DEFAULT_MODEL', nil)
+      end
+
+      it 'renders status and template' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:create)
+      end
+    end
+  end
+
+  describe '#update' do
+    let(:action_path) { collection_ai_transcriptions_path(owner, collection) }
+
+    let(:subject) { put action_path, as: :turbo_stream }
+
+    let!(:ai_transcription) { create(:ai_transcription, page_id: page.id, status: :error, source_text: nil, reasoning: nil) }
+
+    let!(:page_2) { create(:page, work: work) }
+    let!(:ai_transcription_2) { create(:ai_transcription, page_id: page_2.id, status: :finished, source_text: nil, reasoning: nil) }
+
+    it 'renders status and template' do
+      login_as owner
+      subject
+
+      expect(response).to have_http_status(:ok)
+      expect(response).to render_template(:update)
+    end
+
+    context 'with errors' do
+      let(:result) { instance_double('Result', success?: false) }
+      let(:service) { instance_double(AiTranscription::BulkRetry, call: result) }
+
+      before do
+        allow(AiTranscription::BulkRetry).to receive(:new).and_return(service)
+      end
+
+      it 'renders status and template' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:update)
+      end
+    end
+  end
+end

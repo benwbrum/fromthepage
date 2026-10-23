@@ -1,6 +1,5 @@
 module ContentdmTranslator
-
-  def self.update_work_from_cdm(work, ocr_correction=false)
+  def self.update_work_from_cdm(work, ocr_correction = false)
     # find the work manifest -- bail out if there is none
     return unless work.sc_manifest
     # make sure the manifest is cdm
@@ -10,7 +9,7 @@ module ContentdmTranslator
       # get the fts field for this collection
       fts_error, fts_field = fts_field_for_collection(work.collection)
       if fts_error
-        puts "Error retrieving Full-Text Search field: #{error}\n"
+        puts "Error retrieving Full-Text Search field: #{fts_error}\n"
       end
     end
     # for each page
@@ -31,7 +30,7 @@ module ContentdmTranslator
 
     if ocr_correction
       ocr = ocr_from_cdm_info(info, fts_field)
-      page_columns[:source_text] = ocr.encode(:xml => :text) if ocr
+      page_columns[:source_text] = ocr.encode(xml: :text) if ocr
     end
 
     page.update_columns(page_columns)
@@ -50,30 +49,30 @@ module ContentdmTranslator
   end
 
   ITEM_INFO_DENYLIST = [
-    "descri",
-    "date",
-    "creato",
-    "subjec",
-    "relate",
-    "type",
-    "publis",
-    "langua",
-    "rights",
-    "transc",
-    "contac",
-    "fullrs",
-    "find",
-    "dmaccess",
-    "dmimage",
-    "dmcreated",
-    "dmmodified",
-    "dmoclcno",
-    "restrictionCode",
-    "cdmfilesize",
-    "cdmfilesizeformatted",
-    "cdmprintpdf",
-    "cdmhasocr",
-    "cdmisnewspaper"]
+    'descri',
+    'date',
+    'creato',
+    'subjec',
+    'relate',
+    'type',
+    'publis',
+    'langua',
+    'rights',
+    'transc',
+    'contac',
+    'fullrs',
+    'find',
+    'dmaccess',
+    'dmimage',
+    'dmcreated',
+    'dmmodified',
+    'dmoclcno',
+    'restrictionCode',
+    'cdmfilesize',
+    'cdmfilesizeformatted',
+    'cdmprintpdf',
+    'cdmhasocr',
+    'cdmisnewspaper']
 
   def self.metadata_from_cdm_info(info)
     # only return useful and unique things
@@ -125,53 +124,101 @@ module ContentdmTranslator
 
   def self.fts_field_for_collection(collection)
     field_config = fetch_cdm_field_config(collection)
-    fts_field = field_config.detect { |element| element["type"] == "FTS"}
+    fts_field = field_config.detect { |element| element['type'] == 'FTS' }
     if fts_field
       fts = fts_field['nick']
       error = nil
     else
       fts = nil
-      error = "No full-text search (FTS) fields were configured on CONTENTdm collection!"
+      error = 'No full-text search (FTS) fields were configured on CONTENTdm collection!'
     end
     return error, fts
   end
 
+  def self.export_work_to_cdm_with_retry(work, username, password, license)
+    max_delay = 21_600
+    delay = 300
+
+    begin
+      ContentdmTranslator.export_work_to_cdm(work, username, password, license)
+    rescue Net::ReadTimeout, Savon::HTTPError => e
+      delay_to_use = [delay, max_delay].min
+      print "#{e.class}: Retrying in #{delay_to_use} seconds... (#{e.message})"
+
+      sleep(delay_to_use)
+
+      delay = (delay * 1.5).round
+      if delay > max_delay
+        print "#{e.class}: Max retry delay reached, giving up. (#{e.message})"
+      else
+        retry
+      end
+    end
+  end
 
   def self.export_work_to_cdm(work, username, password, license)
-    error, fieldname = fts_field_for_collection(work.collection)
-    if error
-      puts "Error retrieving Full-Text Search field: #{error}\n"
-      exit
+    collection = work.collection
+    cdm_setting = collection.cdm_export_setting
+
+    fieldname = cdm_setting&.fulltext_field.presence
+    unless fieldname
+      error, fieldname = fts_field_for_collection(collection)
+      if error
+        puts "Error retrieving Full-Text Search field: #{error}\n"
+        exit
+      end
     end
 
-    soap_client = Savon.client(:log=>true, filters: [:password], :wsdl => 'https://worldcat.org/webservices/contentdm/catcher?wsdl')
+    soap_client = Savon.client(log: true, filters: [:password], wsdl: 'https://worldcat.org/webservices/contentdm/catcher?wsdl', follow_redirects: true)
     work.pages.each do |page|
       canvas_at_id = page.sc_canvas.sc_canvas_id
       manifest_at_id = work.sc_manifest.at_id
-      puts "\nUpdating #{cdm_collection(manifest_at_id)}\trecord #{cdm_record(canvas_at_id)}\tfrom #{page.title}\t#{page.id}\t#{work.title}.  CONTENTdm response:"
-      metadata_wrapper = {
-        'metadataList' => {
-          'metadata' => [
-            { :field => 'dmrecord', :value => cdm_record(canvas_at_id)},
-            { :field => fieldname, :value => page.verbatim_transcription_plaintext}
-          ]
-        }
-      }
+      puts "\nUpdating #{cdm_collection(manifest_at_id)}\trecord #{cdm_record(canvas_at_id)}\tfrom #{page.title}\t#{page.id}\t#{work.title} at #{Time.current.strftime('%Y-%m-%d %I:%M %p')}.  CONTENTdm response:"
+
+      transcript_text, ai_transcription = transcript_for_page(page, cdm_setting)
+
+      metadata_entries = [
+        { field: 'dmrecord', value: cdm_record(canvas_at_id) },
+        { field: fieldname, value: transcript_text }
+      ]
+
+      if ai_transcription && cdm_setting&.include_ai_provenance && cdm_setting&.ai_provenance_field.present?
+        provenance = ai_provenance(ai_transcription)
+        metadata_entries << { field: cdm_setting.ai_provenance_field, value: provenance }
+      end
+
+      metadata_wrapper = { 'metadataList' => { 'metadata' => metadata_entries } }
 
       message = {
-        :cdmurl => "http://#{cdm_server(manifest_at_id)}:8888",
-        :username => username,
-        :password => password,
-        :license => license,
-        :collection => cdm_collection(manifest_at_id),
-        :metadata => metadata_wrapper,
-        :action => 'edit'
+        cdmurl: "http://#{cdm_server(manifest_at_id)}:8888",
+        username: username,
+        password: password,
+        license: license,
+        collection: cdm_collection(manifest_at_id),
+        metadata: metadata_wrapper,
+        action: 'edit',
+        disableValidation: true
       }
-      resp = soap_client.call(:process_conten_tdm, :message => message )
+      resp = soap_client.call(:process_conten_tdm, message: message)
 
       puts resp.to_hash[:process_conten_tdm_response][:return]
-
     end
+  end
+
+  def self.transcript_for_page(page, cdm_setting)
+      if cdm_setting&.transcript_source == CdmExportSetting::HUMAN_AND_AI && page.verbatim_transcription_plaintext.blank?
+        ai = page.ai_transcription
+        if ai&.source_text.present?
+          text = ai.source_text
+          text = "Warning: This transcript is AI-generated (#{ai_provenance(ai)}).\n#{text}" if cdm_setting.prepend_ai_warning
+          return [text, ai]
+        end
+      end
+      [page.verbatim_transcription_plaintext, nil]
+  end
+
+  def self.ai_provenance(ai_transcription)
+    "#{ai_transcription.model} #{ai_transcription.created_at.strftime('%Y-%m-%d')}"
   end
 
   def self.log_file(collection)
@@ -186,21 +233,21 @@ module ContentdmTranslator
   private
 
   def self.cdm_server(at_id)
-    at_id.sub(/https:\/\/cdm/,'server').sub(/\/.*/,'')
+    at_id.sub(/https:\/\/cdm/, 'server').sub(/\/.*/, '')
   end
 
   def self.cdm_collection(at_id)
     if at_id.match(/.*iiif\/info\//)
       at_id.sub(/.*iiif\/info\//, '').sub(/\/\d+\/manifest.json/, '')
     elsif at_id.match(/.*iiif\/2\//)
-      at_id.sub(/.*iiif\/2\//, '').sub(/:.*/,'')
+      at_id.sub(/.*iiif\/2\//, '').sub(/:.*/, '')
     else # match https://cdm17168.contentdm.oclc.org/iiif/WFP:997/manifest.json
-      at_id.sub(/.*iiif\//, '').sub(/:.*/,'')
+      at_id.sub(/.*iiif\//, '').sub(/:.*/, '')
     end
   end
 
   def self.cdm_record(at_id)
-    at_id.sub(/\/canvas\/.*/,'').sub(/^.*\//, '').sub(/^.*:/, '')
+    at_id.sub(/\/canvas\/.*/, '').sub(/^.*\//, '').sub(/^.*:/, '')
   end
 
   def self.get_cdm_host_from_url(host)
@@ -222,15 +269,21 @@ module ContentdmTranslator
     uri = URI(url)
 
     server = get_cdm_host_from_url("#{uri.scheme}://#{uri.host}")
-    raise "ContentDM URLs must be of the form http://cdmNNNNN.contentdm.oclc.org/..." if server.nil?
+    raise 'ContentDM URLs must be of the form http://cdmNNNNN.contentdm.oclc.org/...' if server.nil?
 
-    matches = uri.path.match(/.*collection\/(\w+)(?:\/id\/(\d+))?/)
-    
+    matches = uri.path.match(%r{.*collection/([^/]+)(?:/id/(\d+)(?:/.*)?)?\z})
+
+    if uri.path.include?('/id/') && (!matches || matches[2].nil?)
+      raise ArgumentError, "ContentDM item URL contains /id/ but no valid numeric record ID: #{url}"
+    end
+
     if matches
       collection = matches[1]
       record = matches[2]
     end
-    
+
+    record = cdm_parent_record(server, collection, record) || record if record
+
     # support back-level CONTENTdm IIIF presentation implementation
     if server && collection && record
       new_uri = "https://#{server}.contentdm.oclc.org/iiif/info/#{collection}/#{record}/manifest.json"
@@ -239,7 +292,7 @@ module ContentdmTranslator
     elsif server
       new_uri = "https://#{server}.contentdm.oclc.org/iiif/info/manifest.json"
     else
-      raise "ContentDM URLs must be of the form http://cdmNNNNN.contentdm.oclc.org/..."
+      raise 'ContentDM URLs must be of the form http://cdmNNNNN.contentdm.oclc.org/...'
     end
 
     begin
@@ -260,6 +313,23 @@ module ContentdmTranslator
 
     new_uri
   end
+
+  def self.cdm_parent_record(server, collection, record)
+    collection_path = URI.encode_www_form_component(collection)
+    item_url = "https://#{server}.contentdm.oclc.org/digital/api/singleitem/collection/#{collection_path}/id/#{record}"
+    item = JSON.parse(URI.open(item_url).read)
+    parent_id = item['parentId'] || item.dig('objectInfo', 'parentId')
+    return if parent_id.blank?
+
+    parent_id = parent_id.to_s
+    unless parent_id.match?(/\A-?\d+\z/)
+      raise ArgumentError, "CONTENTdm returned an invalid parent ID for record #{record}"
+    end
+    return unless parent_id.to_i.positive?
+
+    parent_id
+  end
+  private_class_method :cdm_parent_record
 
   def self.sample_manifest(collection)
     imported_work = collection.works.joins(:sc_manifest).last

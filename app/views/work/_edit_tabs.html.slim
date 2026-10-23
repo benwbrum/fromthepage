@@ -1,0 +1,71 @@
+ruby:
+  tabs = [
+    {
+      icon: '#icon-settings',
+      name: t('.general'),
+      selected: 1,
+      path: "#{main_app.edit_collection_work_path(@collection.owner, @collection, @work)}",
+    },
+    {
+      icon: '#icon-task-configuration',
+      name: t('.task_configuration'),
+      selected: 2,
+      path: "#{main_app.edit_tasks_collection_work_path(@collection.owner, @collection, @work)}",
+    },
+    {
+      icon: '#icon-look-feel',
+      name: t('.metadata'),
+      selected: 3,
+      path: "#{main_app.edit_metadata_collection_work_path(@collection.owner, @collection, @work)}",
+    },
+    {
+      icon: '#icon-lock',
+      name: t('.privacy_access'),
+      selected: 4,
+      path: "#{main_app.edit_privacy_collection_work_path(@collection.owner, @collection, @work)}",
+    },
+  ]
+
+  if current_user.admin? || current_user.like_owner?(@collection)
+    tabs += [
+      {
+        icon: '#icon-robot',
+        name: t('.ai'),
+        selected: 5,
+        path: "#{main_app.edit_collection_work_ai_transcriptions_path(@collection.owner, @collection, @work)}",
+      }
+    ]
+  end
+
+  tabs += [
+    {
+      icon: '#icon-warning-sign',
+      name: t('.danger_zone'),
+      selected: 6,
+      path: "#{main_app.edit_danger_collection_work_path(@collection.owner, @collection, @work)}",
+    }
+  ]
+
+div[style="float: left; max-width: 205px;"]
+  .side-tabs
+    -for tab in tabs
+      -if tab[:selected] == selected
+        a.active
+          =svg_symbol tab[:icon], class: 'icon'
+          =tab[:name]
+      -else
+        =link_to tab[:path]
+          =svg_symbol tab[:icon], class: 'icon'
+          =tab[:name]
+
+  hr[style="padding-right: 5px;"]
+
+  div[style="max-width: 205px;"]
+    .user-label
+      =link_to(user_profile_path(@work.owner), class: 'userpic')
+        =profile_picture(@work.owner)
+      .username
+        small= t('work.edit.uploaded_by')
+        =link_to @work.owner.display_name, user_profile_path(@work.owner), style: "text-wrap: wrap;"
+    p.fglight[style="font-size: 14px;"] =t('work.edit.settings_only_work_owners')
+    p.fglight[style="font-size: 14px;"] ==t('work.edit.more_work_settings_info')

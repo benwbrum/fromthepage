@@ -1,6 +1,62 @@
 ---
 en:
   work:
+    ai_metadata:
+      generated_with: Generated with %{model}
+      heading: AI Metadata Draft
+      imported_metadata: Imported Metadata
+      reasoning: Reasoning
+      select_model: Select AI model
+      source_material: Source Material
+    ai_transcriptions:
+      create:
+        success: AI transcription job launched.
+      form:
+        ai_transcription: AI Transcription
+        contact_us: Contact %{email} to upgrade to a plan that includes AI drafts.
+        description: Launch AI transcription job for pages in this work.
+        description_complete: All pages in this work have AI transcriptions.
+        edit_metadata_after_split: Edit metadata after splitting
+        edit_metadata_after_split_description: After the inline split confirmation, go straight to the new work's metadata form.
+        edit_metadata_after_split_disabled: Please enable and configure metadata creation under %{link}.
+        edit_metadata_after_split_disabled_link: Task Configuration
+        failed: Failed
+        failed_transcription_errors: Failed transcription errors
+        failed_transcription_errors_hidden: "%{count} additional failed transcription errors are not shown."
+        finished: Finished
+        generate: Create AI drafts for pages without them.
+        in_progress: In progress
+        not_started: Not started
+        pages: Pages
+        queued: Queued
+        retry: Retry failed jobs
+        segment_collection: Segment Collection
+        segmentation: Segment Collection
+        segmentation_description: By uploading a set of images (i.e. a folder) and then segmenting it, we'll suggest places where documents should be split into individual works.
+        segmentation_tokens_used: Segmentation tokens used
+        total_tokens_used: Total tokens used
+      segment:
+        success: Segmentation job launched. You will receive an email when it is complete.
+      segmentation_setting:
+        success: Segmentation setting saved.
+      update:
+        success: Retrying AI transcription job.
+    ai_work_metadata:
+      create:
+        success: AI metadata draft job launched.
+      form:
+        description: Generate AI drafts of this work's metadata using Gemini and Claude.
+        drafts_heading: Drafts
+        generate: Generate AI metadata draft
+        heading: AI Metadata Draft
+        no_metadata_fields: Please configure metadata fields under Task Configuration before generating AI metadata drafts.
+      show:
+        back: Back to AI Settings
+        fields_heading: Draft fields
+        heading: AI Metadata Draft (%{model})
+        reasoning_heading: Reasoning
+        status: 'Status: %{status}'
+        tokens_used: 'Tokens used: %{count}'
     configurable_printout:
       description: Export this work in a printable format
       export: Export
@@ -9,6 +65,7 @@ en:
       heading: Printout Configuration
       include_contributors: Include Contributors
       include_metadata: Include Metadata
+      include_notes: Include Notes
       preserve_linebreaks: Preserve Linebreaks
       text_contents: Contents
       text_contents_description: The printable export will include the text of the transcription, and can also include information about the contributors to the project or metadata about the work.
@@ -19,7 +76,14 @@ en:
       word_wrap: Word Wrap
     create:
       work_created: Work created successfully
+    delete:
+      success: Work deleted successfully
     describe:
+      ai_draft_fields: AI Draft
+      ai_draft_fields_tooltip: Copy AI-generated metadata into the fields
+      ai_model: "%{model}"
+      ai_reasoning: Reasoning
+      ai_tokens_used: "%{count} tokens used"
       always_show_fullscreen: Always show fullscreen
       approve: Approve
       approve_to_transcribed_tooltip: Save and approve this metadata
@@ -49,12 +113,19 @@ en:
       author_contributed_at: "%{author} at %{date}"
       compared_with: Compared with
       help_description: View and compare the changes that have been made in each revision to work metadata. The left column shows the metadata in the selected revision, right column shows what has been changed. Unchanged text is <span>highlighted in white</span>, deleted text is <del>highlighted in red</del>, and inserted text is <ins>highlighted in green</ins> color.
+      restore: Restore
+      restore_confirm: Are you sure you want to restore this version of the work metadata? You will be taken to the metadata screen to review it.
+      restore_tooltip: Replace the current work metadata with this version
       revision: revision
     download:
+      accessible_pdf: Accessible PDF
+      accessible_pdf_download_description: Download a PDF version of this work optimized for screen readers and assistive technologies.
+      accessible_pdf_export_description: Export a PDF version of this work optimized for screen readers and assistive technologies.
       analyze: Analyze
       configurable_printout: Configurable Printout
       configurable_printout_button: Configure
       configurable_printout_description: PDF or MS Word export with configurable contents and formatting
+      configure: Configure
       docx_download_description: Download a DOCX version of this work.
       download: Download
       expanded_plaintext: Expanded Plaintext
@@ -92,15 +163,16 @@ en:
       additional_metadata: Additional metadata
       additional_metadata_description: These metadata fields are displayed on this work's About screen and in TEI exports, but do not affect functionality of FromThePage.
       allowed_collaborators: Allowed Collaborators
-      apply: Apply
       author: Author
       collaborators_can_edit_titles: Allow collaborators to edit page titles
       collection: Collection
       confirm_delete_work: Are you sure you want to delete this work? After deleting you won\'t be able to recover it!
       current_url: The current URL for this work is %{current_url}. If you want to edit the work section of the URL, please use lowercase letters and dashes between any words.
       delete_work: Delete Work
+      delete_work_description: Pressing this button will delete the work and all its pages. This action cannot be undone.
       description: Description
       description_message: The description will be displayed on the project Overview screen and the project About screen. An abbreviated portion of the description will be displayed in the Organization Home screen and the Find A Project screen.
+      destroy_everything: Destroy everything
       document_date: Document Date
       document_date_hint: Document Date is in the EDTF format (e.g. 1843, 2001-02, 1643-06-30)
       document_history: Document history
@@ -131,6 +203,7 @@ en:
       source_box_folder: Source Box/Folder
       source_collection_name: Source Collection Name
       source_location: Source Location
+      subject_change_warning: Are you sure you want to move this work to a new collection?  You will lose all subject links.
       support_translation: Enable Translation
       support_translation_description: A work can be translated as well as transcribed. When checked, the work will have a Translation tab for each page.
       transcription_conventions: Transcription conventions
@@ -147,6 +220,13 @@ en:
       remove_collaborator: Remove collaborator
       work_collaborators: Work collaborators
       work_collaborators_description: Collaborators may transcribe and edit private works.
+    edit_tabs:
+      ai: AI
+      danger_zone: Danger Zone
+      general: General
+      metadata: Metadata
+      privacy_access: Privacy & Access
+      task_configuration: Task Configuration
     incomplete: Incomplete metadata.
     metadata_overview:
       notes_and_questions: Notes and questions
@@ -184,8 +264,13 @@ en:
       transcribe: transcribe
       upload: Upload
       upload_page_image: "%{upload} page image"
+    restore_description_version:
+      restored: Work metadata has been restored to the selected version. Please review it.
+      version_not_found: Metadata version not found.
     save_description:
       work_described: Your description has been saved
+    search:
+      search_in_work: Search in Work
     show:
       author_name: Author Name
       description: Description
@@ -207,6 +292,12 @@ en:
       source_collection_name: Source Collection Name
       source_location: Source Location
       uploaded_by: Uploaded by
+    split_page:
+      create_failed: 'Could not create the new work: %{errors}'
+      no_previous_pages: There are no pages before this one to split into a new work.
+      unauthorized: You do not have permission to split this work.
     undescribed: No metadata.
     update:
       work_updated: Work updated successfully
+    users_list:
+      no_users_collaborators: No collaborators

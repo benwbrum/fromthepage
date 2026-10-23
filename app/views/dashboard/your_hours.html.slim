@@ -1,6 +1,9 @@
-h1 = t('.contributions_between_dates', start_date: l(@start_date_hours), end_date: l(@end_date_hours))
+h1 = t('.title')
 
-h2 = t('.select_new_date')
+- time_ago = @last_calculation_date.present? ? I18n.t('time_ago_in_words', time: time_ago_in_words(@last_calculation_date)) : ''
+p = t('.update_every_24_hours')
+
+h2 = t('.select_date_range')
 
 =form_tag(dashboard_your_hours_path, method: "get") do
   =label_tag(:start_date, t('.start_date'))
@@ -13,23 +16,31 @@ h2 = t('.select_new_date')
   |&nbsp; &nbsp; &nbsp;
   =submit_tag(t('.update'))
 
-h3 = t('.hours_details_message', user_name: current_user.real_name, time_duration: @time_duration, start_date: l(@start_date_hours), end_date: l(@end_date_hours))
-
 -if @user_collections.present?
   table.admin-grid.datagrid.striped
     thead
       tr
-        th
-          = "Institutions"
-        th 
-          = "Collection"
-        th 
-          = "Pages"
+        th = t('.institutions')
+        th = t('.collection')
+        th = t('.pages')
+        th = t('.minutes')
     tbody
       - @user_collections.each do |collection|
         tr
           td= collection.owner.display_name
           td= collection.title
           td= @collection_id_to_page_count[collection.id]
+          td= @collection_id_to_minutes[collection.id].to_i
+    tfoot
+      tr
+        th = t('.totals')
+        th
+        th = @collection_id_to_page_count.values.sum
+        th = @collection_id_to_minutes.values.sum
 
+h3 = t('.hours_details_message', user_name: current_user.real_name.presence || current_user.display_name, time_duration: @time_duration, start_date: l(@start_date_hours), end_date: l(@end_date_hours))
+
+p = t('.hours_update_note', time_ago: time_ago)
+
+-if @user_collections.present?
   = button_to t('.download_letter'), dashboard_download_hours_letter_path(start_date: @start_date_hours, end_date: @end_date_hours, time_duration: @time_duration), method: :get, class: 'button-class'

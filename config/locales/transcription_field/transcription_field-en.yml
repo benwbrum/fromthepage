@@ -53,6 +53,10 @@ en:
     edit_metadata_fields:
       edit_metadata_fields: Edit Metadata Fields
     field_layout:
+      ai_both_agree: Both AI models agree
+      ai_disagree_header: AI models disagree — review and choose one
+      ai_option_placeholder: Click a suggestion below, or type your transcription…
+      ai_spreadsheet_option: Use this draft
       instructions: Instructions
     line_form:
       field_options: Field options (separate with semicolons)
@@ -64,6 +68,9 @@ en:
       percentage_title: Percentage of the line width to use for this field.
       percentage_width: Width %
     metadata_field_layout:
+      ai_both_agree: Both AI models agree
+      ai_disagree_header: AI models disagree — review and choose one
+      ai_option_placeholder: Click a suggestion below, or type your own value…
       instructions: Instructions
     multiselect_form:
       options_form_description: Enter options for the multi select metadata field, with each option on a separate line

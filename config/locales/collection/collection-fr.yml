@@ -1,15 +1,66 @@
 ---
 fr:
   collection:
+    ai_transcriptions:
+      create:
+        success: Lancement d'un projet de transcription par IA.
+      form:
+        ai_transcription: Transcription par IA
+        contact_us: Contactez %{email} pour passer à un forfait incluant les brouillons IA.
+        description: Lancer une tâche de transcription IA pour les pages de cette collection.
+        description_complete: Toutes les pages de cette collection comportent des transcriptions IA.
+        failed: Échoué
+        failed_transcription_errors: Erreurs de transcription échouées
+        failed_transcription_errors_hidden: Les erreurs de transcription supplémentaires %{count} ne sont pas affichées.
+        finished: Fini
+        generate: Créer des brouillons IA pour les pages qui en sont dépourvues.
+        in_progress: En cours
+        not_started: Pas encore commencé
+        pages: Pages
+        queued: File d'attente
+        retry: Réessayer les tâches ayant échoué
+        total_tokens_used: Total de tokens utilisés
+      update:
+        success: Nouvelle tentative de transcription par IA.
+    ai_work_metadata:
+      create:
+        success: Tâche de brouillon de métadonnées par IA lancée.
+      form:
+        description: Lancer des tâches de brouillon de métadonnées par IA pour les œuvres qui en sont dépourvues.
+        description_complete: Toutes les œuvres de cette collection comportent des brouillons de métadonnées par IA.
+        failed: Échoué
+        failed_work_metadata_errors: Erreurs de brouillon de métadonnées échouées
+        failed_work_metadata_errors_hidden: Les erreurs de brouillon de métadonnées supplémentaires %{count} ne sont pas affichées.
+        finished: Fini
+        generate: Créer des brouillons de métadonnées par IA pour les œuvres qui en sont dépourvues.
+        heading: Brouillon de métadonnées par IA
+        in_progress: En cours
+        no_metadata_fields: Veuillez configurer les champs de métadonnées dans la configuration des tâches avant de générer des brouillons de métadonnées par IA.
+        not_started: Pas encore commencé
+        queued: File d'attente
+        total_tokens_used: Total de tokens utilisés
+        works: Œuvres
+      show:
+        back: Retour aux paramètres IA
+        fields_heading: Champs du brouillon
+        heading: 'Brouillon de métadonnées par IA (%{model}) : %{work}'
+        reasoning_heading: Raisonnement
+        status: 'Statut : %{status}'
+        tokens_used: 'Jetons utilisés : %{count}'
     approve_all:
       approved_n_pages: "%{page_count} pages approuvées."
+    blank_collection:
+      notice: La collection a été réinitialisée.
     collection_works:
-      all_works: Tous les travaux
+      all_works: Toutes les œuvres
+      collaboration: Collaboration
       most_recent_activity: Activité la plus récente
       n_pages:
         one: '1 page :'
         other: "%{count} pages :"
       progress: Progrès
+      restricted: Limité
+      unrestricted: Libre
       work_title: Titre de œuvre
       works_that_need_transcription: Œuvres nécessitant une transcription
     complete: complet
@@ -52,10 +103,13 @@ fr:
     corrected: corrigée
     create:
       notice: La collection a été créée
+    delete:
+      notice: Collection supprimée avec succès.
     disable_ocr:
       notice: La correction d'OCR a été désactivée pour toutes les œuvres.
     edit:
       add_button: Ajouter
+      collection_findable_instruction: Pour que les collections soient trouvables dans FromThePage, assurez-vous qu'elles comportent des balises, une image et une description.
       collection_image: Image de la collection
       collection_image_description: Une image à utiliser pour illustrer la description de la collection.
       copy_url: Copier dans le presse-papier
@@ -89,12 +143,13 @@ fr:
       abbr_label: Abréviation
       add_description: Marque le texte inséré après coup par l'auteur. <br><i>Recommandé</i>
       add_label: Ajout
+      b_description: Marque le texte composé en gras.
+      b_label: Audacieux
       date_description: Marque les dates, avec une forme standardisée dans l'attribut quand.
       date_label: Date
       del_description: Marque le texte qui a été supprimé par effacement ou barré. <br><i>Recommandé</i>
       del_label: Effacement
       description: FromThePage peut prendre en charge le balisage dans les transcriptions dans les formulaires TEI-XML ou HTML. Nous vous recommandons de ne pas configurer plus de six boutons à afficher sur l'éditeur de transcription. Demandez-vous si d'autres systèmes pourront utiliser ce type de majoration ; si seul le texte brut est pris en charge, les projets doivent utiliser les conventions typographiques au lieu du balisage.
-      documentation: Documentation
       expan_description: Marque les abréviations développées avec des formes originales dans l'attribut orig. (Forme alternative de la balise abbr.)
       expan_label: Expansion
       fig_description: Indique un chiffre ou une ligne horizontale.
@@ -136,7 +191,7 @@ fr:
     edit_danger:
       active: Actif
       blank_collection: Effacer collection
-      blank_collection_description: Appuyer sur ce bouton réinitialisera la collection à un état vide. Il effacera toutes les transcriptions et autres travaux sur la collection, comme si elle venait d'être importée.
+      blank_collection_description: Appuyer sur ce bouton réinitialisera la collection à un état vide. Il effacera toutes les transcriptions et autres œuvres sur la collection, comme si elle venait d'être importée.
       clear_transcripts: Transcriptions claires
       collection_active_description: Il s'agit d'une collection active. Rendre une collection inactive empêche les utilisateurs de modifier le contenu de la collection. L'état de la collection n'affecte pas les paramètres de confidentialité de la collection.
       collection_inactive_description: Il s'agit d'une collection inactive. Rendre une collection active permet aux utilisateurs de modifier le contenu de cette collection. L'état de la collection n'affecte pas les paramètres de confidentialité de la collection.
@@ -148,21 +203,24 @@ fr:
       delete_collection_description: Appuyer sur ce bouton supprimera la collection et tout son contenu. Cette action ne peut pas être annulée.
       destroy_everything: Tout détruire
       inactive: Inactif
-      save_changes: Sauvegarder les modifications
     edit_help:
       help: Texte de la page d'aide
       link_help: Texte d'aide sur la liaison par sujet (non affiché si les sujets sont désactivés)
       link_help_description: Non affiché si les sujets sont désactivés.
-      save_changes: Sauvegarder les modifications
       suggestions_help_tab: Suggestions pour votre onglet d'aide.
       suggestions_transcription_conventions: Suggestions pour vos conventions de transcription.
       transcription_conventions: Conventions de transcription
       transcription_conventions_description: Ces instructions seront affichées sous le formulaire de transcription pour chaque page en cours de transcription ou d'indexation.
+      works_with_custom_conventions:
+        one: "%{title} a des conventions de transcription personnalisées"
+        other: "%{title} et %{count} autres ont des conventions de transcription personnalisées"
     edit_look:
-      alphabetize_works: L'affichage fonctionne par ordre alphabétique plutôt que par ordre de travail nécessaire.
+      alphabetize_works: Lister les œuvres par ordre alphabétique.
       alphabetize_works_description: L’affichage fonctionne par ordre alphabétique plutôt que par ordre de quantité de travail restant.
       default_orientation: Sélectionnez l'orientation de transcription de page par défaut
       default_orientation_description: Choisissez l'orientation qui correspond le mieux à la majorité des œuvres de cette collection. Les utilisateurs pourront modifier l'orientation selon celle qu'ils préfèrent.
+      default_overview_orientation: Orientation par défaut de l'écran de vue d'ensemble
+      default_overview_orientation_description: Choisissez l'orientation pour l'affichage de l'onglet de vue d'ensemble de la page.
       document_sets_description: Les jeux de documents sont des sous-ensembles des œuvres de cette collection, qui peuvent être utilisés pour cibler un projet d'édition ou pour créer une exposition publique sur un thème particulier des documents.
       edit_document_sets: Modifier les ensembles
       edit_facets: Modifier les facettes
@@ -173,6 +231,10 @@ fr:
       forums_description: Permet aux collaborateurs de discuter de sujets entre eux et avec les propriétaires de projets via des forums de discussion.
       hide_completed: Masquer les œuvres terminés par défaut
       hide_completed_description: Masquer les œuvres entièrement transcrites ou traduites par défaut.
+      hide_notes: Masquer les notes, modifications et statistiques aux non-collaborateurs
+      hide_notes_description: Masquer la section « Notes et questions », les modifications récentes et l'onglet Statistiques à tous, sauf aux propriétaires de la collection et aux collaborateurs.
+      legend: Légende
+      legend_description: Contenu HTML à afficher sur chaque vue de page pour fournir un contexte aux lecteurs. Cela apparaîtra sous la transcription dans l'aperçu de la page.
       metadata: Métadonnées
       metadata_description: Chargez les métadonnées des éléments de cette collection de manière groupée.
       metadata_facets_description: Autoriser les utilisateurs à parcourir les œuvres de cette collection via les métadonnées.
@@ -183,11 +245,10 @@ fr:
       page_on_the_top: Page en haut
       refresh_metadata: Rafraîchir les métadonnées
       refresh_metadata_description: Actualisez les métadonnées des manifestes IIIF d'origine.
-      save_changes: Sauvegarder les modifications
       spellcheck_description: Ne convient pas aux textes à l'orthographe irrégulière.
       upload_metadata: Télécharger les métadonnées
       user_download: Autoriser les utilisateurs à télécharger des œuvres.
-      user_download_description: Ajoute un onglet de téléchargement visible par l'utilisateur à chaque travail, qui permet aux utilisateurs d'exporter la transcription du document dans des formats conviviaux pour les chercheurs tels que Microsoft Word ou PDF.
+      user_download_description: Ajoute un onglet de téléchargement visible par l'utilisateur à chaque œuvre, qui permet aux utilisateurs d'exporter la transcription du document dans des formats conviviaux pour les chercheurs tels que Microsoft Word ou PDF.
       voice_recognition: Discours en texte disponible pour la transcription (non compatible avec l'éditeur avancé)
       voice_recognition_description: Disponible uniquement avec le navigateur Web Chrome.
     edit_privacy:
@@ -206,15 +267,13 @@ fr:
       collection_restricted_description: La collection ne peut être consultée que par les propriétaires et collaborateurs répertoriés ci-dessous. Vous pouvez rendre la collection lisible publiquement.
       edit_collaborators: Modifier les collaborateurs
       edit_owners: Modifier les propriétaires
-      make_collection_private: Rendre la collection privée
-      make_collection_public: Rendre la collection publique
       open_api: Ouvrir l'API
       private: Privé
       public: Publique
+      read_only: Lecture seule
       restrict_completed_works: Restreindre les œuvres terminés
       restrict_editing: Restreindre la modification
       restricted_completed_works_description: Ce bouton limitera les œuvres %{work_count} qui sont terminés mais non actuellement restreints aux maîtres d'ouvrage ou collaborateurs désignés. Vous pouvez modifier ce paramètre et ajouter des collaborateurs dans la page des paramètres de chaque œuvre.
-      save_changes: Sauvegarder les modifications
     edit_quality_control:
       authorized_reviewers: Examinateurs autorisés
       collection_reviewers: Examinateurs autorisés
@@ -228,8 +287,8 @@ fr:
       review_type_required_description: Toutes les transcriptions initiales seront marquées comme nécessitant une révision. (La révision peut être effectuée par n’importe qui.)
       review_type_restricted: " Restreint : toutes les transcriptions doivent être révisées, et seuls les réviseurs autorisés peuvent approuver les transcriptions."
       review_type_restricted_description: Toutes les transcriptions doivent être révisées et seuls les réviseurs autorisés peuvent approuver les transcriptions.
-      save_changes: Sauvegarder les modifications
     edit_tabs:
+      ai: IA
       danger_zone: Zone dangereuse
       general: Général
       help_text: Texte d'aide
@@ -238,7 +297,15 @@ fr:
       quality_control: Contrôle de qualité
       task_configuration: Configuration des tâches
     edit_tasks:
+      ai_draft_disabled: Désactiver les brouillons IA
+      ai_draft_disabled_description: Désactiver les brouillons IA pour tous les utilisateurs, sauf le propriétaire de la collection.
       alert: Veuillez configurer les champs ou choisir la transcription basée sur le document sous Type de transcription.
+      allow_transcriber_segmentation: Autoriser les transcripteurs à diviser les œuvres
+      allow_transcriber_segmentation_ai_hint: Vous préférez que l'IA repère les premières pages probables ? Lancez la segmentation depuis %{link} de l'œuvre.
+      allow_transcriber_segmentation_ai_hint_plain: Vous préférez que l'IA repère les premières pages probables ? Ouvrez les paramètres d'une œuvre et lancez la segmentation depuis son onglet IA.
+      allow_transcriber_segmentation_ai_link: les paramètres d'IA
+      allow_transcriber_segmentation_description: 'Affiche un outil ciseaux sur chaque page. Les transcripteurs peuvent diviser une œuvre à n''importe quelle page : les pages situées avant cette page sont déplacées dans une nouvelle œuvre, et les autres restent dans l''œuvre actuelle.'
+      allow_transcriber_segmentation_unavailable: Ce paramètre est disponible pour les collections actives basées sur du texte dans les forfaits organisationnels.
       disable_ocr: Désactiver la OCR
       document_based_transcription: Transcription basée sur des documents
       document_based_transcription_description: Chaque page de la collection comportera une seule zone de saisie de texte libre pour la transcription. Également connue sous le nom de « transcription basée sur des documents ».
@@ -252,7 +319,6 @@ fr:
       metadata_description_description: La description des métadonnées est utilisée pour créer des métadonnées structurées sur les œuvres de la collection. Vous devrez configurer les champs de métadonnées qui seront affichés.
       ocr_correction: Correction d'OCR
       ocr_description: Activez ou désactivez la correction OCR pour toutes les œuvres de cette collection.
-      save_changes: Sauvegarder les modifications
       subjects_enabled: Activer l'indexation des sujets
       subjects_enabled_description: Les sujets sont utilisés pour indexer les pages de la collection.
       text_language: Sélectionnez la langue du texte de transcription
@@ -289,7 +355,7 @@ fr:
       project_by: Projet par
       return_to_collection: Retour à la collection
       review_metadata: Examiner les métadonnées
-      works_that_need_metadata: Travaux nécessitant des métadonnées
+      works_that_need_metadata: Œuvres nécessitant des métadonnées
     needs_transcription_pages:
       pages_need_transcription: Pages nécessitant une transcription
       project_by: Projet par
@@ -324,6 +390,8 @@ fr:
       recent_contributor_title: Contributeurs récents
       review: Révision
       user: Utilisateur
+    restrict_scribes:
+      success: Les œuvres terminées ont été restreintes avec succès
     reviewer_dashboard:
       one_off_contributions: Contributions uniques
       pages_needing_review: Pages à réviser
@@ -333,10 +401,14 @@ fr:
       transcribed_page: Page transcrite
       unreviewed_contributors: Nouveaux contributeurs
       works_to_review: Œuvres à revoir
+    search:
+      search: Recherche
+      search_in_collection: Recherche dans la collection
     show:
       about: À propos
       add_a_new_work: Ajouter une nouvelle œuvre
       all_complete: Toutes les œuvres sont entièrement transcrites.
+      document_sets: Jeux de Documents
       help_create_metadata: Aide
       help_transcribe_or_correct: Aide
       n_pages:
@@ -353,6 +425,7 @@ fr:
       search: Chercher
       search_by_title: Rechercher par titre ou métadonnées...
       search_by_title_1: Rechercher par titre
+      search_in_collection: Recherche dans la collection
       search_the_text: Rechercher dans le texte...
       search_the_text_1: Rechercher le texte
       show_more: Voir plus
@@ -361,7 +434,6 @@ fr:
       subject_categories: Catégories de sujets
       this_work_has_not_been_described: Ce œuvre a besoin de meilleures métadonnées.
       this_work_has_pages_that_need_work: Certaines pages ont encore besoin d'amélioration.
-      time_ago_in_words: Il y a %{time}
       user_wrote_note: "%{user} a écrit %{note}"
       works: Œuvres
     start_transcribing:
@@ -369,6 +441,7 @@ fr:
     transcribed: transcrite
     translated: traduite
     update:
+      error: Échec de la mise à jour de la collection
       notice: La collection a été mise à jour
     update_buttons:
       editor_buttons_updated: Boutons de l'éditeur mis à jour

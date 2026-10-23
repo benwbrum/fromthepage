@@ -1,0 +1,5 @@
+.dataTables_length
+  =t('filter_table.show')
+  label [style='margin: 0 5px;']
+    =select_tag(:per_page, options_for_select(pagination_options_collection, selected))
+  =t('filter_table.entries')

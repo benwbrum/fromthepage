@@ -1,7 +1,7 @@
 h5.tooltip_header =@article.title
 
 -if @article.xml_text != nil && !@article.xml_text.empty?
-  .tooltip_content ==xml_to_html(@article.xml_text)
+  .tooltip_content ==cached_article_xml_to_html(@article, collection: @collection)
 
 -unless @article.categories.empty?
   .tooltop_content.small

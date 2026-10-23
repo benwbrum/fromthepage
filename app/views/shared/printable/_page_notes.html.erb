@@ -1,0 +1,17 @@
+\\{}
+\\{}
+
+\subsubsection{<%= t('export.facing_edition.notes') %>}
+\label{<%= "#{page.title} notes" %>}
+
+\begin{small}
+<% notes.each do |note| %>
+  <%= Work::Export::Lib::Utils.xml_to_latex(
+    page: note,
+    xml_text: note.xml_text,
+    preserve_lb: @preserve_lb,
+    flatten_links: true
+  ) %>
+
+<% end %>
+\end{small}

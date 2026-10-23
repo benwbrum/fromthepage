@@ -1,0 +1,12 @@
+-tabs = side_nav_tabs
+
+.side-tabs
+  -tabs.each do |tab|
+    -if tab[:selected] == current_section
+      a.active
+        =svg_symbol tab[:icon], class: 'icon'
+        =tab[:name]
+    -else
+      =link_to tab[:path]
+        =svg_symbol tab[:icon], class: 'icon'
+        =tab[:name]

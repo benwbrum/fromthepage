@@ -1,7 +1,12 @@
 ---
 fr:
   page_version:
+    revert:
+      not_authorized: Vous n’êtes pas autorisé à rétablir cette page.
+      reverted: La page a été rétablie à la version sélectionnée. Veuillez la vérifier et l’enregistrer.
+      version_not_found: Version introuvable.
     show:
+      ai_draft_used: Brouillon d'IA utilisé
       author_contributed_at: "%{author} le %{date}"
       compared_with: Comparé à
       help_description: Ici, vous pouvez voir toutes les révisions de page et comparer les modifications apportées à chaque révision. La colonne de gauche montre le titre de la page et la transcription dans la révision sélectionnée, la colonne de droite montre ce qui a été modifié. Le texte inchangé est <span>surligné en blanc</span>, le texte supprimé est <del>surligné en rouge</del> et le texte inséré est <ins>surligné en vert</ins>.
@@ -12,7 +17,11 @@ fr:
       no_translation_provided: Aucune traduction fournie
       page_version_status_blank: vide
       page_version_status_incomplete: incomplet
+      page_version_status_needs_review: nécessite révision
       page_version_status_review: revoir
       page_version_status_transcribed: transcrit
+      restore: Restaurer
+      restore_tooltip: Remplacer le texte actuel par la transcription de cette version
+      revert_confirm: Êtes-vous sûr de vouloir revenir à cette version ? Vous serez redirigé vers l’écran de transcription pour vérifier et enregistrer.
       translation: Traduction
       untitled: Sans titre

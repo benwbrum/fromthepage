@@ -1,4 +1,6 @@
 ---
 pt:
   errors:
+    error: Algo deu errado
     html_syntax_error: sintaxe html inválida
+    unsupported_file_type: tipo de arquivo não suportado

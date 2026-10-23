@@ -8,8 +8,10 @@ h3= t('.bulk_contentdm_import')
     = check_box_tag :ocr_correction
     = label_tag :ocr_correction, t('.import_ocr_text')
   p
+    = check_box_tag :generate_ai_draft
+    = label_tag :generate_ai_draft, t('.generate_ai_draft_text')
+  p
     = label_tag :cdm_urls, t('.compound_object_urls')
     = text_area_tag :cdm_urls, '', rows: 15
   p= t('.separate_urls_with')
   = submit_tag t('.import')
-

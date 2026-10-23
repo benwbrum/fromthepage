@@ -6,7 +6,7 @@
 
                     <div class="col-lg-4 mobil">
                         <a href="index.html" class="logo"><%= image_tag("footer-logo.svg") %></a>
-    
+
                         <ul class="social-media">
                             <li><a href="#"><i class="fa fa-twitter"></i></a></li>
                             <li><a href="#"><i class="fa fa-facebook-square"></i></a></li>
@@ -45,6 +45,7 @@
                         <li><%= link_to t('layouts.application.contact_us'), contact_path(contact_form_token) %></li>
                         <% if request.original_url.include?("fromthepage.com") %></li>
                             <li><%= link_to t('layouts.application.pricing'), pricing_path, target: '_blank' %></li>
+                            <li><%= link_to t('layouts.application.case_studies'), case_studies_path, target: '_blank' %></li>
                         <% end %>
                         <li><%= link_to 'Press', 'https://content.fromthepage.com/press/', target: '_blank' %></li>
 
@@ -62,10 +63,10 @@
 
     <!-- Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous">
+      integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous">
     </script>
 
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script> 
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
         AOS.init();
     </script>
@@ -76,7 +77,6 @@
     <%= javascript_include_tag 'landing/main.js' %>
 
 
-    <% if defined?(BENTO_ENABLED) && BENTO_ENABLED %>
-      <%=render :partial => '/shared/bento' %>
-      <%= render :partial => '/shared/bento_chat' %>
+    <% if defined?(BENTO_ENABLED) && BENTO_ENABLED && current_user&.privacy_preference&.marketing && !user_masquerade? %>
+      <%= render partial: '/shared/third_party/bento' %>
     <% end %>

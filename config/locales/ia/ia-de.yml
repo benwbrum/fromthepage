@@ -27,6 +27,8 @@ de:
       conceal_preceding_pages: Vorhergehende Seiten verbergen
       first_line_of_ocr: Erste OCR-Zeile
       first_line_of_ocr_description: "<b>Erste OCR-Zeile</b> ersetzt die Seitentitel durch die oberste OCR-Textzeile auf jeder Seite. Dies ist nützlich für Tagebücher und Journale, da die erste Zeile dort für gewöhnlich ein Datum ist."
+      generate_ai_draft_text: Generieren Sie KI-Entwürfe mit Gemini AI
+      generate_ai_draft_text_description: Aktivieren Sie dieses Kontrollkästchen, um nach der Veröffentlichung des Werks automatisch KI-Entwurfstexte für alle Seiten mithilfe von Gemini AI zu generieren.
       last_line_of_ocr: Letzte OCR-Zeile
       last_line_of_ocr_description: "<b>Letzte OCR-Zeile</b> ersetzt die Seitentitel durch die unterste Zeile des OCR-Texts auf jeder Seite. Dies ist sinnvoll bei Druckwerken, bei denen die Seitenzahlen unten stehen."
       manage_archive_org_import: Archive.org-Import verwalten

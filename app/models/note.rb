@@ -16,7 +16,15 @@
 #
 # Indexes
 #
+#  fk_rails_7d330fa613     (collection_id)
+#  fk_rails_9fa473ac93     (work_id)
 #  index_notes_on_page_id  (page_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (collection_id => collections.id) ON DELETE => cascade
+#  fk_rails_...  (page_id => pages.id) ON DELETE => cascade
+#  fk_rails_...  (work_id => works.id) ON DELETE => cascade
 #
 class Note < ApplicationRecord
   # Notes are comments on pages.  In the future they may
@@ -25,6 +33,10 @@ class Note < ApplicationRecord
 
   # automated stuff
   acts_as_tree
+
+  include XmlSourceProcessor
+
+  MAX_TITLE_LENGTH = 250
 
   # associations
   belongs_to :user, optional: true
@@ -42,7 +54,7 @@ class Note < ApplicationRecord
 
   validates :body, presence: true
 
-  scope :active, -> { joins(:user).where(users: {deleted: false}) }
+  scope :active, -> { joins(:user).where(users: { deleted: false }) }
 
   after_create :check_content
 
@@ -53,15 +65,16 @@ class Note < ApplicationRecord
   def email_users
     if SMTP_ENABLED
       if collection.metadata_only_entry?
-        previous_users = User.joins(:notes).where(notes: {id: self.work.notes.ids}).joins(:notification).where(notifications: {note_added: true}).distinct
+        previous_users = User.joins(:notes).where(notes: { id: self.work.notes.ids }).joins(:notification).where(notifications: { note_added: true }).distinct
       else
-        previous_users = User.joins(:notes).where(notes: {id: self.page.notes.ids}).joins(:notification).where(notifications: {note_added: true}).distinct
+        previous_users = User.joins(:notes).where(notes: { id: self.page.notes.ids }).joins(:notification).where(notifications: { note_added: true }).distinct
       end
       previous_users.each do |user|
-        #send email regarding previous note, if it isn't the same user
-        if (user.id != self.user_id && self.work.access_object(user))
+        # send email regarding previous note, if it isn't the same user and the user can still access the work (it may have been made private)
+        access = self.work.access_object(user)
+        if user.id != self.user_id && access
           begin
-            UserMailer.added_note(user, self).deliver!
+            UserMailer.added_note(user, self, access).deliver!
           rescue StandardError => e
             print "SMTP Failed: Exception: #{e.message}"
           end
@@ -74,4 +87,18 @@ class Note < ApplicationRecord
     self.page.update_column(:last_note_updated_at, page.notes.last.updated_at) if self.page
   end
 
+  def xml_text
+    xml_string = String.new("#{user.display_name}:\n#{body}")
+
+    xml_string = process_latex_snippets(xml_string)
+    xml_string = clean_bad_braces(xml_string)
+    xml_string = clean_script_tags(xml_string)
+    xml_string = process_initial_whitespace(xml_string)
+    xml_string = process_linewise_markup(xml_string)
+    xml_string = process_line_breaks(xml_string)
+    xml_string = valid_xml_from_source(xml_string)
+    xml_string = postprocess_xml_markup(xml_string)
+
+    xml_string
+  end
 end

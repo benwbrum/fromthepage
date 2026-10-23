@@ -1,27 +1,33 @@
 class ApplicationController < ActionController::Base
+  include CookiesConsent
+
+  DEFAULT_PER_PAGE = 200
+
   protect_from_forgery with: :exception, except: [:switch_locale, :saml]
 
   before_action do
-    if current_user && current_user.admin
-      Rack::MiniProfiler.authorize_request
-    end
+    next unless current_user&.admin
+
+    Rack::MiniProfiler.authorize_request
   end
 
   before_action :load_objects_from_params
-  before_action :update_ia_work_server
-  before_action :store_current_location, :unless => :devise_controller?
+  before_action :store_current_location, unless: :devise_controller?
   before_action :load_html_blocks
   before_action :authorize_collection
   before_action :configure_permitted_parameters, if: :devise_controller?
   skip_before_action :verify_authenticity_token, if: (:devise_controller? && :codespaces_environment?)
   before_action :set_current_user_in_model
+  before_action :set_current_session_in_model
   before_action :masquerade_user!
   before_action :check_search_attempt
   after_action :track_action
   around_action :switch_locale
 
+  layout :set_layout
+
   def switch_locale(&action)
-    @dropdown_locales = I18n.available_locales.reject { |locale| locale.to_s.include? "-" }
+    @dropdown_locales = I18n.available_locales.reject { |locale| locale.to_s.include? '-' }
 
     locale = nil
 
@@ -52,7 +58,7 @@ class ApplicationController < ActionController::Base
     # append region to locale
     related_locales = http_accept_language.user_preferred_languages.select do |loc|
       loc.to_s.include?(locale.to_s) &&                              # is related to the chosen locale (is the locale, or is a regional version of it)
-      I18n.available_locales.map{|e| e.to_s}.include?(loc.to_s) # is an available locale
+      I18n.available_locales.map { |e| e.to_s }.include?(loc.to_s) # is an available locale
     end
 
     unless related_locales.empty?
@@ -64,48 +70,60 @@ class ApplicationController < ActionController::Base
     I18n.with_locale(locale, &action)
   end
 
-  # Set the current user in User
+  # Set the current user in Current
   def set_current_user_in_model
-    User.current_user = current_user
+    Current.user = current_user
+  end
+
+  # Set the current session in Current
+  def set_current_session_in_model
+    Current.session = session
   end
 
   def current_user
-    super || guest_user
-  end
+    return @current_user if @current_user&.present?
 
-  #find the guest user account if a guest user session is currently active
-  def guest_user
-    unless session[:guest_user_id].nil?
-      User.where(id: session[:guest_user_id]).first
+    user = super || guest_user
+
+    if user.present?
+      ActiveRecord::Associations::Preloader.new(
+        records: [user],
+        associations: [:privacy_preference]
+      ).call
     end
+
+    @current_user = user
   end
 
-  #when the user chooses to transcribe as guest, find guest user id or create new guest user
-  def guest_transcription
+  # find the guest user account if a guest user session is currently active
+  def guest_user
+    @guest_user ||= User.find_by(id: session[:guest_user_id])
+  end
 
+  # when the user chooses to transcribe as guest, find guest user id or create new guest user
+  def guest_transcription
     return head(:forbidden) unless GUEST_TRANSCRIPTION_ENABLED
 
-    if check_recaptcha(model: @page, :attribute => :errors)
+    if check_recaptcha(model: @page, attribute: :errors)
       User.find(session[:guest_user_id].nil? ? session[:guest_user_id] = create_guest_user.id : session[:guest_user_id])
-      redirect_to :controller => 'transcribe', :action => 'display_page', :page_id => @page.id
+      redirect_to controller: 'transcribe', action: 'display_page', page_id: @page.id
     else
       # TODO: Get some kind of flash notification on failure
       flash[:error] = t('layouts.application.recaptcha_validation_failed')
       flash.keep
-      redirect_to :controller => 'transcribe', :action => 'guest', :page_id => @page.id
+      redirect_to controller: 'transcribe', action: 'guest', page_id: @page.id
     end
-
   end
 
   def create_guest_user
-    user = User.new { |user| user.guest = true}
+    user = User.new { |user| user.guest = true }
     user.email = "guest_#{Time.now.to_i}#{rand(99)}@example.com"
-    user.save(:validate => false)
+    user.save(validate: false)
     user
   end
 
   def remove_col_id
-    #if there's a col_id set, needs to be removed to prevent breadcrumb issues
+    # if there's a col_id set, needs to be removed to prevent breadcrumb issues
     if session[:col_id]
       session[:col_id] = nil
     end
@@ -123,6 +141,13 @@ class ApplicationController < ActionController::Base
     # general, so that parent_id will load the appropriate
     # object without being overridden by child_id.parent
     # whenever both are specified on the parameters
+
+    if params[:ai_transcription_id]
+      @ai_transcription = AiTranscription.find(params[:ai_transcription_id])
+      @page = @ai_transcription.page
+      @work = @page.work
+      @collection = @work.collection
+    end
 
     if params[:article_id]
       @article = Article.find(params[:article_id])
@@ -186,107 +211,57 @@ class ApplicationController < ActionController::Base
     else
       Thredded::Engine.routes.default_url_options = { user_slug: 'nil', collection_id: 'nil' }
     end
-
   end
 
-
   def set_friendly_collection(id)
-    if Collection.friendly.exists?(id)
-      @collection = Collection.friendly.find(id)
-    elsif DocumentSet.friendly.exists?(id)
-      @collection = DocumentSet.friendly.find(id)
-    elsif !DocumentSet.find_by(slug: id).nil?
-      @collection = DocumentSet.find_by(slug: id)
-    elsif !Collection.find_by(slug: id).nil?
-      @collection = Collection.find_by(slug: id)
-    end
-
-    # check to make sure URLs haven't gotten scrambled
-    if @work
-      if @work.collection != @collection
-        # this could be a document set or a bad collection
-        unless @collection.is_a? DocumentSet
-          @collection = @work.collection
-        end
-      end
-    end
-    return @collection
+    @collection = Collection::Lib::SetFriendlyFind.perform(id: id, work_reference: @work)
   end
 
   def bad_record_id(e)
     logger.error("Bad record ID exception for params=#{params.inspect}")
     logger.error(e.backtrace[2])
     if @collection
-      redirect_to :controller => 'collection', :action => 'show', :collection_id => @collection.id
+      redirect_to controller: 'collection', action: 'show', collection_id: @collection.id
     else
-      redirect_to "/404"
+      redirect_to '/404'
     end
 
-    return
-  end
-
-  # perform appropriate API call for updating the IA server
-  def update_ia_work_server
-    if @work && @work.ia_work
-      ia_servers = session[:ia_servers] ||= {}
-      ia_servers = JSON.parse(ia_servers.to_json).with_indifferent_access
-
-      unless ia_servers[@work.ia_work.book_id]
-        # fetch it and update it
-        begin
-          server_and_path = IaWork.refresh_server(@work.ia_work.book_id)
-          ia_servers[@work.ia_work.book_id] = server_and_path
-        rescue => ex
-          # TODO log exception
-          if params[:offline]
-            # we're doing development offline
-            ia_servers[@work.ia_work.book_id] = {:server => 'offlineserver', :ia_path => 'offlinepath'}
-          else
-            logger.error(ex.message)
-            logger.error(ex.backtrace.join("\n"))
-            flash[:error] = t('layouts.application.internet_archive_difficulties')
-            redirect_to :controller => :collection, :action => :show, :collection_id => @collection.id
-            return
-          end
-        end
-      end
-
-      logger.debug("DEBUG: ia_server = #{ia_servers[@work.ia_work.book_id].inspect}")
-      @work.ia_work.server = ia_servers[@work.ia_work.book_id][:server]
-      @work.ia_work.ia_path = ia_servers[@work.ia_work.book_id][:ia_path]
-    end
+    nil
   end
 
   def load_html_blocks
     @html_blocks = {}
-    page_blocks =
-      PageBlock.where(controller: controller_name, view: action_name)
+    page_blocks = PageBlock.where(controller: controller_name, view: action_name)
     page_blocks.each do |b|
-        if b && b.html
-          b.rendered_html = render_to_string(:inline => b.html)
-        else
+      if b && b.html
+        begin
+          b.rendered_html = render_to_string(inline: b.html)
+        rescue StandardError => _e
           b.rendered_html = ''
         end
-        @html_blocks[b.tag] = b
+      else
+        b.rendered_html = ''
+      end
+      @html_blocks[b.tag] = b
     end
   end
 
   def authorize_collection
+    return if params[:controller] == 'iiif'
+
     return unless @collection
+
     if self.class.module_parent.name == 'Thredded'
       unless @collection.messageboards_enabled
-        flash[:error] = t('message_boards_are_disabled', :project => @collection.title)
+        flash[:error] = t('message_boards_are_disabled', project: @collection.title)
         redirect_to main_app.user_profile_path(@collection.owner)
       end
     end
 
-    return unless @collection.restricted
-    return if (params[:controller] == 'iiif')
-
     unless @collection.show_to?(current_user)
       # second chance?
       unless set_fallback_collection
-        flash[:error] = t('unauthorized_collection', :project => @collection.title)
+        flash[:error] = t('unauthorized_collection', project: @collection.title)
         redirect_to main_app.user_profile_path(@collection.owner)
       end
     end
@@ -294,7 +269,7 @@ class ApplicationController < ActionController::Base
 
   def set_fallback_collection
     if @work && @work.collection.supports_document_sets
-      alternative_set = @work.document_sets.where(:is_public => true).first
+      alternative_set = @work.document_sets.unrestricted.first
       if alternative_set
         @collection = alternative_set
         true
@@ -306,18 +281,17 @@ class ApplicationController < ActionController::Base
     end
   end
 
-
   def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_up) { |u| u.permit(:login, :email, :password, :password_confirmation, :display_name, :owner, :paid_date, :activity_email) }
+    devise_parameter_sanitizer.permit(:sign_up) { |u| u.permit(:login, :email, :password, :password_confirmation, :display_name, :activity_email) }
     devise_parameter_sanitizer.permit(:sign_in) { |u| u.permit(:login_id, :login, :email, :password, :remember_me) }
     devise_parameter_sanitizer.permit(:account_update) { |u| u.permit(:login, :email, :password, :current_password, :password_confirmation, :real_name) }
   end
 
   # Redirect to admin or owner dashboard after sign in
-    # Always send admins to admin dashboard
-    # Everyone else should go back to where they came from if their previous page is set
-    # Otherwise owners should go to their dashboards
-    # And everyone else should go to user dashboard/watchlist
+  # Always send admins to admin dashboard
+  # Everyone else should go back to where they came from if their previous page is set
+  # Otherwise owners should go to their dashboards
+  # And everyone else should go to user dashboard/watchlist
   def after_sign_in_path_for(resource)
     if current_user.admin
       admin_path
@@ -329,8 +303,10 @@ class ApplicationController < ActionController::Base
       else
         dashboard_startproject_path
       end
-    else
+    elsif current_user.deeds.any?
       dashboard_watchlist_path
+    else
+      landing_page_path
     end
   end
 
@@ -343,7 +319,7 @@ class ApplicationController < ActionController::Base
   end
 
   # Wrapper around redirect_to for modal ajax forms
-  def ajax_redirect_to(options={}, response_status={})
+  def ajax_redirect_to(options = {}, response_status = {})
     if request.xhr?
       head :created, location: url_for(options)
     else
@@ -351,96 +327,138 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  private
+
+  def set_layout
+    request.xhr? ? false : nil
+  end
+
+  def per_page
+    return @per_page if defined?(@per_page)
+
+    @per_page = if params[:per_page].present?
+                  params[:per_page].to_i
+    else
+                  default_per_page
+    end
+
+    @per_page
+  end
+
+  def default_per_page
+    # Override in controller for custom defaults
+    DEFAULT_PER_PAGE
+  end
 end
 
-  def page_params(page)
-    if page.status_new?
-      if user_signed_in?
-        collection_transcribe_page_path(@collection.owner, @collection, page.work, page)
-      else
-        collection_guest_page_path(@collection.owner, @collection, page.work, page)
-      end
+def page_params(page)
+  if @collection
+    collection = @collection
+  else
+    collection = page.work.access_object(current_user) || page.work.collection
+  end
+
+  if page.status_new?
+    if user_signed_in?
+      collection_transcribe_page_path(page.work.collection.owner, collection, page.work, page)
     else
-      collection_display_page_path(@collection.owner, @collection, page.work, page)
+      collection_guest_page_path(page.work.collection.owner, collection, page.work, page)
+    end
+  else
+    collection_display_page_path(page.work.collection.owner, collection, page.work, page)
+  end
+end
+
+def track_action
+  extras = {}
+  if @collection
+    if @collection.is_a? DocumentSet
+      extras[:document_set_id] = @collection.id
+      extras[:document_set_title] = @collection.title
+      extras[:collection_id] = @collection.collection.id
+      extras[:collection_title] = @collection.collection.title
+    else
+      extras[:collection_id] = @collection.id
+      extras[:collection_title] = @collection.title
     end
   end
+  extras[:work_id] = @work.id if @work
+  extras[:work_title] = @work.title if @work
+  extras[:page_id] = @page.id if @page
+  extras[:page_title] = @page.title if @page
+  extras[:article_id] = @article.id if @article
+  extras[:article_title] = @article.title if @article
+  ahoy.track("#{controller_name}##{action_name}", extras) unless action_name == 'still_editing'
+end
 
-
-  def track_action
-    extras = {}
-    if @collection
-      if @collection.is_a? DocumentSet
-        extras[:document_set_id] = @collection.id
-        extras[:document_set_title] = @collection.title
-        extras[:collection_id] = @collection.collection.id
-        extras[:collection_title] = @collection.collection.title
-      else
-        extras[:collection_id] = @collection.id
-        extras[:collection_title] = @collection.title
-      end
-    end
-    extras[:work_id] = @work.id if @work
-    extras[:work_title] = @work.title if @work
-    extras[:page_id] = @page.id if @page
-    extras[:page_title] = @page.title if @page
-    extras[:article_id] = @article.id if @article
-    extras[:article_title] = @article.title if @article
-    ahoy.track("#{controller_name}##{action_name}", extras) unless action_name == "still_editing"
-  end
-
-
-  def check_api_access
-    if (defined? @collection) && @collection
-      if @collection.restricted && !@collection.api_access
-        if @api_user.nil? || !(@api_user.like_owner?(@collection))
-          render :status => 403, :plain => 'This collection is private.  The collection owner must enable API access to it or make it public for it to appear.'
-        end
-      end
-    end
-  end
-
-  def set_api_user
-    authenticate_with_http_token do |token, options|
-      @api_user = User.find_by(api_key: token)
-    end
-  end
-
-  def check_search_attempt
-    if session[:search_attempt_id]
-      your_profile = controller_name == "user" && @user == current_user
-      if ["dashboard", "static"].include?(controller_name) || your_profile
-        session[:search_attempt_id] = nil
+def check_api_access
+  if (defined? @collection) && @collection
+    if @collection.restricted && !@collection.api_access
+      if @api_user.nil? || !(@api_user.like_owner?(@collection))
+        render status: 403, plain: 'This collection is private.  The collection owner must enable API access to it or make it public for it to appear.'
       end
     end
   end
+end
 
-  def update_search_attempt_contributions
-    if session[:search_attempt_id]
-      search_attempt = SearchAttempt.find(session[:search_attempt_id])
-      search_attempt.increment!(:contributions)
+def set_api_user
+  @api_user = nil
+  authenticate_with_http_token do |token, options|
+    @api_user = User.find_by(api_key: token)
+  end
+end
+
+def check_search_attempt
+  if session[:search_attempt_id]
+    your_profile = controller_name == 'user' && @user == current_user
+    if ['dashboard', 'static'].include?(controller_name) || your_profile
+      session[:search_attempt_id] = nil
     end
   end
+end
 
-  def update_search_attempt_user(user, session_var)
-    if session_var[:search_attempt_id]
-      search_attempt = SearchAttempt.find(session_var[:search_attempt_id])
-      search_attempt.user = user
-      search_attempt.owner = user.owner
-      search_attempt.save
-    end
+def update_search_attempt_contributions
+  if session[:search_attempt_id]
+    search_attempt = SearchAttempt.find(session[:search_attempt_id])
+    search_attempt.increment!(:contributions)
   end
+end
+
+def update_search_attempt_user(user, session_var)
+  if session_var[:search_attempt_id]
+    search_attempt = SearchAttempt.find(session_var[:search_attempt_id])
+    search_attempt.user = user
+    search_attempt.owner = user.owner
+    search_attempt.save
+  end
+end
+
+
+def require_login_for_hidden_page
+  return false if user_signed_in?
+
+  response.headers['X-Robots-Tag'] = 'noindex, nofollow, noarchive'
+  head :not_found
+end
+
+def require_login_for_work_queue
+  require_login_for_hidden_page
+end
 
 private
-  def store_current_location
-    store_location_for(:user, request.url)
-  end
-  def check_recaptcha(options)
-    return verify_recaptcha(options) if RECAPTCHA_ENABLED
-    true
-  end
-  def codespaces_environment?
-    Rails.env.development? && ENV["CODESPACES"] == "true"
-  end
-# class ApplicationController < ActionController::Base
-#   protect_from_forgery
-# end
+
+def store_current_location
+  return if turbo_frame_request?
+
+  store_location_for(:user, request.url)
+end
+
+def check_recaptcha(options)
+  return verify_recaptcha(options) if RECAPTCHA_ENABLED
+
+  true
+end
+
+def codespaces_environment?
+  Rails.env.development? && ENV['CODESPACES'] == 'true'
+end

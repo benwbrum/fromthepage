@@ -1,0 +1,55 @@
+tr
+  th(colspan="2")
+    h3 =t('work.edit.additional_metadata')
+tr
+  th(colspan="2")
+    p =t('work.edit.additional_metadata_description')
+tr
+  th =f.label :author, t('work.edit.author')
+  td =f.text_field :author, value: work.author
+tr
+  th =f.label :recipient, t('work.edit.recipient')
+  td =f.text_field :recipient, value: work.recipient
+tr
+  th =f.label :location_of_composition, t('work.edit.place_of_creation')
+  td =f.text_field :location_of_composition, value: work.location_of_composition
+tr
+  th =f.label :document_date, t('work.edit.document_date')
+  td =f.text_field :document_date, value: work.document_date, placeholder: 'yyyy-mm-dd'
+tr
+  th.hidden= t('work.edit.document_date')
+  td =t('work.edit.document_date_hint')
+tr
+  th =f.label :genre, t('work.edit.genre')
+  td =f.text_field :genre, value: work.genre
+tr
+  th =f.label :source_location, t('work.edit.source_location')
+  td =f.text_field :source_location, value: work.source_location
+tr
+  th =f.label :source_collection_name, t('work.edit.source_collection_name')
+  td =f.text_field :source_collection_name, value: work.source_collection_name
+tr
+  th =f.label :source_box_folder, t('work.edit.source_box_folder')
+  td =f.text_field :source_box_folder, value: work.source_box_folder
+tr
+  td(colspan="2" style="display: flex; align-items: center; width: 100%")
+    =f.check_box :in_scope, value: work.in_scope
+    =f.label :in_scope, t('work.edit.in_scope')
+tr
+  td(colspan="2")
+    =f.label :editorial_notes, t('work.edit.editorial_notes'), class: 'above'
+    =f.text_area :editorial_notes, rows: 5, value: work.editorial_notes
+tr
+  td(colspan="2")
+    =f.label :physical_description, t('work.edit.physical_description'), class: 'above'
+    =f.text_area :physical_description, rows: 5, value: work.physical_description
+tr
+  td(colspan="2")
+    =f.label :document_history, t('work.edit.document_history'), class: 'above'
+    =f.text_area :document_history, rows: 5, value: work.document_history
+tr
+  td(colspan="2")
+    =f.label :permission_description, t('work.edit.permission_description'), class: 'above'
+    =f.text_area :permission_description, rows: 5, value: work.permission_description
+
+=f.hidden_field :collection_id, value: collection.id

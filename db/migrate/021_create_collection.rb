@@ -2,9 +2,13 @@ class CreateCollection < ActiveRecord::Migration[5.0]
   def self.up
     # collection table
     create_table :collections do |t|
-      t.column :title, :string, :limit => 255
+      t.column :title, :string, limit: 255
       t.column :owner_user_id, :integer
       t.column :created_on, :datetime
+
+      # Backsupport for CI
+      t.string :review_type
+      t.string :visibility
     end
     # work fk
     add_column :works, :collection_id, :integer

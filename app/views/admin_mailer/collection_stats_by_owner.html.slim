@@ -6,7 +6,7 @@ h2.nomargin =t('.recent_activity')
   h3 =t('.you_have_new_collaborators')
   - @activity.collaborators.each do |user|
     a href="mailto:#{user.email}" "#{user.email} #{user.login}"<br />
-  p 
+  p
     =t('.you_may_consider', link: link_to("How to write a welcome email", "https://content.fromthepage.com/project-owner-documentation/new-collaborator-email/")).html_safe
 
 / New Notes and Comments
@@ -17,25 +17,40 @@ h2.nomargin =t('.recent_activity')
       -if comment.prerender_mailer
         =raw(show_prerender(comment.prerender_mailer, I18n.locale))
       -else
-        =render(:partial => 'deed/deed.html', :locals => { :deed => comment, :long_view => true, :mailer => true })
+        =render(partial: 'deed/deed', locals: { deed: comment, long_view: true, mailer: true }, formats: [:html])
       | <br>
+
+/ Suspicious Behaviors
+- unless @activity.suspicious_behaviors.blank?
+  h3 =t('.suspicious_behaviors')
+  - @activity.suspicious_behaviors.each do |collection, suspicious_behaviors|
+    h4 = collection.title
+    p
+      = link_to t('.view_collection_suspicious_behaviors'), collection_suspicious_behaviors_url(collection.owner, collection, only_path: false)
+    ul
+      - suspicious_behaviors.each do |suspicious_behavior|
+        li
+          = t("suspicious_behaviors.filters.behavior_type.#{suspicious_behavior.behavior_type}")
+          - if suspicious_behavior.page.present?
+            | :
+            = link_to suspicious_behavior.page.title, collection_display_page_url(collection.owner, collection, suspicious_behavior.page.work_id, suspicious_behavior.page, only_path: false)
 
 / Raw Activity stream (without notes)
 - unless @activity.activity.blank?
   h3 =t('.other_recent_activity')
   - @activity.activity.each do |collection_title,deeds|
     h4 #{collection_title}
-    p 
+    p
       - deeds.each do |deed|
         -if deed.prerender
           =raw(show_prerender(deed.prerender_mailer, I18n.locale))
         -else
-          =render(:partial => 'deed/deed.html', :locals => { :deed => deed, :long_view => true, :mailer => true })
+          =render(partial: 'deed/deed', locals: { deed: comment, long_view: true, mailer: true }, formats: [:html])
         | <br>
-      
+
 
 h3 =t('.how_is_your_project_going')
-p 
+p
   i =t('.what_is_easy').html_safe
 p
  =t('.opt_out_email', link: link_to("here", update_profile_url(@activity.owner, only_path: false))).html_safe

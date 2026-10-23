@@ -9,29 +9,43 @@ class IiifController < ApplicationController
   before_action :load_objects_from_ids
   before_action :check_api_access, except: [:collections, :contributions, :for, :collection_for_domain]
 
+  ANNOTATION_FIELDS = {
+    'transcription' => :source_text,
+    'translation'   => :source_translation,
+    'notes'         => :notes
+  }.freeze
+
+  MANIFEST_EXPIRES_AT = 1.day
+
   def load_objects_from_ids
-    if @work && params[:work_id]
-      if params[:work_id] =~ /^\d+$/
-        if @work.id != params[:work_id].to_i
-          @work = Work.find(params[:work_id].to_i)
-        end
+    if params[:page_id] && params[:page_id] =~ /^\d+$/
+      @page = Page.find(params[:page_id].to_i)
+      @work = @page.work
+      @collection = @work.collection if @work
+    elsif params[:work_id] && params[:work_id] =~ /^\d+$/
+      if @work.nil? || @work.id != params[:work_id].to_i
+        @work = Work.find(params[:work_id].to_i)
       end
+      @collection = @work.collection if @work
+    elsif params[:id] && params[:id] =~ /^\d+$/
+      @work = Work.find(params[:id].to_i)
+      @collection = @work.collection if @work
     end
   end
 
   def collections
     site_collection = IIIF::Presentation::Collection.new
-    site_collection['@id'] = url_for({:controller => 'iiif', :action => 'collections', :only_path => false})
+    site_collection['@id'] = url_for({ controller: 'iiif', action: 'collections', only_path: false })
     site_collection.label = "IIIF resources avaliable on the FromThePage installation at #{Rails.application.config.action_mailer.default_url_options[:host]}."
-    site_collection.metadata << { "label" => "FromThePage Support for IIIF", "value" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations"}
+    site_collection.metadata << { 'label' => 'FromThePage Support for IIIF', 'value' => 'https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations' }
 
-    Collection.where(:restricted => false).each do |collection|
-      iiif_collection = iiif_collection_from_collection(collection,false)
+    Collection.where(visibility: [:public, :read_only]).each do |collection|
+      iiif_collection = iiif_collection_from_collection(collection, false)
 
       site_collection.collections << iiif_collection
     end
 
-    render :plain => site_collection.to_json(pretty: true), :content_type => "application/json"
+    render plain: site_collection.to_json(pretty: true), content_type: 'application/json'
   end
 
   def user_collections
@@ -40,22 +54,22 @@ class IiifController < ApplicationController
     site_collection.label = "IIIF resources avaliable on the FromThePage installation at #{Rails.application.config.action_mailer.default_url_options[:host]} for #{@user.display_name}."
     (@user.collections.to_a + @user.document_sets.to_a).each do |collection_or_ds|
       if collection_or_ds.is_public || collection_or_ds.api_access || (@api_user && @api_user.like_owner?(collection_or_ds))
-        site_collection.collections << iiif_collection_from_collection(collection_or_ds,false)
+        site_collection.collections << iiif_collection_from_collection(collection_or_ds, false)
       end
     end
 
-    render :plain => site_collection.to_json(pretty: true), :content_type => "application/json"
+    render plain: site_collection.to_json(pretty: true), content_type: 'application/json'
   end
 
   def collection
-    iiif_collection = iiif_collection_from_collection(@collection,true)
+    iiif_collection = iiif_collection_from_collection(@collection, true)
 
-    render :plain => iiif_collection.to_json(pretty: true), :content_type => "application/json"
+    render plain: iiif_collection.to_json(pretty: true), content_type: 'application/json'
   end
 
   def document_set
-    iiif_collection = iiif_collection_from_collection(@document_set,true)
-    render :plain => iiif_collection.to_json(pretty: true), :content_type => "application/json"
+    iiif_collection = iiif_collection_from_collection(@document_set, true)
+    render plain: iiif_collection.to_json(pretty: true), content_type: 'application/json'
   end
 
   def contributions
@@ -68,48 +82,48 @@ class IiifController < ApplicationController
     # error processing -- return 400 Bad Request with explanatory text in HTML or JSON within a respond_to
     # see https://cloud.google.com/storage/docs/json_api/v1/status-codes
     if domain.blank?
-      render :status => 400, :plain => "Usage: {url}/iiif/contributions/<b><i>domain</i></b>/<i>beginning of window</i>/<i>end of window</i><br />See <a href=\"https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations\">docs</a> for more help."
+      render status: 400, plain: 'Usage: {url}/iiif/contributions/<b><i>domain</i></b>/<i>beginning of window</i>/<i>end of window</i><br />See <a href="https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations">docs</a> for more help.'
       return
     end
 
     begin
       terminus_a_quo = DateTime.parse(raw_terminus_a_quo) if raw_terminus_a_quo
     rescue
-      render :status => 400, :plain => "Could not parse #{raw_terminus_a_quo} as a date. Try a format like #{DateTime.now.iso8601}"
+      render status: 400, plain: "Could not parse #{raw_terminus_a_quo} as a date. Try a format like #{DateTime.now.iso8601}"
       return
     end
     begin
       terminus_ad_quem =     DateTime.parse(raw_terminus_ad_quem) if raw_terminus_ad_quem
     rescue
-      render :status => 400, :plain => "Could not parse #{raw_terminus_ad_quem} as a date. Try a format like #{DateTime.now.iso8601}"
+      render status: 400, plain: "Could not parse #{raw_terminus_ad_quem} as a date. Try a format like #{DateTime.now.iso8601}"
       return
     end
     contributions = collection_for_domain(domain, terminus_a_quo, terminus_ad_quem)
-    render :plain => contributions.to_json(pretty: true), :content_type => "application/json"
+    render plain: contributions.to_json(pretty: true), content_type: 'application/json'
   end
 
   def for
     at_id = params[:id]
     if at_id.match /https?:\/\w/
-      at_id.sub!(":/", "://")
+      at_id.sub!(':/', '://')
     end
-    if sc_collection = ScCollection.where(:at_id => at_id).last
-      redirect_to :controller => 'iiif', :action => 'collection', :collection_id => sc_collection.collection_id
+    if sc_collection = ScCollection.where(at_id: at_id).last
+      redirect_to controller: 'iiif', action: 'collection', collection_id: sc_collection.collection_id
       return
     end
 
-    if sc_manifest = ScManifest.where(:at_id => at_id).last
-      redirect_to({:controller => 'iiif', :action => 'manifest', :id => sc_manifest.work_id, :only_path => false})
+    if sc_manifest = ScManifest.where(at_id: at_id).last
+      redirect_to({ controller: 'iiif', action: 'manifest', id: sc_manifest.work_id, only_path: false })
       return
     end
 
-    if sc_canvas = ScCanvas.where(:sc_canvas_id => at_id).last
-      redirect_to :controller => 'iiif', :action => 'canvas', :page_id => sc_canvas.page_id
+    if sc_canvas = ScCanvas.where(sc_canvas_id: at_id).last
+      redirect_to controller: 'iiif', action: 'canvas', page_id: sc_canvas.page_id
       return
     end
 
     if at_id.match(/http/)
-      render :status => 404, :plain => "No items that correspond to #{at_id} have been imported into the FromThePage server.  For a full list of public IIIF resources, see #{url_for(:controller => 'iiif', :action => 'collections')}"
+      render status: 404, plain: "No items that correspond to #{at_id} have been imported into the FromThePage server.  For a full list of public IIIF resources, see #{url_for(controller: 'iiif', action: 'collections')}"
     else
       collection_for_domain(at_id)
     end
@@ -119,11 +133,11 @@ class IiifController < ApplicationController
     if domain.include? '.'
       # this is an actual domain
       if terminus_a_quo && terminus_ad_quem
-        works = Work.joins(:work_statistic, :sc_manifest).where("sc_manifests.at_id LIKE ?", "%#{domain}%").where(:work_statistic => { :last_edit_at => terminus_a_quo..terminus_ad_quem}).distinct.includes(:work_statistic)
+        works = Work.joins(:work_statistic, :sc_manifest).where('sc_manifests.at_id LIKE ?', "%#{domain}%").where(work_statistic: { last_edit_at: terminus_a_quo..terminus_ad_quem }).distinct.includes(:work_statistic)
       elsif terminus_a_quo
-        works = Work.joins(:work_statistic, :sc_manifest).where("sc_manifests.at_id LIKE ? AND work_statistics.last_edit_at >= ?", "%#{domain}%", terminus_a_quo).distinct.includes(:work_statistic)
+        works = Work.joins(:work_statistic, :sc_manifest).where('sc_manifests.at_id LIKE ? AND work_statistics.last_edit_at >= ?', "%#{domain}%", terminus_a_quo).distinct.includes(:work_statistic)
       else
-        works = Work.joins(:sc_manifest).where("sc_manifests.at_id LIKE ?", "%#{domain}%").includes(:work_statistic, :sc_manifest)
+        works = Work.joins(:sc_manifest).where('sc_manifests.at_id LIKE ?', "%#{domain}%").includes(:work_statistic, :sc_manifest)
       end
       label = "IIIF resources avaliable on the FromThePage installation at #{Rails.application.config.action_mailer.default_url_options[:host]} which were derived from resources matching *#{domain}*"
     else
@@ -131,11 +145,11 @@ class IiifController < ApplicationController
       user = User.find(domain)
       if user && user.owner
         if terminus_a_quo && terminus_ad_quem
-          works = Work.joins(:collection, :work_statistic).where("collections.owner_user_id = ?", user.id).where(:work_statistic => { :last_edit_at => terminus_a_quo..terminus_ad_quem}).distinct.includes(:work_statistic, :sc_manifest)
+          works = Work.joins(:collection, :work_statistic).where('collections.owner_user_id = ?', user.id).where(work_statistic: { last_edit_at: terminus_a_quo..terminus_ad_quem }).distinct.includes(:work_statistic, :sc_manifest)
         elsif terminus_a_quo
-          works = Work.joins(:collection, :work_statistic).where("collections.owner_user_id = ? AND work_statistics.last_edit_at >= ?", user.id, terminus_a_quo).distinct.includes(:work_statistic, :sc_manifest)
+          works = Work.joins(:collection, :work_statistic).where('collections.owner_user_id = ? AND work_statistics.last_edit_at >= ?', user.id, terminus_a_quo).distinct.includes(:work_statistic, :sc_manifest)
         else
-          works = Work.joins(:collection).where("collections.owner_user_id = ?", user.id).includes(:work_statistic, :sc_manifest)
+          works = Work.joins(:collection).where('collections.owner_user_id = ?', user.id).includes(:work_statistic, :sc_manifest)
         end
       else
         works=[]
@@ -144,17 +158,17 @@ class IiifController < ApplicationController
     end
 
     domain_collection = IIIF::Presentation::Collection.new
-    domain_collection['@id'] = url_for({:controller => 'iiif', :action => 'for', :id => domain, :only_path => false})
+    domain_collection['@id'] = url_for({ controller: 'iiif', action: 'for', id: domain, only_path: false })
     domain_collection.label = label
 
     works.each do |work|
       seed = {
-                '@id' => url_for({:controller => 'iiif', :action => 'manifest', :id => work.id, :only_path => false}),
+                '@id' => url_for({ controller: 'iiif', action: 'manifest', id: work.id, only_path: false }),
                 'label' => work.title
             }
       manifest = IIIF::Presentation::Manifest.new(seed)
       manifest.label = work.title
-      manifest.metadata = [{"label" => "dc:source", "value" => work.sc_manifest.at_id}] if work.sc_manifest
+      manifest.metadata = [{ 'label' => 'dc:source', 'value' => work.sc_manifest.at_id }] if work.sc_manifest
       manifest.service = status_service_for_manifest(work)
 
       domain_collection.manifests << manifest
@@ -164,203 +178,130 @@ class IiifController < ApplicationController
   end
 
   def manifest
-    work_id =  params[:id]
+    work_id = params[:id]
     work = Work.where(id: work_id).includes(:ia_work, :sc_manifest, :work_statistic).first
 
-    seed = {
-              '@id' => url_for({:controller => 'iiif', :action => 'manifest', :id => work_id, :only_path => false}),
-              'label' => work.title
-            }
-    manifest = IIIF::Presentation::Manifest.new(seed)
-    manifest.label = work.title
-    dc_source = dc_source_from_work(work)
-    if dc_source
-      manifest.metadata = [dc_source]
-    else
-      manifest.metadata = []
-    end
+    return render status: :not_found, json: { error: 'Not found' } unless work
 
-    manifest.metadata += work.merge_metadata
+    # TODO: Refactor to use cache concern when https://github.com/benwbrum/fromthepage/pull/5331 is merged
+    stats = Page.where(work_id: work.id)
+      .left_joins(:ai_transcriptions)
+      .pick(
+        Arel.sql('MAX(pages.updated_at)'),
+        Arel.sql('COUNT(DISTINCT pages.id)'),
+        Arel.sql('MAX(ai_transcriptions.updated_at)'),
+        Arel.sql('COUNT(ai_transcriptions.id)')
+      )
 
-    if work.sc_manifest
-      manifest.description = "This is an annotated version of the original manifest produced by FromThePage"
-    else
-      manifest.description = work.description unless work.description.blank?
-    end
-    manifest.within = {
-      "@type" => "sc:Collection",
-      "label" => work.collection.title,
-      "@id" => iiif_collection_id_from_collection(work.collection)
-    }
-    manifest.related = [
-      {
-        "format" => "text/html",
-        "label" => "Read #{work.title}",
-        "@id" => collection_read_work_url(work.collection.owner, work.collection, work)
-      },
-      {
-        "format" => "text/html",
-        "label" => "Table of Contents for #{work.title}",
-        "@id" => collection_work_contents_url(work.collection.owner, work.collection, work)
-      }
+    latest_page_update, page_count, latest_ai_update, ai_count = stats
+    latest_update = [latest_page_update, latest_ai_update].compact.max
+    cache_key = [
+      'iiif-v2-manifest-v1',
+      "work-#{work.id}",
+      latest_update&.to_i,
+      page_count,
+      ai_count
     ]
 
-    manifest.seeAlso = []
-    manifest.seeAlso <<
-    { "label" => "Verbatim Plaintext",
-      "format" => "text/plain",
-      "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#verbatim-plaintext-1",
-      "@id" => iiif_work_export_plaintext_verbatim_url(work.id)
-    }
-    manifest.seeAlso <<
-    { "label" => "Emended Plaintext",
-      "format" => "text/plain",
-      "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#emended-plaintext",
-      "@id" => iiif_work_export_plaintext_emended_url(work.id)
-    }
-    if work.supports_translation?
-      manifest.seeAlso <<
-      { "label" => "Verbatim Translation Plaintext",
-        "format" => "text/plain",
-        "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#verbatim-translation-plaintext",
-        "@id" => iiif_work_export_plaintext_translation_verbatim_url(work.id)
-      }
-      manifest.seeAlso <<
-      { "label" => "Emended Translation Plaintext",
-        "format" => "text/plain",
-        "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#emended-translation-plaintext",
-        "@id" => iiif_work_export_plaintext_translation_emended_url(work.id)
-      }
-    end
-    manifest.seeAlso <<
-      { "label" => "Searchable Plaintext",
-        "format" => "text/plain",
-        "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#plaintext-for-full-text-search",
-        "@id" => iiif_work_export_plaintext_searchable_url(work.id)
-    }
-    if work.collection.metadata_entry?
-      manifest.seeAlso << structured_data_reference(work)
-    end
-    manifest.service << status_service_for_manifest(work)
-    sequence = iiif_sequence_from_work_id(work_id)
-    manifest.sequences << sequence
+    expires_in MANIFEST_EXPIRES_AT, public: true
 
-    seed = {
-              '@id' => url_for({:controller => 'iiif', :id => work_id, :action => 'layer', :type => 'transcription', :only_path => false}),
-              'label' => "transcription layer"
-            }
-    layer = IIIF::Presentation::Layer.new(seed)
-    manifest["otherContent"] = [layer]
+    if stale?(etag: cache_key, last_modified: latest_update)
+      json_manifest = Rails.cache.fetch(cache_key, expires_in: 1.day) do
+        build_iiif_manifest(work).to_json(pretty: true)
+      end
 
-    if work.supports_translation?
-      seed = {
-              '@id' => url_for({:controller => 'iiif', :id => work_id, :action => 'layer', :type => 'translation', :only_path => false}),
-              'label' => "translation layer"
-            }
-      layer = IIIF::Presentation::Layer.new(seed)
-      manifest["otherContent"]  << layer
+      render plain: json_manifest, content_type: 'application/json'
     end
-
-    if true #any notes
-      seed = {
-              '@id' => url_for({:controller => 'iiif', :id => work_id, :action => 'layer', :type => 'notes', :only_path => false}),
-              'label' => "notes layer"
-            }
-      layer = IIIF::Presentation::Layer.new(seed)
-      manifest["otherContent"]  << layer
-    end
-
-    render :plain => manifest.to_json(pretty: true), :content_type => "application/json"
   end
 
   def canvas
     if @page.sc_canvas
-      render :plain => canvas_from_iiif_page(@page).to_json(pretty: true), :content_type => "application/json"
+      render plain: canvas_from_iiif_page(@page).to_json(pretty: true), content_type: 'application/json'
     elsif @page.ia_leaf
-      render :plain => canvas_from_ia_page(@page).to_json(pretty: true), :content_type => "application/json"
+      render plain: canvas_from_ia_page(@page).to_json(pretty: true), content_type: 'application/json'
     else
-      render :plain => canvas_from_page(@page).to_json(pretty: true), :content_type => "application/json"
+      render plain: canvas_from_page(@page).to_json(pretty: true), content_type: 'application/json'
     end
   end
 
   def list
     type = params[:annotation_type]
-    if type == 'notes'  #notes need to be handled separately
+    if type == 'notes'  # notes need to be handled separately
       notes
       return
     end
     annotation_list = IIIF::Presentation::AnnotationList.new
-    annotation_list['@id'] = url_for({:controller => 'iiif', :action => 'list', :page_id => @page.id, :annotation_type => type, :only_path => false})
-    annotation = iiif_annotation_by_type(@page.id,type)
+    annotation_list['@id'] = url_for({ controller: 'iiif', action: 'list', page_id: @page.id, annotation_type: type, only_path: false })
+    annotation = iiif_annotation_by_type(@page.id, type)
 
     annotation_list.resources << annotation
-    render :plain => annotation_list.to_json(pretty: true), :content_type => "application/json"
+    render plain: annotation_list.to_json(pretty: true), content_type: 'application/json'
   end
 
   def layer
     work_id = params[:id]
     work = Work.find work_id.to_i
-    #params[:type]
-    if params[:type]=="transcription"
+    # params[:type]
+    if params[:type]=='transcription'
       seed = {
-                '@id' => url_for({:controller => 'iiif', :id => work_id, :action => 'layer', :type => params[:type], :only_path => false}),
+                '@id' => url_for({ controller: 'iiif', id: work_id, action: 'layer', type: params[:type], only_path: false }),
                 'label' => 'Transcription'
               }
       layer = IIIF::Presentation::Layer.new(seed)
-      layer["otherContent"]=[]
+      layer['otherContent']=[]
       work.pages.each do |page|
         annotation_list = annotationlist_from_page(page, params[:type])
         if annotation_list
-          layer["otherContent"] << annotation_list
+          layer['otherContent'] << annotation_list
         end
       end
     end
 
-   if work.supports_translation? && params[:type]=="translation"
+   if work.supports_translation? && params[:type]=='translation'
       seed = {
-              '@id' => url_for({:controller => 'iiif', :id => work_id, :action => 'layer', :type => 'translation', :only_path => false}),
-              'label' => "Translation"
+              '@id' => url_for({ controller: 'iiif', id: work_id, action: 'layer', type: 'translation', only_path: false }),
+              'label' => 'Translation'
             }
       layer = IIIF::Presentation::Layer.new(seed)
-      layer["otherContent"] = []
+      layer['otherContent'] = []
       work.pages.each do |page|
         annotation_list = annotationlist_from_page(page, params[:type])
         if annotation_list
-          layer["otherContent"] << annotation_list
+          layer['otherContent'] << annotation_list
         end
       end
-    end
+   end
 
-   if params[:type]=="notes"
+   if params[:type]=='notes'
       seed = {
-                '@id' => url_for({:controller => 'iiif', :id => work_id, :action => 'layer', :type => params[:type], :only_path => false}),
-                'label' => "Notes"
+                '@id' => url_for({ controller: 'iiif', id: work_id, action: 'layer', type: params[:type], only_path: false }),
+                'label' => 'Notes'
               }
       layer = IIIF::Presentation::Layer.new(seed)
-      layer["otherContent"]=[]
+      layer['otherContent']=[]
       work.pages.each do |page|
         unless page.notes.empty?
           annotation_list = annotationlist_from_page(page, params[:type])
           if annotation_list
-            layer["otherContent"] << annotation_list
+            layer['otherContent'] << annotation_list
           end
         end
       end
-    end
+   end
 
-    render :plain => layer.to_json(pretty: true), :content_type => "application/json"
+    render plain: layer.to_json(pretty: true), content_type: 'application/json'
   end
 
   def structured_data_field_config_endpoint
     @transcription_field = TranscriptionField.find(params[:transcription_field_id])
     response = transcription_field_config(@transcription_field, true)
-    render :plain => response.to_json(pretty: true), :content_type => "application/json"
+    render plain: response.to_json(pretty: true), content_type: 'application/json'
   end
 
   def structured_data_column_config_endpoint
     @spreadsheet_column = SpreadsheetColumn.find(params[:spreadsheet_column_id])
     response = spreadsheet_column_config(@spreadsheet_column, true)
-    render :plain => response.to_json(pretty: true), :content_type => "application/json"
+    render plain: response.to_json(pretty: true), content_type: 'application/json'
   end
 
   def structured_data_page_config_endpoint
@@ -369,7 +310,7 @@ class IiifController < ApplicationController
     response[:label] = "Transcription field configuration for #{@collection.title}"
     response[:config] = field_configuration_to_array(@collection, TranscriptionField::FieldType::TRANSCRIPTION)
     response[:profile] = 'https://github.com/benwbrum/fromthepage/wiki/Structured-Data-API-for-Harvesting-Crowdsourced-Contributions#structured-data-configuration-response'
-    render :plain => response.to_json(pretty: true), :content_type => "application/json"
+    render plain: response.to_json(pretty: true), content_type: 'application/json'
   end
 
   def structured_data_work_config_endpoint
@@ -378,7 +319,7 @@ class IiifController < ApplicationController
     response[:label] = "Metadata field configuration for #{@collection.title}"
     response[:config] = field_configuration_to_array(@collection, TranscriptionField::FieldType::METADATA)
     response[:profile] = 'https://github.com/benwbrum/fromthepage/wiki/Structured-Data-API-for-Harvesting-Crowdsourced-Contributions#structured-data-configuration-response'
-    render :plain => response.to_json(pretty: true), :content_type => "application/json"
+    render plain: response.to_json(pretty: true), content_type: 'application/json'
   end
 
   # endpoint containing actual contents of strucured data
@@ -386,7 +327,7 @@ class IiifController < ApplicationController
     if @page
       on = {
         '@type' => 'sc:Canvas',
-        '@id' => iiif_canvas_url(@work.id,@page.id),
+        '@id' => iiif_canvas_url(@work.id, @page.id),
         'within' => iiif_manifest_url(@work.id)
       }
       response = page_field_contributions(@page)
@@ -401,10 +342,10 @@ class IiifController < ApplicationController
     end
     response['profile'] = 'https://github.com/benwbrum/fromthepage/wiki/Structured-Data-API-for-Harvesting-Crowdsourced-Contributions#structured-data-endpoint-response'
     response['on'] = on
-    response['@id'] = structured_data_id(@work,@page)
-    response['label'] = structured_data_label(@work,@page)
+    response['@id'] = structured_data_id(@work, @page)
+    response['label'] = structured_data_label(@work, @page)
     if @page && !@page.notes.blank?
-      response['notes'] = url_for({:controller => 'iiif', :action => 'list', :page_id => @page.id, :annotation_type => 'notes', :only_path => false})
+      response['notes'] = url_for({ controller: 'iiif', action: 'list', page_id: @page.id, annotation_type: 'notes', only_path: false })
     end
     if @page
       response['pageStatus'] = JSON.parse(status_service_for_page(@page).to_json)
@@ -412,11 +353,11 @@ class IiifController < ApplicationController
     response['workStatus'] = JSON.parse(status_service_for_manifest(@work).to_json)
 
 
-    render :plain => response.to_json(pretty: true), :content_type => "application/json"
+    render plain: response.to_json(pretty: true), content_type: 'application/json'
   end
 
   # id to structured data endpoint
-  def structured_data_id(work, page=nil)
+  def structured_data_id(work, page = nil)
     if page.nil?
       iiif_work_strucured_data_url(work.id)
     else
@@ -427,131 +368,216 @@ class IiifController < ApplicationController
   def sequence
     work_id = @work.id
     sequence = iiif_sequence_from_work_id(work_id)
-    render :plain => sequence.to_json(pretty: true), :content_type => "application/json"
+    render plain: sequence.to_json(pretty: true), content_type: 'application/json'
   end
 
   def annotation
     page_id = params[:page_id]
     type = params[:annotation_type]
-    annotation = iiif_annotation_by_type(page_id,type)
-    annotation['@id'] = url_for({:controller => 'iiif', :action => 'annotation', :page_id => @page.id, :annotation_type => type, :only_path => false})
-    render :plain => annotation.to_json(pretty: true), :content_type => "application/json"
+    annotation = iiif_annotation_by_type(page_id, type)
+    annotation['@id'] = url_for({ controller: 'iiif', action: 'annotation', page_id: @page.id, annotation_type: type, only_path: false })
+    render plain: annotation.to_json(pretty: true), content_type: 'application/json'
   end
 
   def notes
     page = Page.find params[:page_id]
     annotation_list = IIIF::Presentation::AnnotationList.new
-    annotation_list['@id'] = url_for({:controller => 'iiif', :action => 'notes', :page_id => @page.id, :only_path => false})
+    annotation_list['@id'] = url_for({ controller: 'iiif', action: 'notes', page_id: @page.id, only_path: false })
     @page.notes.each_with_index do |note, i|
-      note = iiif_page_note(@page,i+1)
-      note['@id'] = url_for({:controller => 'iiif', :action => 'note', :page_id => @page.id, :note_id => i+1, :only_path => false})
-      annotation_list.resources << note
+      note_data = iiif_page_note(@page, i+1)
+      note_data['@id'] = url_for({ controller: 'iiif', action: 'note', page_id: @page.id, note_id: i+1, only_path: false })
+
+      # BEGIN: Add user information
+      note_data['creator'] = {
+        '@type' => 'foaf:Person',
+        'name' => note.user.display_name # Assuming note has a user association
+      }
+      # END: Add user information
+
+      annotation_list.resources << note_data
     end
-    render :plain => annotation_list.to_json(pretty: true), :content_type => "application/json"
+    render plain: annotation_list.to_json(pretty: true), content_type: 'application/json'
   end
 
   def note
     noteid = params[:note_id].to_i
     page = Page.find params[:page_id]
-    note = iiif_page_note(@page,noteid)
-    note['@id'] = url_for({:controller => 'iiif', :action => 'note', :page_id => @page.id, :note_id => noteid, :only_path => false})
-    render :plain => note.to_json(pretty: true), :content_type => "application/json"
+    note = iiif_page_note(@page, noteid)
+    note['@id'] = url_for({ controller: 'iiif', action: 'note', page_id: @page.id, note_id: noteid, only_path: false })
+    render plain: note.to_json(pretty: true), content_type: 'application/json'
   end
 
   def canvas_status
     page = Page.find params[:page_id]
     service = status_service_for_page(page)
-    render :plain => service.to_json(pretty: true), :content_type => "application/json"
+    render plain: service.to_json(pretty: true), content_type: 'application/json'
   end
 
   def manifest_status
     work = Work.find params[:work_id]
     service = status_service_for_manifest(work)
-    render :plain => service.to_json(pretty: true), :content_type => "application/json"
+    render plain: service.to_json(pretty: true), content_type: 'application/json'
   end
 
   def export_page_plaintext_verbatim
-    render  :layout => false, :content_type => "text/plain", :plain => @page.verbatim_transcription_plaintext
+    render  layout: false, content_type: 'text/plain', plain: @page.verbatim_transcription_plaintext
   end
 
   def export_page_plaintext_translation_verbatim
-    render  :layout => false, :content_type => "text/plain", :plain => @page.verbatim_translation_plaintext
+    render  layout: false, content_type: 'text/plain', plain: @page.verbatim_translation_plaintext
   end
 
   def export_page_plaintext_emended
-    render  :layout => false, :content_type => "text/plain", :plain => @page.emended_transcription_plaintext
+    render  layout: false, content_type: 'text/plain', plain: @page.emended_transcription_plaintext
   end
 
   def export_page_plaintext_translation_emended
-    render  :layout => false, :content_type => "text/plain", :plain => @page.emended_translation_plaintext
+    render  layout: false, content_type: 'text/plain', plain: @page.emended_translation_plaintext
   end
 
   def export_page_plaintext_searchable
-    render  :layout => false, :content_type => "text/plain", :plain => @page.search_text
+    render  layout: false, content_type: 'text/plain', plain: @page.search_text
   end
 
+  def export_page_plaintext_ai_transcription
+    ai_transcription = @ai_transcription || @page.ai_transcription
+    if ai_transcription.present?
+      render layout: false, content_type: 'text/plain', plain: ai_transcription.source_text
+    else
+      # return a 404 Not Found if there is no AI transcription
+      render status: 404, plain: 'No AI transcription available for this page.'
+    end
+  end
+
+  def export_page_html_ai_reasoning
+    ai_transcription = @ai_transcription || @page.ai_transcription
+    if ai_transcription.present? && ai_transcription.reasoning.present?
+      reasoning_markdown = ai_transcription.reasoning
+      begin
+        reasoning_html = Markdown.new(reasoning_markdown).to_html
+        render layout: false, content_type: 'text/html', plain: reasoning_html
+      rescue StandardError => e
+        Rails.logger.error "Failed to convert AI reasoning to HTML: #{e.message}"
+        # fallback to text/plain with the raw markdown if HTML conversion fails
+        render layout: false, content_type: 'text/plain', plain: reasoning_markdown
+      end
+    else
+      # return a 404 Not Found if there is no AI reasoning
+      render status: 404, plain: 'No AI reasoning available for this page.'
+    end
+  end
+
+  def export_page_plaintext_ai_prompt
+    ai_transcription = @ai_transcription || @page.ai_transcription
+    if ai_transcription.present? && ai_transcription.prompt.present?
+      render layout: false, content_type: 'text/plain', plain: ai_transcription.prompt
+    else
+      render status: 404, plain: 'No AI prompt available for this page.'
+    end
+  end
+
+  def annotation_page_ai_text
+    begin
+      html=Markdown.new(@page.ai_transcription.source_text).to_html
+    rescue StandardError => e
+      Rails.logger.error "Failed to convert AI transcription to HTML: #{e.message}"
+      html = ERB::Util.html_escape(@page.ai_transcription.source_text).gsub("\n", '<br/>')
+    end
+    formatted_ai_text = <<-HTML
+      <b>Warning: This transcript is AI-generated.</b><br/>
+      #{html}
+    HTML
+    render layout: false, content_type: 'text/html', plain: formatted_ai_text
+  end
+
+  def annotation_page_ai_reasoning
+    reasoning=''
+    # Convert markdown to HTML with error handling
+    begin
+      reasoning = Markdown.new(@page.ai_transcription.reasoning).to_html
+    rescue StandardError => e
+      Rails.logger.error "Failed to convert AI reasoning to HTML: #{e.message}"
+      # Fallback to plain text
+      reasoning = '(@page.ai_transcription.reasoning)}'
+    end
+    render  layout: false, content_type: 'text/html', plain: reasoning
+  end
+
+
   def export_work_plaintext_verbatim
-    render  :layout => false, :content_type => "text/plain", :plain => @work.verbatim_transcription_plaintext
+    render  layout: false, content_type: 'text/plain', plain: @work.verbatim_transcription_plaintext
   end
 
   def export_work_plaintext_translation_verbatim
-    render  :layout => false, :content_type => "text/plain", :plain => @work.verbatim_translation_plaintext
+    render  layout: false, content_type: 'text/plain', plain: @work.verbatim_translation_plaintext
   end
 
   def export_work_plaintext_emended
-    render  :layout => false, :content_type => "text/plain", :plain => @work.emended_transcription_plaintext
+    render  layout: false, content_type: 'text/plain', plain: @work.emended_transcription_plaintext
   end
 
   def export_work_plaintext_translation_emended
-    render  :layout => false, :content_type => "text/plain", :plain => @work.emended_translation_plaintext
+    render  layout: false, content_type: 'text/plain', plain: @work.emended_translation_plaintext
   end
 
   def export_work_plaintext_searchable
-    render  :layout => false, :content_type => "text/plain", :plain => @work.searchable_plaintext
+    render  layout: false, content_type: 'text/plain', plain: @work.searchable_plaintext
   end
 
   def export_work_tei
     tei_xml = work_to_tei(@work, current_user)
 
-    render  :layout => false, :content_type => "application/xml", :plain => tei_xml
+    render  layout: false, content_type: 'application/xml', plain: tei_xml
   end
 
   def export_work_html
     xhtml = work_to_xhtml(@work)
 
-    render :plain => xhtml, :layout => false, :content_type => "text/html"
+    render plain: xhtml, layout: false, content_type: 'text/html'
   end
 
 private
-  def structured_data_label(work, page=nil)
+  def markdown_to_html_with_fallback(markdown)
+    html=nil
+    plaintext=nil
+    begin
+      html=Markdown.new(markdown).to_html
+    rescue StandardError => e
+      Rails.logger.error "Failed to convert AI transcription to HTML: #{e.message}"
+      plaintext = markdown
+    end
+    [html, plaintext]
+  end
+
+  def structured_data_label(work, page = nil)
     if page
-      "Structured data (field-based or spreadsheet transcriptions) for canvas"
+      'Structured data (field-based or spreadsheet transcriptions) for canvas'
     else
-      "Structured data (user-created metadata) for manifest"
+      'Structured data (user-created metadata) for manifest'
     end
   end
 
-
   # stanza to embed within manifests or canvas documents
-  def structured_data_reference(work, page=nil)
+  def structured_data_reference(work, page = nil)
     {
-      '@id' => structured_data_id(work,page),
-      'label' => structured_data_label(work,page),
+      '@id' => structured_data_id(work, page),
+      'label' => structured_data_label(work, page),
       'format' => 'application/ld+json',
-      "@context" => "http://www.fromthepage.org/jsonld/structured/1/context.json",
-      "profile" => "https://github.com/benwbrum/fromthepage/wiki/Structured-Data-API-for-Harvesting-Crowdsourced-Contributions"
+      '@context' => 'http://www.fromthepage.org/jsonld/structured/1/context.json',
+      'profile' => 'https://github.com/benwbrum/fromthepage/wiki/Structured-Data-API-for-Harvesting-Crowdsourced-Contributions'
     }
   end
 
   def iiif_page_note(page, noteid)
-    note = IIIF::Presentation::Annotation.new({'motivation' => 'oa:commenting'})
-    #note['@id'] = url_for({:controller => 'iiif', :action => 'note', :page_id => @page.id, :note_id => noteid, :only_path => false})
+    note = IIIF::Presentation::Annotation.new({ 'motivation' => 'oa:commenting' })
+    # note['@id'] = url_for({:controller => 'iiif', :action => 'note', :page_id => @page.id, :note_id => noteid, :only_path => false})
     note['on'] = region_from_page(@page)
-    note.resource = IIIF::Presentation::Resource.new({'@id' => "note_#{noteid}_for_#{@page.id}", '@type' => "cnt:ContentAsText"})
-    note.resource["format"] =  "text/plain"
-    note.resource["chars"] = @page.notes[noteid.to_i-1].body
+    note.resource = IIIF::Presentation::Resource.new({ '@id' => "note_#{noteid}_for_#{@page.id}", '@type' => 'cnt:ContentAsText' })
+    note.resource['format'] =  'text/plain'
+    note.resource['chars'] = @page.notes[noteid.to_i-1].body
     note
   end
+
 
   def iiif_annotation_by_type(page_id, type)
     annotation = IIIF::Presentation::Annotation.new
@@ -559,26 +585,70 @@ private
     case type
     when 'transcription'
       annotation['on'] = region_from_page(@page)
-      annotation.resource = IIIF::Presentation::Resource.new({'@id' => "#{collection_annotation_page_transcription_html_url(@work.owner, @collection, @work, @page)}", '@type' => "cnt:ContentAsText"})
-      annotation.resource["format"] =  "text/html"
-      annotation.resource["chars"] = xml_to_html @page.xml_text
-      annotation.resource["annotatedBy"] = @page.contributors
+      annotation.resource = IIIF::Presentation::Resource.new({ '@id' => "#{collection_annotation_page_transcription_html_url(@work.owner, @collection, @work, @page)}", '@type' => 'cnt:ContentAsText' })
+      annotation.resource['format'] =  'text/html'
+      annotation.resource['chars'] = xml_to_html @page.xml_text
+      annotation.resource['annotatedBy'] = @page.contributors
     when 'translation'
       unless page.source_translation.blank?
-        #annotation = IIIF::Presentation::Annotation.new
-        #page = Page.find page_id
+        # annotation = IIIF::Presentation::Annotation.new
+        # page = Page.find page_id
         annotation['on'] = region_from_page(@page)
-        annotation.resource = IIIF::Presentation::Resource.new({'@id' => "#{collection_annotation_page_translation_html_url(@work.owner, @collection, @work, @page)}", '@type' => "cnt:ContentAsText"})
-        annotation.resource["format"] =  "text/html"
-        annotation.resource["chars"] = xml_to_html @page.xml_translation
+        annotation.resource = IIIF::Presentation::Resource.new({ '@id' => "#{collection_annotation_page_translation_html_url(@work.owner, @collection, @work, @page)}", '@type' => 'cnt:ContentAsText' })
+        annotation.resource['format'] =  'text/html'
+        annotation.resource['chars'] = xml_to_html @page.xml_translation
+      end
+    when 'ai_text'
+      if page.ai_transcription.present?
+        annotation['on'] = region_from_page(@page)
+        annotation.resource = IIIF::Presentation::Resource.new({ '@id' => "#{collection_annotation_page_ai_text_url(@work.owner, @collection, @work, @page)}", '@type' => 'cnt:ContentAsText' })
+        annotation.resource['format'] = 'text/html'
+        # Convert plaintext to HTML by wrapping it in <pre> tags and prepend a warning message in bold that the transcript is ai-generated
+        formatted_ai_text = <<-HTML
+          <b>Warning: This transcript is AI-generated.</b><br/>
+          #{ERB::Util.html_escape(@page.ai_transcription.source_text).gsub("\n", '<br/>')}
+        HTML
+
+        annotation.resource['chars'] = formatted_ai_text
+        # Use Web Annotation standard lifecycle fields even if Mirador ignores them
+        annotation['generator'] = {
+          'type' => 'Software',
+          'name' => @page.ai_transcription.model
+        }
+        annotation['generated'] = @page.ai_transcription.created_at.iso8601
+      end
+    when 'ai_reasoning'
+      if page.ai_transcription.present? && page.ai_transcription.reasoning.present?
+        annotation['motivation'] = 'oa:commenting'
+        annotation['on'] = region_from_page(@page)
+        annotation.resource = IIIF::Presentation::Resource.new({ '@id' => "#{collection_annotation_page_reasoning_html_url(@work.owner, @collection, @work, @page)}", '@type' => 'cnt:ContentAsText' })
+        annotation.resource['format'] = 'text/html'
+        # Convert markdown to HTML with error handling
+        begin
+          annotation.resource['chars'] = Markdown.new(@page.ai_transcription.reasoning).to_html
+        rescue StandardError => e
+          Rails.logger.error "Failed to convert AI reasoning to HTML: #{e.message}"
+          # Fallback to plain text
+          annotation.resource['format'] = 'text/plain'
+          annotation.resource['chars'] = '(@page.ai_transcription.reasoning)}'
+        end
+        # Use Web Annotation standard lifecycle fields
+        annotation['generator'] = {
+          'type' => 'Software',
+          'name' => @page.ai_transcription.model
+        }
+        annotation['generated'] = @page.ai_transcription.created_at.iso8601
+        # TODO: Add creator field when user association is available
+        # annotation['creator'] = user_display_name
+        # annotation['created'] = @page.ai_transcription.created_at.iso8601
       end
     when 'facsimile'
-      #annotation = IIIF::Presentation::Annotation.new
-      #page = Page.find page_id
+      # annotation = IIIF::Presentation::Annotation.new
+      # page = Page.find page_id
       annotation.resource = iiif_create_image_resource(page)
       annotation['on'] = region_from_page(@page)
-    when type.match(/comment/)  #starts with comment?
-      #do something
+    when type.match(/comment/)  # starts with comment?
+      # do something
     end
     annotation
   end
@@ -589,23 +659,23 @@ private
 
   def iiif_sequence_from_work_id(work_id)
     sequence = IIIF::Presentation::Sequence.new
-    sequence['@id'] = url_for({:controller => 'iiif', :action => 'sequence', :work_id => work_id, :sequence_name => 'default', :only_path => false})
+    sequence['@id'] = url_for({ controller: 'iiif', action: 'sequence', work_id: work_id, sequence_name: 'default', only_path: false })
     sequence.label = 'Pages'
-    work = Work.includes(:pages => [:sc_canvas, :notes]).where(id: work_id).first
+    work = Work.includes(pages: [:sc_canvas, :notes]).where(id: work_id).first
     sequence['rendering'] = [
-      { "label" => "Verbatim Plaintext",
-        "format" => "text/plain",
-        "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#verbatim-plaintext",
-        "@id" => collection_work_export_plaintext_verbatim_url(work.collection.owner, work.collection, work.id)
+      { 'label' => 'Verbatim Plaintext',
+        'format' => 'text/plain',
+        'profile' => 'https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#verbatim-plaintext',
+        '@id' => collection_work_export_plaintext_verbatim_url(work.collection.owner, work.collection, work.id)
       },
-      { "@id" => iiif_work_export_html_url(work.id),
-        "label" => "XHTML Export",
-        "format" => "text/html",
-        "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#xhtml"},
-      { "@id" => iiif_work_export_tei_url(work.id),
-        "label" => "TEI Export",
-        "format" => "application/tei+xml",
-        "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#tei-xml"}
+      { '@id' => iiif_work_export_html_url(work.id),
+        'label' => 'XHTML Export',
+        'format' => 'text/html',
+        'profile' => 'https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#xhtml' },
+      { '@id' => iiif_work_export_tei_url(work.id),
+        'label' => 'TEI Export',
+        'format' => 'application/tei+xml',
+        'profile' => 'https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#tei-xml' }
     ]
     pages = work.pages
     pages.each do |page|
@@ -624,22 +694,22 @@ private
     if collection.is_a? DocumentSet
       iiif_document_set_url(collection)
     else
-      url_for({ :controller => 'iiif', :action => 'collection', :collection_id => collection.slug, :only_path => false })
+      url_for({ controller: 'iiif', action: 'collection', collection_id: collection.slug, only_path: false })
     end
   end
 
-  def iiif_collection_from_collection(collection,depth)
+  def iiif_collection_from_collection(collection, depth)
     iiif_collection = IIIF::Presentation::Collection.new
     iiif_collection.label = collection.title
     iiif_collection['@id'] = iiif_collection_id_from_collection(collection)
     if collection.sc_collection
-      iiif_collection.metadata = [{"label" => "dc:source", "value" => collection.sc_collection.at_id }]
+      iiif_collection.metadata = [{ 'label' => 'dc:source', 'value' => collection.sc_collection.at_id }]
     end
 
     if depth == true
       collection.works.includes(:sc_manifest, :ia_work, :work_statistic).each do |work|
         seed = {
-                  '@id' => url_for({:controller => 'iiif', :action => 'manifest', :id => work.id, :only_path => false}),
+                  '@id' => url_for({ controller: 'iiif', action: 'manifest', id: work.id, only_path: false }),
                   'label' => work.title
               }
         manifest = IIIF::Presentation::Manifest.new(seed)
@@ -655,22 +725,19 @@ private
   end
 
   def dc_source_from_work(work)
-    dc_source = nil
-    if !work.identifier.blank? || work.sc_manifest || work.ia_work
-      dc_source = {"label" => "dc:source"}
-      value = []
-      value << work.identifier          if work.identifier
-      value << work.sc_manifest.at_id   if work.sc_manifest
-      value << work.ia_work.book_id     if work.ia_work
-      value << manifest_uri_from_ia(work.ia_work) if work.ia_work
+    return unless work.identifier.present? || work.sc_manifest || work.ia_work
 
-      if value.length == 1
-        dc_source["value"] = value.first
-      else
-        dc_source["value"] = value
-      end
-    end
-    dc_source
+    values = [
+      work.identifier.presence,
+      work.sc_manifest&.at_id,
+      work.ia_work&.book_id,
+      (manifest_uri_from_ia(work.ia_work) if work.ia_work)
+    ].compact
+
+    {
+      'label' => 'dc:source',
+      'value' => values.one? ? values.first : values
+    }
   end
 
   def canvas_id_from_page(page)
@@ -679,7 +746,7 @@ private
     elsif page.ia_leaf
       "https://iiif.archive.org/iiif/#{page.work.ia_work.book_id}$#{page.ia_leaf.leaf_number}/canvas"
     else
-      url_for({ :controller => 'iiif', :action => 'canvas', :page_id => page.id, :work_id => page.work.id, :only_path => false })
+      url_for({ controller: 'iiif', action: 'canvas', page_id: page.id, work_id: page.work.id, only_path: false })
     end
   end
 
@@ -694,11 +761,11 @@ private
   def iiif_create_image_resource(page)
     image_resource = IIIF::Presentation::ImageResource.create_image_api_image_resource(
       {
-        :service_id => "#{url_for(:root)}image-service/#{page.id}",
-        :resource_id => "#{url_for(:root)}image-service/#{page.id}/full/full/0/default.jpg",
-        :height => page.base_height,
-        :width => page.base_width,
-        :profile => 'https://iiif.io/api/image/2/level1.json',
+        service_id: "#{url_for(:root)}image-service/#{page.id}",
+        resource_id: "#{url_for(:root)}image-service/#{page.id}/full/full/0/default.jpg",
+        height: page.base_height,
+        width: page.base_width,
+        profile: 'https://iiif.io/api/image/2/level1.json'
 
        })
 
@@ -709,15 +776,15 @@ private
   def iiif_create_iiif_image_resource(page)
     image_resource = IIIF::Presentation::ImageResource.create_image_api_image_resource(
       {
-        :service_id => page.sc_canvas.sc_service_id,
-        :resource_id => page.sc_canvas.sc_resource_id,
-        :height => (page.base_height || page.sc_canvas.height),
-        :width => (page.base_width || page.sc_canvas.width),
-        :profile => 'https://iiif.io/api/image/1.1/compliance/#level2',
+        service_id: page.sc_canvas.sc_service_id,
+        resource_id: page.sc_canvas.sc_resource_id,
+        height: (page.base_height || page.sc_canvas.height),
+        width: (page.base_width || page.sc_canvas.width),
+        profile: 'https://iiif.io/api/image/1.1/compliance/#level2'
        })
-    #image_resource.service_id = page.sc_canvas.sc_service_id
-    #image_resource.resource_id = page.sc_canvas.sc_resource_id
-    #image_resource.service['@context'] = 'https://iiif.io/api/image/1/context.json'
+    # image_resource.service_id = page.sc_canvas.sc_service_id
+    # image_resource.resource_id = page.sc_canvas.sc_resource_id
+    # image_resource.service['@context'] = 'https://iiif.io/api/image/1/context.json'
 
     image_resource.service['@context'] = page.sc_canvas.sc_service_context
     image_resource
@@ -738,6 +805,7 @@ private
     canvas.images << annotation
 
     add_related_to_canvas(canvas, page)
+    add_rendering_to_canvas(canvas, page)
     add_seeAlso_to_canvas(canvas, page)
     add_services_to_canvas(canvas, page)
     add_annotations_to_canvas(canvas, page)
@@ -756,14 +824,14 @@ private
 
     image_resource = IIIF::Presentation::ImageResource.create_image_api_image_resource(
       {
-        :service_id => id_base,
-        :resource_id => "#{id_base}/full/full/0/default.jpg",
-        :height => page.base_height,
-        :width => page.base_width,
-        :profile => 'https://iiif.io/api/image/1.1/compliance/#level2',
+        service_id: id_base,
+        resource_id: "#{id_base}/full/full/0/default.jpg",
+        height: page.base_height,
+        width: page.base_width,
+        profile: 'https://iiif.io/api/image/1.1/compliance/#level2'
        })
 
-    image_resource.service['@context'] = "https://iiif.io/api/image/2/context.json"
+    image_resource.service['@context'] = 'https://iiif.io/api/image/2/context.json'
 
     annotation = IIIF::Presentation::Annotation.new
     annotation.resource = image_resource
@@ -773,6 +841,7 @@ private
     canvas.images << annotation
 
     add_related_to_canvas(canvas, page)
+    add_rendering_to_canvas(canvas, page)
     add_seeAlso_to_canvas(canvas, page)
     add_services_to_canvas(canvas, page)
     add_annotations_to_canvas(canvas, page)
@@ -795,6 +864,7 @@ private
       canvas.images << annotation
 
       add_related_to_canvas(canvas, page)
+      add_rendering_to_canvas(canvas, page)
       add_seeAlso_to_canvas(canvas, page)
       add_services_to_canvas(canvas, page)
       add_annotations_to_canvas(canvas, page)
@@ -803,162 +873,303 @@ private
     end
   end
 
-  def add_annotations_to_canvas(canvas,page)
+  def add_rendering_to_canvas(canvas, page)
+    if page.has_alto?
+      canvas['rendering'] = [] unless canvas['rendering']
+      canvas['rendering'] <<
+        { '@id' => collection_alto_xml_url(page.collection.owner, page.collection, page.work, page),
+          'label' => 'ALTO XML',
+          'format' => 'application/xml',
+          'profile' => 'http://www.loc.gov/standards/alto/' }
+    end
+  end
+
+
+  def add_annotations_to_canvas(canvas, page)
+    # Initialize other_content if it doesn't exist
+    canvas.other_content ||= []
+
     unless page.source_text.blank?
       annotation_list = IIIF::Presentation::AnnotationList.new
-      annotation_list['@id'] = url_for({:controller => 'iiif', :action => 'list', :page_id => page.id, :annotation_type => "transcription", :only_path => false})
+      annotation_list['@id'] = url_for({ controller: 'iiif', action: 'list', page_id: page.id, annotation_type: 'transcription', only_path: false })
       annotation_list['label'] = 'Transcription'
       canvas.other_content << annotation_list
     end
 
     unless page.source_translation.blank?
       annotation_list = IIIF::Presentation::AnnotationList.new
-      annotation_list['@id'] = url_for({:controller => 'iiif', :action => 'list', :page_id => page.id, :annotation_type => "translation", :only_path => false})
+      annotation_list['@id'] = url_for({ controller: 'iiif', action: 'list', page_id: page.id, annotation_type: 'translation', only_path: false })
       annotation_list['label'] = 'Translation'
       canvas.other_content << annotation_list
     end
 
     if page.notes.exists?
       annotation_list = IIIF::Presentation::AnnotationList.new
-      annotation_list['@id'] = url_for({:controller => 'iiif', :action => 'list', :page_id => page.id, :annotation_type => "notes", :only_path => false})
+      annotation_list['@id'] = url_for({ controller: 'iiif', action: 'list', page_id: page.id, annotation_type: 'notes', only_path: false })
       annotation_list['label'] = 'Notes'
       canvas.other_content << annotation_list
+    end
+
+    # Add AI text annotation if available and no human-created source text
+    if page.ai_transcription.present? && page.source_text.blank?
+      annotation_list = IIIF::Presentation::AnnotationList.new
+      annotation_list['@id'] = url_for({ controller: 'iiif', action: 'list', page_id: page.id, annotation_type: 'ai_text', only_path: false })
+      annotation_list['label'] = 'AI Text'
+      canvas.other_content << annotation_list
+
+      # Add AI reasoning annotation if available
+      if page.ai_transcription.reasoning.present?
+        annotation_list = IIIF::Presentation::AnnotationList.new
+        annotation_list['@id'] = url_for({ controller: 'iiif', action: 'list', page_id: page.id, annotation_type: 'ai_reasoning', only_path: false })
+        annotation_list['label'] = 'AI Reasoning'
+        canvas.other_content << annotation_list
+      end
     end
     canvas
   end
 
-  def add_related_to_canvas(canvas,page)
+  def add_related_to_canvas(canvas, page)
     canvas.related = [] unless canvas.related
-    canvas.related << { "label" => "Read this page", "format" => "text/html", "@id" => url_for(:controller => :display, :action => :display_page, :page_id => page.id)}
-    canvas.related << { "label" => "Transcribe this page", "format" => "text/html", "@id" => url_for(:controller => :transcribe, :action => :display_page, :page_id => page.id)}
-    canvas.related << { "label" => "Translate this page", "format" => "text/html", "@id" => url_for(:controller => :transcribe, :action => :translate, :page_id => page.id)} if page.work.supports_translation?
+    canvas.related << { 'label' => 'Read this page', 'format' => 'text/html', '@id' => url_for(controller: :display, action: :display_page, page_id: page.id) }
+    canvas.related << { 'label' => 'Transcribe this page', 'format' => 'text/html', '@id' => url_for(controller: :transcribe, action: :display_page, page_id: page.id) }
+    canvas.related << { 'label' => 'Translate this page', 'format' => 'text/html', '@id' => url_for(controller: :transcribe, action: :translate, page_id: page.id) } if page.work.supports_translation?
   end
 
-  def add_services_to_canvas(canvas,page)
+  def add_services_to_canvas(canvas, page)
     canvas.service = status_service_for_page(page)
   end
 
-  def add_seeAlso_to_canvas(canvas,page)
+  def add_seeAlso_to_canvas(canvas, page)
     canvas.seeAlso = [] unless canvas.seeAlso
     canvas.seeAlso <<
-      { "label" => "HTML Transcription",
-        "format" => "text/html",
-        "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#html-transcription",
-        "@id" => collection_annotation_page_transcription_html_url(page.work.owner, page.work.collection, page.work, page)
+      { 'label' => 'HTML Transcription',
+        'format' => 'text/html',
+        'profile' => 'https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#html-transcription',
+        '@id' => collection_annotation_page_transcription_html_url(page.work.owner, page.work.collection, page.work, page)
     }
     canvas.seeAlso <<
-      { "label" => "Searchable Plaintext",
-        "format" => "text/plain",
-        "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#plaintext-for-full-text-search-1",
-        "@id" => iiif_page_export_plaintext_searchable_url(page.work_id, page.id)
+      { 'label' => 'Searchable Plaintext',
+        'format' => 'text/plain',
+        'profile' => 'https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#plaintext-for-full-text-search-1',
+        '@id' => iiif_page_export_plaintext_searchable_url(page.work_id, page.id)
     }
     canvas.seeAlso <<
-    { "label" => "Verbatim Plaintext",
-      "format" => "text/plain",
-      "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#verbatim-plaintext-2",
-      "@id" => iiif_page_export_plaintext_verbatim_url(page.work_id, page.id)
+    { 'label' => 'Verbatim Plaintext',
+      'format' => 'text/plain',
+      'profile' => 'https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#verbatim-plaintext-2',
+      '@id' => iiif_page_export_plaintext_verbatim_url(page.work_id, page.id)
     }
     canvas.seeAlso <<
-    { "label" => "Emended Plaintext",
-      "format" => "text/plain",
-      "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#emended-plaintext-1",
-      "@id" => iiif_page_export_plaintext_emended_url(page.work_id, page.id)
+    { 'label' => 'Emended Plaintext',
+      'format' => 'text/plain',
+      'profile' => 'https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#emended-plaintext-1',
+      '@id' => iiif_page_export_plaintext_emended_url(page.work_id, page.id)
     }
+    # if the page has ai transcriptions, add links to their exports with profiles for the model as a generator
+    if page.ai_transcriptions.present?
+      page.ai_transcriptions.each do |ai_transcription|
+        canvas.seeAlso <<
+          { 'label' => "AI-generated Transcript Plaintext (Model: #{ai_transcription.model} at #{ai_transcription.created_at.iso8601})",
+            'format' => 'text/plain',
+            'profile' => 'https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#plaintext-ai-transcription',
+            '@id' => iiif_page_export_plaintext_ai_transcription_url(page.work_id, page.id, ai_transcription.id)
+        }
+        if !ai_transcription.reasoning.blank?
+          canvas.seeAlso <<
+            { 'label' => "AI Reasoning Explanation (Model: #{ai_transcription.model} at #{ai_transcription.created_at.iso8601})",
+              'format' => 'text/html',
+              'profile' => 'https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#html-ai-reasoning',
+              '@id' => iiif_page_export_html_ai_reasoning_url(page.work_id, page.id, ai_transcription.id)
+          }
+        end
+        if !ai_transcription.prompt.blank?
+          canvas.seeAlso <<
+            { 'label' => "AI Prompt (Model: #{ai_transcription.model} at #{ai_transcription.created_at.iso8601})",
+              'format' => 'text/plain',
+              'profile' => 'https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#plaintext-ai-prompt',
+              '@id' => iiif_page_export_plaintext_ai_prompt_url(page.work_id, page.id, ai_transcription.id)
+          }
+        end
+      end
+    end
     if page.work.supports_translation? && !page.source_translation.blank?
       canvas.seeAlso <<
-        { "label" => "HTML Translation",
-          "format" => "text/html",
-          "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#html-translation",
-          "@id" => collection_annotation_page_translation_html_url(page.work.owner, page.work.collection, page.work, page)
+        { 'label' => 'HTML Translation',
+          'format' => 'text/html',
+          'profile' => 'https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#html-translation',
+          '@id' => collection_annotation_page_translation_html_url(page.work.owner, page.work.collection, page.work, page)
       }
       canvas.seeAlso <<
-      { "label" => "Verbatim Translation Plaintext",
-        "format" => "text/plain",
-        "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#verbatim-translation-plaintext-1",
-        "@id" => iiif_page_export_plaintext_translation_verbatim_url(page.work_id, page.id)
+      { 'label' => 'Verbatim Translation Plaintext',
+        'format' => 'text/plain',
+        'profile' => 'https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#verbatim-translation-plaintext-1',
+        '@id' => iiif_page_export_plaintext_translation_verbatim_url(page.work_id, page.id)
       }
       canvas.seeAlso <<
-      { "label" => "Emended Translation Plaintext",
-        "format" => "text/plain",
-        "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#emended-translation-plaintext-1",
-        "@id" => iiif_page_export_plaintext_translation_emended_url(page.work_id, page.id)
+      { 'label' => 'Emended Translation Plaintext',
+        'format' => 'text/plain',
+        'profile' => 'https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#emended-translation-plaintext-1',
+        '@id' => iiif_page_export_plaintext_translation_emended_url(page.work_id, page.id)
       }
     end
     if page.collection.field_based
-      canvas.seeAlso << structured_data_reference(page.work,page)
-    end
-
-  end
-
- def annotationlist_from_page(page,type)
-  #annotationlists[] = []
-  case type
-  when 'transcription'
-    unless page.source_text.blank?
-      annotation_list = IIIF::Presentation::AnnotationList.new
-      annotation_list['@id'] = url_for({:controller => 'iiif', :action => 'list', :page_id => page.id, :annotation_type => type, :only_path => false})
-      annotation_list['label'] = "Transcription"
-      annotation_list["sc:forCanvas"] = canvas_id_from_page(page)
-    end
-  when 'translation'
-    unless page.source_translation.blank?
-      annotation_list = IIIF::Presentation::AnnotationList.new
-      annotation_list['@id'] = url_for({:controller => 'iiif', :action => 'list', :page_id => page.id, :annotation_type => type, :only_path => false})
-      annotation_list['label'] = "Translation"
-      annotation_list["sc:forCanvas"] = canvas_id_from_page(page)
-    end
-  when 'notes'
-    unless page.notes.blank?   #no comments
-      annotation_list = IIIF::Presentation::AnnotationList.new
-      annotation_list['@id'] = url_for({:controller => 'iiif', :action => 'list', :page_id => page.id, :annotation_type => type, :only_path => false})
-      annotation_list['label'] = "Notes"
-      annotation_list["sc:forCanvas"] = canvas_id_from_page(page)
+      canvas.seeAlso << structured_data_reference(page.work, page)
     end
   end
-    annotation_list
+
+  def annotationlist_from_page(page, type)
+    field = ANNOTATION_FIELDS[type]
+    return if field.nil? || page.public_send(field).blank?
+    IIIF::Presentation::AnnotationList.new.tap do |list|
+      list['@id']          = url_for(controller: 'iiif', action: 'list', page_id: page.id, annotation_type: type, only_path: false)
+      list['label']        = type.capitalize
+      list['sc:forCanvas'] = canvas_id_from_page(page)
+    end
   end
 
   def status_service_for_manifest(work)
     service = IIIF::Service.new
-    service["label"] = "Work Status"
-    service["profile"] = "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#service"
-    service["@context"] = "http://www.fromthepage.org/jsonld/1/context.json"
-    service["@id"] = url_for({:controller => 'iiif', :action => 'manifest_status', :work_id => work.id, :only_path => false})
+    service['label'] = 'Work Status'
+    service['profile'] = 'https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#service'
+    service['@context'] = 'http://www.fromthepage.org/jsonld/1/context.json'
+    service['@id'] = url_for({ controller: 'iiif', action: 'manifest_status', work_id: work.id, only_path: false })
 
     stats = work.work_statistic
     total = stats.total_pages
 
-    service["pctComplete"] = stats.pct_completed
-    service["pctTranscribed"] = !work.ocr_correction ? stats.pct_completed : 0.0
-    service["pctOcrCorrected"] = work.ocr_correction ? stats.pct_completed : 0.0
-    service["pctIndexed"] = stats.pct_annotated
-    service["pctMarkedBlank"] = stats.pct_blank
-    service["pctNeedsReview"] = stats.pct_needs_review
-    service["pctTranslationComplete"] = stats.pct_translation_completed
-    service["pctTranslated"] = stats.pct_translation_completed
-    service["pctTranslationNeedsReview"] = stats.pct_translation_needs_review
-    service["pctTranslationIndexed"] = stats.pct_translation_annotated
-    service["pctTranslationMarkedBlank"] = stats.pct_translation_blank
-    service["metadataStatus"] = work.description_status
-    service["lastUpdated"] = work.most_recent_deed_created_at
+    service['pctComplete'] = stats.pct_completed
+    service['pctTranscribed'] = !work.ocr_correction ? stats.pct_completed : 0.0
+    service['pctOcrCorrected'] = work.ocr_correction ? stats.pct_completed : 0.0
+    service['pctIndexed'] = stats.pct_annotated
+    service['pctMarkedBlank'] = stats.pct_blank
+    service['pctNeedsReview'] = stats.pct_needs_review
+    service['pctTranslationComplete'] = stats.pct_translation_completed
+    service['pctTranslated'] = stats.pct_translation_completed
+    service['pctTranslationNeedsReview'] = stats.pct_translation_needs_review
+    service['pctTranslationIndexed'] = stats.pct_translation_annotated
+    service['pctTranslationMarkedBlank'] = stats.pct_translation_blank
+    service['metadataStatus'] = work.description_status
+    service['lastUpdated'] = work.most_recent_deed_created_at
     service
   end
 
   def status_service_for_page(page)
     service = IIIF::Service.new
-    service["label"] = "Page Status"
-    service["profile"] = "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#service-1"
-    service["@context"] = "http://www.fromthepage.org/jsonld/1/context.json"
-    service["@id"] = url_for({:controller => 'iiif', :action => 'canvas_status', :work_id => page.work.id, :page_id => page.id, :only_path => false})
-    service["pageStatus"] = []
-    service["pageStatus"] << "needsReview" if page.status_needs_review?
-    service["pageStatus"] << "ocrCorrected" if page.work.ocr_correction && (page.status_needs_review? || page.status_transcribed?)
-    service["pageStatus"] << "markedBlank" if page.status_blank?
-    service["pageStatus"] << "hasTranscript" if page.status_needs_review? || page.status_transcribed? || page.status_indexed?
-    service["pageStatus"] << "hasTranslation" if page.translation_status_needs_review? || page.translation_status_translated? || page.translation_status_indexed?
-    service["pageStatus"] << "hasSubjectTags" if page.status_indexed?
-    service["pageStatus"] << 'translationNeedsReview' if page.translation_status_needs_review?
+    service['label'] = 'Page Status'
+    service['profile'] = 'https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#service-1'
+    service['@context'] = 'http://www.fromthepage.org/jsonld/1/context.json'
+    service['@id'] = url_for({ controller: 'iiif', action: 'canvas_status', work_id: page.work.id, page_id: page.id, only_path: false })
+    service['pageStatus'] = []
+    service['pageStatus'] << 'needsReview' if page.status_needs_review?
+    service['pageStatus'] << 'ocrCorrected' if page.work.ocr_correction && (page.status_needs_review? || page.status_transcribed?)
+    service['pageStatus'] << 'markedBlank' if page.status_blank?
+    service['pageStatus'] << 'hasTranscript' if page.status_needs_review? || page.status_transcribed? || page.status_indexed?
+    service['pageStatus'] << 'hasTranslation' if page.translation_status_needs_review? || page.translation_status_translated? || page.translation_status_indexed?
+    service['pageStatus'] << 'hasSubjectTags' if page.status_indexed?
+    service['pageStatus'] << 'translationNeedsReview' if page.translation_status_needs_review?
     service
+  end
+
+  def build_iiif_manifest(work)
+    work_id = work.id
+    seed = {
+      '@id' => url_for({ controller: 'iiif', action: 'manifest', id: work_id, only_path: false }),
+      'label' => work.title
+    }
+
+    manifest = IIIF::Presentation::Manifest.new(seed)
+    manifest.label = work.title
+    manifest.metadata = [dc_source_from_work(work)].compact + work.merge_metadata
+
+    if work.sc_manifest
+      manifest.description = 'This is an annotated version of the original manifest produced by FromThePage'
+    elsif work.description.present?
+      manifest.description = work.description
+    end
+
+    manifest.within = {
+      '@type' => 'sc:Collection',
+      'label' => work.collection.title,
+      '@id' => iiif_collection_id_from_collection(work.collection)
+    }
+
+    manifest.related = [
+      {
+        'format' => 'text/html',
+        'label' => "Read #{work.title}",
+        '@id' => collection_read_work_url(work.collection.owner, work.collection, work)
+      },
+      {
+        'format' => 'text/html',
+        'label' => "Table of Contents for #{work.title}",
+        '@id' => collection_work_contents_url(work.collection.owner, work.collection, work)
+      }
+    ]
+
+    manifest.seeAlso = []
+    manifest.seeAlso <<
+    { 'label' => 'Verbatim Plaintext',
+      'format' => 'text/plain',
+      'profile' => 'https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#verbatim-plaintext-1',
+      '@id' => iiif_work_export_plaintext_verbatim_url(work.id)
+    }
+    manifest.seeAlso <<
+    { 'label' => 'Emended Plaintext',
+      'format' => 'text/plain',
+      'profile' => 'https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#emended-plaintext',
+      '@id' => iiif_work_export_plaintext_emended_url(work.id)
+    }
+    if work.supports_translation?
+      manifest.seeAlso <<
+      { 'label' => 'Verbatim Translation Plaintext',
+        'format' => 'text/plain',
+        'profile' => 'https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#verbatim-translation-plaintext',
+        '@id' => iiif_work_export_plaintext_translation_verbatim_url(work.id)
+      }
+      manifest.seeAlso <<
+      { 'label' => 'Emended Translation Plaintext',
+        'format' => 'text/plain',
+        'profile' => 'https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#emended-translation-plaintext',
+        '@id' => iiif_work_export_plaintext_translation_emended_url(work.id)
+      }
+    end
+    manifest.seeAlso <<
+      { 'label' => 'Searchable Plaintext',
+        'format' => 'text/plain',
+        'profile' => 'https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#plaintext-for-full-text-search',
+        '@id' => iiif_work_export_plaintext_searchable_url(work.id)
+    }
+    if work.collection.metadata_entry?
+      manifest.seeAlso << structured_data_reference(work)
+    end
+    manifest.service << status_service_for_manifest(work)
+    sequence = iiif_sequence_from_work_id(work_id)
+    manifest.sequences << sequence
+
+    seed = {
+      '@id' => url_for({ controller: 'iiif', id: work_id, action: 'layer', type: 'transcription', only_path: false }),
+      'label' => 'transcription layer'
+    }
+    layer = IIIF::Presentation::Layer.new(seed)
+    manifest['otherContent'] = [layer]
+
+    if work.supports_translation?
+      seed = {
+        '@id' => url_for({ controller: 'iiif', id: work_id, action: 'layer', type: 'translation', only_path: false }),
+        'label' => 'translation layer'
+      }
+      layer = IIIF::Presentation::Layer.new(seed)
+      manifest['otherContent'] << layer
+    end
+
+    seed = {
+      '@id' => url_for({ controller: 'iiif', id: work_id, action: 'layer', type: 'notes', only_path: false }),
+      'label' => 'notes layer'
+    }
+    layer = IIIF::Presentation::Layer.new(seed)
+    manifest['otherContent'] << layer
+
+    manifest
   end
 
   def format_pct(numerator, denominator)
@@ -968,16 +1179,16 @@ private
 
   def set_cors_headers
     headers['Access-Control-Allow-Origin'] = '*'
-#    headers['Access-Control-Allow-Methods'] = 'POST, PUT, DELETE, GET, OPTIONS'
+    #    headers['Access-Control-Allow-Methods'] = 'POST, PUT, DELETE, GET, OPTIONS'
     headers['Access-Control-Allow-Methods'] = 'GET, OPTIONS'
     headers['Access-Control-Request-Method'] = '*'
     headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept, Authorization'
   end
 
   def set_api_user
+    @api_user = nil
     authenticate_with_http_token do |token, options|
       @api_user = User.find_by(api_key: token)
     end
   end
-
 end

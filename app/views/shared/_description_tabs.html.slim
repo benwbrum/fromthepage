@@ -3,12 +3,19 @@
   :selected => 1,
   :path => metadata_overview_collection_work_path(@work.slug),
 }]
--if current_user.present?
+-can_describe = current_user&.can_transcribe?(@work, @collection)
+-if can_describe
   -tabs += [{\
     :name => t('.describe'),
     :selected => 2,
     :path => describe_collection_work_path(@work.slug),
   }]
+  -if @work.ai_metadata_draft_available? && (!@collection.ai_draft_disabled || current_user.like_owner?(@collection))
+    -tabs += [{\
+      :name => t('.ai'),
+      :selected => 10,
+      :path => collection_work_ai_metadata_path(@collection.owner, @collection, @work),
+    }]
 -if @work.metadata_description_versions.present?
   -tabs += [{\
     :name => t('.versions'),
@@ -37,7 +44,11 @@
             =svg_symbol '#icon-arrow-left', class: 'icon', title: 'Previous page'
 
           span.page-nav_info = t('.metadata')
-          -if index.present?
+          -split_source_work = @work.split_from_work if @work.split_from_work&.pages&.exists?
+          -if split_source_work
+            =link_to(collection_transcribe_page_path(@collection.owner, @collection, split_source_work, split_source_work.pages.first.id), class: 'page-nav_next', title: t('.back_to_original_work'), 'aria-label' => t('.back_to_original_work'), onclick: 'unsavedTranscription(event);')
+              =svg_symbol '#icon-arrow-right', class: 'icon', title: 'Back to the original work'
+          -elsif index.present?
             -next_works = @collection.works.to_a[index+1..]
             -next_work = next_works.detect {|candidate| candidate.pages.where(status: [:new, :incomplete]).first || candidate.description_status == Work::DescriptionStatus::UNDESCRIBED }
             -if next_work
@@ -45,7 +56,7 @@
               -if next_page
                 =link_to(collection_transcribe_page_path(@collection.owner, @collection, @work, @work.pages.last.id), class: 'page-nav_next', title: t('.next_page'), 'aria-label' => t('.next_page'), onclick: 'unsavedTranscription(event);')
                   =svg_symbol '#icon-arrow-right', class: 'icon', title: 'Next page'
-              -else
+              -elsif can_describe
                 =link_to(describe_collection_work_path(@collection.owner, @collection, next_work), class: 'page-nav_next', title: t('.next_work'), 'aria-label' => t('.next_work'), onclick: 'unsavedTranscription(event);')
                   =svg_symbol '#icon-arrow-right', class: 'icon', title: 'Next work'
             -else
@@ -53,7 +64,7 @@
                 =svg_symbol '#icon-arrow-right', class: 'icon', title: 'Next page'
 
 
-        -else
+        -elsif can_describe
           -if index.present? && index > 0
             =link_to(describe_collection_work_path(@collection.owner, @collection, @collection.works[index-1]), class: 'page-nav_prev', title: t('.previous_work'), 'aria-label' => t('.previous_work'), onclick: 'unsavedTranscription(event);')
               =svg_symbol '#icon-arrow-left', class: 'icon', title: 'Previous work'
@@ -68,4 +79,3 @@
   -for tab in tabs
       =link_to_unless tab[:selected] == selected, tab[:name], tab[:path]
         a.active =tab[:name]
-

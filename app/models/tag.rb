@@ -14,11 +14,15 @@ class Tag < ApplicationRecord
   require 'openai/description_tagger'
   has_and_belongs_to_many :collections
 
+  # scope for only tags that are canonical
+  scope :canonical, -> { where(canonical: true) }
+
+
   # return tags that are canonical and have collections that are unrestricted and have a picture and intro block
   def self.featured_tags
     joins(:collections).where(canonical: true).merge(Collection.unrestricted.has_intro_block.has_picture.not_empty)
   end
-    
+
 
   module TagType
     DATE='date'
@@ -38,7 +42,7 @@ class Tag < ApplicationRecord
   def self.tag_by_subject(description, title)
     # get the subject tags
     subject_tags = Tag.where(tag_type: TagType::SUBJECT, canonical: true).pluck(:ai_text)
-    suggested_tags = DescriptionTagger::tag_description_by_subject(description, subject_tags, title)
+    suggested_tags = DescriptionTagger.tag_description_by_subject(description, subject_tags, title)
     # now find the tag records
     canonical_tags = find_from_string_list(suggested_tags, TagType::SUBJECT)
 
@@ -78,6 +82,4 @@ class Tag < ApplicationRecord
     end
     tag_list
   end
-
-
 end

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # This migration comes from thredded (originally 20160329231848)
 
 require 'thredded/base_migration'

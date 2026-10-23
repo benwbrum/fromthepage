@@ -14,7 +14,7 @@ h1 =t('dashboard.collaborator')
       -@collections.each do |c|
         -if c.show_to?(current_user)
           h4 =link_to c.title, collection_path(c.owner, c), class: 'nodecor'
-          -cache c.most_recent_deed_created_at do
+          -cache [c.id, c.most_recent_deed_created_at, :watchlist] do
             -c.deeds.includes(:page, :user, :work).limit(5).each do |d|
               //- Hide collection link
               -d.collection = nil
@@ -22,23 +22,16 @@ h1 =t('dashboard.collaborator')
                 =link_to(user_profile_path(d.user))
                   =profile_picture(d.user)
                 .user-bubble_content
-                  =timeago d.created_at
-                  p =render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => true })
+                  =fe_timeago(time: d.created_at, classes: '')
+                  p =render(partial: 'deed/deed', locals: { deed: d, long_view: true }, formats: [:html])
     -else
       =t('.try_transcribing_a_page')
       =link_to t('.collections'), dashboard_path
       ="."
 
-
   aside.sidecol
-    h3 =t('.your_activity')
-    =deeds_for({ :user_id => current_user.id, :limit => 10 })
-
-    = link_to t('.your_hours'), dashboard_your_hours_path
-
--content_for :javascript
-  javascript:
-    $(document).ready(function() {
-      $("time.timeago").timeago("setLocale", '#{I18n.locale}');
-      $("time.timeago").timeago();
-    });
+    .allowed-collaborators
+      h3 =t('.your_activity')
+      = link_to t('.your_hours'), dashboard_your_hours_path, class: 'button outline small'
+    turbo-frame id="lazy_deeds" src=dashboard_deeds_path(limit: 10) loading="lazy"
+      = render partial: 'shared/components/loading'

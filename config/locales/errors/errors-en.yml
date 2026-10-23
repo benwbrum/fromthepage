@@ -1,4 +1,6 @@
 ---
 en:
   errors:
+    error: Something went wrong
     html_syntax_error: invalid html syntax
+    unsupported_file_type: unsupported file type

@@ -3,13 +3,13 @@ pt:
   contact:
     form:
       contact_reason: Motivo do contato
-      contact_us: Contate-nos
+      contact_us: Fale conosco
       contact_us_description: Quer mais informações sobre FromThePage? Nos diga como podemos ajudar.
       email_address: Endereço de email
       event: Evento
       first_name: Primeiro nome
       free_trial: Teste grátis
-      large_institution_quote: Cotação de grande instituição
+      large_institution_quote: Cotação para grandes instituições
       last_name: Sobrenome
       other: Outro
       press: Imprensa

@@ -1,0 +1,9 @@
+#cookies-banner
+  .h3 =t('.title')
+  p =t('.description')
+
+  .actions
+    =link_to t('layouts.application.privacy_policy'), 'https://content.fromthepage.com/privacy-policy/', target: '_blank'
+    .buttons
+      =link_to t('.manage_preferences'), main_app.new_cooky_path(expand: true), class: 'button', data: { turbo: true, turbo_stream: true }
+      =button_to t('.accept_all'), main_app.cookies_path, method: :post, form: { data: { turbo: true } }, params: { privacy_preference: { analytics: true, marketing: true } }

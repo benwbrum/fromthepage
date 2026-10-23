@@ -16,28 +16,28 @@ FriendlyId.defaults do |config|
   # undesirable to allow as slugs. Edit this list as needed for your app.
   config.use :reserved
 
-  config.reserved_words = %w(new edit index session login logout users admin
-    stylesheets assets javascripts images)
+  config.reserved_words = %w[new edit index session login logout users admin
+    stylesheets assets javascripts images]
 
-  #  ## Friendly Finders
-  #
-  # Uncomment this to use friendly finders in all models. By default, if
-  # you wish to find a record by its friendly id, you must do:
-  #
-  #    MyModel.friendly.find('foo')
-  #
-  # If you uncomment this, you can do:
-  #
-  #    MyModel.find('foo')
-  #
-  # This is significantly more convenient but may not be appropriate for
-  # all applications, so you must explicity opt-in to this behavior. You can
-  # always also configure it on a per-model basis if you prefer.
-  #
-  # Something else to consider is that using the :finders addon boosts
-  # performance because it will avoid Rails-internal code that makes runtime
-  # calls to `Module.extend`.
-  #
+   #  ## Friendly Finders
+   #
+   # Uncomment this to use friendly finders in all models. By default, if
+   # you wish to find a record by its friendly id, you must do:
+   #
+   #    MyModel.friendly.find('foo')
+   #
+   # If you uncomment this, you can do:
+   #
+   #    MyModel.find('foo')
+   #
+   # This is significantly more convenient but may not be appropriate for
+   # all applications, so you must explicity opt-in to this behavior. You can
+   # always also configure it on a per-model basis if you prefer.
+   #
+   # Something else to consider is that using the :finders addon boosts
+   # performance because it will avoid Rails-internal code that makes runtime
+   # calls to `Module.extend`.
+   #
    config.use :finders
   #
   # ## Slugs

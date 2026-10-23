@@ -1,6 +1,9 @@
 ---
 pt:
   export:
+    accessible_pdf:
+      struck_through: 'riscado: %{text}'
+      table_without_headers: Tabela conforme transcrita, %{rows} linhas por %{columns} colunas. Os cabeçalhos de coluna não foram marcados na transcrição original, portanto as células são lidas sem eles.
     edit_contentdm_credentials:
       connect: Conectar
       contentdm_credentials: Credenciais do CONTENTdm
@@ -10,7 +13,11 @@ pt:
       license_key: Chave de licença
     facing_edition:
       contributions_message: 'Este documento não seria possível sem as contribuições editoriais das seguintes pessoas:'
+      contributors: Colaboradores
       export_metadata: Exportação FromThePage de %{work} de %{collection} feita em %{time}.
+      metadata: Metadados
+      notes: Notas
+      translation: Tradução
     index:
       api: API
       export_all_works: Exportar todos as obras
@@ -38,7 +45,16 @@ pt:
       table_csv: Tabela CSV
       tei: TEI
       work_title: Título da obra
+    new_grover_export:
+      ai_warning: 'Aviso: Esta transcrição foi gerada por IA (%{model} %{created_at}).'
+      contents: Conteúdo
+      download: Download
+      heading: Configuração de PDF acessível
+      human_and_ai: Exportar transcrições humanas quando disponíveis; caso contrário, exportar rascunhos de IA.
+      human_only: Exportar somente transcrições revisadas por humanos
+      prepend_ai_warnings: 'Aviso: Este texto foi gerado por IA e adicionado ao início da transcrição.'
     show:
+      bibliography: Bibliografia
       categories: 'Categorias:'
       export_metadata: Exportação FromThePage de %{work} de %{collection} feita em %{time}.
       fromthepage_version: 'Versão FromThePage: %{version}'
@@ -51,6 +67,10 @@ pt:
       subjects_and_indices: Assuntos e Índices
     tei:
       administrator: Administrador do %{collection} projeto de transcrição em FromThePage
+      ai_generated_between: Gerado entre %{start_date} e %{end_date}.
+      ai_generated_on: Gerado em %{date}.
+      ai_page_ranges: 'Páginas: %{ranges}.'
+      ai_transcription_by: 'Transcrição por IA realizada por:'
       changes_to_page_transcript: Alterações na transcrição da página.
       double_proof_by: 'Prova dupla por:'
       dynamic_tei_export: Exportação dinâmica de TEI de FromThePage (versão %{version})

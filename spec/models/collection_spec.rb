@@ -1,8 +1,6 @@
-# frozen_string_literal: true
-
 require 'spec_helper'
 
-RSpec.describe Collection, type: :model do
+describe Collection do
   describe 'validations' do
     context 'html validations' do
       let(:invalid_html) { '<p>Missing end tags' }
@@ -16,28 +14,36 @@ RSpec.describe Collection, type: :model do
         collection.intro_block = valid_html
         expect(collection.valid?).to be_truthy
       end
+
+      it 'validates legend html syntax' do
+        collection.legend = invalid_html
+        expect(collection.valid?).to be_falsey
+
+        collection.legend = valid_html
+        expect(collection.valid?).to be_truthy
+      end
     end
   end
 
   describe '#is_public' do
     it 'returns true if a collection is not restricted' do
       user = build_stubbed(:user)
-      collection = build_stubbed(:collection, owner_user_id: user.id, restricted: false)
+      collection = build_stubbed(:collection, owner_user_id: user.id, visibility: :public)
 
       expect(collection.is_public).to be true
     end
 
     it 'returns false if a collection is restricted' do
       user = build_stubbed(:user)
-      collection = build_stubbed(:collection, owner_user_id: user.id, restricted: true)
+      collection = build_stubbed(:collection, owner_user_id: user.id, visibility: :private)
 
       expect(collection.is_public).to be false
     end
   end
 
   describe '#set_next_untranscribed_page' do
-    let(:collection){ create(:collection, works: []) }
-    let(:work){ create(:work, collection_id: collection.id) }
+    let(:collection) { create(:collection, works: []) }
+    let(:work) { create(:work, collection_id: collection.id) }
     it "sets nil with no works" do
       collection.set_next_untranscribed_page
       expect(collection.next_untranscribed_page).to eq(nil)
@@ -91,32 +97,245 @@ RSpec.describe Collection, type: :model do
     describe '#enable_ocr' do
       it 'Enables OCR for all works' do
         collection.enable_ocr
-        all_enabled = collection.works.all? {|w| w.ocr_correction }
+        all_enabled = collection.works.all? { |w| w.ocr_correction }
         expect(all_enabled)
       end
     end
     describe '#disable_ocr' do
       it 'Disables OCR for all works' do
         collection.disable_ocr
-        all_disabled = collection.works.none? {|w| w.ocr_correction }
+        all_disabled = collection.works.none? { |w| w.ocr_correction }
         expect(all_disabled)
       end
     end
   end
 
   describe '#enable_messageboards' do
-    context 'when messageboard_group is nil' do
-      let(:collection) { create(:collection, messageboard_group: nil) }
+    let!(:owner) { create(:unique_user, :owner) }
+    let(:collection) { create(:collection, owner_user_id: owner.id, messageboard_group: nil) }
 
+    context 'when messageboard_group is nil' do
       it 'creates a messageboard group and default messageboards' do
         expect {
           collection.enable_messageboards
         }.to change(Thredded::MessageboardGroup, :count).by(1)
          .and change(Thredded::Messageboard, :count).by(2)
 
-        expect(collection.messageboards_enabled).to be true
+        expect(collection.messageboards_enabled).to be_truthy
+
+        # Test disabling
+        collection.disable_messageboards
+        expect(collection.messageboards_enabled).to be_falsey
+        # Manually set to nil without deleting
+        collection.messageboard_group = nil
+        collection.save
+
+        # Enable again, but will not increase count
+        expect {
+          collection.enable_messageboards
+        }.not_to change(Thredded::MessageboardGroup, :count)
+      end
+    end
+
+    context 'when messageboard_group is not nil' do
+      before do
+        collection.enable_messageboards
+        collection.disable_messageboards
+      end
+
+      it 'does not create new messageboard_group' do
+        expect {
+          collection.enable_messageboards
+        }.not_to change(Thredded::MessageboardGroup, :count)
       end
     end
   end
 
+  describe '#uniquify_slug' do
+    let!(:owner) { create(:unique_user, :owner) }
+    let(:collection) { create(:collection, owner_user_id: owner.id) }
+    let(:document_set) { create(:document_set, collection_id: collection.id, owner_user_id: owner.id) }
+
+    it 'uniquifies slug' do
+      collection.update!(slug: document_set.slug)
+      expect(collection.slug).to eq("#{document_set.slug}-collection")
+    end
+  end
+
+  context 'es_search' do
+    let(:identifier) { 'pneumonoultramicroscopicsilicovolcanoconiosis' }
+
+    let!(:owner) { create(:unique_user, :owner) }
+    let!(:public_collection) { create(:collection, title: identifier, owner_user_id: owner.id) }
+    let!(:restricted_collection) { create(:collection, title: identifier, owner_user_id: owner.id, visibility: :private) }
+    let!(:public_updated_to_restricted_collection) { create(:collection, title: identifier, owner_user_id: owner.id) }
+
+    let!(:other_user) { create(:unique_user, :owner) }
+    let!(:other_public_collection) { create(:collection, title: identifier, owner_user_id: other_user.id) }
+    let!(:other_restricted_collection) { create(:collection, intro_block: "<div>#{identifier}</div>", owner_user_id: other_user.id, visibility: :private) }
+
+    let(:records) do
+      [
+        owner,
+        public_collection,
+        restricted_collection,
+        public_updated_to_restricted_collection,
+        other_user,
+        other_public_collection,
+        other_restricted_collection
+      ]
+    end
+
+    before(:each) do
+      VCR.configure { |c| c.allow_http_connections_when_no_cassette = true }
+
+      stub_const('ELASTIC_ENABLED', true)
+
+      CollectionsIndex.purge
+      records.each(&:save!)
+
+      public_updated_to_restricted_collection.update!(visibility: :private)
+    end
+
+    after(:each) do
+      VCR.configure { |c| c.allow_http_connections_when_no_cassette = true }
+
+      stub_const('ELASTIC_ENABLED', true)
+
+      records.reverse.each(&:destroy!)
+      CollectionsIndex.purge
+
+      VCR.configure { |c| c.allow_http_connections_when_no_cassette = false }
+    end
+
+    describe '#self.es_search' do
+      let(:user) { nil }
+
+      let(:es_search) { described_class.es_search(query: identifier, user: user, is_public: true) }
+
+      context 'when not logged in' do
+        it 'returns correct collection ids' do
+          expect(es_search.pluck("_id").map(&:to_i)).to match_array(
+            [
+              public_collection.id,
+              other_public_collection.id
+            ]
+          )
+        end
+      end
+
+      context 'when logged in as owner' do
+        let(:user) { owner }
+
+        it 'returns correct collection ids' do
+          expect(es_search.pluck("_id").map(&:to_i)).to match_array(
+            [
+              public_collection.id,
+              restricted_collection.id,
+              public_updated_to_restricted_collection.id,
+              other_public_collection.id
+            ]
+          )
+        end
+      end
+
+      context 'when logged in as other_user and is blocked on public_collection' do
+        let(:user) { other_user }
+
+        before do
+          public_collection.blocked_users << other_user
+        end
+
+        it 'returns correct collection ids' do
+          expect(es_search.pluck("_id").map(&:to_i)).to match_array(
+            [
+              other_public_collection.id,
+              other_restricted_collection.id
+            ]
+          )
+        end
+      end
+
+      context 'when logged in as admin_user' do
+        let(:user) { nil }
+        let!(:admin_user) { create(:unique_user, :admin) }
+        let(:es_search) { described_class.es_search(query: identifier, admin_user: admin_user) }
+
+        it 'overrides all filter and returns correct collection ids' do
+          expect(es_search.pluck("_id").map(&:to_i)).to match_array(
+            [
+              public_collection.id,
+              restricted_collection.id,
+              public_updated_to_restricted_collection.id,
+              other_public_collection.id,
+              other_restricted_collection.id
+            ]
+          )
+        end
+      end
+    end
+  end
+
+  describe '#segmentation_feature_enabled?' do
+    let(:owner) { create(:unique_user, :owner) }
+    let(:collection) { create(:collection, owner_user_id: owner.id) }
+
+    it 'follows the owner account flag' do
+      expect(collection.segmentation_feature_enabled?).to be(false)
+      owner.update!(segmentation_enabled: true)
+      expect(collection.reload.segmentation_feature_enabled?).to be(true)
+    end
+  end
+
+  describe '#transcriber_segmentation_enabled?' do
+    let(:owner) { create(:unique_user, :owner, segmentation_enabled: true) }
+    let(:collection) do
+      create(:collection, owner_user_id: owner.id, data_entry_type: 'text',
+                          is_active: true, allow_transcriber_segmentation: true)
+    end
+
+    it 'is true for an active text collection with the flag on' do
+      expect(collection.transcriber_segmentation_enabled?).to be(true)
+    end
+
+    it 'is false when the owner account is not opted into segmentation' do
+      owner.update!(segmentation_enabled: false)
+      expect(collection.reload.transcriber_segmentation_enabled?).to be(false)
+    end
+
+    it 'is false when the flag is off' do
+      collection.update!(allow_transcriber_segmentation: false)
+      expect(collection.transcriber_segmentation_enabled?).to be(false)
+    end
+
+    it 'is false for an inactive collection' do
+      collection.update!(is_active: false)
+      expect(collection.transcriber_segmentation_enabled?).to be(false)
+    end
+
+    it 'is false for a metadata-only collection' do
+      collection.update!(data_entry_type: 'metadata')
+      expect(collection.transcriber_segmentation_enabled?).to be(false)
+    end
+
+    it 'is false when the owner is on the individual researcher plan' do
+      owner.update!(account_type: 'Individual Researcher')
+      expect(collection.reload.transcriber_segmentation_enabled?).to be(false)
+    end
+  end
+
+  describe '#ai_work_metadata_enabled?' do
+    let(:collection) { create(:collection) }
+    let(:work) { create(:work, collection: collection) }
+
+    it 'is false before the collection has any metadata drafts' do
+      expect(collection.ai_work_metadata_enabled?).to be(false)
+    end
+
+    it 'is true after a metadata draft has been created for a work' do
+      create(:ai_work_metadata, work: work)
+
+      expect(collection.ai_work_metadata_enabled?).to be(true)
+    end
+  end
 end

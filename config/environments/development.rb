@@ -18,7 +18,7 @@ Rails.application.configure do
     config.action_controller.perform_caching = true
     config.action_controller.enable_fragment_cache_logging = true
 
-    config.cache_store = :memory_store
+    config.cache_store = :solid_cache_store
     config.public_file_server.headers = {
       'Cache-Control' => "public, max-age=#{2.days.to_i}"
     }
@@ -43,7 +43,6 @@ Rails.application.configure do
   config.action_mailer.postmark_settings = {
     api_token: ''
   }
-
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
@@ -72,8 +71,8 @@ Rails.application.configure do
   Rails.application.routes.default_url_options[:host] = 'localhost:3000'
 
   # Allow codespaces host
-  unless ENV["CODESPACE_NAME"].nil?
-    config.hosts << ENV["CODESPACE_NAME"]+"-3000.app.github.dev"
+  unless ENV['CODESPACE_NAME'].nil?
+    config.hosts << ENV['CODESPACE_NAME']+'-3000.app.github.dev'
   end
 
   # location of system calls on this machine
@@ -90,4 +89,9 @@ Rails.application.configure do
   # Open 'http://localhost:1080/' in your browser to see mail sent
 
   Ahoy.geocode = false
+  config.active_job.queue_adapter = :solid_queue
+  config.solid_queue.logger = ActiveSupport::Logger.new(Rails.root.join('log/queue.log'))
+  # Add a custom hostname for uploads
+  # config.upload_host = 'uploads'
+  # config.hosts << "#{config.upload_host}.localhost"
 end

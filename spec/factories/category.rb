@@ -1,3 +1,5 @@
 FactoryBot.define do
-  factory :category
+  factory :category do
+    title { "Category #{SecureRandom.uuid}" }
+  end
 end

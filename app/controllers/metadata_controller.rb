@@ -2,53 +2,52 @@ class MetadataController < ApplicationController
   layout false
 
   def example
-    collection = Collection.find(params[:id])
-    example = Metadata.create_example(collection)
-    send_data example, filename: "example.csv"
+    result = Work::Metadata::ExportCsv.new(collection: @collection, works: @collection.works).call
+
+    send_data(
+      result.csv_string,
+      filename: "fromthepage_work_metadata_export_#{@collection.id}_#{Time.now.utc.iso8601}.csv"
+    )
+  end
+
+  def upload
+    # Modal upload
   end
 
   def create
-    metadata_file = params[:metadata]['file'].tempfile
+    uploaded_io   = params[:metadata]['file']
+    collection_id = params[:metadata][:collection_id]
 
-    collection = Collection.find(params[:metadata][:collection_id])
-    metadata = Metadata.new(metadata_file: metadata_file, collection: collection)
-    result = metadata.process_csv
-    rows = result[:content]
-    row_errors = result[:errors].count
-    link = helpers.link_to 'link', collection_metadata_csv_error_path
+    import_dir = Rails.root.join('tmp', 'import_csv')
+    FileUtils.mkdir_p(import_dir)
 
-    if row_errors > 0
-      feedback = "Your upload has finished processing. #{rows} works were updated successfully; #{row_errors} rows encountered errors. Download the error file here: #{link}"
-    else
-      feedback = "Your upload has finished processing. #{rows} works were updated successfully."
+    ext       = File.extname(uploaded_io.original_filename)
+    filename  = "#{Time.current.to_i}#{ext}"
+    metadata_file_path = import_dir.join(filename)
+
+    File.open(metadata_file_path, 'wb') do |f|
+      f.write(uploaded_io.read)
     end
 
-    flash[:alert] = feedback
+    Work::Metadata::ImportCsvJob.perform_later(
+      metadata_file_path: metadata_file_path.to_s,
+      collection_id: collection_id,
+      user_id: current_user.id
+    )
 
+    collection = Collection.find(collection_id)
+
+    flash[:alert] = t('.is_processing')
     ajax_redirect_to edit_look_collection_path(collection.owner, collection)
   end
 
   def refresh
     collection = Collection.find(params[:id])
 
-    # Make sure import logs folder exists
-    unless Dir.exist?("#{Rails.root}/public/metadata/refresh/log")
-      FileUtils.mkdir_p("#{Rails.root}/public/metadata/refresh/log")
-    end
+    Metadata::RefreshJob.perform_later(id: collection.id, type: 'collection', user_id: current_user.id)
 
-    # Create logfile for collection
-    log_file = "#{Rails.root}/public/metadata/refresh/log/#{collection.id}_#{Time.current.to_i}_refresh_collection.log"
-
-    rake_call = "#{RAKE} fromthepage:refresh_metadata[#{collection.id},collection] --trace >> #{log_file} 2>&1 &"
-    logger.info rake_call
-    system(rake_call)
-
+    # TODO: Use turbo_stream redirect when #4174 is merged
     flash[:notice] = t('.is_processing')
     ajax_redirect_to edit_look_collection_path(collection.owner, collection)
-  end
-
-  def csv_error
-    csv_string = Metadata.retrieve_error
-    send_data csv_string, filename: "error.csv"
   end
 end

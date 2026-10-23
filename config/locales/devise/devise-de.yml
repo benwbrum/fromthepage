@@ -7,6 +7,7 @@ de:
     email_address: E-Mail-Adresse
     errors:
       keys:
+        display_name: Organisationsname
         email: E-Mail
         login: Benutzername
         password: Passwort
@@ -57,11 +58,13 @@ de:
     receive_activity_emails: Mails zu Aktivitäten erhalten
     registrations:
       choose_saml:
+        dartmouth_university: Dartmouth Libraries
         harvard_university: Harvard University
         illinois_state: Illinois State University
         institution: Institution
         johns_hopkins_university: Johns Hopkins University
         lds_full_name: Church of Jesus Christ of Latter Day Saints
+        nebraska_university: University of Nebraska–Lincoln
         sign_in_with_institution: Melden Sie sich bei Ihrer Institution an
         utah_id: UtahID
       destroyed: Auf Wiedersehen! Ihr Konto wurde erfolgreich gekündigt. Wir hoffen, Sie bald wiederzusehen.

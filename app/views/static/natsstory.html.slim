@@ -75,4 +75,5 @@ hr
         ' “Over the past months, I have developed a style of doing the transcriptions. When I start on a given day, I usually read through the next several pages and then do my transcriptions. Usually, before I stop (and I typically do my transcriptions while I’m eating lunch at work), I will read the next couple days. One way this helps is that if there is something obscure on the current page, it will sometimes be explained on a subsequent page. Also, by reading it several times, I have a better chance of deciphering her handwriting.”
         Nat Wooding to Ben Brumfield, December 19, 2013
 
-javascript:  mixpanel.track("Nats Story");
+-unless MIXPANEL_ID.blank?
+  javascript:  mixpanel.track("Nats Story");

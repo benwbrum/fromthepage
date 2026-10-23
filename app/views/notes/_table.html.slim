@@ -1,0 +1,53 @@
+table.datagrid.striped.dataTable.no-footer
+  thead
+    th
+
+    =fe_sortable_header(key: :user, sorting: @sorting, ordering: @ordering) do
+      =t('notes.table.user')
+
+    =fe_sortable_header(key: :note, sorting: @sorting, ordering: @ordering) do
+      =t('notes.table.note')
+
+    - unless @collection&.metadata_only_entry?
+      =fe_sortable_header(key: :page, sorting: @sorting, ordering: @ordering) do
+        =t('notes.table.page')
+
+    =fe_sortable_header(key: :work, sorting: @sorting, ordering: @ordering) do
+      =t('notes.table.work')
+
+    th =t('notes.table.collection')
+
+    =fe_sortable_header(key: :time, sorting: @sorting, ordering: @ordering) do
+      =t('notes.table.time')
+
+  tbody
+    -if @notes.any?
+      -@notes.each do |note|
+        tr
+          td
+            -if note.user
+              =link_to user_profile_path(note.user) do
+                =render partial: 'shared/profile_picture', locals: { user: note.user, gravatar_size: nil }
+          td
+            -if note.user
+              =link_to note.user.display_name, user_profile_path(note.user)
+          td
+            -if note.collection
+              =link_to note.title, collection_display_page_path(note.collection.owner, note.collection, note.work || note.page.work_id, note.page, anchor: "note-#{note.id}")
+          -unless @collection&.metadata_only_entry?
+            td
+              -if note.page
+                =link_to(note.page.title, collection_display_page_path(note.collection.owner, note.collection, note.work || note.page.work_id, note.page, anchor: "note-#{note.id}"))
+          td
+            -if note.work
+              =link_to(note.work.title, collection_read_work_path(note.collection.owner, note.collection, note.work))
+          td
+            -if note.collection
+              =link_to(note.collection.title, collection_path(note.collection.owner, note.collection))
+          td
+            =time_tag(note.created_at, class: 'small fglight') do
+              =I18n.t('time_ago_in_words', time: time_ago_in_words(note.created_at))
+    -else
+      =fe_table_no_contents
+
+=render partial: 'shared/pagination', locals: { model: @notes, entries_info: true, controller: 'notes', action: 'index' }

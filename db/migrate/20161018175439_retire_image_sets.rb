@@ -6,6 +6,5 @@ class RetireImageSets < ActiveRecord::Migration[5.0]
     if table_exists?(:titled_images)
       drop_table(:titled_images)
     end
-
   end
 end

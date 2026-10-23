@@ -12,7 +12,6 @@ en:
       cancel: Cancel
       continue: Continue
       manage_categories: Manage Categories
-      options: options
       subject: 'Subject: '
       uncategorized_subjects: Uncategorized Subjects
       uncategorized_subjects_mentioned: You have uncategorized subjects mentioned in the page transcription. Please review the subjects below and assign the appropriate categories for them.
@@ -32,6 +31,18 @@ en:
       more_help: More help....
       needs_review: Needs Review
       notes_and_questions: Notes and Questions
+      previous_work_title: Title for pages 1–%{n}
+      segmentation_cancel: Cancel
+      segmentation_candidate: This looks like a new document. Separate this into a new work?
+      segmentation_confirm: Split
+      segmentation_dismiss: Dismiss
+      segmentation_edit_work_metadata: Edit new work metadata
+      segmentation_no: 'No'
+      segmentation_split_confirm_message: Split this into a new work starting here?
+      segmentation_success: Created "%{title}" with %{count} pages.
+      segmentation_view_work: View new work
+      segmentation_yes: Yes, split here
+      split_into_new_work: Split into new work
       this_page_marked_blank: This page is marked blank
       this_page_marked_needs_review: This page has been marked as "needs review". You can improve this page by proofreading it against the original and adding or correcting the text.  When you are done, uncheck "needs review" and save the page.
       this_page_marked_needs_review_workflow_version: This page needs review. You can improve this page by proofreading it against the original and adding or correcting the text, then approve the text.
@@ -47,13 +58,16 @@ en:
       sign_up_now_to_transcribe: Sign up now to transcribe.
       transcribe_as_guest: Transcribe as guest
     mark_page_blank:
+      saved_and_next_notice: Saved. Moving to the next page.
       saved_notice: Saved
     save_buttons:
+      ai_draft_fields: AI Draft
+      ai_draft_fields_tooltip: Copy AI-generated text into the fields
       approve: Approve
       approve_to_transcribed_tooltip: Save and approve this page
       autolink: Autolink
       autolink_tooltip: Suggest subject tags automatically
-      copy_ai_plaintext: AI Text
+      copy_ai_plaintext: AI Draft
       copy_ai_plaintext_tooltip: Copy AI-generated text to the editor
       done: Done
       edit: Edit
@@ -69,6 +83,7 @@ en:
       save_to_transcribed_tooltip: Save your changes
     save_transcription:
       error_message: 'There was an error parsing the mark-up in your transcript.  This kind of error often occurs if an angle bracket is missing or if an HTML tag is left open.  Check any instances of < or > symbols in your text.  (The parser error was: %{error_message})'
+      saved_and_next_notice: Saved. Moving to the next page.
       saved_notice: Saved
       you_may_save_notice: You may save up to %{guest_deed_count} transcriptions as a guest.
     save_translation:

@@ -53,6 +53,10 @@ es:
     edit_metadata_fields:
       edit_metadata_fields: Editar campos de metadatos
     field_layout:
+      ai_both_agree: Ambos modelos de IA coinciden
+      ai_disagree_header: Los modelos de IA no coinciden — revise y elija uno
+      ai_option_placeholder: Haga clic en una sugerencia a continuación, o escriba su transcripción…
+      ai_spreadsheet_option: Usar este borrador
       instructions: Instrucciones
     line_form:
       field_options: Opciones de campo (separa con punto y coma)
@@ -64,6 +68,9 @@ es:
       percentage_title: Porcentaje del ancho de línea que se utilizará para este campo.
       percentage_width: Ancho %
     metadata_field_layout:
+      ai_both_agree: Ambos modelos de IA coinciden
+      ai_disagree_header: Los modelos de IA no coinciden — revise y elija uno
+      ai_option_placeholder: Haga clic en una sugerencia a continuación, o escriba su propio valor…
       instructions: Instrucciones
     multiselect_form:
       options_form_description: Ingresa opciones para el campo de metadatos de selección múltiple, con cada opción en una línea separada

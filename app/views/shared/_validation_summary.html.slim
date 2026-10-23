@@ -1,5 +1,6 @@
-.validation
-  h5.validation_title =t('errors.messages.not_saved', count: errors.count, resource: t('.form'))
-  ul.validation_summary
-    -errors.full_messages.each do |msg|
-      li =msg
+-if errors.count > 0
+  .validation
+    h5.validation_title =t('errors.messages.not_saved', count: errors.count, resource: t('.form'))
+    ul.validation_summary
+      -errors.full_messages.each do |msg|
+        li =msg

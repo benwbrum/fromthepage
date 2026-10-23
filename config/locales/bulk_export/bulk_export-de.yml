@@ -9,6 +9,8 @@ de:
       export_running_message: Export läuft. Nach Abschluss wird eine E-Mail an %{email} gesendet.
     create_for_work_actual:
       export_running_message: Export läuft. Nach Abschluss wird eine E-Mail an %{email} gesendet.
+    create_for_work_ajax:
+      export_running_message: Export läuft. Nach Abschluss wird eine E-Mail an %{email} gesendet.
     download:
       download_cleaned_message: Dieser Export wurde bereinigt. Bitte starten Sie einen neuen.
     index:
@@ -21,6 +23,8 @@ de:
       upload_details: Details hochladen
       user: Nutzer:in
     new:
+      accessible_pdf: Barrierefreies PDF
+      accessible_pdf_description: Eine für Bildschirmleseprogramme und Hilfstechnologien optimierte PDF-Datei.
       download: Herunterladen
       expanded_plaintext: Erweiterte Plaintext-Datei
       expanded_plaintext_description: Wie bei der wörtlichen Plaintext-Datei werden in dieser Plaintext-Datei Zeilenumbrüche mit einem einfachen Zeilenumbruch, Absatzumbrüche mit einem doppelten Zeilenumbruch und Seitenumbrüche mit einem dreifachen Zeilenumbruch repräsentiert. Im Gegensatz zum wörtlichen Text werden die Normalisierung auf alle erwähnten Entitäten angewendet, so dass der wörtliche Text möglicherweise lautet „Ich habe heute Morgen Mr. Jones und seine Frau gegrüßt.“ und der berichtigte Klartext „Ich habe heute Morgen James Jones und Elizabeth Smith Jones gegrüßt“. Dieser künstliche Text ist nützlich für die programmatische Analyse, aber er ist nicht dazu bestimmt, von Menschen gelesen zu werden.
@@ -35,6 +39,8 @@ de:
       format_options: Formatoptionen
       html: HTML
       html_description: Dies kann für die Aufbewahrung in anderen Systemen oder als Ausgangspunkt für die Anzeige auf einer anderen Website nützlich sein.
+      human_and_ai: Sofern verfügbar, menschliche Transkripte exportieren, andernfalls KI-Entwürfe exportieren.
+      human_only: Nur von Menschen bearbeitete Transkripte exportieren
       notes_csv: Notizen CSV
       notes_csv_description: Eine Tabelle, in der jede Notiz in der Sammlung aufgeführt ist.
       one_file_per_collection: Eine Datei pro Sammlung
@@ -45,6 +51,9 @@ de:
       organization_description: ZIP-Dateien können je einen Ordner pro Werk enthalten, der Dateien oder Unterordner für jedes Exportformat enthält, oder sie enthalten einen Ordner pro Exportformat, der Dateien pro Werk enthält.
       organization_format: Ordner nach Formaten
       organization_work: Ordner nach Werken
+      page_details_csv: Seitendetails CSV
+      page_details_csv_description: Eine Tabelle mit einer Zeile pro Seite, einschließlich Seiteninformationen und übergeordneten Werkmetadaten.
+      prepend_ai_warnings: 'Vorangestellter Warnhinweis: Dieses Transkript wurde von einer KI generiert und oben im Transkript eingefügt.'
       preserve_linebreaks: Zeilenumbrüche beibehalten
       previous_exports: Frühere Exporte
       search_optimized_plaintext: Suchoptimierter Plaintext

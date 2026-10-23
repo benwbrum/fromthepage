@@ -1,31 +1,34 @@
 .user-bubble.editable(id="note-#{note.id}")
-  =link_to(user_profile_path(:user_id => note.user.id))
+  =link_to user_profile_path(user_id: note.user_id) do
     =profile_picture(note.user)
-  .user-bubble_content
-    -if note.user == current_user
-      .user-bubble_actions
-        a(data-note-edit=note.id title=t('.edit'))
-          =svg_symbol '#icon-edit', class: 'icon'
-        =link_to(note, method: :delete, remote: true, data: { "note-delete" => note.id, :confirm => t('.confirm_delete_message') }, title: t('.delete'))
-          =svg_symbol '#icon-remove-sign', class: 'icon', title: t('.delete')
-    -elsif current_user && current_user.like_owner?(@work)
-      .user-bubble_actions
-        =link_to(note, method: :delete, remote: true, data: { "note-delete" => note.id, :confirm => t('.confirm_delete_message') }, title: t('.delete'))
-          =svg_symbol '#icon-remove-sign', class: 'icon', title: t('.delete')
-    =time_tag note.created_at
-      =link_to note.user.display_name, user_profile_path(:user_id => note.user.id)
-      |&nbsp;
-      =t('time_ago_in_words', time: time_ago_in_words(note.created_at))
-    .user-bubble_note ==simple_format(sanitize(note.body, tags: %w(strong b em i a), attributes: %w(href)))
 
-  -if note.user == current_user
-    =form_for note, remote: true, :html => { class: 'user-bubble_form' } do |f|
+  -if local_assigns[:editing] && note.user == current_user
+    =form_for note, html: { class: 'user-bubble_form', data: { turbo: true } } do |f|
       .user-bubble_form_editor
-        =f.text_area :body, :rows => 4
+        =f.text_area :body, rows: 4
       .user-bubble_form_footer
         span.user-bubble_form_error
-        -if @collection.voice_recognition
+          =note.errors.full_messages.join(', ')
+        -if note.collection.voice_recognition
           span.voice-info.voice
           =image_submit_tag 'mic-icon.png', height: '40', alt: t('.microphone'), class: 'voice', id: 'start_img_update', onclick: 'startButton(event);'
-        a(data-note-edit=note.id title=t('.edit')) #{t('.cancel')}
+        =link_to t('.cancel'), edit_note_path(note), data: { turbo_stream: true, turbo: true }
         =f.button t('.update')
+  -else
+    .user-bubble_content
+      -if note.user == current_user
+        .user-bubble_actions
+          =link_to edit_note_path(note, editing: true), data: { turbo_stream: true, turbo: true }, title: t('.edit') do
+            =svg_symbol '#icon-edit', class: 'icon'
+          =button_to note, method: :delete, form: { data: { turbo: true, turbo_confirm: t('.confirm_delete_message') } } do
+            = svg_symbol '#icon-remove-sign', class: 'icon', title: t('.delete')
+      -elsif current_user && current_user.like_owner?(note.work)
+        .user-bubble_actions
+          =link_to(note, method: :delete, remote: true, data: { "note-delete" => note.id, :confirm => t('.confirm_delete_message') }, title: t('.delete'))
+            =svg_symbol '#icon-remove-sign', class: 'icon', title: t('.delete')
+      =time_tag note.created_at
+        =link_to note.user.display_name, user_profile_path(user_id: note.user_id)
+        |&nbsp;
+        =t('time_ago_in_words', time: time_ago_in_words(note.created_at))
+      .user-bubble_note
+        ==simple_format(sanitize(note.body, tags: %w(strong b em i a), attributes: %w(href)))

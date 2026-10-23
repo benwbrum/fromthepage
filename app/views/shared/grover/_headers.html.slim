@@ -1,0 +1,17 @@
+h1
+  =work.title
+
+.page-break
+
+-if include_metadata
+  h2
+    =t('export.facing_edition.metadata')
+
+  p =t('export.facing_edition.export_metadata', work: work.title,
+                                                collection: work.collection.title,
+                                                time: time.to_s)
+
+  -work.merge_metadata.each do |metadata|
+    p ="#{metadata['label']}: #{metadata['value']}"
+
+  .page-break

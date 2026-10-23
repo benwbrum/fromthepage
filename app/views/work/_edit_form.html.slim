@@ -1,0 +1,60 @@
+tr
+  th: h3 =f.label :title, t('work.edit.work_title')
+  td =f.text_field :title
+tr
+  th
+    h3 =f.label :collection_id, t('work.edit.collection')
+  td
+    -if @subjects_exist
+      -collection_field_data = { action: "change->form#confirmAndSubmit", previous_value: collection.id, confirm_message: t("work.edit.subject_change_warning") }
+    -else
+      -collection_field_data = {}
+    =f.collection_select(:collection_id, @collections, :id, :title, {}, data: collection_field_data)
+tr
+  th
+    h3 =f.label :document_set_ids, t('work.edit.document_sets')
+  td
+    =f.select :document_set_ids, options_for_select(@document_sets_options, selected: work.document_set_ids), {}, { disabled: @document_sets.blank?, multiple: true, aria: { label: t('work.edit.document_sets') }, data: { controller: 'select2' } }
+tr
+  th
+    h3
+      =f.label :slug, t('work.edit.url')
+  td
+    =f.text_field :slug, value: work.slug
+    p.nomargin.settings =t('work.edit.current_url', current_url: "<b>#{collection_read_work_url(work.collection.owner.slug, work.collection.slug, work.slug)}</b>").html_safe
+tr
+  th
+    h3 =f.label :identifier, t('work.edit.identifier')
+  td
+    =f.text_field :identifier, value: work.identifier
+tr
+  td(colspan='2')
+    p.nomargin.settings= t('work.edit.identifier_description')
+tr
+  th
+    h3 =t('work.edit.work_image')
+    p =t('work.edit.work_image_description')
+  td.image-form
+    -if work.picture_url(:thumb)
+      label.image-upload( data-hover=t('work.edit.upload_image') aria-label=t('work.edit.upload_image') title=t('work.edit.upload_image'))
+        =f.file_field :picture, accept: 'image/*'
+        =image_tag(work.picture_url(:thumb), alt: t('work.edit.work_thumbnail'))
+    -else
+      label( data-empty=t('work.edit.no_image') data-hover=t('work.edit.upload_image') aria-label=t('work.edit.upload_image') title=t('work.edit.upload_image'))
+        =f.file_field :picture, accept: 'image/*'
+tr
+  th
+    h3 =f.label :description, t('work.edit.description'), class: 'above'
+    i =t('work.edit.description_message')
+  td
+    =f.text_area :description, rows: 5, value: work.description
+tr
+  th
+    h3 =f.label :transcription_conventions, t('work.edit.transcription_conventions'), class: 'above'
+    i =t('work.edit.transcription_conventions_message')
+  td
+    =f.text_area :transcription_conventions, rows: 5, value: work.transcription_conventions
+    -if work.transcription_conventions.present?
+      =t('work.edit.revert_transcription_conventions_description')
+      =button_tag name: 'work[transcription_conventions]', value: nil, type: 'button inline-btn' do
+        =t('work.edit.revert')
