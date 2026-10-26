@@ -77,21 +77,27 @@ class DisplayController < ApplicationController
   end
 
   def read_all_works
-    if @article
-      # restrict to pages that include that subject
-      @pages = Page.order('work_id, position').joins('INNER JOIN page_article_links pal ON pages.id = pal.page_id').where(['pal.article_id = ?', @article.id]).where(work_id: @collection.works.ids).paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
-      @pages.distinct!
-      @heading = t('.pages_that_mention', article: @article.title)
-    else
-      @pages = Page.paginate :all, page: params[:page],
-                                        order: 'work_id, position',
-                                        per_page: 5
-      @heading = t('.pages')
+    # Bare /display/read_all_works (no article) is only reached by crawlers;
+    # the view needs a collection, so answer with a client error instead of a 500.
+    if @article.nil?
+      head :bad_request
+      return
     end
+
+    # restrict to pages that include that subject
+    @pages = Page.order('work_id, position').joins('INNER JOIN page_article_links pal ON pages.id = pal.page_id').where(['pal.article_id = ?', @article.id]).where(work_id: @collection.works.ids).paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
+    @pages.distinct!
+    @heading = t('.pages_that_mention', article: @article.title)
     session[:col_id] = @collection.slug
   end
 
   def display_page
+    # Bare /display/display_page (no page_id) is only reached by crawlers
+    if @page.nil?
+      head :bad_request
+      return
+    end
+
     # Set layout mode for the overview tab
     @overview_layout_mode = cookies[:overview_layout_mode] || @collection.default_overview_orientation
 
