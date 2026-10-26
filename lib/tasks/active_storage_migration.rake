@@ -127,60 +127,96 @@ namespace :fromthepage do
     )
   end
 
-  desc 'Delete legacy page images migrated to ActiveStorage for a user or collection slug'
-  task :delete_migrated_page_images, [:slug] => :environment do |_task, args|
-    require 'open3'
+  # NOTE: Use only the params you intend to scope the migration.
+  # start_from_id: Adding this param means we start from page_id until the end
+  # page_ids: Adding this param means we are scoping the migration to the given page_ids. use "-" separator
+  # collection_id: Adding this param means we are scoping the migration to the pages within the given collection
+  # work_id: Adding this param means we are scoping the migration to the pages within the given work
+  desc 'Delete legacy page images migrated to ActiveStorage'
+  task :delete_migrated_page_images,
+    [:dry_run, :start_from_id, :page_ids, :collection_id, :work_id] => :environment do |_t, args|
+      require 'logger'
+      require 'fileutils'
 
-    slug = args[:slug]
-    abort 'Usage: rake fromthepage:delete_migrated_page_images[slug]' if slug.blank?
+      abort 'dry_run must be true or false.' unless ['true', 'false'].include?(args[:dry_run])
 
-    user = User.find_by(slug: slug)
-    collection = Collection.find_by(slug: slug)
+      dry_run = args[:dry_run] == 'true'
 
-    if user && collection
-      abort "Both a user and collection have the slug #{slug.inspect}; no files were deleted."
-    end
+      start_from_id = args[:start_from_id].to_i
+      start_from_id = 1 if start_from_id.zero?
 
-    owner = collection || user
-    abort "No user or collection found with slug #{slug.inspect}." unless owner
+      log_dir = Rails.root.join('tmp', 'migration')
+      FileUtils.mkdir_p(log_dir)
 
-    pages = if collection
-              collection.pages
-    else
-              Page.joins(:work).where(works: { owner_user_id: user.id })
-    end
-    pages = pages.where.not(base_image: [nil, ''])
+      logger = Logger.new(log_dir.join('deleted_migrated_page_images.log'))
 
-    deleted_files = 0
-    deleted_bytes = 0
-
-    pages.find_each do |page|
-      next unless page.image.attached?
-
-      legacy_path = Rails.root.join(
-        'public',
-        page.base_image.sub(%r{\A.*public/?}, '')
-      )
-      extension = File.extname(legacy_path)
-      thumbnail_path = legacy_path.sub(/#{Regexp.escape(extension)}\z/, "_thumb#{extension}")
-
-      [legacy_path, thumbnail_path].each do |path|
-        next unless File.file?(path) || File.symlink?(path)
-
-        output, status = Open3.capture2e('du', '-b', '--', path.to_s)
-        abort "Could not read the size of #{path}: #{output}" unless status.success?
-
-        bytes = output.split.first.to_i
-        abort "Could not delete #{path}." unless system('rm', '--', path.to_s)
-
-        deleted_files += 1
-        deleted_bytes += bytes
+      log_msg = lambda do |msg|
+        logger.info(msg)
+        puts msg
       end
-    end
 
-    deleted_mebibytes = deleted_bytes.fdiv(1024 * 1024)
-    puts format('Deleted %<files>d files and freed %<mib>.2f MiB.',
-                files: deleted_files,
-                mib: deleted_mebibytes)
-  end
+      log_msg.call('*** RUNNING IN DRY RUN MODE. NO FILES WILL BE DELETED. ***') if dry_run
+
+      if args[:page_ids].present?
+        pages = Page.where(id: args[:page_ids].split('-'))
+      elsif args[:work_id].present?
+        work = Work.find(args[:work_id])
+        pages = work.pages
+      elsif args[:collection_id].present?
+        collection = Collection.find(args[:collection_id])
+        pages = collection.pages
+      else
+        pages = Page.where(id: start_from_id..Float::INFINITY)
+      end
+
+      attached_page_ids = ActiveStorage::Attachment.where(record_type: 'Page', name: 'image').select(:record_id)
+
+      pages = pages.where.not(base_image: [nil, ''])
+                   .where(id: attached_page_ids)
+
+      log_msg.call("Starting deletion from Page ID #{start_from_id}")
+
+      deleted_files = 0
+      deleted_bytes = 0
+
+      pages.find_each do |page|
+        next unless page.image.attached?
+
+        relative_path = page.base_image.to_s.sub(%r{\A.*public/?}, '')
+        legacy_path = Rails.root.join('public', relative_path).to_s
+
+        extension = File.extname(legacy_path)
+        thumbnail_path = legacy_path.sub(/#{Regexp.escape(extension)}\z/, "_thumb#{extension}")
+
+        [legacy_path, thumbnail_path].each do |path|
+          next unless File.file?(path) || File.symlink?(path)
+
+          begin
+            bytes = File.lstat(path).size
+
+            if dry_run
+              log_msg.call("[DRY RUN] Would delete: #{path} (#{bytes} bytes)")
+            else
+              File.delete(path)
+              log_msg.call("Deleted: #{path} (#{bytes} bytes)")
+            end
+
+            deleted_files += 1
+            deleted_bytes += bytes
+          rescue SystemCallError => e
+            abort "Could not process or delete #{path}: #{e.message}"
+          end
+        end
+      end
+
+      deleted_mebibytes = deleted_bytes.fdiv(1024 * 1024)
+      action = dry_run ? 'Would delete' : 'Deleted'
+
+      summary = format('%<action>s %<files>d files and freed %<mib>.2f MiB.',
+        action: action,
+        files: deleted_files,
+        mib: deleted_mebibytes)
+
+      log_msg.call(summary)
+    end
 end
