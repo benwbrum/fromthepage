@@ -33,7 +33,10 @@ table.admin-grid.datagrid.striped
         td.nowrap
           .instack
             =link_to t('.visits'), admin_user_visits_path(user_id: u.id)
-            =link_to t('.login_as'), user_masquerade_path(u)
+            -if u.access_locked?
+              =link_to t('.unlock'), admin_unlock_user_path(user_id: u.id)
+            -else
+              =link_to t('.login_as'), user_masquerade_path(u)
             =link_to t('.edit'), admin_edit_user_path(user_id: u.id), data: { controller: 'litebox', litebox: { hash: '' } }
             =link_to t('.expunge'), admin_expunge_confirmation_path(user_id: u.id), data: { controller: 'litebox', litebox: { hash: '' } }
 

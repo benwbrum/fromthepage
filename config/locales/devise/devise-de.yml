@@ -22,6 +22,8 @@ de:
       already_authenticated: Sie sind bereits angemeldet.
       inactive: Ihr Benutzerkonto ist noch nicht aktiviert.
       invalid: Ungültige/r %{authentication_keys} oder Passwort.
+      last_attempt: Sie haben noch einen Versuch, bevor Ihr Konto für 30 Minuten gesperrt wird.
+      locked: Ihr Konto ist aufgrund zu vieler fehlgeschlagener Anmeldeversuche gesperrt. Bitte versuchen Sie es in 30 Minuten erneut.
       not_found_in_database: Ungültige/r %{authentication_keys} oder Passwort.
       timeout: Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an, um fortzufahren.
       unauthenticated: Sie müssen sich anmelden oder registrieren, bevor Sie fortfahren können.
@@ -41,7 +43,7 @@ de:
     passwords:
       edit:
         change_password: Passwort ändern
-        change_password_message: Erstellen Sie ein neues Passwort für Ihr Konto. Das Passwort muss mindestens 8 Zeichen lang sein und sowohl Buchstaben als auch Zahlen enthalten. Bitte verwenden Sie nicht das gleiche Passwort, das Sie für Ihr Online-Bank- oder E-Mail-Konto verwenden!
+        change_password_message: Erstellen Sie ein neues Passwort für Ihr Konto. Das Passwort muss mindestens 8 Zeichen lang sein. Bitte verwenden Sie nicht das gleiche Passwort, das Sie für Ihr Online-Bank- oder E-Mail-Konto verwenden!
         new_password: Neues Passwort
       new:
         message: Bitte geben Sie die mit Ihrem FromThePage-Konto verknüpfte E-Mail-Adresse ein. Wenn Ihre E-Mail-Adresse in unserer Datenbank vorhanden ist, erhalten Sie in wenigen Minuten einen Link zur Passwortwiederherstellung an Ihre E-Mail-Adresse.
@@ -52,7 +54,7 @@ de:
       send_paranoid_instructions: Wenn Ihre E-Mail-Adresse in unserer Datenbank vorhanden ist, erhalten Sie in wenigen Minuten einen Link zur Passwortwiederherstellung an Ihre E-Mail-Adresse.
       updated: Ihr Passwort wurde erfolgreich geändert. Sie sind jetzt angemeldet.
       updated_not_active: Ihr Passwort wurde erfolgreich geändert.
-      validation: Mindestlänge des Passworts beträgt 6 Zeichen
+      validation: Mindestlänge des Passworts beträgt 8 Zeichen
     real_name: Offizieller Name
     real_name_message: Projekte können dies verwenden, um eine Referenz zu Ihnen herzustellen. Lassen Sie dieses Feld leer, wenn Sie nicht referenziert werden möchten.
     receive_activity_emails: Mails zu Aktivitäten erhalten

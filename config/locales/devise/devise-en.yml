@@ -22,6 +22,8 @@ en:
       already_authenticated: You are already signed in.
       inactive: Your account is not activated yet.
       invalid: Invalid %{authentication_keys} or password.
+      last_attempt: You have one more attempt before your account is locked for 30 minutes.
+      locked: Your account is locked because of too many failed sign-in attempts. Please try again in 30 minutes.
       not_found_in_database: Invalid %{authentication_keys} or password.
       timeout: Your session expired. Please sign in again to continue.
       unauthenticated: You need to sign in or sign up before continuing.
@@ -41,7 +43,7 @@ en:
     passwords:
       edit:
         change_password: Change password
-        change_password_message: Create a new password for your account. Password must be at least 8 characters long and contain both letters and numbers. Please don't use the same password you use for your online bank or email account!
+        change_password_message: Create a new password for your account. Password must be at least 8 characters long. Please don't use the same password you use for your online bank or email account!
         new_password: New password
       new:
         message: Please enter the email address associated with your FromThePage account. If your email address exists in our database, you will receive a password recovery link at your email address in a few minutes.
@@ -52,7 +54,7 @@ en:
       send_paranoid_instructions: If your email address exists in our database, you will receive a password recovery link at your email address in a few minutes.
       updated: Your password has been changed successfully. You are now signed in.
       updated_not_active: Your password has been changed successfully.
-      validation: Minimum password length is 6 characters
+      validation: Minimum password length is 8 characters
     real_name: Real Name
     real_name_message: Projects may use this when giving you credit. Leave this blank if you do not want to be credited.
     receive_activity_emails: Receive activity emails

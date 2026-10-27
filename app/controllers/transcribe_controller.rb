@@ -13,6 +13,9 @@ class TranscribeController  < ApplicationController
   skip_before_action :load_objects_from_params, only: :still_editing
   skip_before_action :load_html_blocks, only: [:still_editing, :active_editing]
   skip_around_action :switch_locale, only: [:still_editing, :active_editing]
+  # still_editing is polled every minute by open transcription pages; don't let it
+  # refresh the Devise :timeoutable clock, or an idle open tab would never time out.
+  prepend_before_action :skip_session_timeout_refresh, only: :still_editing
 
   def display_page
     @ai_draft_used = false
@@ -607,6 +610,11 @@ class TranscribeController  < ApplicationController
   end
 
   private
+
+  # Devise :timeoutable still checks for expiry, but won't record this request as activity
+  def skip_session_timeout_refresh
+    request.env['devise.skip_trackable'] = true
+  end
 
   def authorized?
     unless user_signed_in?

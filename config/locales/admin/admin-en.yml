@@ -141,6 +141,9 @@ en:
     tail_logfile:
       last_lines_of_development_logfile: Last %{lines} lines of development logfile
       last_lines_of_production_logfile: Last %{lines} lines of production logfile
+    unlock_user:
+      locked_user_cannot_login_as: "%{user} is locked out; unlock the account before logging in as them"
+      user_unlocked: "%{user} has been unlocked"
     update:
       admin_settings_updated: Admin settings have been updated
     update_user:
@@ -164,6 +167,7 @@ en:
       search: Search
       search_users: Search users
       search_users_ellipsis: Search Users...
+      unlock: Unlock
       user_login: User Login
       visits: Visits
     user_visits:

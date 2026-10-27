@@ -14,6 +14,8 @@ class MasqueradesController < Devise::MasqueradesController
     user = User.friendly.find(params[:id])
     self.resource = resource_class.to_adapter.find_first(id: user.id)
     redirect_to(new_user_session_path) and return unless self.resource
+    # Signing in as a locked user would fail and sign the admin out instead
+    redirect_to(admin_user_list_path, alert: t('admin.unlock_user.locked_user_cannot_login_as', user: user.display_name)) and return if self.resource.access_locked?
     self.resource.masquerade!
     request.env['devise.skip_trackable'] = '1'
 

@@ -69,6 +69,7 @@ Fromthepage::Application.routes.draw do
     get 'expunge_confirmation', to: 'admin#expunge_confirmation'
     get 'ok_user', to: 'admin#ok_user'
     get 'downgrade', to: 'admin#downgrade'
+    get 'unlock_user', to: 'admin#unlock_user'
     post 'update', to: 'admin#update'
     patch 'update_user', to: 'admin#update_user'
     patch 'expunge_user', to: 'admin#expunge_user'
