@@ -85,10 +85,18 @@ class BulkExportController < ApplicationController
   # Keep for now for backsupport
   def download
     if @bulk_export.status.to_sym == :finished && @bulk_export.downloadable?
-      # read and spew the file
-      send_file(@bulk_export.zip_file_name,
-        filename: 'fromthepage_export.zip',
-        content_type: 'application/zip')
+      if @bulk_export.output.attached?
+        send_data(
+          @bulk_export.output.download,
+          filename: @bulk_export.output.filename.to_s,
+          content_type: @bulk_export.output.content_type || 'application/zip'
+        )
+      else
+        # read and spew the file
+        send_file(@bulk_export.zip_file_name,
+          filename: 'fromthepage_export.zip',
+          content_type: 'application/zip')
+      end
       cookies['download_finished'] = 'true'
     else
       flash[:info] = t('.download_cleaned_message')
