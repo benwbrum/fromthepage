@@ -88,6 +88,13 @@ describe UserController do
         expect(response).to have_http_status(:ok)
         expect(response.body).to include('<a href="#">description</a>')
       end
+
+      it 'loads the carousel library from the asset pipeline' do
+        get user_profile_path(gri_owner.slug)
+
+        expect(response.body).to match(%r{<script src="/assets/landing/slick[^"]*\.js"})
+        expect(response.body).not_to include('slick-carousel')
+      end
     end
 
     describe '#update' do
