@@ -1,4 +1,7 @@
 module TranscribeHelper
+  # Larger images can exceed browser canvas/texture limits when loaded whole.
+  OSD_DIRECT_IMAGE_MAX_DIMENSION = 16_384
+
   # Get the current tab's path when moving from page to page
   def get_active_tab_path(tab, owner, collection, work, item)
     case tab
@@ -97,7 +100,8 @@ module TranscribeHelper
       page.sc_canvas.iiif_image_info_url
     elsif page.ia_leaf
       page.ia_leaf.iiif_image_info_url
-    elsif browser.platform.ios? && browser.webkit?
+    elsif (browser.platform.ios? && browser.webkit?) ||
+          (page.image.attached? && [page.base_width.to_i, page.base_height.to_i].max > OSD_DIRECT_IMAGE_MAX_DIMENSION)
       "#{url_for(:root)}image-service/#{page.id}/info.json"
     elsif page.image.attached?
       image_url = if proxy

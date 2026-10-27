@@ -77,6 +77,12 @@ class DisplayController < ApplicationController
   end
 
   def read_all_works
+    # Bare /display/read_all_works (no article) is only reached by crawlers;
+    # the view needs a collection, so answer with a client error instead of a 500.
+    if @article.nil?
+      head :bad_request
+      return
+    end
     @pages = Page
       .joins(:page_article_links)
       .where(
@@ -92,6 +98,12 @@ class DisplayController < ApplicationController
   end
 
   def display_page
+    # Bare /display/display_page (no page_id) is only reached by crawlers
+    if @page.nil?
+      head :bad_request
+      return
+    end
+
     # Set layout mode for the overview tab
     @overview_layout_mode = cookies[:overview_layout_mode] || @collection.default_overview_orientation
 

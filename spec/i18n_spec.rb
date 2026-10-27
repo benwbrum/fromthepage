@@ -76,6 +76,7 @@ RSpec.describe I18n do
         'collection.edit_look.alphabetize_works_description', # "amount of work remaining" - contains both meanings of "work"
         'collection.contributors_body.time_on_this', # "time on this" (labor context)
         'collection.show.this_work_has_pages_that_need_work', # "pages that need work" (labor context)
+        'dashboard.your_hours.update_every_24_hours', # "your work from today" (volunteer effort, not a literary work)
         # AI transcription jobs (these are background jobs/tasks, not literary works)
         'collection.ai_transcriptions.create.success', # "AI transcription job"
         'collection.ai_transcriptions.form.description', # "AI transcription job"

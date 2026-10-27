@@ -82,6 +82,20 @@
 }
 
 
+// AI metadata editor
+
+.ai-metadata-editor {
+  padding-top: 2rem;
+
+  .page-headlines {
+    display: flex;
+
+    .source-selector {
+      padding-right: 2px;
+    }
+  }
+}
+
 // Page toolbar
 
 .page-toolbar {

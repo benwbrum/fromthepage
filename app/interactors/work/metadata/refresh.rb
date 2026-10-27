@@ -51,7 +51,7 @@ class Work::Metadata::Refresh < ApplicationInteractor
   end
 
   def refresh_metadata(work)
-    manifest = JSON.parse(URI.open(work.sc_manifest.at_id).read)
+    manifest = JSON.parse(URI.parse(work.sc_manifest.at_id).open.read)
     work.original_metadata = manifest['metadata'].to_json
     work.save
   end

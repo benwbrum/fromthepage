@@ -8,9 +8,6 @@ pt:
       reasoning: Raciocínio
       select_model: Selecionar modelo de IA
       source_material: Material de origem
-      token_usage: Uso de tokens
-      tokens_used: "%{count} tokens usados"
-      view_source: Ver fonte
     ai_transcriptions:
       create:
         success: Vaga de transcrição por IA aberta.

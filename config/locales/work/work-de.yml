@@ -8,9 +8,6 @@ de:
       reasoning: Begründung
       select_model: KI-Modell auswählen
       source_material: Quellmaterial
-      token_usage: Token-Verwendung
-      tokens_used: "%{count} Token verwendet"
-      view_source: Quelle anzeigen
     ai_transcriptions:
       create:
         success: KI-Transkriptionsauftrag gestartet.
