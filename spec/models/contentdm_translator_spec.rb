@@ -2,7 +2,6 @@ require 'spec_helper'
 require 'contentdm_translator'
 
 RSpec.describe ContentdmTranslator do
-
   describe 'metadata fetching' do
     let(:page) { double('page', sc_canvas: double(sc_canvas_id: 'https://cdm123.contentdm.oclc.org/iiif/test:1/canvas/c1')) }
     let(:collection) { double('collection') }
