@@ -1,11 +1,10 @@
-# Tags every New Relic transaction (and the Browser PageView it links to) with
+# Tags New Relic transactions (and Browser PageViews when configured) with
 # a few attributes that let us separate real-user experience from crawler
 # traffic in NRQL, e.g.
 #
 #   SELECT percentile(duration, 95) FROM Transaction WHERE request_kind = 'human'
 #
-# Attributes are only recorded when the agent is loaded, so this is a no-op in
-# development and test.
+# Attributes are only recorded when the agent is loaded.
 module NewRelicRequestAttributes
   extend ActiveSupport::Concern
 
@@ -20,7 +19,7 @@ module NewRelicRequestAttributes
 
     ::NewRelic::Agent.add_custom_attributes(new_relic_request_attributes)
   rescue StandardError => e
-    Rails.logger.debug { "Skipping New Relic request attributes: #{e.class}" }
+    Rails.logger.warn { "Skipping New Relic request attributes: #{e.class}" }
   end
 
   def new_relic_request_attributes

@@ -51,6 +51,9 @@ RSpec.describe NewRelicRequestAttributes do
   context 'when the agent raises' do
     it 'does not break the request' do
       allow(::NewRelic::Agent).to receive(:add_custom_attributes).and_raise(StandardError, 'boom')
+      expect(Rails.logger).to receive(:warn) do |&message|
+        expect(message.call).to eq('Skipping New Relic request attributes: StandardError')
+      end
       get new_user_session_path
 
       expect(response).to have_http_status(:ok)
