@@ -1,6 +1,40 @@
 require 'spec_helper'
 
 describe Page do
+  describe '#normalized_image_url_for_download' do
+    let(:page) { described_class.new }
+
+    before do
+      allow(page.image).to receive(:attached?).and_return(false)
+      allow(FileUtils).to receive(:mkdir_p)
+    end
+
+    it 'downloads and normalizes an HTTP image' do
+      url = 'https://example.org/page.jpg'
+      filename = "#{Rails.root}/public/images/working/upload/#{page.id}_normalized.jpg"
+      image = double('image')
+      allow(page).to receive(:image_url_for_download).and_return(url)
+      stub_request(:get, url).to_return(body: 'image bytes')
+      expect(Magick::Image).to receive(:from_blob).with('image bytes').and_return([image])
+      expect(image).to receive(:auto_orient).and_return(image)
+      expect(image).to receive(:write).with(filename)
+      expect(page).to receive(:image_url_from_web_path).with(filename).and_return('/normalized.jpg')
+
+      expect(page.normalized_image_url_for_download).to eq('/normalized.jpg')
+    end
+
+    [File.expand_path(__FILE__), '|echo unsafe'].each do |location|
+      it "falls back without opening #{location.inspect}" do
+        allow(page).to receive(:image_url_for_download).and_return(location)
+
+        expect(File).not_to receive(:open)
+        expect(Kernel).not_to receive(:open)
+        expect(Magick::Image).not_to receive(:from_blob)
+        expect(page.normalized_image_url_for_download).to eq(location)
+      end
+    end
+  end
+
   describe '#has_alto?' do
     let(:user) { create(:unique_user, :owner) }
     let(:collection) { create(:collection, owner_user_id: user.id) }
