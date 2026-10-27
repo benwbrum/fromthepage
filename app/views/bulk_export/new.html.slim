@@ -237,11 +237,7 @@
               small.label(class="upload-status-#{bulk_export.status}") =bulk_export.status.titleize
               -if bulk_export.status.to_sym == :finished && bulk_export.downloadable?
                 br
-                -if bulk_export.output.attached?
-                  =link_to(t('.download'), url_for(bulk_export.output), class: 'btnExport')
-                -else
-                  // NOTE: Backsupport
-                  =link_to(t('.download'), bulk_export_download_path(bulk_export_id: bulk_export.id), class: 'btnExport')
+                =link_to(t('.download'), bulk_export_download_path(bulk_export_id: bulk_export.id), class: 'btnExport')
 
 h2 =t('.export_work_metadata')
 p.big

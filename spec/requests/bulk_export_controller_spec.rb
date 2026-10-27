@@ -110,7 +110,25 @@ describe BulkExportController do
       it 'sends the file' do
         get action_path
         expect(response).to have_http_status(:ok)
+        expect(response.headers['Content-Encoding']).to eq('identity')
         expect(response.headers['Content-Disposition']).to include('fromthepage_export.zip')
+      end
+    end
+
+    context 'when output is attached' do
+      before do
+        finished_export.output.attach(
+          io: StringIO.new('zip-data'),
+          filename: "export_#{finished_export.id}.zip",
+          content_type: 'application/zip'
+        )
+      end
+
+      it 'sends the attached output through the app response' do
+        get action_path
+        expect(response).to have_http_status(:ok)
+        expect(response.headers['Content-Encoding']).to eq('identity')
+        expect(response.headers['Content-Disposition']).to include("export_#{finished_export.id}.zip")
       end
     end
 
