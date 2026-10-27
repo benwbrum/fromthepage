@@ -2,6 +2,50 @@ require 'spec_helper'
 require 'contentdm_translator'
 
 RSpec.describe ContentdmTranslator do
+
+  describe 'metadata fetching' do
+    let(:page) { double('page', sc_canvas: double(sc_canvas_id: 'https://cdm123.contentdm.oclc.org/iiif/test:1/canvas/c1')) }
+    let(:collection) { double('collection') }
+    let(:url) { 'https://server123.contentdm.oclc.org/metadata' }
+
+    before do
+      allow(described_class).to receive(:page_at_id_to_cdm_item_info).and_return(url)
+      allow(described_class).to receive(:collection_to_cdm_field_config).and_return(url)
+    end
+
+    it 'reads item metadata over HTTP' do
+      stub_request(:get, url).to_return(body: '{"title":"Example"}')
+      expect(described_class.fetch_cdm_info(page)).to eq('title' => 'Example')
+    end
+
+    it 'reads collection field configuration over HTTP' do
+      stub_request(:get, url).to_return(body: '[{"nick":"text","type":"FTS"}]')
+      expect(described_class.fetch_cdm_field_config(collection)).to eq([{ 'nick' => 'text', 'type' => 'FTS' }])
+    end
+
+    context 'when a metadata URL is a local file path' do
+      let(:url) { File.expand_path(__FILE__) }
+
+      it 'does not open the file as item metadata' do
+        expect(File).not_to receive(:open)
+        expect { described_class.fetch_cdm_info(page) }.to raise_error(NoMethodError)
+      end
+
+      it 'does not open the file as field configuration' do
+        expect(File).not_to receive(:open)
+        expect { described_class.fetch_cdm_field_config(collection) }.to raise_error(NoMethodError)
+      end
+    end
+
+    context 'when a metadata URL resembles a pipe command' do
+      let(:url) { '|echo unsafe' }
+
+      it 'rejects the value before opening it' do
+        expect(Kernel).not_to receive(:open)
+        expect { described_class.fetch_cdm_info(page) }.to raise_error(URI::InvalidURIError)
+      end
+    end
+  end
   describe '.transcript_for_page' do
     let(:created_at)      { Time.zone.parse('2026-05-01 12:00:00') }
     let(:ai_transcription) do
@@ -137,7 +181,7 @@ RSpec.describe ContentdmTranslator do
     context 'when collection aliases contain punctuation' do
       before do
         allow(ContentdmTranslator).to receive(:get_cdm_host_from_url).and_return('kdl')
-        allow(URI).to receive(:open).and_return(StringIO.new('{}'))
+        stub_request(:get, %r{\Ahttps://kdl\.contentdm\.oclc\.org/}).to_return(body: '{}')
       end
 
       it 'translates a hyphenated item alias and permits trailing routes' do
@@ -166,11 +210,11 @@ RSpec.describe ContentdmTranslator do
 
       before do
         allow(ContentdmTranslator).to receive(:get_cdm_host_from_url).and_return('kdl')
-        allow(URI).to receive(:open).and_return(StringIO.new('{}'))
+        stub_request(:get, %r{\Ahttps://kdl\.contentdm\.oclc\.org/}).to_return(body: '{}')
       end
 
       it 'uses the parent record manifest' do
-        allow(URI).to receive(:open).with(item_api_url).and_return(StringIO.new('{"parentId":"5000"}'))
+        stub_request(:get, item_api_url).to_return(body: '{"parentId":"5000"}')
 
         url = ContentdmTranslator.cdm_url_to_iiif('https://kdl.contentdm.oclc.org/digital/collection/tu-medtheses/id/4805')
 
@@ -179,7 +223,7 @@ RSpec.describe ContentdmTranslator do
 
       it 'supports parent IDs nested in object information' do
         response = { objectInfo: { parentId: 5000 } }.to_json
-        allow(URI).to receive(:open).with(item_api_url).and_return(StringIO.new(response))
+        stub_request(:get, item_api_url).to_return(body: response)
 
         url = ContentdmTranslator.cdm_url_to_iiif('https://kdl.contentdm.oclc.org/digital/collection/tu-medtheses/id/4805')
 
@@ -187,7 +231,7 @@ RSpec.describe ContentdmTranslator do
       end
 
       it 'uses the requested record when it has no parent' do
-        allow(URI).to receive(:open).with(item_api_url).and_return(StringIO.new('{"parentId":-1}'))
+        stub_request(:get, item_api_url).to_return(body: '{"parentId":-1}')
 
         url = ContentdmTranslator.cdm_url_to_iiif('https://kdl.contentdm.oclc.org/digital/collection/tu-medtheses/id/4805')
 
@@ -195,7 +239,7 @@ RSpec.describe ContentdmTranslator do
       end
 
       it 'rejects an invalid parent ID' do
-        allow(URI).to receive(:open).with(item_api_url).and_return(StringIO.new('{"parentId":"not-an-id"}'))
+        stub_request(:get, item_api_url).to_return(body: '{"parentId":"not-an-id"}')
 
         expect do
           ContentdmTranslator.cdm_url_to_iiif('https://kdl.contentdm.oclc.org/digital/collection/tu-medtheses/id/4805')
@@ -205,7 +249,7 @@ RSpec.describe ContentdmTranslator do
       it 'does not request item information for collection URLs' do
         ContentdmTranslator.cdm_url_to_iiif('https://kdl.contentdm.oclc.org/digital/collection/tu-medtheses')
 
-        expect(URI).not_to have_received(:open).with(%r{/digital/api/singleitem/})
+        expect(WebMock).not_to have_requested(:get, %r{/digital/api/singleitem/})
       end
     end
 

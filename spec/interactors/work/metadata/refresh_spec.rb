@@ -41,6 +41,22 @@ describe Work::Metadata::Refresh do
     described_class.new(work_ids: [work.id, work_no_manifest.id]).call
   end
 
+  describe 'unsafe manifest locations' do
+    [File.expand_path(__FILE__), '|echo unsafe'].each do |location|
+      it "rejects #{location.inspect} without opening a local file or command" do
+        manifest = double('manifest', at_id: location)
+        unsafe_work = double('work', sc_manifest: manifest)
+        refresher = described_class.new(work_ids: [])
+
+        expect(File).not_to receive(:open)
+        expect(Kernel).not_to receive(:open)
+        expect(unsafe_work).not_to receive(:save)
+        expect { refresher.send(:refresh_metadata, unsafe_work) }
+          .to raise_error(location.start_with?('|') ? URI::InvalidURIError : NoMethodError)
+      end
+    end
+  end
+
   context 'when original metadata is blank' do
     it 'adds metadata' do
       expect(work.original_metadata).to be_nil

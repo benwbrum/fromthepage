@@ -729,7 +729,7 @@ class Page < ApplicationRecord
 
     original_url = image_url_for_download
     begin
-      img = Magick::Image.from_blob(URI.open(original_url).read).first
+      img = Magick::Image.from_blob(URI.parse(original_url).open.read).first
     rescue => e
       Rails.logger.error("Failed to load image for normalization: #{original_url} – #{e.message}")
 
