@@ -682,7 +682,7 @@ class Page < ApplicationRecord
       if sc_canvas.sc_service_id.present?
         service_id = sc_canvas.sc_service_id.sub(/\/$/, '')
         begin
-          info = JSON.parse(URI.open("#{service_id}/info.json").read)
+          info = JSON.parse(URI.parse("#{service_id}/info.json").open.read)
           advertised_sizes = [info, *Array(info['sizes'])].filter_map do |image_info|
             width, height = image_info.values_at('width', 'height').map(&:to_i)
             [width, height] if width.positive? && height.positive?
