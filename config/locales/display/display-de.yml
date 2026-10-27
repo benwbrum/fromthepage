@@ -105,7 +105,6 @@ de:
       ai_prompt: KI-Aufforderung
       prompt_explanation: Diese Vorgabe wurde verwendet, um den KI-Entwurf zu generieren.
     read_all_works:
-      pages: Seiten
       pages_that_mention: Seiten, die %{article} erwähnen
     read_work:
       pages: Seiten

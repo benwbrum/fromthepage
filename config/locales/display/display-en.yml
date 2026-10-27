@@ -105,7 +105,6 @@ en:
       ai_prompt: AI Prompt
       prompt_explanation: This prompt was used to generate the AI draft
     read_all_works:
-      pages: Pages
       pages_that_mention: Pages That Mention %{article}
     read_work:
       pages: Pages
