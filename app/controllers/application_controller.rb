@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   include CookiesConsent
+  include NewRelicRequestAttributes
 
   DEFAULT_PER_PAGE = 200
 
@@ -12,6 +13,7 @@ class ApplicationController < ActionController::Base
   end
 
   before_action :load_objects_from_params
+  before_action :record_new_relic_request_attributes
   before_action :store_current_location, unless: :devise_controller?
   before_action :load_html_blocks
   before_action :authorize_collection
