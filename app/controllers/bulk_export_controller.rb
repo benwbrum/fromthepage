@@ -85,6 +85,8 @@ class BulkExportController < ApplicationController
   # Keep for now for backsupport
   def download
     if @bulk_export.status.to_sym == :finished && @bulk_export.downloadable?
+      response.headers['Content-Encoding'] = 'identity'
+
       if @bulk_export.output.attached?
         send_data(
           @bulk_export.output.download,

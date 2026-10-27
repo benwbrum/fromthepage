@@ -110,6 +110,7 @@ describe BulkExportController do
       it 'sends the file' do
         get action_path
         expect(response).to have_http_status(:ok)
+        expect(response.headers['Content-Encoding']).to eq('identity')
         expect(response.headers['Content-Disposition']).to include('fromthepage_export.zip')
       end
     end
@@ -126,6 +127,7 @@ describe BulkExportController do
       it 'sends the attached output through the app response' do
         get action_path
         expect(response).to have_http_status(:ok)
+        expect(response.headers['Content-Encoding']).to eq('identity')
         expect(response.headers['Content-Disposition']).to include("export_#{finished_export.id}.zip")
       end
     end
