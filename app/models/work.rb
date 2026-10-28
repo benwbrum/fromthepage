@@ -47,6 +47,7 @@
 # Indexes
 #
 #  index_works_on_collection_id                    (collection_id)
+#  index_works_on_collection_id_and_title          (collection_id,title)
 #  index_works_on_metadata_description_version_id  (metadata_description_version_id)
 #  index_works_on_owner_user_id                    (owner_user_id)
 #  index_works_on_slug                             (slug) UNIQUE
