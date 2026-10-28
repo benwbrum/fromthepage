@@ -1,4 +1,4 @@
-- metadata = @ai_transcription&.metadata
+- metadata = local_assigns.fetch(:metadata) { @ai_transcription&.metadata }
 - has_tokens = metadata && (metadata['prompt_token_count'] || metadata['total_token_count'])
 #token-usage class=(has_tokens ? 'ai-token-usage' : nil)
   - if has_tokens

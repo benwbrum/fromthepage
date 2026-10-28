@@ -24,4 +24,10 @@ RSpec.describe ArticleVersionController do
 
     expect(response).to have_http_status(:ok)
   end
+
+  it 'returns bad request when neither article nor version is given' do
+    get article_version_list_path
+
+    expect(response).to have_http_status(:bad_request)
+  end
 end

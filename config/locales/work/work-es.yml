@@ -8,9 +8,6 @@ es:
       reasoning: Razonamiento
       select_model: Seleccionar modelo de IA
       source_material: Material de origen
-      token_usage: Uso de tokens
-      tokens_used: "%{count} tokens usados"
-      view_source: Ver fuente
     ai_transcriptions:
       create:
         success: Se ha lanzado un servicio de transcripción con IA.

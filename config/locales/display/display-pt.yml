@@ -105,7 +105,6 @@ pt:
       ai_prompt: IA Prompt
       prompt_explanation: Este prompt foi usado para gerar o rascunho de IA.
     read_all_works:
-      pages: Páginas
       pages_that_mention: Páginas que mencionam %{article}
     read_work:
       pages: Páginas

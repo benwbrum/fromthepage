@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   include CookiesConsent
+  include NewRelicRequestAttributes
 
   DEFAULT_PER_PAGE = 200
 
@@ -12,6 +13,7 @@ class ApplicationController < ActionController::Base
   end
 
   before_action :load_objects_from_params
+  before_action :record_new_relic_request_attributes
   before_action :store_current_location, unless: :devise_controller?
   before_action :load_html_blocks
   before_action :authorize_collection
@@ -136,6 +138,12 @@ class ApplicationController < ActionController::Base
     bad_record_id(e)
   end
 
+  # Garbage ?page= values (e.g. SQL-injection probes from crawlers) should be a
+  # client error, not a 500 that ties up an app server process.
+  rescue_from WillPaginate::InvalidPage do |e|
+    bad_record_id(e)
+  end
+
   def load_objects_from_params
     # this needs to be ordered from the specific to the
     # general, so that parent_id will load the appropriate
@@ -152,7 +160,9 @@ class ApplicationController < ActionController::Base
     if params[:article_id]
       @article = Article.find(params[:article_id])
       if session[:col_id] != nil
-        @collection = set_friendly_collection(session[:col_id])
+        # A stale or scrambled col_id can resolve to nothing; fall back to the
+        # article's own collection rather than leaving @collection nil.
+        @collection = set_friendly_collection(session[:col_id]) || @article.collection
         session[:col_id] = nil
       else
         @collection = @article.collection
@@ -162,7 +172,7 @@ class ApplicationController < ActionController::Base
       @page = Page.find(params[:page_id])
       @work = @page.work
       if session[:col_id] != nil
-        @collection = set_friendly_collection(session[:col_id])
+        @collection = set_friendly_collection(session[:col_id]) || @page.collection
         session[:col_id] = nil
       else
         @collection = @page.collection

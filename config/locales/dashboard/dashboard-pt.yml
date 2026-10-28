@@ -181,11 +181,17 @@ pt:
       your_activity: Sua Atividade
       your_hours: Seu horário
     your_hours:
-      contributions_between_dates: Contribuições entre %{start_date} e %{end_date}
+      collection: Coleção
       download_letter: Baixe uma carta
       end_date: Data final
       hours_details_message: "%{user_name} contribuiu com %{time_duration} entre %{start_date} e %{end_date}"
       hours_update_note: As estatísticas de contribuição são calculadas a cada vinte e quatro horas. Essas estatísticas refletem o uso até %{time_ago}.
-      select_new_date: Selecione um novo período
+      institutions: Instituições
+      minutes: Minutos
+      pages: Páginas
+      select_date_range: 'Selecione um intervalo de datas:'
       start_date: Data de início
+      title: Suas horas de voluntariado
+      totals: 'Totais:'
       update: Atualizar
+      update_every_24_hours: Estas estatísticas são atualizadas a cada 24 horas. Volte amanhã para ver o trabalho de hoje!

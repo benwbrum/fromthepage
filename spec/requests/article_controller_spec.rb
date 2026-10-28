@@ -465,6 +465,27 @@ describe ArticleController do
         expect(response.body).to include('Commonwealth’s')
       end
 
+      it 'still renders when the generated graph cannot be persisted' do
+        # Simulate an article that no longer passes validation, so attach's
+        # implicit save fails and leaves unsaved blobs on the record.
+        allow_any_instance_of(Article).to receive(:save).and_return(false)
+
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response.body).not_to include(I18n.t('article.show.related_subjects_description', article: article.title))
+      end
+
+      it 'falls back to the article collection when the session col_id is stale' do
+        subject # first visit stores the collection slug in session[:col_id]
+        allow(Collection::Lib::SetFriendlyFind).to receive(:perform).and_return(nil)
+
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(assigns(:collection)).to eq(collection)
+      end
+
       context 'when collection hides notes' do
         before do
           collection.update!(hide_notes: true)

@@ -13,26 +13,26 @@ class ArticleController < ApplicationController
   end
 
   def list
-    articles = @collection.articles.includes(:categories)
-    @uncategorized_articles = articles.where(categories: { id: nil })
+    base_articles = @collection.articles
     @categories = Category.recursive_tree_for(@collection.is_a?(DocumentSet) ? @collection.collection_id : @collection.id)
     @categories_tree = @categories.group_by(&:parent_id)
+    @has_uncategorized = base_articles.left_outer_joins(:categories).where(categories: { id: nil }).exists?
 
     if params[:selected_category_id] == 'uncategorized'
       @selected_category = 'uncategorized'
-      @articles = @uncategorized_articles
+      @articles_exist = @has_uncategorized
       @ancestor_ids = []
     elsif params[:selected_category_id].present?
       @selected_category = @categories.find { |category| category.id == params[:selected_category_id].to_i }
-      @articles = articles.where(categories: { id: @selected_category.id })
+      @articles_exist = base_articles.joins(:categories).where(categories: { id: @selected_category.id }).exists?
       @ancestor_ids = Category.ancestors_for(@selected_category.id).pluck(:id)
     else
-      @selected_category = @categories_tree.dig(nil).first
+      @selected_category = @categories_tree.dig(nil)&.first
       if @selected_category.present?
-        @articles = articles.where(categories: { id: @selected_category.id })
+        @articles_exist = base_articles.joins(:categories).where(categories: { id: @selected_category.id }).exists?
         @ancestor_ids = Category.ancestors_for(@selected_category.id).pluck(:id)
       else
-        @articles = articles.none
+        @articles_exist = false
         @ancestor_ids = []
       end
     end
@@ -356,6 +356,8 @@ class ArticleController < ApplicationController
         dot_out.unlink
         dot_out_map.unlink
       end
+
+      discard_unsaved_graph_attachments
     end
 
     session[:col_id] = @collection.slug
@@ -413,6 +415,17 @@ class ArticleController < ApplicationController
 
   def authorized?
     redirect_to dashboard_path unless user_signed_in?
+  end
+
+  # ActiveStorage#attach on a persisted record saves it; when that save fails
+  # (e.g. the article no longer passes validation) the attachments stay in
+  # memory with unsaved blobs and the view blows up with
+  # "Cannot get a signed_id for a new record". Drop them so the page still renders.
+  def discard_unsaved_graph_attachments
+    return if @article.graph_attachment.blob&.persisted? && @article.map_attachment.blob&.persisted?
+
+    logger.warn("Could not persist relationship graph for article #{@article.id}: #{@article.errors.full_messages.to_sentence}")
+    @article.reload
   end
 
   def article_params

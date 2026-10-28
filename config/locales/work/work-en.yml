@@ -8,9 +8,6 @@ en:
       reasoning: Reasoning
       select_model: Select AI model
       source_material: Source Material
-      token_usage: Token Usage
-      tokens_used: "%{count} tokens used"
-      view_source: View source
     ai_transcriptions:
       create:
         success: AI transcription job launched.

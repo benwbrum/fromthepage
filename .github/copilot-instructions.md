@@ -36,3 +36,11 @@ Remember, your task is to create a plan, not to implement the changes. Focus on 
 
 9.  Code Quality:
    Always run `bundle exec rubocop -A` to fix syntax errors and style issues before committing code changes. This ensures consistent code formatting and catches potential issues early.
+
+## New Relic read-only access
+
+For explicitly authorized telemetry work, follow the [New Relic setup and access smoke-test runbook](../doc/new_relic_agent_access.md).
+An operator must configure `NEW_RELIC_API_KEY` as an **Agents** secret and `NEW_RELIC_ACCOUNT_ID` as an **Agents** variable under **Settings → Secrets and variables → Agents**, confirm the region, and allow only its API host under **Settings → Copilot → Internet access**.
+These values become environment variables for cloud/coding agent execution tools, not every github.com chat; start a fresh cloud agent session after saving.
+Use a User API key whose owner's permissions a human has verified as least-privilege/read-only; a key name does not restrict permissions.
+Never expose credentials, attempt mutations to test permissions, or disable the firewall. Run the linked smoke-test prompt only when requested.

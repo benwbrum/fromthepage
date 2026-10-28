@@ -44,7 +44,7 @@ gem 'rubyzip'
 
 # HTTP / API / External SDKs
 gem 'httparty'
-gem 'savon', '~> 2.15', '>= 2.15.1'
+gem 'savon', '~> 2.17'
 gem 'ruby-openai'
 gem 'gemini-ai'
 gem 'anthropic'
@@ -80,7 +80,7 @@ gem 'rtl'
 
 # Email / Notifications
 gem 'postmark-rails'
-gem 'mail', '~> 2.7'
+gem 'mail', '~> 2.9'
 gem 'gravatar_image_tag', github: 'Tinix/gravatar_image_tag'
 gem 'slack-notifier'
 
@@ -119,6 +119,8 @@ group :development do
   gem 'capistrano-rails', '~> 1.4', require: false
   gem 'html-pipeline', '~> 2.14'
   gem 'rvm1-capistrano3', require: false
+  gem 'ed25519', '>= 1.2', '< 2.0'
+  gem 'bcrypt_pbkdf', '>= 1.0', '< 2.0'
 end
 
 group :assets do

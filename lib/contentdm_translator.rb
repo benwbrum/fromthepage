@@ -38,13 +38,13 @@ module ContentdmTranslator
 
   def self.fetch_cdm_info(page)
     cdm_url = page_at_id_to_cdm_item_info(page.sc_canvas.sc_canvas_id)
-    cdm_response = URI.open(cdm_url).read
+    cdm_response = URI.parse(cdm_url).open.read
     JSON.parse(cdm_response)
   end
 
   def self.fetch_cdm_field_config(collection)
     cdm_url = collection_to_cdm_field_config(collection)
-    cdm_response = URI.open(cdm_url).read
+    cdm_response = URI.parse(cdm_url).open.read
     JSON.parse(cdm_response)
   end
 
@@ -254,7 +254,7 @@ module ContentdmTranslator
     matches = host.match(/https?:\/\/(cdm\d+)/)
     return matches[1] if matches
 
-    res = URI.open("#{host}/iiif/info/manifest.json").read
+    res = URI.parse("#{host}/iiif/info/manifest.json").open.read
     res_json = JSON.parse(res)
     url = res_json['@id'] || nil
 
@@ -296,7 +296,7 @@ module ContentdmTranslator
     end
 
     begin
-      URI.open(new_uri)
+      URI.parse(new_uri).open
     rescue OpenURI::HTTPError
       if server && collection && record
         # https://cdm17217.contentdm.oclc.org/iiif/2/voter1867:4764/manifest.json
@@ -317,7 +317,7 @@ module ContentdmTranslator
   def self.cdm_parent_record(server, collection, record)
     collection_path = URI.encode_www_form_component(collection)
     item_url = "https://#{server}.contentdm.oclc.org/digital/api/singleitem/collection/#{collection_path}/id/#{record}"
-    item = JSON.parse(URI.open(item_url).read)
+    item = JSON.parse(URI.parse(item_url).open.read)
     parent_id = item['parentId'] || item.dig('objectInfo', 'parentId')
     return if parent_id.blank?
 

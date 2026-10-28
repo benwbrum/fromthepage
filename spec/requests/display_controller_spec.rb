@@ -330,6 +330,49 @@ describe DisplayController do
         expect(response).to render_template(:read_all_works)
       end
     end
+
+    context 'without an article' do
+      it 'returns bad request instead of raising' do
+        get display_read_all_works_path
+
+        expect(response).to have_http_status(:bad_request)
+      end
+    end
+
+    context 'with a garbage page parameter' do
+      it 'redirects instead of raising a 500' do
+        get action_path, params: { page: "(select 1*2 from DUAL)" }
+
+        expect(response).to have_http_status(:redirect)
+      end
+    end
+  end
+
+  describe '#display_page' do
+    let(:action_path) { collection_display_page_path(owner, collection, work, pages.first) }
+
+    it 'renders successfully' do
+      get action_path
+
+      expect(response).to have_http_status(:ok)
+      expect(assigns(:collection)).to eq(collection)
+    end
+
+    it 'returns bad request without a page' do
+      get display_display_page_path
+
+      expect(response).to have_http_status(:bad_request)
+    end
+
+    it 'falls back to the page collection when the session col_id is stale' do
+      get display_read_all_works_path(article_id: create(:article, collection: collection).id) # seeds session[:col_id]
+      allow(Collection::Lib::SetFriendlyFind).to receive(:perform).and_return(nil)
+
+      get display_display_page_path(page_id: pages.first.id)
+
+      expect(response).to have_http_status(:ok)
+      expect(assigns(:collection)).to eq(collection)
+    end
   end
 
   describe '#parse_page_range' do

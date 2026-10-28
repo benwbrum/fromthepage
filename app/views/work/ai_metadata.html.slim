@@ -1,21 +1,18 @@
 =javascript_include_tag "transcribe"
 =render partial: '/shared/description_tabs', locals: { selected: 10, page_id: @work.slug }
 
-.page-editor
-  .page-toolbar
-    .flex-toolbar
-      .flex-toolbar_group
-        dl.dropdown.page-columns-layout(data-controller='dropdown' data-dropdown-selectable-value='true')
+.page-editor.ai-metadata-editor
+  .page-headlines
+    .headline
+      h3.headline_title =t('.source_material')
+      .page_info.source-selector
+        dl.dropdown.right.page-columns-layout(data-controller='dropdown' data-dropdown-selectable-value='true')
           dt.button.outline
-            span.hide-l =t('.view_source')
+            span =t('work.describe.view_original')
           dd
             a(data-view-set="image") =t('work.describe.page_images')
             a(data-view-set="transcript") =t('work.describe.text')
             a(data-view-set="metadata") =t('.imported_metadata')
-
-  .page-headlines
-    .headline
-      h3.headline_title =t('.source_material')
     .headline
       h3.headline_title =t('.heading')
       .page_info
@@ -55,17 +52,17 @@
               b ="#{field.label}: "
               =value.is_a?(Array) ? value.join(', ') : value
 
-      -if @ai_work_metadata.metadata.is_a?(Hash) && @ai_work_metadata.metadata['total_token_count'].present?
-        #token-usage.ai-token-usage
-          h4 =t('.token_usage')
-          .token-usage-content
-            p =t('.tokens_used', count: @ai_work_metadata.metadata['total_token_count'])
+      -if @ai_work_metadata.metadata.is_a?(Hash)
+        =render partial: 'display/token_usage', locals: { metadata: @ai_work_metadata.metadata }
 
       -if @ai_work_metadata.reasoning.present?
         #reasoning.ai-reasoning
           h4 =t('.reasoning')
           .reasoning-content
             ==Markdown.new(@ai_work_metadata.reasoning).to_html
+
+      -if @ai_work_metadata.prompt.present?
+        =render partial: 'display/prompt', locals: { prompt: @ai_work_metadata.prompt }
 
 -content_for :javascript
   javascript:
