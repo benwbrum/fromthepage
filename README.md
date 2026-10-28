@@ -25,6 +25,12 @@ Detailed Installation Instructions are available [in the wiki](https://github.co
 
 If you install FromThePage, please join the low volume [FromThePage Google Group](https://groups.google.com/forum/#!forum/fromthepage) so we can keep you informed of bug fixes and new releases.
 
+### Single sign-on deployment
+
+OmniAuth sign-in requests must use POST forms with Rails authenticity tokens; SAML provider callbacks must remain accessible to the identity provider. `omniauth-rails_csrf_protection` supplies the Rails-compatible request-phase validator.
+
+Capistrano links `config/initializers/omniauth.rb` from the shared deployment directory. Before deploying, review that shared initializer and its provider configuration for OmniAuth 2 compatibility; do not enable GET request-phase authentication or disable CSRF validation. Configure `OmniAuth.config.full_host` or `OmniAuth.config.allowed_hosts` with trusted deployment hosts to prevent forged callback hosts. If Google sign-in is enabled, configure its provider and credentials in the deployment's shared initializer. Verify each configured SAML identity provider and its existing callback URL after deployment. SAML providers using cross-site POST callbacks may require a `SameSite=None; Secure` session cookie; verify this with the deployment's HTTPS and cookie configuration.
+
 ### Developer resources
 
 - [Contributing guidelines](CONTRIBUTING.md)

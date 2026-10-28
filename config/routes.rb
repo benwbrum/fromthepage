@@ -32,7 +32,7 @@ Fromthepage::Application.routes.draw do
           as: 'user_omniauth_callback'
 
     match '/users/auth/saml/:identity_provider_id',
-          via: [:get, :post],
+          via: [:post],
           to: 'users/omniauth_callbacks#passthru',
           as: 'user_omniauth_authorize'
   end
