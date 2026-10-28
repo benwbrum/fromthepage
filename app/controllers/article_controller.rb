@@ -356,6 +356,8 @@ class ArticleController < ApplicationController
         dot_out.unlink
         dot_out_map.unlink
       end
+
+      discard_unsaved_graph_attachments
     end
 
     session[:col_id] = @collection.slug
@@ -413,6 +415,17 @@ class ArticleController < ApplicationController
 
   def authorized?
     redirect_to dashboard_path unless user_signed_in?
+  end
+
+  # ActiveStorage#attach on a persisted record saves it; when that save fails
+  # (e.g. the article no longer passes validation) the attachments stay in
+  # memory with unsaved blobs and the view blows up with
+  # "Cannot get a signed_id for a new record". Drop them so the page still renders.
+  def discard_unsaved_graph_attachments
+    return if @article.graph_attachment.blob&.persisted? && @article.map_attachment.blob&.persisted?
+
+    logger.warn("Could not persist relationship graph for article #{@article.id}: #{@article.errors.full_messages.to_sentence}")
+    @article.reload
   end
 
   def article_params

@@ -7,6 +7,7 @@
 #  base_height             :integer
 #  base_image              :string(255)
 #  base_width              :integer
+#  cached_ai_status        :string(255)      default("not_started"), not null
 #  created_on              :datetime
 #  edit_started_at         :datetime
 #  is_first_page_candidate :boolean
@@ -37,6 +38,7 @@
 #  index_pages_on_status_and_work_id                      (status,work_id)
 #  index_pages_on_status_and_work_id_and_edit_started_at  (status,work_id,edit_started_at)
 #  index_pages_on_work_id                                 (work_id)
+#  index_pages_on_work_id_and_position                    (work_id,position)
 #  pages_search_text_index                                (search_text)
 #
 require 'search_translator'
@@ -682,7 +684,7 @@ class Page < ApplicationRecord
       if sc_canvas.sc_service_id.present?
         service_id = sc_canvas.sc_service_id.sub(/\/$/, '')
         begin
-          info = JSON.parse(URI.open("#{service_id}/info.json").read)
+          info = JSON.parse(URI.parse("#{service_id}/info.json").open.read)
           advertised_sizes = [info, *Array(info['sizes'])].filter_map do |image_info|
             width, height = image_info.values_at('width', 'height').map(&:to_i)
             [width, height] if width.positive? && height.positive?
@@ -729,7 +731,7 @@ class Page < ApplicationRecord
 
     original_url = image_url_for_download
     begin
-      img = Magick::Image.from_blob(URI.open(original_url).read).first
+      img = Magick::Image.from_blob(URI.parse(original_url).open.read).first
     rescue => e
       Rails.logger.error("Failed to load image for normalization: #{original_url} – #{e.message}")
 

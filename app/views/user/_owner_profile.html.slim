@@ -49,6 +49,7 @@ section.user-profile
   aside.sidecol
 
 -content_for :javascript
+  =javascript_include_tag 'landing/slick.min.js'
   javascript:
     $(function(){
       $('.carousel').slick({

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_10_18_151300) do
+ActiveRecord::Schema[7.2].define(version: 2026_10_21_173825) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -659,6 +659,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_10_18_151300) do
     t.datetime "created_on", precision: nil
     t.string "text_type", default: "transcription"
     t.integer "work_id"
+    t.index ["article_id", "page_id"], name: "index_page_article_links_on_article_id_and_page_id"
     t.index ["article_id"], name: "index_page_article_links_on_article_id"
     t.index ["page_id"], name: "index_page_article_links_on_page_id"
     t.index ["work_id"], name: "index_page_article_links_on_work_id"
@@ -726,6 +727,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_10_18_151300) do
     t.index ["search_text"], name: "pages_search_text_index", type: :fulltext
     t.index ["status", "work_id", "edit_started_at"], name: "index_pages_on_status_and_work_id_and_edit_started_at"
     t.index ["status", "work_id"], name: "index_pages_on_status_and_work_id"
+    t.index ["work_id", "position"], name: "index_pages_on_work_id_and_position"
     t.index ["work_id"], name: "index_pages_on_work_id"
     t.check_constraint "json_valid(`transcription_json`)", name: "transcription_json"
   end

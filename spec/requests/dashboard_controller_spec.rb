@@ -303,6 +303,14 @@ describe DashboardController do
       expect(response).to render_template(:landing_page)
     end
 
+    it 'loads the carousel library from the asset pipeline' do
+      login_as owner
+      subject
+
+      expect(response.body).to match(%r{<script src="/assets/landing/slick[^"]*\.js"})
+      expect(response.body).not_to include('slick-carousel')
+    end
+
     context 'with search param' do
       let(:params) { { search: collection.title } }
       let(:subject) { get action_path, params: params, as: :turbo_stream }
