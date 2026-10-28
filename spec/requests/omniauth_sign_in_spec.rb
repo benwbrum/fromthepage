@@ -48,7 +48,7 @@ RSpec.describe 'OmniAuth sign in', type: :request do
 
   it 'does not initiate SAML sign in via GET' do
     get '/users/auth/saml/harvard'
-    expect(response.location.to_s).not_to include('fed.huit.harvard.edu')
+    expect(response).to have_http_status(:not_found)
   end
 
   it 'uses a POST form for Google when enabled' do
