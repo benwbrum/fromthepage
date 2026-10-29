@@ -143,29 +143,23 @@ module CollectionStatistic
 
   def self.update_recent_statistics
     from_time = terminus_a_quo
-    work_ids = Deed.where('updated_at > ?', from_time).pluck(:work_id)
-    work_ids.delete(nil)
-    work_ids.sort!.uniq!
-    completed_collection_ids = []
-    completed_set_ids = []
+    work_ids = Deed.where('updated_at > :from_time', from_time: from_time)
+                   .where.not(work_id: nil)
+                   .distinct
+                   .pluck(:work_id)
 
-    work_ids.each do |work_id|
-      work = Work.where(id: work_id).first
-      if work # handle deleted works
-        collection_id = work.collection_id
-        unless completed_collection_ids.include? collection_id
-          Collection.find(collection_id).calculate_complete # calculate the stats for this collection
-          completed_collection_ids << collection_id # add to the list of collections we've dealt with
-        end
+    return if work_ids.empty?
 
-        work.document_sets.each do |set|
-          unless completed_set_ids.include? set.id
-            set.calculate_complete
-            set.touch # force update the timestamp
-            completed_set_ids << set.id
-          end
-        end
-      end
+    works = Work.includes(:document_sets).where(id: work_ids)
+    collection_ids = works.filter_map(&:collection_id).uniq
+    collection_ids.each do |collection_id|
+      Collection.find_by(id: collection_id)&.calculate_complete
+    end
+
+    document_sets = works.flat_map(&:document_sets).uniq
+    document_sets.each do |set|
+      set.calculate_complete
+      set.touch
     end
   end
 end

@@ -6,7 +6,7 @@ dl.category-article[id="category-#{category == 'uncategorized' ? 'none' : catego
       -if user_signed_in? && current_user.like_owner?(@collection) && category != 'uncategorized'
         =render partial: 'table_actions', locals: { category: category }
 
-  -if articles.any?
+  -if articles_exist
     =render partial: 'lazy_item', locals: { collection_id: @collection.slug, category: category, batch: 0, timestamp: SecureRandom.uuid }
   -else
     dd
