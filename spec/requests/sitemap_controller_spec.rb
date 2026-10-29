@@ -106,6 +106,31 @@ RSpec.describe SitemapController, type: :request do
     end
   end
 
+  describe "collections without an owner" do
+    it "excludes their works and pages from sitemaps" do
+      ownerless_collection = create(
+        :collection,
+        owner: nil,
+        owner_user_id: nil,
+        works: [],
+        is_active: true,
+        visibility: :public
+      )
+      ownerless_work = create(:work, collection: ownerless_collection, owner: nil, owner_user_id: nil)
+      ownerless_page = create(:page, work: ownerless_work, status: 'transcribed')
+
+      get "/sitemap_works.xml"
+
+      expect(response).to have_http_status(:success)
+      expect(response.body).not_to include(ownerless_work.slug)
+
+      get "/sitemap_pages.xml"
+
+      expect(response).to have_http_status(:success)
+      expect(response.body).not_to include(ownerless_work.slug)
+    end
+  end
+
   describe "blank and new pages" do
     it "excludes blank pages from sitemap" do
       blank_page = create(:page, work: work, status: 'blank')

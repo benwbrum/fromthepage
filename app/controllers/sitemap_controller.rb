@@ -36,7 +36,7 @@ class SitemapController < ApplicationController
     respond_to do |format|
       format.xml do
         offset = params[:offset].to_i
-        @works = Work.joins(:collection)
+        @works = Work.joins(collection: :owner)
                      .where(collections: { visibility: [:public, :read_only] })
                      .includes(collection: :owner)
                      .order(:id)
@@ -52,7 +52,7 @@ class SitemapController < ApplicationController
     respond_to do |format|
       format.xml do
         offset = params[:offset].to_i
-        @pages = Page.joins(work: :collection)
+        @pages = Page.joins(work: { collection: :owner })
                      .where(collections: { visibility: [:public, :read_only] })
                      .where.not(status: ['blank', 'new'])
                      .includes(work: { collection: :owner })
