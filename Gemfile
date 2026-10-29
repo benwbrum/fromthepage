@@ -24,6 +24,7 @@ gem 'aws-sdk-s3', require: false
 gem 'dotenv-rails'
 gem 'dotenv', require: 'dotenv/load'
 gem 'get_process_mem'
+gem 'with_advisory_lock'
 
 # Authentication / Security
 gem 'devise'
