@@ -64,4 +64,16 @@ describe AiWorkMetadata::Lib::PromptBuilder do
       expect(prompt).to include('Focus on names and dates.')
     end
   end
+
+  context 'when the collection has a subject heading field' do
+    let!(:subject_field) do
+      create(:transcription_field, :as_metadata, label: 'Subject Headings', input_type: 'subject_headings',
+                                                 collection: collection, position: 2, line_number: 2)
+    end
+
+    it 'leaves it out, since subject headings are generated separately' do
+      expect(prompt).not_to include(subject_field.id.to_s)
+      expect(prompt).not_to include('Subject Headings')
+    end
+  end
 end
