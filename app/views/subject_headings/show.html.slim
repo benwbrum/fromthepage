@@ -1,4 +1,4 @@
-.litebox-embed.subject-heading-configuration
+.litebox-embed.subject-heading-configuration data-controller="subject-heading-configuration"
   h3 Configure Subject Headings
   p.fgfaded =@field.label
   -if @error
@@ -15,7 +15,7 @@
             =@inventory.filename
           p ="#{@inventory.row_count} imported rows; #{@inventory.subject_headings.count} unique headings."
       .input-file data-controller="file-picker"
-        =file_field_tag :file, accept: '.csv,text/csv', required: @inventory.nil?, 'aria-describedby': 'subject-heading-file-help'
+        =file_field_tag :file, accept: '.csv,text/csv', required: @inventory.nil?, 'aria-describedby': 'subject-heading-file-help', data: { subject_heading_configuration_target: 'file', action: 'change->subject-heading-configuration#sync' }
         input type="text" placeholder="Click to browse a file" aria-label="Selected subject headings file" readonly=true
         button type="button" Browse
       p#subject-heading-file-help.fgfaded CSV with a heading column and an optional uri column. Maximum 5 MB (16 MB for a validation report) and 10,000 rows.
@@ -30,12 +30,14 @@
 
     section.subject-heading-section aria-labelledby="subject-heading-authority-title"
       h4#subject-heading-authority-title Authority check
-      .subject-heading-check
-        =check_box_tag :validate_authorities, '1', false, 'aria-describedby': 'subject-heading-authority-help'
-        =label_tag :validate_authorities, 'Check for matches in Library of Congress authority records'
+      div data-subject-heading-configuration-target="uploadCheck" hidden=@inventory.present?
+        .subject-heading-check
+          =check_box_tag :validate_authorities, '1', false, disabled: @inventory.present?, 'aria-describedby': 'subject-heading-upload-check-help', data: { subject_heading_configuration_target: 'checkbox' }
+          =label_tag :validate_authorities, 'Check for matches in Library of Congress authority records'
+        p#subject-heading-upload-check-help.fgfaded Select this option, then click Save Subject Headings to check the uploaded file.
       p#subject-heading-authority-help.fgfaded The check produces a downloadable report with possible matches and suggested identifiers. It never automatically changes your uploaded headings.
       -if @inventory
-        p ="Validation status: #{@inventory.validation_status.humanize}"
+        p role="status" ="Validation status: #{@inventory.validation_status.humanize}"
         -if @inventory.validation_error.present?
           .validation role="alert"
             ul.validation_summary
@@ -43,8 +45,13 @@
         -if @inventory.report_csv.present?
           p =link_to 'Download validation report', collection_subject_headings_report_path(@collection.owner, @collection, @field)
           p To adopt suggestions, edit the heading and uri columns in the report and upload the revised file.
-        -if @inventory.validation_retryable?
-          =button_tag 'Check authorities again', type: 'submit', form: 'subject-heading-authority-retry'
+        div data-subject-heading-configuration-target="savedCheck"
+          -if @inventory.validation_retryable?
+            -check_label = @inventory.validation_status == 'not_requested' ? 'Run authority check' : (@inventory.validation_status == 'completed' ? 'Run authority check again' : 'Retry authority check')
+            =button_tag check_label, type: 'submit', form: 'subject-heading-authority-retry'
+            p.fgfaded Checks the saved subject headings file. You do not need to upload it again.
+          -else
+            =button_tag @inventory.validation_status == 'queued' ? 'Authority check queued' : 'Authority check in progress', type: 'button', disabled: true
 
     .toolbar
       .toolbar_group.aright.wrap-text

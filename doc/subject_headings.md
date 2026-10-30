@@ -63,6 +63,18 @@ owner retry can recover an expired attempt; each row refreshes the lease, and
 final writes require the exact lease timestamp and attempt token. A requester
 who has lost access leaves a retryable failed state without authority requests.
 
+## Starting an authority check
+
+For a new upload or replacement file, select the authority-check checkbox and
+click **Save Subject Headings**. The checkbox is shown only when uploading a
+file; it does not start a check by itself.
+
+For a saved file, use **Run authority check** without uploading it again. A
+completed check offers **Run authority check again**; a failed or expired check
+offers **Retry authority check**. Queued/running checks keep a disabled status
+button visible. Choosing a replacement file switches to the upload checkbox,
+so the two ways to request a check are never shown together.
+
 ## CSV contract
 
 Upload CSV with `heading` and optional `uri` headers. As with metadata and

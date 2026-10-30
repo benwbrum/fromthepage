@@ -81,6 +81,27 @@ describe SubjectHeadingsController, :subject_headings do
     expect(inventory.reload.validation_token).not_to eq(old_token)
   end
 
+  {
+    'not_requested' => 'Run authority check',
+    'completed' => 'Run authority check again',
+    'failed' => 'Retry authority check',
+    'queued' => 'Authority check queued',
+    'running' => 'Authority check in progress'
+  }.each do |status, label|
+    it "offers one saved-file authority check control for #{status}" do
+      inventory = import_headings(field)
+      inventory.update!(validation_status: status)
+      login_as owner
+      get path, headers: { 'X-Requested-With' => 'XMLHttpRequest' }
+      html = Nokogiri::HTML(response.body)
+      button = html.at_css('[data-subject-heading-configuration-target="savedCheck"] button')
+      expect(button.text).to eq(label)
+      expect(button.key?('disabled')).to eq(%w[queued running].include?(status))
+      expect(html.at_css('[data-subject-heading-configuration-target="uploadCheck"]').key?('hidden')).to be(true)
+      expect(html.at_css('#validate_authorities').key?('disabled')).to be(true)
+    end
+  end
+
   it 'reports malformed CSV without deleting the current inventory' do
     inventory = import_headings(field)
     login_as owner

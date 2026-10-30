@@ -23,9 +23,13 @@ frameworks and dependencies and keep other metadata datatypes compatible.
 - Allow owners to upload an inventory and save subject-assignment instructions
   for the future drafting integration. Text guidance is sufficient for this
   phase; document attachment/extraction may remain deferred.
-- Provide an unchecked **Check headings against Library of Congress
-  authorities** checkbox. Import and store the inventory immediately; optional
-  authority checking runs asynchronously.
+- For a new upload or selected replacement file, provide an unchecked
+  **Check for matches in Library of Congress authority records** checkbox and
+  explain that the check starts when the owner saves the file.
+- For already-saved headings, show one **Run authority check** action instead
+  of the upload checkbox. Allow rechecking completed files and retrying failed
+  or expired checks. Queued/running checks show a disabled status button.
+  Import and store the inventory immediately; authority checking is asynchronous.
 - Show filename, imported row count, unique heading count, saved guidance,
   validation status/error, report download and a way to replace the CSV. Permit
   retry after a validation failure.

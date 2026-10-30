@@ -46,13 +46,13 @@ describe 'Subject heading review regressions', :subject_headings, type: :request
     path = collection_subject_headings_path(owner, collection, subject_field)
     retry_path = collection_subject_headings_retry_path(owner, collection, subject_field)
     get path
-    expect(response.body).not_to include('Check authorities again')
+    expect(response.body).not_to include('Retry authority check')
     post retry_path
     expect(response).to have_http_status(:conflict)
 
     inventory.update_columns(updated_at: 20.minutes.ago)
     get path
-    expect(response.body).to include('Check authorities again')
+    expect(response.body).to include('Retry authority check')
     ActiveJob::Base.queue_adapter = :test
     expect { post retry_path }.to have_enqueued_job(SubjectHeadings::ValidateJob)
     expect(response).to redirect_to(path)

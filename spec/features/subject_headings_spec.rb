@@ -69,11 +69,15 @@ describe 'Project owner subject heading configuration', js: true do
     original = import_headings(field)
     visit collection_subject_headings_path(owner, collection, field)
     expect(page).to have_content('1 imported rows; 1 unique headings.')
+    expect(page).to have_button('Run authority check')
+    expect(page).not_to have_field('Check for matches in Library of Congress authority records')
     file = Tempfile.new(['replacement', '.csv'])
     file.write("heading\nReplacement\nReplacement.\nDifferent\n")
     file.rewind
     within('.litebox-embed') do
       attach_file 'Subject headings file', file.path, make_visible: true
+      expect(page).not_to have_button('Run authority check')
+      expect(page).to have_content('Select this option, then click Save Subject Headings to check the uploaded file.')
       check 'Check for matches in Library of Congress authority records'
       click_button 'Save Subject Headings'
     end
@@ -122,8 +126,12 @@ describe 'Project owner subject heading configuration', js: true do
     click_link 'Configure Subject Headings'
     expect(page).to have_field('Subject assignment guidelines (optional)', with: 'Prefer local cataloging conventions.')
     expect(field.reload.subject_heading_inventory.id).to eq(original.id)
-    click_button 'Check authorities again'
+    expect(page).not_to have_field('Check for matches in Library of Congress authority records')
+    click_button 'Run authority check'
     expect(page).to have_content('Validation status: Queued')
+    expect(page).to have_button('Authority check queued', disabled: true)
+    expect(page).not_to have_button('Run authority check')
+    expect(page).not_to have_field('Check for matches in Library of Congress authority records')
     expect(field.reload.subject_heading_inventory.id).to eq(original.id)
   end
 
