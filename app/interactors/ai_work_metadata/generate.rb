@@ -27,8 +27,7 @@ class AiWorkMetadata::Generate < ApplicationInteractor
   def handle_response(response_text, reasoning, metadata)
     validator = AiWorkMetadata::Lib::ResponseValidator.new(
       collection: @collection,
-      response_text: response_text,
-      subject_heading_candidates: @ai_work_metadata.subject_heading_candidates || {}
+      response_text: response_text
     )
 
     if validator.valid?

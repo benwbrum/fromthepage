@@ -56,10 +56,10 @@ describe SubjectHeadings::ValidateJob, :subject_headings do
   end
 
   it 'never applies suggestions to the active inventory' do
-    before = inventory.subject_headings.first.snapshot
+    before = inventory.subject_headings.first.attributes.slice('heading', 'uri')
     allow(lookup).to receive(:call).and_return([{ 'aLabel' => 'Different term', 'uri' => 'http://id.loc.gov/authorities/subjects/sh1' }])
     run_job
-    expect(inventory.subject_headings.first.snapshot).to eq(before)
+    expect(inventory.subject_headings.first.attributes.slice('heading', 'uri')).to eq(before)
     expect(inventory.reload.report_csv).to include('Different term')
   end
 

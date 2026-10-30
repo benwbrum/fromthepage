@@ -22,7 +22,7 @@
                   -next if value.nil?
                   tr
                     th =field.label
-                    td =value.is_a?(Array) ? value.map { |v| v.is_a?(Hash) ? [v['heading'], v['uri']].compact.join(' — ') : v }.join(', ') : value
+                    td =value.is_a?(Array) ? value.join(', ') : value
         -if @ai_work_metadata.reasoning.present?
           tr
             td(colspan="2")

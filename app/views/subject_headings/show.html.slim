@@ -7,7 +7,7 @@
     p
       strong = 'Current inventory: '
       =@inventory.filename
-    p ="#{@inventory.row_count} imported rows; #{@inventory.subject_headings.count} unique selectable headings."
+    p ="#{@inventory.row_count} imported rows; #{@inventory.subject_headings.count} unique headings."
     p Exact duplicates and headings differing only by one final period share an option when their URIs are identical. The first spelling is retained.
     p ="Validation status: #{@inventory.validation_status.humanize}"
     -if @inventory.validation_error.present?
@@ -28,7 +28,7 @@
     p
       =check_box_tag :validate_authorities, '1', false
       =label_tag :validate_authorities, 'Check headings against Library of Congress authorities'
-    p Validation is advisory and applies to the uploaded CSV. Possible authorized forms and identifiers appear in a report; uploaded headings are never changed automatically. Unmatched headings remain usable. Import makes headings available immediately.
+    p Validation is advisory and applies to the uploaded CSV. Possible authorized forms and identifiers appear in a report; uploaded headings are never changed automatically. Unmatched headings remain in the inventory.
     .toolbar
       .toolbar_group.aright
         =submit_tag @inventory ? 'Save / Import Headings' : 'Import Headings'

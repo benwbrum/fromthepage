@@ -1,7 +1,7 @@
 class SubjectHeadingsController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: -> { head :not_found }
   before_action :load_field
-  before_action :require_owner, except: :search
+  before_action :require_owner
 
   def show
     @inventory = @field.subject_heading_inventory
@@ -45,19 +45,6 @@ class SubjectHeadingsController < ApplicationController
 
     inventory.queue_validation!(user: current_user)
     redirect_to collection_subject_headings_path(@collection.owner, @collection, @field)
-  end
-
-  def search
-    return head :forbidden unless user_signed_in? &&
-      (current_user.admin? || current_user.like_owner?(@collection) || current_user.can_transcribe?(nil, @collection))
-
-    response.headers['Cache-Control'] = 'private, no-store'
-    scope = @field.subject_heading_inventory&.subject_headings
-    term = params[:term].to_s.strip.first(200)
-    page = [params[:page].to_i, 1].max.clamp(1, 334)
-    headings = scope ? scope.where('heading LIKE ?', "%#{ActiveRecord::Base.sanitize_sql_like(term)}%")
-      .order(:heading, :id).offset((page - 1) * 30).limit(31).to_a : []
-    render json: { results: headings.first(30).map { |h| { id: h.selection_value, text: h.heading } }, pagination: { more: headings.size > 30 } }
   end
 
   private

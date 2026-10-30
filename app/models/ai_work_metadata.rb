@@ -35,6 +35,7 @@ class AiWorkMetadata < ApplicationRecord
   }.freeze
 
   belongs_to :work
+  # Storage reserved for the separate subject-assignment implementation.
   serialize :subject_heading_candidates, coder: JSON
   has_one :collection, through: :work
 

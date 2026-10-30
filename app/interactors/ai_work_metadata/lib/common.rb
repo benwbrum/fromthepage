@@ -4,10 +4,9 @@ module AiWorkMetadata::Lib::Common
   end
 
   def build_prompt
-    builder = AiWorkMetadata::Lib::PromptBuilder.new(work: @work)
-    prompt = builder.build
-    @subject_heading_candidates = builder.subject_heading_candidates
-    prompt
+    AiWorkMetadata::Lib::PromptBuilder
+      .new(work: @work)
+      .build
   end
 
   def check_user_permission

@@ -20,7 +20,7 @@ describe SubjectHeadings::Import, :subject_headings do
 
   it 'ignores suggestions and all additional informational columns' do
     inventory = import_headings(field, "heading,uri,suggested_heading,suggested_uri,result,rationale,decision\nLocal term,,Agriculture,http://example.org/wrong,exact_match,Text,yes\n")
-    expect(inventory.subject_headings.first.snapshot).to eq('heading' => 'Local term', 'uri' => nil)
+    expect(inventory.subject_headings.first.attributes.slice('heading', 'uri')).to eq('heading' => 'Local term', 'uri' => nil)
   end
 
   it 'handles BOM, CRLF, quoted commas, blank rows and surrounding whitespace' do

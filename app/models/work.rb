@@ -550,7 +550,7 @@ class Work < ApplicationRecord
     # new_table_cells = []
     unless field_cells.blank?
       field_cells.each do |id, cell_data|
-        field = collection.metadata_fields.find(id.to_i)
+        field = TranscriptionField.find(id.to_i)
         input_type = field.input_type
 
         # TODO don't save instruction or description types
@@ -562,12 +562,6 @@ class Work < ApplicationRecord
           element['label'] = key
 
           element['value'] = value
-        end
-
-        if field.subject_headings?
-          previous = JSON.parse(metadata_description.presence || '[]').find { |e| e['transcription_field_id'] == field.id }
-          element['label'] = field.label
-          element['value'] = SubjectHeadings::Selection.resolve(field: field, values: element['value'], previous: previous&.dig('value'))
         end
 
         metadata_fields << element

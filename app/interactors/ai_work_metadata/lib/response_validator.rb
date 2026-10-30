@@ -1,12 +1,11 @@
 class AiWorkMetadata::Lib::ResponseValidator
   SKIP_TYPES = %w[instruction].freeze
 
-  def initialize(collection:, response_text:, subject_heading_candidates: {})
+  def initialize(collection:, response_text:)
     @response_text = response_text
     @fields = collection.metadata_fields.reject { |f| SKIP_TYPES.include?(f.input_type) }
     @errors = []
     @parsed_json = nil
-    @subject_heading_candidates = subject_heading_candidates
   end
 
   def valid?
@@ -30,10 +29,6 @@ class AiWorkMetadata::Lib::ResponseValidator
 
   def parse_json
     @parsed_json = JSON.parse(strip_markdown(@response_text))
-    unless @parsed_json.is_a?(Hash)
-      @errors << 'Expected a JSON object'
-      @parsed_json = nil
-    end
   rescue JSON::ParserError => e
     @errors << "Invalid JSON: #{e.message}"
   end
@@ -58,13 +53,6 @@ class AiWorkMetadata::Lib::ResponseValidator
       next if value.nil?
 
       case field.input_type
-      when 'subject_headings'
-        candidates = @subject_heading_candidates.fetch(field.id.to_s, {})
-        if !value.is_a?(Array) || value.any? { |id| !id.is_a?(String) || !candidates.key?(id) }
-          @errors << "Field #{field.id}: select only supplied subject heading candidate IDs"
-        else
-          @parsed_json[field.id.to_s] = value.uniq.map { |id| candidates.fetch(id) }
-        end
       when 'select'
         validate_select(field, value)
       when 'multiselect'

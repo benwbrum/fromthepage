@@ -1,75 +1,85 @@
-# Subject headings in Metadata Description
+# Project owner subject heading configuration
+
+## Scope and team boundary
+
+This phase lets project owners configure a Subject Headings (LCSH) metadata
+field, upload and replace a CSV inventory, save subject-assignment guidance,
+request advisory LC checking, and review reports and email notifications.
+The [implementation prompt](subject_headings_implementation_prompt.md) defines
+this owner configuration scope.
+
+Item-level metadata editing, subject selection, candidate retrieval/ranking,
+LLM prompt construction and response handling, AI validation warnings, and
+applying headings to work metadata are owned by the separate drafting team.
+This PR adds no subject-specific behavior to those workflows. Existing work
+metadata storage, rendering, exports, and AI drafting code are unchanged.
+
+The nullable `ai_work_metadata.subject_heading_candidates` attribute and its
+JSON serialization remain available for that team's results. This phase neither
+populates nor consumes it, prescribes its payload format, nor clears it when an
+owner replaces an inventory. Field guidance is stored as configuration for the
+separate integration; no LLM request is made by configuration or validation.
 
 ## Architecture and deployment
 
 Metadata fields remain `TranscriptionField` records (`field_type: metadata`,
 `input_type: subject_headings`). Migration `20261030000000_add_subject_headings`
 adds `subject_heading_inventories`, `subject_headings`, field instructions, and
-the candidate snapshot on `ai_work_metadata`. Run `rails db:migrate` and restart
-the web application and Solid Queue. `config/queue.yml` includes a dedicated
-`subject_headings` worker with one thread/process, to keep authority requests
-sequential. Existing field types and draft review use the original pipeline.
+the reserved candidate attribute on `ai_work_metadata`. Run `rails db:migrate`
+and restart the web application and Solid Queue. `config/queue.yml` includes
+a dedicated `subject_headings` worker with one thread/process to keep authority
+requests sequential.
 
 An inventory stores source rows (including duplicates), filename, validation
-attempt/status, report CSV, completion time, and notification time. Its child
-rows hold the unique selectable options. Reports are private database text,
-with a 16 MB report limit, served through an owner-authorized controller;
-there are no public report files
-or temporary attachment URLs. Replacing an import atomically replaces these
-rows and deletes its old report. This intentionally does not keep vocabulary
-history. Item descriptions and AI drafts store independent heading/URI snapshots.
+attempt/status, report CSV, completion time, and notification time. Child rows
+hold unique headings and optional URIs. Reports are private database text with
+a 16 MB limit, served through owner-authorized controller actions; no public
+report files or temporary attachment URLs are used. Configuration, template,
+import, report and retry endpoints all require owner-like or admin access.
 
-`SubjectHeadings::Import`, `Selection`, `Candidates`, `AuthorityLookup`, and
-`Report` implement the focused operations. `SubjectHeadings::ValidateJob` uses
-the existing ApplicationJob user context, retries and mailer infrastructure.
-Each job is bound to an inventory ID and a validation attempt token. Claiming
-queued work is atomic, and all final writes check the token. Replacing an
-inventory cannot receive an older job's status/report. Normal job retries skip
-already delivered notifications; failed email delivery can retry without
-repeating the authority queries. As with SMTP generally, a process crash after
-the server accepts mail but before the delivery stamp commits can still cause
-a duplicate notification.
+Replacing an import atomically replaces its heading rows and deletes its old
+report. It does not modify work descriptions, AI metadata, or candidate storage.
+This intentionally does not keep vocabulary history.
+
+`SubjectHeadings::Import`, `AuthorityLookup`, and `Report` handle inventory
+configuration and advisory checks. `SubjectHeadings::ValidateJob` uses the
+existing ApplicationJob user context, retries and mailer infrastructure. Jobs
+are bound to an inventory ID and validation attempt token. Claiming queued work
+is atomic, and final writes check the token. Older jobs cannot attach results
+to a replacement inventory. Normal retries skip already delivered notifications;
+failed email delivery can retry without repeating authority queries. As with
+SMTP generally, a process crash after server acceptance but before committing
+the delivery stamp can still cause a duplicate notification.
 
 ## CSV contract
 
 Upload UTF-8 CSV (BOM supported), with `heading` and optional `uri` headers.
-Other column **values** never influence the selected vocabulary. HTTP/HTTPS
-URIs are supported; bare LCCNs and other identifiers are not interpreted.
-The limit is 5 MB, 10,000 nonblank rows, and 1,000 characters per heading/URI.
-Whitespace around values is removed. Exact duplicate headings, or headings
-differing only in a single final period, share an option if their URIs are
-identical. The first spelling wins. Case, singular/plural, subdivisions, and
-different URIs remain distinct. Source rows retain all spellings for the report.
+Other column values never determine the active vocabulary. HTTP/HTTPS URIs are
+supported; bare LCCNs and other identifiers are not interpreted. Limits are
+5 MB, 10,000 nonblank rows, and 1,000 characters per heading/URI. Surrounding
+whitespace is removed. Malformed CSV, empty inventories, invalid UTF-8, null
+bytes, and missing required columns are rejected without replacing a valid
+existing inventory.
 
-Reports have exactly these columns:
+Exact duplicate headings, or headings differing only in one final period,
+share an inventory entry when their URIs are identical. The first spelling wins.
+Case, singular/plural, subdivisions and differing URIs remain distinct. Source
+rows retain all spellings so report rows and import counts can be explained.
+
+Reports contain exactly:
 
 ```csv
 heading,uri,suggested_heading,suggested_uri,result,rationale
 ```
 
-They use UTF-8 BOM, CRLF, standard CSV quoting, and apostrophe-prefix escaping
-for spreadsheet formula text. An already apostrophe-prefixed formula receives
+They use UTF-8 BOM, CRLF, standard CSV quoting and apostrophe-prefix escaping for
+spreadsheet formula text. An already apostrophe-prefixed formula receives
 another apostrophe. When the six report headers are present, import reverses
-one such escape in `heading`/`uri`; it never consumes suggestion, result, or
-rationale values. This reversible serialization lets an unedited report preserve
-the uploaded vocabulary, including headings beginning with `=`, `+`, `-`, or
-`@`. Owners should edit only `heading` and `uri` to adopt a suggestion. Spreadsheet
-programs can alter CSV cell types or apostrophes during save; review the import
-counts and keep a copy of the source file.
-
-Saved Metadata Description values for this type are arrays of objects:
-
-```json
-[{"heading":"Agriculture","uri":"http://id.loc.gov/authorities/subjects/sh85002415"}]
-```
-
-Other datatypes keep their current value formats. Selected options are encoded
-as JSON in the form and resolved server-side against the current inventory or
-the item's exact previous snapshots. Retired saved selections can be retained
-or removed, but cannot be newly assigned to another item. Metadata displays and
-CSV exports retain identifiers; subject values in the item metadata export are
-JSON cells rather than a lossy semicolon list. Bulk item-metadata import still
-uses the existing original-metadata workflow; it does not assign subject options.
+one such escape in `heading`/`uri`; suggestion, result and rationale values are
+ignored. An unedited report therefore preserves the uploaded vocabulary.
+Owners adopt suggestions by editing `heading` and `uri` and reuploading through
+the same configuration form. Spreadsheet applications can alter cell types or
+apostrophes during save; review import counts and retain the source CSV.
 
 ## LC service evidence and limits
 
@@ -113,103 +123,56 @@ from LC's response. A completed job means the requests completed, not that all
 headings were verified or approved. Partial failure produces a downloadable
 partial report and failure notification. Owners can retry from configuration.
 
-## AI retrieval and review
-
-The existing prompt builder supplies at most 40 candidates per field, selected
-by deterministic lexical overlap weighted by inverse heading-token frequency.
-It uses the item transcript, title, description and original metadata. This
-simple retrieval mechanism handles thousands of headings without sending the
-entire inventory to the model or introducing a vector service. It does not
-infer synonyms, stem words, or translate terms: relevant headings can be missed.
-Evaluate retrieval recall separately from the model's choices using real
-collection examples; tests explicitly cover inclusion, exclusion, empty results
-and the candidate cap.
-
-The draft record saves exactly the candidate ID-to-snapshot map that accompanied
-its prompt. The response validator rejects IDs absent from that map and converts
-accepted IDs to trusted snapshots. It accepts an empty assignment. Replacement
-uploads do not change an in-flight prompt's candidate map; newly applying a
-retired draft selection to an item is refused by the normal save validation.
-Drafts never update saved item metadata until staff review and save them.
-Guidance and document content are labeled untrusted task data and cannot relax
-the application-enforced candidate constraint.
 
 ## Manual QA
 
-1. As an owner, enable Metadata Description in a collection. In its metadata
-   field editor, add **Subject Headings (LCSH)**, enter a label, save, then select
-   **Configure Subject Headings**.
-2. Download the template. Import a one-column file with about 3,000 headings,
-   including duplicate rows, a final-period pair, singular/plural terms, and
-   constructed headings. Enter AI instructions. Leave validation unchecked.
-   Confirm row/option counts and the unchecked default.
-3. Open an item's Describe screen. Search, select several headings, save, and
-   reload. Verify identifiers using a second file containing `uri` values.
-   Confirm the initial DOM contains only saved options and remote search pages
-   results in groups of 30.
-4. Replace the CSV and request validation. Immediately search/use the new
-   inventory and confirm existing item selections still display their original
-   text/URIs. Remove one saved heading and save.
-5. Open AI settings at collection and item level while validation is queued or
-   running. Confirm the warning is visible and generation remains enabled.
-   Generate drafts and review them through the existing AI comparison controls.
-   Saving metadata still requires the staff Save action.
-6. Run the configured queue worker with network access to `id.loc.gov` and mail
-   delivery configured. Check the completion email links to configuration,
-   rather than a report URL. Download the report; confirm suggestions have not
-   changed available options. Reupload it unchanged and verify the same options.
-   Then edit `heading`/`uri`, reupload, and confirm those edits are adopted.
-7. Simulate an LC timeout. Confirm failed status, error rows/partial report,
-   failure email, continued metadata/AI availability, and successful retry.
-   Replace an inventory while its check runs and confirm old results never
-   appear on the replacement.
-8. As an unrelated user, try configuration, upload, report and retry URLs.
-   They must be denied. A permitted transcriber may search and select headings
-   but cannot configure inventories. Repeat against a private collection.
+1. As an owner, open the collection's metadata field editor, create a field of
+   type **Subject Headings (LCSH)**, save, and open **Configure Subject Headings**.
+2. Download the template. Import a CSV with about 3,000 legacy headings,
+   including duplicates, final-period variants and distinct subdivisions.
+   Optionally include URI values and subject-assignment instructions. Leave
+   the validation checkbox unchecked. Confirm filename, row/unique counts,
+   saved guidance and `Not requested` status.
+3. Replace the CSV and request LC checking. Confirm the replacement inventory
+   is stored immediately and status becomes queued/running. Work descriptions,
+   draft metadata and reserved candidate payloads must remain unchanged.
+4. Run the queue worker with access to `id.loc.gov` and mail configured. Confirm
+   the completion email links to configuration, where a protected report can
+   be downloaded. No suggestions should have changed the inventory.
+5. Reupload the report unchanged and verify headings/URIs remain the same. Then
+   edit `heading`/`uri`, reupload and confirm only those edits become active.
+6. Simulate a timeout and inspect failed status, partial report, failure email
+   and retry. Replace the inventory during a check and confirm old results do
+   not appear on the replacement. Retry a completed job and confirm there is
+   no duplicate notification.
+7. As an unrelated owner or ordinary transcriber, try configuration, upload,
+   template, report and retry URLs; access must be denied. Repeat against a
+   private collection and check that other projects' field IDs cannot be used.
 
-Guidance document attachment/extraction is deliberately deferred: the existing
-attachment facilities do not provide a general guidance-document text extractor.
-Use the text area. Full authority reconciliation, automatic replacement,
-terminology modernization and vocabulary history remain outside scope.
+Guidance document attachment/extraction remains deferred; use the text area.
+Item-level subject selection and AI drafting integration belong to the other
+team. Full authority reconciliation, automatic replacement, terminology
+modernization and vocabulary history remain outside this feature.
 
 ## Verification
 
-The combined feature, existing AI metadata, metadata export and Chromium run
-passed **170 examples, 0 failures**. It used a fresh MariaDB database loaded
-from the updated checked-in schema. The Chromium scenarios exercised a
-3,000-heading inventory, multiselect save/reload, retired selections with URIs,
-single-model draft review, disagreement between models, and modal CSV upload.
-The final importer-only run also covers null bytes and invalid upload parameters.
-The final validation-job run also covers an enqueue failure, retaining usable
-headings and exposing a retryable failed state.
-All changed Ruby code passed RuboCop (39 files), Rails' eager-load check passed,
-and `git diff --check` was clean. No external authority or LLM calls were made
-by these tests.
-
-The combined command was:
+Run the owner configuration, import/report, authority service, job, storage and
+Chromium tests, plus existing AI tests to check backward compatibility:
 
 ```sh
 RAILS_ENV=test xvfb-run -a bundle exec rspec \
   spec/interactors/subject_headings spec/jobs/subject_headings \
-  spec/requests/subject_headings_spec.rb \
-  spec/requests/subject_heading_descriptions_spec.rb \
-  spec/interactors/ai_work_metadata spec/jobs/ai_work_metadata \
-  spec/requests/work_describe_ai_spec.rb spec/requests/work_ai_metadata_spec.rb \
+  spec/requests/subject_headings_spec.rb spec/features/subject_headings_spec.rb \
+  spec/models/subject_heading_candidate_storage_spec.rb \
+  spec/models/ai_work_metadata_spec.rb spec/interactors/ai_work_metadata \
+  spec/jobs/ai_work_metadata spec/requests/work_describe_ai_spec.rb \
+  spec/requests/work_ai_metadata_spec.rb \
   spec/requests/work/ai_work_metadata_controller_spec.rb \
-  spec/requests/collection/ai_work_metadata_controller_spec.rb \
-  spec/interactors/work/metadata/export_csv_spec.rb \
-  spec/features/subject_headings_spec.rb
+  spec/requests/collection/ai_work_metadata_controller_spec.rb
 ```
 
-Four of six additional existing field-editor checks passed. Two transcription
-editor checks failed in this environment: adding an unsaved field row
-(`spec/features/field_based_spec.rb:113`) and reordering full lines
-(`spec/features/field_based_spec.rb:190`, sortable not initialized). Both failures
-reproduced with the original Git controller and field-row template loaded in
-a separate test process. Those existing initialization failures were left
-outside this enhancement. The full repository suite was not run.
-
-The migration was applied successfully to local test and development databases.
-Production deployment and a live LC request remain to be verified in the
-deployment environment, where access to `id.loc.gov` and mail delivery must be
-configured.
+The revised scope passed **163 examples, 0 failures**, including the two owner
+Chromium scenarios, JSON storage checks and existing AI regression tests, using
+a fresh MariaDB database loaded from the checked-in schema. External LC
+responses are mocked. A live LC request and production mail configuration still
+need deployment smoke checks, as described above.

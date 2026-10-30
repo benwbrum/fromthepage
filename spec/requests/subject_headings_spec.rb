@@ -41,7 +41,7 @@ describe SubjectHeadingsController, :subject_headings do
     expect(response).to redirect_to(path)
     original = field.reload.subject_heading_inventory
     get path
-    expect(response.body).to include('2 imported rows; 1 unique selectable headings.', 'Use specific topics.', 'Not requested')
+    expect(response.body).to include('2 imported rows; 1 unique headings.', 'Use specific topics.', 'Not requested')
     patch path, params: { file: upload_csv("heading\nReplacement\n") }
     expect(field.reload.subject_heading_inventory.subject_headings.pluck(:heading)).to eq(['Replacement'])
     expect(SubjectHeadingInventory.exists?(original.id)).to be(false)
@@ -97,39 +97,14 @@ describe SubjectHeadingsController, :subject_headings do
     expect(inventory.reload).to be_present
   end
 
-  it 'denies search and report access to an unrelated user in a private project' do
+  it 'denies configuration and report access to an unrelated user in a private project' do
     import_headings(field)
     collection.update!(visibility: :private)
     login_as create(:unique_user)
-    get collection_subject_headings_search_path(owner, collection, field)
+    get path
     expect(response).to be_redirect
     get collection_subject_headings_report_path(owner, collection, field)
     expect(response).to be_redirect
-  end
-
-  it 'limits remote search results, supports pagination and does not render inventory options' do
-    import_headings(field, "heading\n#{3000.times.map { |i| "Topic #{i}" }.join("\n")}\n")
-    login_as owner
-    search_path = collection_subject_headings_search_path(owner, collection, field)
-    get search_path, params: { term: 'Topic', page: 1 }
-    first = JSON.parse(response.body)
-    expect(first['results'].size).to eq(30)
-    expect(first['pagination']['more']).to be(true)
-    get search_path, params: { term: 'Topic', page: 2 }
-    expect(JSON.parse(response.body)['results'].map { |r| r['id'] } & first['results'].map { |r| r['id'] }).to be_empty
-    get collection_edit_metadata_fields_path(owner, collection)
-    expect(Nokogiri::HTML(response.body).css('.subject-heading-input option').size).to eq(0)
-  end
-
-  it 'escapes wildcard search and does not allow foreign field IDs' do
-    import_headings(field)
-    login_as owner
-    get collection_subject_headings_search_path(owner, collection, field), params: { term: '%' }
-    expect(JSON.parse(response.body)['results']).to be_empty
-    other_collection = create(:collection, owner_user_id: owner.id, works: [])
-    other = create(:transcription_field, :as_metadata, collection: other_collection, input_type: 'subject_headings')
-    get collection_subject_headings_path(owner, collection, other)
-    expect(response).to have_http_status(:not_found)
   end
 
   it 'serves reports through an authorized private endpoint' do
@@ -139,6 +114,63 @@ describe SubjectHeadingsController, :subject_headings do
     get collection_subject_headings_report_path(owner, collection, field)
     expect(response.body).to eq(inventory.report_csv)
     expect(response.headers['Cache-Control']).to include('private', 'no-store')
+  end
+
+  it 'scopes configuration to the requested project' do
+    other_collection = create(:collection, owner_user_id: owner.id, works: [])
+    other_field = create(:transcription_field, :as_metadata, collection: other_collection, input_type: 'subject_headings')
+    login_as owner
+    get collection_subject_headings_path(owner, collection, other_field)
+    expect(response).to have_http_status(:not_found)
+  end
+
+  it 'lets owners reupload an advisory report without accepting its suggestions' do
+    inventory = import_headings(field, "heading\nLocal term\n")
+    inventory.update!(report_csv: SubjectHeadings::Report.generate([
+      { 'heading' => 'Local term', 'uri' => nil, 'suggested_heading' => 'Suggested term',
+        'suggested_uri' => 'https://example.org/suggested', 'result' => 'possible_match', 'rationale' => 'Review this suggestion.' }
+    ]))
+    login_as owner
+    get path
+    expect(response.body).to include('Download validation report')
+    get collection_subject_headings_report_path(owner, collection, field)
+    report = response.body
+    patch path, params: { file: upload_csv(report) }
+    expect(response).to redirect_to(path)
+    expect(field.reload.subject_heading_inventory.subject_headings.pluck(:heading, :uri)).to eq([['Local term', nil]])
+
+    edited = CSV.parse(report.delete_prefix("\uFEFF"), headers: true)
+    edited.first['heading'] = 'Accepted term'
+    edited.first['uri'] = 'https://example.org/accepted'
+    patch path, params: { file: upload_csv(edited.to_csv) }
+    expect(field.reload.subject_heading_inventory.subject_headings.pluck(:heading, :uri)).to eq([['Accepted term', 'https://example.org/accepted']])
+  end
+
+  it 'replaces inventories without changing work descriptions or the other team’s draft data' do
+    import_headings(field)
+    description = [{ 'label' => 'Title', 'value' => 'Existing description' }].to_json
+    work.update!(metadata_description: description)
+    candidates = { 'candidate_ids' => ['external-team-1'] }
+    draft_metadata = { 'title' => 'Existing draft' }
+    draft = create(:ai_work_metadata, work_id: work.id, subject_heading_candidates: candidates, metadata_json: draft_metadata)
+    login_as owner
+    expect do
+      patch path, params: { file: upload_csv("heading\nReplacement\n") }
+    end.not_to change(AiWorkMetadata, :count)
+    expect(response).to redirect_to(path)
+    expect(work.reload.metadata_description).to eq(description)
+    expect(draft.reload.subject_heading_candidates).to eq(candidates)
+    expect(draft.metadata_json).to eq(draft_metadata)
+  end
+
+  it 'denies inventory configuration to ordinary transcribers' do
+    import_headings(field)
+    login_as create(:unique_user)
+    get path
+    expect(response).to have_http_status(:forbidden)
+    patch path, params: { file: upload_csv("heading\nInjected\n") }
+    expect(response).to have_http_status(:forbidden)
+    expect(field.reload.subject_heading_inventory.subject_headings.pluck(:heading)).to eq(['Agriculture'])
   end
 
   [nil, :nonowner].each do |role|
@@ -154,14 +186,5 @@ describe SubjectHeadingsController, :subject_headings do
       expect(response).to have_http_status(:forbidden)
       expect(field.reload.subject_heading_inventory).to be_nil
     end
-  end
-
-  it 'allows signed-in transcribers to search but not configure' do
-    import_headings(field)
-    login_as create(:unique_user)
-    get collection_subject_headings_search_path(owner, collection, field)
-    expect(response).to have_http_status(:ok)
-    get path
-    expect(response).to have_http_status(:forbidden)
   end
 end

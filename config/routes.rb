@@ -520,7 +520,6 @@ Fromthepage::Application.routes.draw do
       get 'edit_metadata_fields', as: :edit_metadata_fields, to: 'transcription_field#edit_metadata_fields'
       get 'metadata_fields/:field_id/subject_headings', as: :subject_headings, to: 'subject_headings#show'
       patch 'metadata_fields/:field_id/subject_headings', to: 'subject_headings#update'
-      get 'metadata_fields/:field_id/subject_headings/search', as: :subject_headings_search, to: 'subject_headings#search'
       get 'metadata_fields/:field_id/subject_headings/template', as: :subject_headings_template, to: 'subject_headings#template'
       get 'metadata_fields/:field_id/subject_headings/report', as: :subject_headings_report, to: 'subject_headings#report'
       post 'metadata_fields/:field_id/subject_headings/retry', as: :subject_headings_retry, to: 'subject_headings#retry_validation'

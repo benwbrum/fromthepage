@@ -184,9 +184,7 @@ module ApplicationHelper
     if value.is_a? String
       safe_text(value)
     elsif value.is_a? Array
-      if value.first.is_a?(Hash) && value.first.key?('heading')
-        value.map { |v| ERB::Util.html_escape([v['heading'], v['uri']].compact.join(' — ')) }.join('; ')
-      elsif value.first.is_a? String
+      if value.first.is_a? String
         value.map { |v| safe_text(v) }.join('; ')
       else
         value.map { |e| safe_text(e['@value']) }.join('; ')
