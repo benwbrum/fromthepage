@@ -321,7 +321,7 @@ describe Work do
         work.machine_plaintext_for_ai?
       end
 
-      expect(queries).to eq(4) # pages, then latest ALTO ids, latest finished ids, and their text
+      expect(queries).to eq(3) # pages, latest finished AI transcription ids, and their text
     end
 
     it 'is not machine text when every page has a human transcription' do

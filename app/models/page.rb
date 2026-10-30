@@ -646,7 +646,7 @@ class Page < ApplicationRecord
     end
   end
 
-  # Text for AI prompts: the page's human transcription, or its latest AI transcription
+  # Text for AI prompts: the page's human transcription, or its latest finished AI transcription
   # if nobody has transcribed it yet
   def plaintext_for_ai
     human_plaintext_for_ai.presence || machine_plaintext_for_ai
@@ -665,37 +665,21 @@ class Page < ApplicationRecord
   attr_writer :machine_plaintext_for_ai
 
   def machine_plaintext_for_ai
-    @machine_plaintext_for_ai ||= ai_plaintext.to_s.strip
+    @machine_plaintext_for_ai ||= ai_transcription_plaintext(finished_ai_transcription)
   end
 
-  # Loads the AI text plaintext_for_ai needs for many pages in three queries that fetch only text
-  # columns, instead of per-page queries that also load prompts and reasoning. Like ai_plaintext, an
-  # ALTO transcription wins over the latest finished AI transcription.
+  # Loads the AI text plaintext_for_ai needs for many pages in two queries that fetch only text
+  # columns, instead of a query per page that also loads prompts and reasoning
   def self.preload_plaintext_for_ai(pages)
     pages = pages.reject do |page|
       page.status_blank? || page.human_plaintext_for_ai.present? || page.instance_variable_defined?(:@machine_plaintext_for_ai)
     end
     return if pages.empty?
 
-    ids = pages.map(&:id)
-    latest_ids = AiTranscription.alto.where(page_id: ids).group(:page_id).maximum(:id).values +
-                 AiTranscription.status_finished.where(page_id: ids).group(:page_id).maximum(:id).values
-    transcriptions = AiTranscription.where(id: latest_ids.uniq)
-                                    .select(:id, :page_id, :model, :status, :source_text, :transcription_json)
-                                    .group_by(&:page_id)
+    latest_ids = AiTranscription.status_finished.where(page_id: pages.map(&:id)).group(:page_id).maximum(:id).values
+    latest = AiTranscription.where(id: latest_ids).select(:id, :page_id, :source_text, :transcription_json).index_by(&:page_id)
 
-    pages.each do |page|
-      candidates = transcriptions.fetch(page.id, [])
-      alto = candidates.select { |t| t.model == AiTranscription::ALTO_MODEL }.max_by(&:id)
-      finished = candidates.select(&:status_finished?).max_by(&:id)
-      text = if alto
-               alto.source_text
-             elsif finished
-               finished.source_text.presence ||
-                 (finished.transcription_json.present? ? page.send(:field_transcription_json_to_plaintext, finished.transcription_json) : '')
-             end
-      page.machine_plaintext_for_ai = text.to_s.strip
-    end
+    pages.each { |page| page.machine_plaintext_for_ai = page.send(:ai_transcription_plaintext, latest[page.id]) }
   end
 
   def ai_plaintext_has_emoji_placeholders?
@@ -926,6 +910,14 @@ class Page < ApplicationRecord
       end
     end
     values.join(' ')
+  end
+
+  def ai_transcription_plaintext(ai_transcription)
+    return '' if ai_transcription.nil?
+
+    text = ai_transcription.source_text.presence
+    text ||= field_transcription_json_to_plaintext(ai_transcription.transcription_json) if ai_transcription.transcription_json.present?
+    text.to_s.strip
   end
 
   def field_transcription_json_to_plaintext(transcription_json)

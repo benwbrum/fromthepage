@@ -64,7 +64,7 @@ class SubjectHeadings::CreateSampleSet < ApplicationInteractor
   # [work, text] pairs for a random POOL_SIZE of the works with human or AI transcription
   def candidate_works
     pages = Page.where(work_id: @collection.works.select(:id))
-    ai_pages = AiTranscription.where(page_id: pages.select(:id)).merge(AiTranscription.status_finished.or(AiTranscription.alto))
+    ai_pages = AiTranscription.status_finished.where(page_id: pages.select(:id))
     pages_with_text = pages.where(status: HUMAN_STATUSES).or(pages.where(id: ai_pages.select(:page_id)))
     ids = @collection.works.where(id: pages_with_text.select(:work_id)).pluck(:id)
                      .sample(POOL_SIZE, random: Random.new(@collection.id))

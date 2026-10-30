@@ -668,22 +668,21 @@ describe Page do
                     xml_text: "<?xml version='1.0' encoding='UTF-8'?><page><p>Human transcription</p></page>")
     end
     let!(:ai_page) { create(:page, work: work, position: 2, status: :new) }
-    let!(:alto_page) { create(:page, work: work, position: 3, status: :new) }
+    let!(:unfinished_page) { create(:page, work: work, position: 3, status: :new) }
     let!(:untranscribed_page) { create(:page, work: work, position: 4, status: :new) }
 
     before do
       create(:ai_transcription, page_id: ai_page.id, source_text: 'Older AI text', status: :finished)
       create(:ai_transcription, page_id: ai_page.id, source_text: 'Newer AI text', status: :finished)
       create(:ai_transcription, page_id: ai_page.id, source_text: 'Unfinished AI text', status: :processing)
-      create(:ai_transcription, page_id: alto_page.id, source_text: 'Finished AI text', status: :finished)
-      create(:ai_transcription, page_id: alto_page.id, source_text: 'ALTO text', model: AiTranscription::ALTO_MODEL, status: :new)
+      create(:ai_transcription, page_id: unfinished_page.id, source_text: 'Still running', status: :processing)
     end
 
     it 'gives the same text as loading each page on its own' do
-      pages = Page.where(id: [human_page, ai_page, alto_page, untranscribed_page].map(&:id)).order(:position).to_a
+      pages = Page.where(id: [human_page, ai_page, unfinished_page, untranscribed_page].map(&:id)).order(:position).to_a
       described_class.preload_plaintext_for_ai(pages)
 
-      expect(pages.map(&:plaintext_for_ai)).to eq(['Human transcription', 'Newer AI text', 'ALTO text', ''])
+      expect(pages.map(&:plaintext_for_ai)).to eq(['Human transcription', 'Newer AI text', '', ''])
       expect(pages.map(&:plaintext_for_ai)).to eq(Page.where(id: pages.map(&:id)).order(:position).map(&:plaintext_for_ai))
     end
 
@@ -696,7 +695,7 @@ describe Page do
         pages.each(&:plaintext_for_ai)
       end
 
-      expect(queries).to eq(3)
+      expect(queries).to eq(2)
     end
   end
 end
