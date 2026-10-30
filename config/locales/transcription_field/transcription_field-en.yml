@@ -58,6 +58,19 @@ en:
       ai_option_placeholder: Click a suggestion below, or type your transcription…
       ai_spreadsheet_option: Use this draft
       instructions: Instructions
+    input_types:
+      alt_text: Alt Text
+      checkbox: Checkbox
+      date: Date
+      description: Description
+      instruction: Instruction
+      multiselect: Multiselect
+      numeric: Numeric
+      select: Select
+      spreadsheet: Spreadsheet
+      subject_headings: Subject Headings (LCSH)
+      text: Text
+      textarea: Text Area
     line_form:
       field_options: Field options (separate with semicolons)
       field_options_title: Options for select fields.

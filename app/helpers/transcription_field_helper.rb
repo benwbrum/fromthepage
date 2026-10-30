@@ -1,6 +1,24 @@
 # frozen_string_literal: true
 
 module TranscriptionFieldHelper
+  def field_input_type_options(input_types)
+    labels = {
+      'text' => t('transcription_field.input_types.text'),
+      'select' => t('transcription_field.input_types.select'),
+      'date' => t('transcription_field.input_types.date'),
+      'multiselect' => t('transcription_field.input_types.multiselect'),
+      'textarea' => t('transcription_field.input_types.textarea'),
+      'instruction' => t('transcription_field.input_types.instruction'),
+      'alt text' => t('transcription_field.input_types.alt_text'),
+      'description' => t('transcription_field.input_types.description'),
+      'spreadsheet' => t('transcription_field.input_types.spreadsheet'),
+      'subject_headings' => t('transcription_field.input_types.subject_headings'),
+      'numeric' => t('transcription_field.input_types.numeric'),
+      'checkbox' => t('transcription_field.input_types.checkbox')
+    }
+    input_types.map { |input_type| [labels.fetch(input_type), input_type] }
+  end
+
   def metadata_field_order(collection)
     @fields = collection.metadata_fields.order(:line_number).order(:position).group_by(&:line_number)
   end

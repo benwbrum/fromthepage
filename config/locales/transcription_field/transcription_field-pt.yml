@@ -58,6 +58,19 @@ pt:
       ai_option_placeholder: Clique em uma sugestão abaixo, ou digite sua transcrição…
       ai_spreadsheet_option: Usar este rascunho
       instructions: Instruções
+    input_types:
+      alt_text: Texto alternativo
+      checkbox: Caixa de seleção
+      date: Data
+      description: Descrição
+      instruction: Instrução
+      multiselect: Seleção múltipla
+      numeric: Numérico
+      select: Seleção
+      spreadsheet: Planilha
+      subject_headings: Cabeçalhos de assunto (LCSH)
+      text: Texto
+      textarea: Área de texto
     line_form:
       field_options: Opções de campos (separar com ponto-e-vírgula)
       field_options_title: Opções para campos selecionados.

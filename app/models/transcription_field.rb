@@ -46,5 +46,5 @@ class TranscriptionField < ApplicationRecord
 
   TRANSCRIPTION_INPUTS = ['text', 'select', 'date', 'textarea',
                           'description', 'instruction', 'spreadsheet', 'alt text'].freeze
-  METADATA_INPUTS = ['text', 'select', 'date', 'multiselect', 'textarea', 'instruction', 'alt text', ['Subject Headings (LCSH)', 'subject_headings']].freeze
+  METADATA_INPUTS = ['text', 'select', 'date', 'multiselect', 'textarea', 'instruction', 'alt text', 'subject_headings'].freeze
 end
