@@ -25,6 +25,16 @@ describe AiWorkMetadata::Lib::PromptBuilder do
     expect(prompt).to include('This is the transcribed page text.')
   end
 
+  context 'when the work has only an AI transcription' do
+    let!(:page) { create(:page, status: :new, work: work) }
+
+    before { create(:ai_transcription, page_id: page.id, status: :finished, source_text: 'AI transcribed page text.') }
+
+    it 'uses the AI transcription, labelled as machine transcription' do
+      expect(prompt).to include("Document text (some or all of it is machine transcription and may contain errors):\nAI transcribed page text.")
+    end
+  end
+
   it 'includes an example JSON block keyed by field id' do
     expect(prompt).to include("\"#{text_field.id}\": \"extracted text\"")
   end
@@ -62,6 +72,18 @@ describe AiWorkMetadata::Lib::PromptBuilder do
 
     it 'includes the additional instructions' do
       expect(prompt).to include('Focus on names and dates.')
+    end
+  end
+
+  context 'when the collection has a subject heading field' do
+    let!(:subject_field) do
+      create(:transcription_field, :as_metadata, label: 'Subject Headings', input_type: 'subject_headings',
+                                                 collection: collection, position: 2, line_number: 2)
+    end
+
+    it 'leaves it out, since subject headings are generated separately' do
+      expect(prompt).not_to include(subject_field.id.to_s)
+      expect(prompt).not_to include('Subject Headings')
     end
   end
 end
