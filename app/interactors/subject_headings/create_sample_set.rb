@@ -5,13 +5,14 @@ class SubjectHeadings::CreateSampleSet < ApplicationInteractor
   SIZE = 20
   POOL_SIZE = 1_000
   MIN_TEXT_LENGTH = 200
-  TRANSCRIBED_STATUSES = [:transcribed, :indexed, :needs_review].freeze
-  UNFINISHED_STATUSES = [:new, :incomplete, nil].freeze
+  HUMAN_STATUSES = [:incomplete, :transcribed, :indexed, :needs_review].freeze
 
   attr_accessor :document_set
 
   # Creates a private document set of transcribed works that represent the variety of the collection,
-  # chosen from their transcripts alone (see SubjectHeadings::Lib::VariedSelection).
+  # chosen from their transcripts alone (see SubjectHeadings::Lib::VariedSelection). Works are drawn from
+  # the whole collection whether their text is human or AI transcription, so the sample isn't skewed
+  # toward whatever volunteers happened to transcribe first.
   #
   # @params collection: required
   # @params user: required
@@ -60,18 +61,19 @@ class SubjectHeadings::CreateSampleSet < ApplicationInteractor
     raise ArgumentError, 'User has no permission to create a sample set for this collection'
   end
 
-  # [work, text] pairs for up to POOL_SIZE transcribed works, preferring fully transcribed ones
+  # [work, text] pairs for a random POOL_SIZE of the works with human or AI transcription
   def candidate_works
-    random = Random.new(@collection.id)
-    work_ids = @collection.works.select(:id)
-    transcribed = @collection.works.where(id: Page.where(work_id: work_ids, status: TRANSCRIBED_STATUSES).select(:work_id))
-    unfinished = Page.where(work_id: work_ids, status: UNFINISHED_STATUSES).select(:work_id)
+    pages = Page.where(work_id: @collection.works.select(:id))
+    ai_pages = AiTranscription.where(page_id: pages.select(:id)).merge(AiTranscription.status_finished.or(AiTranscription.alto))
+    pages_with_text = pages.where(status: HUMAN_STATUSES).or(pages.where(id: ai_pages.select(:page_id)))
+    ids = @collection.works.where(id: pages_with_text.select(:work_id)).pluck(:id)
+                     .sample(POOL_SIZE, random: Random.new(@collection.id))
 
-    ids = transcribed.where.not(id: unfinished).pluck(:id).sample(POOL_SIZE, random: random)
-    ids += transcribed.where(id: unfinished).pluck(:id).sample(POOL_SIZE - ids.size, random: random) if ids.size < POOL_SIZE
+    works = Work.where(id: ids).includes(:pages).order(:id).to_a
+    Page.preload_plaintext_for_ai(works.flat_map(&:pages))
 
-    Work.where(id: ids).includes(:pages).order(:id).filter_map do |work|
-      text = work.verbatim_transcription_plaintext.to_s
+    works.filter_map do |work|
+      text = work.plaintext_for_ai
       [work, "#{work.title}\n#{text}"] if text.length >= MIN_TEXT_LENGTH
     end
   end

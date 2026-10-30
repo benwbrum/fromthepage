@@ -1,8 +1,11 @@
 # Picks `count` texts that together represent the variety of a set of documents, using only their words:
 # TF-IDF vectors, spherical k-means with `count` clusters, then the most typical text (closest to the
 # cluster centre) from each cluster. Typical documents make better examples for a cataloger than outliers.
+# k-means can settle on a poor clustering from unlucky starting centres, so it starts from spread-out
+# centres (k-means++) and keeps the tightest of several runs.
 class SubjectHeadings::Lib::VariedSelection
   ITERATIONS = 15
+  RESTARTS = 3
   MIN_WORD_LENGTH = 3
   MIN_DOCUMENT_FREQUENCY = 2
   MAX_CENTROID_TERMS = 2_000
@@ -18,11 +21,11 @@ class SubjectHeadings::Lib::VariedSelection
     return [] if @count.zero?
     return (0...@texts.size).to_a if @count == @texts.size
 
-    assignments = cluster
+    assignments, centroids = Array.new(RESTARTS) { cluster }.max_by { |a, c| cohesion(a, c) }
     clusters = assignments.each_with_index.group_by(&:first).transform_values { |pairs| pairs.map(&:last) }
     chosen = clusters.values
                      .sort_by { |members| -members.size }
-                     .map { |members| members.max_by { |i| dot(vectors[i], @centroids[assignments[i]]) } }
+                     .map { |members| members.max_by { |i| dot(vectors[i], centroids[assignments[i]]) } }
 
     # A cluster can end up empty; fill any shortfall at random so callers always get `count` texts
     chosen + ((0...@texts.size).to_a - chosen).sample(@count - chosen.size, random: @random)
@@ -30,23 +33,58 @@ class SubjectHeadings::Lib::VariedSelection
 
   private
 
+  # [assignments, centroids]: assignments[i] is the cluster of texts[i]
   def cluster
-    @centroids = vectors.values_at(*(0...vectors.size).to_a.sample(@count, random: @random))
+    centroids = initial_centroids
     assignments = nil
 
     ITERATIONS.times do
-      new_assignments = vectors.map { |v| nearest_centroid(v) }
+      new_assignments = vectors.map { |v| nearest_centroid(v, centroids) }
       break if new_assignments == assignments
 
       assignments = new_assignments
-      @centroids = (0...@count).map { |c| centroid(vectors.each_index.select { |i| assignments[i] == c }) || @centroids[c] }
+      centroids = (0...@count).map { |c| centroid(vectors.each_index.select { |i| assignments[i] == c }) || centroids[c] }
     end
 
-    assignments
+    [assignments, centroids]
   end
 
-  def nearest_centroid(vector)
-    (0...@count).max_by { |c| dot(vector, @centroids[c]) }
+  # k-means++: each further starting centre is chosen with probability proportional to its squared
+  # distance from the centres already chosen, so the starting centres are spread across the documents
+  def initial_centroids
+    chosen = [@random.rand(vectors.size)]
+    distances = vectors.map { |v| distance(v, vectors[chosen.first]) }
+
+    (@count - 1).times do
+      chosen << weighted_pick(distances, chosen)
+      distances = distances.each_with_index.map { |d, i| [d, distance(vectors[i], vectors[chosen.last])].min }
+    end
+
+    vectors.values_at(*chosen)
+  end
+
+  def weighted_pick(weights, exclude)
+    total = weights.sum
+    return ((0...weights.size).to_a - exclude).sample(random: @random) if total.zero?
+
+    target = @random.rand * total
+    weights.each_with_index do |weight, i|
+      target -= weight
+      return i if target <= 0 && exclude.exclude?(i)
+    end
+    ((0...weights.size).to_a - exclude).last
+  end
+
+  def distance(a, b)
+    (1 - dot(a, b))**2
+  end
+
+  def cohesion(assignments, centroids)
+    vectors.each_index.sum { |i| dot(vectors[i], centroids[assignments[i]]) }
+  end
+
+  def nearest_centroid(vector, centroids)
+    (0...@count).max_by { |c| dot(vector, centroids[c]) }
   end
 
   def centroid(member_indexes)

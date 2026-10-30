@@ -25,6 +25,16 @@ describe AiWorkMetadata::Lib::PromptBuilder do
     expect(prompt).to include('This is the transcribed page text.')
   end
 
+  context 'when the work has only an AI transcription' do
+    let!(:page) { create(:page, status: :new, work: work) }
+
+    before { create(:ai_transcription, page_id: page.id, status: :finished, source_text: 'AI transcribed page text.') }
+
+    it 'uses the AI transcription, labelled as machine transcription' do
+      expect(prompt).to include("Document text (some or all of it is machine transcription and may contain errors):\nAI transcribed page text.")
+    end
+  end
+
   it 'includes an example JSON block keyed by field id' do
     expect(prompt).to include("\"#{text_field.id}\": \"extracted text\"")
   end

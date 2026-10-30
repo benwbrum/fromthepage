@@ -63,6 +63,41 @@ describe SubjectHeadings::CreateSampleSet do
     end
   end
 
+  context 'when a work only has an AI transcription' do
+    let!(:ai_only_work) do
+      create(:work, collection: collection).tap do |work|
+        page = create(:page, status: :new, work: work)
+        create(:ai_transcription, page_id: page.id, status: :finished, source_text: "Cotton crop and plantation accounts.#{long}")
+      end
+    end
+    let(:size) { 20 }
+
+    it 'can be sampled using the AI transcription' do
+      expect(result.document_set.works).to include(ai_only_work)
+    end
+  end
+
+  context 'when the collection only has AI transcriptions' do
+    let!(:militia_works) { [] }
+    let!(:pardon_works) { [] }
+    let!(:railroad_works) { [] }
+    let!(:untranscribed_work) { nil }
+    let!(:short_work) { nil }
+    let!(:ai_works) do
+      Array.new(2) do |i|
+        create(:work, collection: collection).tap do |work|
+          page = create(:page, status: :new, work: work)
+          create(:ai_transcription, page_id: page.id, status: :finished, source_text: "AI transcript #{i}.#{long}")
+        end
+      end
+    end
+
+    it 'samples them' do
+      expect(result.success?).to be_truthy
+      expect(result.document_set.works).to match_array(ai_works)
+    end
+  end
+
   context 'when the user does not own the collection' do
     let(:user) { create(:unique_user) }
 

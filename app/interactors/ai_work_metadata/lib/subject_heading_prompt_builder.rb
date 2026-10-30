@@ -37,7 +37,8 @@ class AiWorkMetadata::Lib::SubjectHeadingPromptBuilder
   end
 
   def user_prompt
-    "TITLE: #{@work.title}\n\nTRANSCRIPT:\n#{@work.verbatim_transcription_plaintext}"
+    label = @work.machine_plaintext_for_ai? ? 'TRANSCRIPT (some or all of it is machine transcription and may contain errors)' : 'TRANSCRIPT'
+    "TITLE: #{@work.title}\n\n#{label}:\n#{@work.plaintext_for_ai}"
   end
 
   # SubjectHeading for an ID the model returned, or nil

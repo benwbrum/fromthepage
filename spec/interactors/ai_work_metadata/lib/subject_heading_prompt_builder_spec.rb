@@ -37,6 +37,16 @@ describe AiWorkMetadata::Lib::SubjectHeadingPromptBuilder do
     expect(builder.user_prompt).to include("TITLE: Letter about a murder\n\nTRANSCRIPT:\nA colored man was charged with murder.")
   end
 
+  context 'when the work has only an AI transcription' do
+    let!(:page) { create(:page, status: :new, work: work) }
+
+    before { create(:ai_transcription, page_id: page.id, status: :finished, source_text: 'A colored man was charged with murder.') }
+
+    it 'sends the AI transcription, labelled as machine transcription' do
+      expect(builder.user_prompt).to include("TRANSCRIPT (some or all of it is machine transcription and may contain errors):\nA colored man was charged with murder.")
+    end
+  end
+
   it 'maps ids back to headings' do
     expect(builder.heading_for('H0002')).to eq(murder)
     expect(builder.heading_for('H0001')).to eq(african_americans)
