@@ -68,7 +68,8 @@ describe SubjectHeadingsController, :subject_headings do
     login_as owner
     patch path, params: { file: upload_csv('bad header') }
     expect(response).to have_http_status(:unprocessable_entity)
-    expect(response.body).to include('requires a heading column')
+    error = Nokogiri::HTML(response.body).at_css('.validation[role="alert"] .validation_summary li')
+    expect(error.text).to include('requires a heading column')
     expect(field.reload.subject_heading_inventory.id).to eq(inventory.id)
   end
 

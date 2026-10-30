@@ -39,6 +39,27 @@ describe 'Project owner subject heading configuration', js: true do
     expect(field.subject_heading_inventory.subject_headings.find_by(heading: 'Agriculture').uri).to eq('https://id.loc.gov/authorities/subjects/sh85002415')
   end
 
+  it 'shows invalid uploads using the standard modal validation styling' do
+    visit collection_edit_metadata_fields_path(owner, collection)
+    click_link 'Configure Subject Headings'
+    file = Tempfile.new(['invalid-subjects', '.csv'])
+    file.write("subject\nAgriculture\n")
+    file.rewind
+    within('.litebox-embed') do
+      fill_in 'Subject assignment guidelines (optional)', with: 'Keep these guidelines.'
+      attach_file 'Subject headings file', file.path, make_visible: true
+      click_button 'Save Subject Headings'
+      error = find('.validation[role="alert"]')
+      expect(error).to have_css('.validation_summary li', text: 'CSV requires a heading column.')
+      expect(error.style('border-left-width')['border-left-width']).to eq('3px')
+      expect(page).to have_field('Subject assignment guidelines (optional)', with: 'Keep these guidelines.')
+      expect(page).to have_button('Save Subject Headings')
+    end
+    expect(field.reload.subject_heading_inventory).to be_nil
+  ensure
+    file&.close!
+  end
+
   it 'replaces a configured inventory and requests advisory checking' do
     original = import_headings(field)
     visit collection_subject_headings_path(owner, collection, field)

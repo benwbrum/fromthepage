@@ -2,7 +2,9 @@
   h3 Configure Subject Headings
   p.fgfaded =@field.label
   -if @error
-    p.fgerror role="alert" =@error
+    .validation role="alert"
+      ul.validation_summary
+        li =@error
   =form_tag collection_subject_headings_path(@collection.owner, @collection, @field), method: :patch, multipart: true do
     section.subject-heading-section aria-labelledby="subject-heading-file-title"
       h4#subject-heading-file-title =label_tag :file, 'Subject headings file'
@@ -35,7 +37,9 @@
       -if @inventory
         p ="Validation status: #{@inventory.validation_status.humanize}"
         -if @inventory.validation_error.present?
-          p.fgerror role="alert" =@inventory.validation_error.gsub(/\binventory\b/i, 'heading list')
+          .validation role="alert"
+            ul.validation_summary
+              li =@inventory.validation_error.gsub(/\binventory\b/i, 'heading list')
         -if @inventory.report_csv.present?
           p =link_to 'Download validation report', collection_subject_headings_report_path(@collection.owner, @collection, @field)
           p To adopt suggestions, edit the heading and uri columns in the report and upload the revised file.
