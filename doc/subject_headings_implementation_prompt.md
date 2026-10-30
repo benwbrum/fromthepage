@@ -2,9 +2,10 @@
 
 Implement the project owner configuration phase of Subject Headings (LCSH)
 metadata fields in FromThePage. The broader feature will eventually support
-AI-created draft LCSH metadata, but a separate team owns subject assignment and
-its integration with work metadata. Keep this phase limited to configuration,
-inventory import/replacement, advisory authority checking, reports and notices.
+AI-created draft LCSH metadata, but a separate team owns AI subject assignment
+and its integration with draft metadata. Include owner configuration, inventory
+import/replacement, advisory authority checking, reports and notices, plus
+manual subject selection through the existing metadata form.
 
 ## Inspect and follow existing patterns
 
@@ -28,6 +29,15 @@ frameworks and dependencies and keep other metadata datatypes compatible.
 - Show filename, imported row count, unique heading count, saved guidance,
   validation status/error, report download and a way to replace the CSV. Permit
   retry after a validation failure.
+
+## Manual metadata entry and preview
+
+Render subject-heading fields with the existing searchable Select2 multi-select
+in both the owner's preview and the work metadata form. Use unique uploaded
+heading labels as options and the existing metadata array storage. Preserve
+already-saved selections when a replacement list no longer includes them.
+Show a small localized unique-heading count beside Configure Subject Headings.
+This is manual entry only; do not add AI assignment or consume candidate data.
 
 ## Import and replacement
 
@@ -96,9 +106,8 @@ Do not implement or change:
 - AI subject-assignment prompts, response handling, generation jobs or creation
   logic. Add only the phase-boundary guard that omits this datatype from current
   AI prompts and discards unsolicited subject-field output until integration.
-- Applying headings to work-level draft or saved metadata.
-- Item-level searchable multiselects, heading search endpoints, selection
-  persistence or text/URI snapshot handling for work descriptions.
+- Automatically applying headings to work-level draft or saved metadata.
+- New heading search endpoints or text/URI snapshot storage for work descriptions.
 - Subject-specific work rendering/exports, draft comparison/review controls or
   warnings on AI initiation screens.
 

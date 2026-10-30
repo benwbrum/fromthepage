@@ -36,6 +36,7 @@ describe 'Project owner subject heading configuration', js: true do
     expect(page).to have_current_path(collection_edit_metadata_fields_path(owner, collection))
     expect(page).not_to have_css('.litebox.visible')
     expect(page).to have_css('.flash-notice', text: 'Subject headings saved.')
+    expect(page).to have_css('.subject-heading-count', text: '3000 headings configured')
     click_link 'Configure Subject Headings'
     expect(page).to have_content('3000 imported rows; 3000 unique headings.')
     expect(page).to have_content('Validation status: Not requested')
@@ -78,6 +79,7 @@ describe 'Project owner subject heading configuration', js: true do
     end
     expect(page).to have_current_path(collection_edit_metadata_fields_path(owner, collection))
     expect(page).to have_css('.flash-notice', text: 'Subject headings saved.')
+    expect(page).to have_css('.subject-heading-count', text: '2 headings configured')
     click_link 'Configure Subject Headings'
     expect(page).to have_content('3 imported rows; 2 unique headings.')
     expect(page).to have_content('Validation status: Queued')
@@ -123,5 +125,38 @@ describe 'Project owner subject heading configuration', js: true do
     click_button 'Check authorities again'
     expect(page).to have_content('Validation status: Queued')
     expect(field.reload.subject_heading_inventory.id).to eq(original.id)
+  end
+
+  it 'previews searchable multiple selections and saves them on a work' do
+    import_headings(field, "heading\nAgriculture\nAbolitionists\nLocal history\n")
+    visit collection_edit_metadata_fields_path(owner, collection)
+    expect(page).to have_css('.subject-heading-count', text: '3 headings configured')
+    within('.field-wrapper') do
+      find('.select2-search__field').set('agri')
+    end
+    expect(page).to have_css('.select2-results__option', text: 'Agriculture')
+    expect(page).not_to have_css('.select2-results__option', text: 'Abolitionists')
+    find('.select2-results__option', text: 'Agriculture', exact_text: true).click
+    find('.field-wrapper .select2-search__field').set('abol')
+    find('.select2-results__option', text: 'Abolitionists', exact_text: true).click
+    expect(find('.field-wrapper select', visible: :all).value).to contain_exactly('Agriculture', 'Abolitionists')
+
+    work = create(:work_with_pages, collection: collection, owner: owner, owner_user_id: owner.id)
+    visit describe_collection_work_path(owner, collection, work)
+    find('.field-wrapper .select2-search__field').set('agri')
+    find('.select2-results__option', text: 'Agriculture', exact_text: true).click
+    find('.field-wrapper .select2-search__field').set('abol')
+    find('.select2-results__option', text: 'Abolitionists', exact_text: true).click
+    click_button 'save_button_top'
+    expect(page).to have_css('.select2-selection__choice', count: 2)
+    values = JSON.parse(work.reload.metadata_description).find { |entry| entry['transcription_field_id'] == field.id }['value']
+    expect(values).to contain_exactly('Agriculture', 'Abolitionists')
+
+    import_headings(field, "heading\nReplacement\n")
+    visit describe_collection_work_path(owner, collection, work)
+    expect(find('.field-wrapper select', visible: :all).value).to contain_exactly('Agriculture', 'Abolitionists')
+    expect(page).to have_css('.select2-selection__choice', count: 2)
+    click_button 'save_button_top'
+    expect(JSON.parse(work.reload.metadata_description).first['value']).to contain_exactly('Agriculture', 'Abolitionists')
   end
 end

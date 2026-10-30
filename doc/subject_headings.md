@@ -8,13 +8,18 @@ request advisory LC checking, and review reports and email notifications.
 The [implementation prompt](subject_headings_implementation_prompt.md) defines
 this owner configuration scope.
 
-Item-level metadata editing, subject selection, candidate retrieval/ranking,
-LLM prompt construction and response handling, AI validation warnings, and
-applying headings to work metadata are owned by the separate drafting team.
-This PR adds no subject-specific behavior to those workflows. Existing work
-metadata storage, rendering and exports are unchanged. Until the separate
+The metadata field preview and manual work metadata form use the existing
+searchable Select2 multi-select, populated from the uploaded unique headings.
+Owners see a localized heading count beside Configure Subject Headings. Manual
+selections use the existing metadata array storage; saved headings remain
+visible and selected even after a replacement file removes them. Replacement
+itself never rewrites item descriptions.
+
+Candidate retrieval/ranking, LLM subject assignment and applying headings to
+AI draft metadata remain owned by the separate drafting team. Until that
 integration is ready, AI prompts omit subject-heading fields and response
-validation discards unsolicited values for those fields.
+validation discards unsolicited values for those fields. Existing exports and
+AI generation/review behavior are unchanged.
 
 The nullable `ai_work_metadata.subject_heading_candidates` attribute and its
 JSON serialization remain available for that team's results. This phase neither
@@ -162,9 +167,13 @@ partial report and failure notification. Owners can retry from configuration.
    template, report and retry URLs; access must be denied. Repeat against a
    private collection and check that other projects' field IDs cannot be used.
 
+8. Confirm the editor shows the unique-heading count and a searchable multi-select
+   preview. In a work metadata form, select several headings, save, and reload.
+   Replace the file and confirm earlier selections remain visible and unchanged.
+
 Guidance document attachment/extraction remains deferred; use the text area.
-Item-level subject selection and AI drafting integration belong to the other
-team. Full authority reconciliation, automatic replacement, terminology
+AI subject-assignment integration belongs to the other team. Full authority
+reconciliation, automatic replacement, terminology
 modernization and vocabulary history remain outside this feature.
 
 ## Verification

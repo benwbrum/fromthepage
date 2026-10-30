@@ -96,6 +96,9 @@ de:
       input_type: Eingabetyp
       reorder_column: Spalte neu anordnen
     new_field_form:
+      subject_heading_count:
+        one: "%{count} Schlagwort konfiguriert"
+        other: "%{count} Schlagwörter konfiguriert"
       configure_options: Optionen konfigurieren
       configure_spreadsheet: Tabelle konfigurieren
       delete_field: Feld löschen

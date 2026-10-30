@@ -24,6 +24,9 @@ tr.sortable-field id="#{field_id}"
       span =options_value
     -elsif input_type_value == 'subject_headings'
       =link_to 'Configure Subject Headings', collection_subject_headings_path(@collection.owner, @collection, field), class: 'button', data: { controller: 'litebox' }
+      -if (inventory = field.subject_heading_inventory)
+        | &nbsp;
+        span.fgfaded.subject-heading-count =t('.subject_heading_count', count: inventory.subject_headings.count)
     -else
       =text_area_tag "transcription_fields[][options]", "#{options_value}", 'aria-label' => t('.field_options'), class: 'field-options', disabled: true
   td.field-form_width

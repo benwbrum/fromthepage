@@ -96,6 +96,9 @@ es:
       input_type: Tipo de entrada
       reorder_column: Reordenar columna
     new_field_form:
+      subject_heading_count:
+        one: "%{count} encabezamiento configurado"
+        other: "%{count} encabezamientos configurados"
       configure_options: Configurar opciones
       configure_spreadsheet: Configurar hoja de cálculo
       delete_field: Eliminar campo

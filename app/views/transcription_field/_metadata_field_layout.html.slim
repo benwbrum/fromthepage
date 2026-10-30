@@ -35,6 +35,8 @@
             -else
               -options=[]
             =select_tag("fields[#{field.id}][#{field.label}]", options_for_select(options, content), class: 'field-input', data: { controller: 'select2', select2_placeholder_value: 'Choose...' }, size: 1, multiple: true)
+          -elsif field.subject_headings?
+            =select_tag("fields[#{field.id}][#{field.label}]", options_for_select(subject_heading_options(field, content), content), class: 'field-input', 'aria-label': field.label, data: { controller: 'select2', select2_placeholder_value: 'Choose...' }, size: 1, multiple: true)
           -elsif field.input_type == "description"
             =hidden_field_tag "fields[#{field.id}][#{field.label}]", content, class: 'field-input'
           -elsif field.input_type == "alt text"

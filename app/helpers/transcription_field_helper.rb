@@ -23,6 +23,12 @@ module TranscriptionFieldHelper
     @fields = collection.metadata_fields.order(:line_number).order(:position).group_by(&:line_number)
   end
 
+  def subject_heading_options(field, selected)
+    inventory = field.subject_heading_inventory
+    headings = inventory ? inventory.subject_headings.order(:id).pluck(:heading) : []
+    headings | Array(selected)
+  end
+
   def field_layout(array)
     count = array.count
     @width = (100.0 / count).round(5) unless count.nil?
