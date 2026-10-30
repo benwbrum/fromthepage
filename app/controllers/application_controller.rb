@@ -265,7 +265,7 @@ class ApplicationController < ActionController::Base
   end
 
   def bad_record_id(e)
-    return head(:not_found) if article_request?
+    return head(:not_found) if article_request? && e.is_a?(ActiveRecord::RecordNotFound)
 
     logger.error("Bad record ID exception for params=#{params.inspect}")
     logger.error(e.backtrace[2])
