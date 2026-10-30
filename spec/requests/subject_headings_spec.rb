@@ -29,7 +29,9 @@ describe SubjectHeadingsController, :subject_headings do
     login_as owner
     get path, headers: { 'X-Requested-With' => 'XMLHttpRequest' }
     expect(response).to have_http_status(:ok)
-    expect(response.body).to include('Import Headings', 'Instructions for AI Draft Metadata')
+    expect(response.body).to include('Save Subject Headings', 'Subject assignment guidelines (optional)')
+    expect(response.body).to include('Download CSV template', 'Describe how subject headings should be assigned to documents in this collection. These guidelines will be used by AI Draft Metadata.')
+    expect(Nokogiri::HTML(response.body).text).not_to include('inventory', 'UTF-8', 'attachments are not currently supported')
     expect(Nokogiri::HTML(response.body).at_css('#validate_authorities')['checked']).to be_nil
     get collection_subject_headings_template_path(owner, collection, field)
     expect(response.body).to start_with('heading,uri')

@@ -1624,3 +1624,35 @@ button, .button, .dropdown dd a {
     }
   }
 }
+
+// Subject heading configuration uses the standard LiteBox, form and toolbar styles.
+.subject-heading-configuration {
+  width: 700px;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-wrap: anywhere;
+
+  .subject-heading-section {
+    margin-top: 1.5em;
+    padding-top: 1em;
+    border-top: 1px solid $borderColor;
+
+    h4 { margin: 0 0 0.5em; }
+    p { margin: 0.5em 0; }
+  }
+
+  input[type="file"] { max-width: 100%; }
+  textarea { resize: vertical; }
+  .subject-heading-check {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5em;
+    input { flex-shrink: 0; }
+  }
+  .subject-heading-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.5em;
+  }
+}

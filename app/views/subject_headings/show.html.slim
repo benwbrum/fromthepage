@@ -1,35 +1,51 @@
-.litebox-embed
+.litebox-embed.subject-heading-configuration
   h3 Configure Subject Headings
-  h4 =@field.label
+  p.fgfaded =@field.label
   -if @error
     p.fgerror role="alert" =@error
-  -if @inventory
-    p
-      strong = 'Current inventory: '
-      =@inventory.filename
-    p ="#{@inventory.row_count} imported rows; #{@inventory.subject_headings.count} unique headings."
-    p Exact duplicates and headings differing only by one final period share an option when their URIs are identical. The first spelling is retained.
-    p ="Validation status: #{@inventory.validation_status.humanize}"
-    -if @inventory.validation_error.present?
-      p.fgerror =@inventory.validation_error
-    -if @inventory.report_csv.present?
-      p =link_to 'Download validation report', collection_subject_headings_report_path(@collection.owner, @collection, @field)
-      p No suggested changes have been applied. To adopt suggestions, edit the heading and uri columns and reupload the CSV. Other columns are ignored.
-    -if @inventory.validation_retryable?
-      =button_to 'Check authorities again', collection_subject_headings_retry_path(@collection.owner, @collection, @field), method: :post
   =form_tag collection_subject_headings_path(@collection.owner, @collection, @field), method: :patch, multipart: true do
-    p =link_to 'Download example CSV template', collection_subject_headings_template_path(@collection.owner, @collection, @field)
-    =label_tag :file, @inventory ? 'Replace CSV inventory' : 'CSV inventory'
-    =file_field_tag :file, accept: '.csv,text/csv', required: @inventory.nil?
-    p Upload a CSV file with a heading column and optional uri column. Only HTTP/HTTPS URIs are supported. Maximum 5 MB for an inventory, 16 MB for a validation report, and 10,000 rows. Existing item descriptions are preserved when the inventory is replaced.
-    =label_tag :instructions, 'Instructions for AI Draft Metadata'
-    =text_area_tag :instructions, params[:instructions] || @field.subject_heading_instructions, rows: 8, maxlength: 20_000
-    p Paste document guidance here. Guidance document attachments are not currently supported.
-    p
-      =check_box_tag :validate_authorities, '1', false
-      =label_tag :validate_authorities, 'Check headings against Library of Congress authorities'
-    p Validation is advisory and applies to the uploaded CSV. Possible authorized forms and identifiers appear in a report; uploaded headings are never changed automatically. Unmatched headings remain in the inventory.
+    section.subject-heading-section aria-labelledby="subject-heading-file-title"
+      h4#subject-heading-file-title =label_tag :file, 'Subject headings file'
+      -if @inventory
+        .subject-heading-file-summary
+          p
+            strong = 'Current file: '
+            =@inventory.filename
+          p ="#{@inventory.row_count} imported rows; #{@inventory.subject_headings.count} unique headings."
+      =file_field_tag :file, accept: '.csv,text/csv', required: @inventory.nil?, 'aria-describedby': 'subject-heading-file-help'
+      p#subject-heading-file-help.fgfaded CSV with a heading column and an optional uri column. Maximum 5 MB (16 MB for a validation report) and 10,000 rows.
+      p =link_to 'Download CSV template', collection_subject_headings_template_path(@collection.owner, @collection, @field)
+      -if @inventory
+        p Replacing this file changes which headings are available for future assignments. Headings already saved to item descriptions will not be changed.
+
+    section.subject-heading-section aria-labelledby="subject-heading-guidelines-title"
+      h4#subject-heading-guidelines-title =label_tag :instructions, 'Subject assignment guidelines (optional)'
+      p#subject-heading-guidelines-help.fgfaded Describe how subject headings should be assigned to documents in this collection. These guidelines will be used by AI Draft Metadata.
+      =text_area_tag :instructions, params[:instructions] || @field.subject_heading_instructions, rows: 5, maxlength: 20_000, 'aria-describedby': 'subject-heading-guidelines-help', placeholder: 'Assign headings that describe the main subjects of each document. Prefer specific headings when supported by the transcription. Do not assign headings for people or places mentioned only in passing.'
+
+    section.subject-heading-section aria-labelledby="subject-heading-authority-title"
+      h4#subject-heading-authority-title Authority check
+      .subject-heading-check
+        =check_box_tag :validate_authorities, '1', false, 'aria-describedby': 'subject-heading-authority-help'
+        =label_tag :validate_authorities, 'Check for matches in Library of Congress authority records'
+      p#subject-heading-authority-help.fgfaded The check produces a downloadable report with possible matches and suggested identifiers. It never automatically changes your uploaded headings.
+      -if @inventory
+        p ="Validation status: #{@inventory.validation_status.humanize}"
+        -if @inventory.validation_error.present?
+          p.fgerror role="alert" =@inventory.validation_error.gsub(/\binventory\b/i, 'heading list')
+        -if @inventory.report_csv.present?
+          p =link_to 'Download validation report', collection_subject_headings_report_path(@collection.owner, @collection, @field)
+          p To adopt suggestions, edit the heading and uri columns in the report and upload the revised file.
+        -if @inventory.validation_retryable?
+          =button_tag 'Check authorities again', type: 'submit', form: 'subject-heading-authority-retry', class: 'button outline'
+
     .toolbar
-      .toolbar_group.aright
-        =submit_tag @inventory ? 'Save / Import Headings' : 'Import Headings'
-  p =link_to 'Return to metadata fields', collection_edit_metadata_fields_path(@collection.owner, @collection)
+      .toolbar_group.aright.subject-heading-actions
+        -if request.xhr?
+          =button_tag 'Cancel', type: 'reset', class: 'button outline'
+        -else
+          =link_to 'Cancel', collection_edit_metadata_fields_path(@collection.owner, @collection), class: 'button outline'
+        =submit_tag 'Save Subject Headings', class: 'button'
+  -if @inventory&.validation_retryable?
+    =form_tag collection_subject_headings_retry_path(@collection.owner, @collection, @field), id: 'subject-heading-authority-retry' do
+      =hidden_field_tag :field_id, @field.id
