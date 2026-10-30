@@ -13,6 +13,7 @@ class ApplicationController < ActionController::Base
   end
 
   before_action :load_objects_from_params
+  before_action :authorize_article_context
   before_action :record_new_relic_request_attributes
   before_action :store_current_location, unless: :devise_controller?
   before_action :load_html_blocks
@@ -157,15 +158,21 @@ class ApplicationController < ActionController::Base
       @collection = @work.collection
     end
 
-    if params[:article_id]
-      @article = Article.find(params[:article_id])
-      if session[:col_id] != nil
-        # A stale or scrambled col_id can resolve to nothing; fall back to the
-        # article's own collection rather than leaving @collection nil.
-        @collection = set_friendly_collection(session[:col_id]) || @article.collection
-        session[:col_id] = nil
-      else
-        @collection = @article.collection
+    if params[:article_version_id]
+      @article_version = ArticleVersion.find(params[:article_version_id])
+      @article = @article_version.article
+    end
+    @article = Article.find(params[:article_id]) if params[:article_id]
+
+    if @article
+      @collection = @article.collection
+      session_collection_id = session.delete(:col_id)
+      if session_collection_id && !params[:collection_id] && !params[:document_set_id]
+        # Preserve document set context for legacy links only while access and membership remain valid.
+        session_collection = Collection::Lib::SetFriendlyFind.perform(id: session_collection_id)
+        if session_collection&.show_to?(current_user) && session_collection.articles.exists?(@article.id)
+          @collection = session_collection
+        end
       end
     end
     if params[:page_id]
@@ -184,7 +191,7 @@ class ApplicationController < ActionController::Base
     end
     if params[:document_set_id]
       @document_set = DocumentSet.friendly.find(params[:document_set_id])
-      @collection = @document_set.collection
+      @collection = @article ? @document_set : @document_set.collection
     end
     if params[:collection_id]
       @collection = set_friendly_collection(params[:collection_id])
@@ -206,11 +213,6 @@ class ApplicationController < ActionController::Base
       @work = @page.work
       @collection = @work.collection
     end
-    if params[:article_version_id]
-      @article_version = ArticleVersion.find(params[:article_version_id])
-      @article = @article_version.article
-      @collection = @article.collection
-    end
     if params[:collection_ids]
       @collection_ids = params[:collection_ids]
     end
@@ -227,7 +229,44 @@ class ApplicationController < ActionController::Base
     @collection = Collection::Lib::SetFriendlyFind.perform(id: id, work_reference: @work)
   end
 
+  def article_request?
+    @article.present? || params[:article_id].present? || params[:article_version_id].present? ||
+      ['article', 'article_version'].include?(controller_name)
+  end
+
+  def authorize_article_context
+    return unless article_request?
+    return head(:not_found) if @article_version && !@article
+
+    # A work or version must not silently replace an explicit URL context.
+    if params[:collection_id]
+      requested_collection = Collection::Lib::SetFriendlyFind.perform(id: params[:collection_id])
+      return head(:not_found) unless requested_collection && requested_collection == @collection
+    end
+
+    return head(:not_found) if @article && !@collection
+    return unless @collection
+
+    return head(:not_found) unless @collection.show_to?(current_user)
+    if params[:user_slug]
+      requested_owner = User.friendly.find(params[:user_slug], allow_nil: true)
+      return head(:not_found) unless requested_owner && requested_owner == @collection.owner
+    end
+
+    return unless @article
+
+    return head(:not_found) unless @collection.articles.exists?(@article.id)
+    if @document_set
+      return head(:not_found) unless @document_set.show_to?(current_user) && @document_set.articles.exists?(@article.id)
+    end
+    if @article_version && @article_version.article_id != @article.id
+      head :not_found
+    end
+  end
+
   def bad_record_id(e)
+    return head(:not_found) if article_request?
+
     logger.error("Bad record ID exception for params=#{params.inspect}")
     logger.error(e.backtrace[2])
     if @collection

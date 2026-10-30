@@ -6,7 +6,6 @@ class ArticleController < ApplicationController
 
   skip_before_action :verify_authenticity_token, only: [:relationship_graph]
   before_action :authorized?, except: [:list, :items, :show, :tooltip, :graph, :relationship_graph]
-  before_action :authorize_collection, only: [:upload_form, :subject_upload]
 
   def tooltip
     render partial: 'tooltip'

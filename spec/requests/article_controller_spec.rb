@@ -617,12 +617,12 @@ describe ArticleController do
       let!(:collection) { create(:collection, owner_user_id: owner.id, visibility: :private) }
       let!(:non_owner) { create(:unique_user) }
 
-      it 'redirects' do
+      it 'returns not found' do
         login_as non_owner
         subject
 
-        expect(response).to have_http_status(:redirect)
-        expect(response).to redirect_to(user_profile_path(owner))
+        expect(response).to have_http_status(:not_found)
+        expect(response.headers['Location']).to be_nil
       end
     end
 
@@ -662,12 +662,12 @@ describe ArticleController do
       let!(:collection) { create(:collection, owner_user_id: owner.id, visibility: :private) }
       let!(:non_owner) { create(:unique_user) }
 
-      it 'redirects' do
+      it 'returns not found' do
         login_as non_owner
         subject
 
-        expect(response).to have_http_status(:redirect)
-        expect(response).to redirect_to(user_profile_path(owner))
+        expect(response).to have_http_status(:not_found)
+        expect(response.headers['Location']).to be_nil
       end
     end
 
