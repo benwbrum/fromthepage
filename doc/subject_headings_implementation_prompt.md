@@ -76,7 +76,9 @@ inventory; owners adopt suggestions by editing those two columns and reuploading
 Use existing mailer conventions to notify the project owner on completion or
 failure. Link to the authorized configuration screen rather than a temporary
 download URL. Avoid duplicate emails on normal job retries and preserve the
-inventory when authority services or email delivery fail.
+inventory when authority services or email delivery fail. Expire abandoned
+validation claims safely, keep live deliveries exclusive, and leave revoked
+requester attempts in a retryable failed state.
 
 ## Reserved handoff to the drafting team
 
@@ -88,7 +90,9 @@ must not populate, consume or clear that attribute or create/change AI drafts.
 Do not implement or change:
 
 - Candidate retrieval, ranking, lexical/semantic search or LLM subject selection.
-- AI runtime prompts, response validators, generation jobs or creation logic.
+- AI subject-assignment prompts, response handling, generation jobs or creation
+  logic. Add only the phase-boundary guard that omits this datatype from current
+  AI prompts and discards unsolicited subject-field output until integration.
 - Applying headings to work-level draft or saved metadata.
 - Item-level searchable multiselects, heading search endpoints, selection
   persistence or text/URI snapshot handling for work descriptions.

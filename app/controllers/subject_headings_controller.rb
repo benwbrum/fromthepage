@@ -41,9 +41,9 @@ class SubjectHeadingsController < ApplicationController
 
   def retry_validation
     inventory = @field.subject_heading_inventory
-    return head :conflict unless inventory && %w[failed not_requested completed].include?(inventory.validation_status)
+    return head :conflict unless inventory&.validation_retryable?
 
-    inventory.queue_validation!(user: current_user)
+    return head :conflict unless inventory.queue_validation!(user: current_user)
     redirect_to collection_subject_headings_path(@collection.owner, @collection, @field)
   end
 

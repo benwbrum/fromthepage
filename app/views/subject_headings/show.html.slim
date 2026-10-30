@@ -15,13 +15,13 @@
     -if @inventory.report_csv.present?
       p =link_to 'Download validation report', collection_subject_headings_report_path(@collection.owner, @collection, @field)
       p No suggested changes have been applied. To adopt suggestions, edit the heading and uri columns and reupload the CSV. Other columns are ignored.
-    -unless %w[queued running].include?(@inventory.validation_status)
+    -if @inventory.validation_retryable?
       =button_to 'Check authorities again', collection_subject_headings_retry_path(@collection.owner, @collection, @field), method: :post
   =form_tag collection_subject_headings_path(@collection.owner, @collection, @field), method: :patch, multipart: true do
     p =link_to 'Download example CSV template', collection_subject_headings_template_path(@collection.owner, @collection, @field)
     =label_tag :file, @inventory ? 'Replace CSV inventory' : 'CSV inventory'
     =file_field_tag :file, accept: '.csv,text/csv', required: @inventory.nil?
-    p Use UTF-8 CSV with a heading column and optional uri column. Only HTTP/HTTPS URIs are supported. Maximum 5 MB and 10,000 rows. Existing item descriptions are preserved when the inventory is replaced.
+    p Use UTF-8 CSV with a heading column and optional uri column. Only HTTP/HTTPS URIs are supported. Maximum 5 MB for an inventory, 16 MB for a validation report, and 10,000 rows. Existing item descriptions are preserved when the inventory is replaced.
     =label_tag :instructions, 'Instructions for AI Draft Metadata'
     =text_area_tag :instructions, params[:instructions] || @field.subject_heading_instructions, rows: 8, maxlength: 20_000
     p Paste document guidance here. Guidance document attachments are not currently supported.

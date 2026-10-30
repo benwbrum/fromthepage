@@ -20,6 +20,7 @@ describe SubjectHeadings::ValidateJob, :subject_headings do
   end
 
   it 'queues optional validation without delaying inventory availability' do
+    inventory.update!(validation_status: 'not_requested')
     ActiveJob::Base.queue_adapter = :test
     expect { inventory.queue_validation!(user: owner) }.to have_enqueued_job(described_class).with(user_id: owner.id, inventory_id: inventory.id, token: kind_of(String))
     expect(inventory.reload.validation_status).to eq('queued')
@@ -27,6 +28,7 @@ describe SubjectHeadings::ValidateJob, :subject_headings do
   end
 
   it 'keeps the inventory usable and retryable when enqueueing fails' do
+    inventory.update!(validation_status: 'not_requested')
     allow(described_class).to receive(:perform_later).and_return(false)
     inventory.queue_validation!(user: owner)
     expect(inventory.reload.validation_status).to eq('failed')
@@ -148,7 +150,49 @@ describe SubjectHeadings::ValidateJob, :subject_headings do
   it 'does not perform authority requests for a user without project permission' do
     stranger = create(:unique_user)
     described_class.perform_now(user_id: stranger.id, inventory_id: inventory.id, token: token)
+    expect(inventory.reload.validation_status).to eq('failed')
+    expect(inventory).to be_validation_retryable
     expect(lookup).not_to have_received(:call)
     expect(ActionMailer::Base.deliveries).to be_empty
+  end
+  it 'fails a queued attempt when its requester has been deleted' do
+    described_class.perform_now(user_id: -1, inventory_id: inventory.id, token: token)
+    expect(inventory.reload.validation_status).to eq('failed')
+    expect(lookup).not_to have_received(:call)
+  end
+
+  it 'recovers an expired running claim on redelivery' do
+    inventory.update!(validation_status: 'running', updated_at: 20.minutes.ago)
+    run_job
+    expect(inventory.reload.validation_status).to eq('completed')
+    expect(ActionMailer::Base.deliveries.size).to eq(1)
+  end
+
+  it 'does not let a stale delivery overwrite a recovered claim' do
+    calls = 0
+    allow(lookup).to receive(:call) do
+      calls += 1
+      if calls == 1
+        inventory.update_columns(updated_at: 20.minutes.ago)
+        run_job
+        [{ 'aLabel' => 'Stale suggestion', 'uri' => 'http://id.loc.gov/authorities/subjects/sh1' }]
+      else
+        []
+      end
+    end
+    run_job
+    expect(inventory.reload.validation_status).to eq('completed')
+    expect(inventory.report_csv).not_to include('Stale suggestion')
+    expect(ActionMailer::Base.deliveries.size).to eq(1)
+  end
+
+  it 'allows owner retry only after the running lease expires' do
+    inventory.update!(validation_status: 'running')
+    expect(inventory.queue_validation!(user: owner)).to be(false)
+    inventory.update_columns(updated_at: 20.minutes.ago)
+    expect(inventory).to be_validation_retryable
+    ActiveJob::Base.queue_adapter = :test
+    expect { inventory.queue_validation!(user: owner) }.to have_enqueued_job(described_class)
+    expect(inventory.reload.validation_token).not_to eq(token)
   end
 end

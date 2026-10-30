@@ -94,4 +94,15 @@ describe SubjectHeadings::Import, :subject_headings do
     expect(inventory.subject_headings.count).to eq(3000)
     expect(field.reload.options).to be_nil
   end
+  it 'round-trips a near-limit inventory through a report larger than the ordinary upload limit' do
+    rows = 5200.times.map { |i| { 'heading' => format('%04d', i) + ('x' * 990), 'uri' => nil } }
+    csv = CSV.generate { |out| out << %w[heading uri]; rows.each { |row| out << row.values } }
+    expect(csv.bytesize).to be_between(described_class::MAX_BYTES * 0.98, described_class::MAX_BYTES)
+    inventory = import_headings(field, csv)
+    report = SubjectHeadings::Report.generate(rows.map { |row| row.merge('rationale' => 'Advisory explanation. ' * 20) })
+    expect(report.bytesize).to be > described_class::MAX_BYTES
+    replacement = import_headings(field, report)
+    expect(replacement.source_rows).to eq(inventory.source_rows)
+    expect(replacement.subject_headings.count).to eq(5200)
+  end
 end

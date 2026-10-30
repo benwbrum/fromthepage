@@ -257,6 +257,9 @@ class TranscriptionFieldController < ApplicationController
   end
 
   def authorized?
+    if %w[add_fields delete reorder_fields reorder_field].include?(action_name)
+      @collection = Collection.friendly.find(params[:collection_id])
+    end
     head :forbidden unless user_signed_in? && @collection &&
       (current_user.admin? || current_user.like_owner?(@collection))
   end

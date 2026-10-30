@@ -5,14 +5,23 @@ class SubjectHeadings::ValidateJob < ApplicationJob
     inventory = SubjectHeadingInventory.find_by(id: inventory_id, validation_token: token)
     return unless inventory
     requester = User.find_by(id: user_id)
-    return unless requester && (requester.admin? || requester.like_owner?(inventory.transcription_field.collection))
+    unless requester && (requester.admin? || requester.like_owner?(inventory.transcription_field.collection))
+      SubjectHeadingInventory.where(id: inventory_id, validation_token: token, validation_status: 'queued')
+        .update_all(validation_status: 'failed', completed_at: Time.current,
+          validation_error: 'The requester no longer has project access. Please retry the authority check.')
+      return
+    end
     if %w[completed failed].include?(inventory.validation_status)
       notify(inventory, token)
       return
     end
     # Compare-and-set prevents two deliveries from validating the same upload.
-    claimed = SubjectHeadingInventory.where(id: inventory_id, validation_token: token, validation_status: 'queued')
-      .update_all(validation_status: 'running', updated_at: Time.current)
+    claim_stamp = Time.current
+    attempts = SubjectHeadingInventory.where(id: inventory_id, validation_token: token)
+    claimable = attempts.where(validation_status: 'queued').or(
+      attempts.where(validation_status: 'running').where('updated_at < ?', SubjectHeadingInventory::CLAIM_TIMEOUT.ago)
+    )
+    claimed = claimable.update_all(validation_status: 'running', updated_at: claim_stamp)
     return unless claimed == 1
 
     begin
@@ -21,7 +30,11 @@ class SubjectHeadings::ValidateJob < ApplicationJob
       memo = {}
       results = inventory.source_rows.map do |row|
         # A replacement deletes this import; stop spending requests immediately.
-        return unless SubjectHeadingInventory.exists?(id: inventory_id, validation_token: token)
+        next_stamp = Time.current
+        owned = attempts.where(validation_status: 'running', updated_at: claim_stamp)
+          .update_all(updated_at: next_stamp)
+        return unless owned == 1
+        claim_stamp = next_stamp
         begin
           raise SubjectHeadings::AuthorityLookup::LookupError, 'Further lookups paused after repeated service failures.' if failures >= 3
           hits = memo[row['heading']] ||= lookup.call(row['heading'])
@@ -42,7 +55,7 @@ class SubjectHeadings::ValidateJob < ApplicationJob
         validation_error: 'Validation could not be completed. The uploaded inventory remains available. Please retry.' }
     end
     # Never attach old results to a replacement inventory or a newer attempt.
-    scope = SubjectHeadingInventory.where(id: inventory_id, validation_token: token, validation_status: 'running')
+    scope = SubjectHeadingInventory.where(id: inventory_id, validation_token: token, validation_status: 'running', updated_at: claim_stamp)
     begin
       updated = scope.update_all(attributes)
     rescue ActiveRecord::StatementInvalid

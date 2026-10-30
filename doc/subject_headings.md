@@ -12,7 +12,9 @@ Item-level metadata editing, subject selection, candidate retrieval/ranking,
 LLM prompt construction and response handling, AI validation warnings, and
 applying headings to work metadata are owned by the separate drafting team.
 This PR adds no subject-specific behavior to those workflows. Existing work
-metadata storage, rendering, exports, and AI drafting code are unchanged.
+metadata storage, rendering and exports are unchanged. Until the separate
+integration is ready, AI prompts omit subject-heading fields and response
+validation discards unsolicited values for those fields.
 
 The nullable `ai_work_metadata.subject_heading_candidates` attribute and its
 JSON serialization remain available for that team's results. This phase neither
@@ -51,12 +53,19 @@ failed email delivery can retry without repeating authority queries. As with
 SMTP generally, a process crash after server acceptance but before committing
 the delivery stamp can still cause a duplicate notification.
 
+Running claims expire after ten minutes without a heartbeat. Redelivery or an
+owner retry can recover an expired attempt; each row refreshes the lease, and
+final writes require the exact lease timestamp and attempt token. A requester
+who has lost access leaves a retryable failed state without authority requests.
+
 ## CSV contract
 
 Upload UTF-8 CSV (BOM supported), with `heading` and optional `uri` headers.
 Other column values never determine the active vocabulary. HTTP/HTTPS URIs are
 supported; bare LCCNs and other identifiers are not interpreted. Limits are
-5 MB, 10,000 nonblank rows, and 1,000 characters per heading/URI. Surrounding
+5 MB for ordinary CSVs and active heading/URI text, 16 MB for report uploads,
+10,000 nonblank rows, and 1,000 characters per heading/URI. Report informational
+columns do not count toward the active vocabulary budget. Surrounding
 whitespace is removed. Malformed CSV, empty inventories, invalid UTF-8, null
 bytes, and missing required columns are rejected without replacing a valid
 existing inventory.
@@ -162,7 +171,8 @@ Chromium tests, plus existing AI tests to check backward compatibility:
 ```sh
 RAILS_ENV=test xvfb-run -a bundle exec rspec \
   spec/interactors/subject_headings spec/jobs/subject_headings \
-  spec/requests/subject_headings_spec.rb spec/features/subject_headings_spec.rb \
+  spec/requests/subject_headings_spec.rb spec/requests/subject_heading_review_spec.rb \
+  spec/features/subject_headings_spec.rb \
   spec/models/subject_heading_candidate_storage_spec.rb \
   spec/models/ai_work_metadata_spec.rb spec/interactors/ai_work_metadata \
   spec/jobs/ai_work_metadata spec/requests/work_describe_ai_spec.rb \
@@ -171,7 +181,7 @@ RAILS_ENV=test xvfb-run -a bundle exec rspec \
   spec/requests/collection/ai_work_metadata_controller_spec.rb
 ```
 
-The revised scope passed **163 examples, 0 failures**, including the two owner
+The review regression suite passed **171 examples, 0 failures**, including the two owner
 Chromium scenarios, JSON storage checks and existing AI regression tests, using
 a fresh MariaDB database loaded from the checked-in schema. External LC
 responses are mocked. A live LC request and production mail configuration still
