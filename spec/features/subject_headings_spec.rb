@@ -21,14 +21,15 @@ describe 'Project owner subject heading configuration', js: true do
   it 'opens configuration from the field editor and imports 3,000 headings through the modal' do
     visit collection_edit_metadata_fields_path(owner, collection)
     click_link 'Configure Subject Headings'
-    expect(page).to have_css('.litebox-embed input[type="file"]')
+    expect(page).to have_button('Browse')
     file = Tempfile.new(['subjects', '.csv'])
     rows = ['Agriculture,https://id.loc.gov/authorities/subjects/sh85002415'] + 2999.times.map { |i| "Legacy topic #{i}," }
     file.write("heading,uri\n#{rows.join("\n")}\n")
     file.rewind
     within('.litebox-embed') do
       expect(page).to have_unchecked_field('Check for matches in Library of Congress authority records')
-      attach_file 'Subject headings file', file.path
+      attach_file 'Subject headings file', file.path, make_visible: true
+      expect(find('.input-file input[type="text"]').value).to end_with(File.basename(file.path))
       fill_in 'Subject assignment guidelines (optional)', with: 'Use broad topics.'
       click_button 'Save Subject Headings'
     end
@@ -46,7 +47,7 @@ describe 'Project owner subject heading configuration', js: true do
     file.write("heading\nReplacement\nReplacement.\nDifferent\n")
     file.rewind
     within('.litebox-embed') do
-      attach_file 'Subject headings file', file.path
+      attach_file 'Subject headings file', file.path, make_visible: true
       check 'Check for matches in Library of Congress authority records'
       click_button 'Save Subject Headings'
     end
@@ -62,10 +63,13 @@ describe 'Project owner subject heading configuration', js: true do
     dialog = find('.litebox-embed.subject-heading-configuration')
     expect(dialog.rect.width).to be_between(650, 750)
     expect(dialog).to have_css('.subject-heading-section', count: 3)
+    expect(find_button('Save Subject Headings').rect.height).to eq(find_button('Browse').rect.height)
+    expect(find_button('Cancel').rect.height).to eq(find_button('Browse').rect.height)
     expect(find('#instructions')[:rows]).to eq('5')
     fill_in 'Subject assignment guidelines (optional)', with: 'Unsaved guideline'
     page.current_window.resize_to(390, 844)
     expect(page.evaluate_script("document.querySelector('.subject-heading-configuration').getBoundingClientRect().right <= window.innerWidth")).to be(true)
+    expect(page.evaluate_script("Array.from(document.querySelectorAll('.subject-heading-configuration button')).every(button => button.scrollWidth <= button.clientWidth && button.getBoundingClientRect().right <= window.innerWidth)")).to be(true)
     click_button 'Cancel'
     expect(page).not_to have_css('.litebox.visible')
     expect(field.reload.subject_heading_instructions).to be_nil

@@ -12,7 +12,10 @@
             strong = 'Current file: '
             =@inventory.filename
           p ="#{@inventory.row_count} imported rows; #{@inventory.subject_headings.count} unique headings."
-      =file_field_tag :file, accept: '.csv,text/csv', required: @inventory.nil?, 'aria-describedby': 'subject-heading-file-help'
+      .input-file data-controller="file-picker"
+        =file_field_tag :file, accept: '.csv,text/csv', required: @inventory.nil?, 'aria-describedby': 'subject-heading-file-help'
+        input type="text" placeholder="Click to browse a file" aria-label="Selected subject headings file" readonly=true
+        button type="button" Browse
       p#subject-heading-file-help.fgfaded CSV with a heading column and an optional uri column. Maximum 5 MB (16 MB for a validation report) and 10,000 rows.
       p =link_to 'Download CSV template', collection_subject_headings_template_path(@collection.owner, @collection, @field)
       -if @inventory
@@ -37,15 +40,16 @@
           p =link_to 'Download validation report', collection_subject_headings_report_path(@collection.owner, @collection, @field)
           p To adopt suggestions, edit the heading and uri columns in the report and upload the revised file.
         -if @inventory.validation_retryable?
-          =button_tag 'Check authorities again', type: 'submit', form: 'subject-heading-authority-retry', class: 'button outline'
+          =button_tag 'Check authorities again', type: 'submit', form: 'subject-heading-authority-retry'
 
     .toolbar
-      .toolbar_group.aright.subject-heading-actions
+      .toolbar_group.aright.wrap-text
         -if request.xhr?
-          =button_tag 'Cancel', type: 'reset', class: 'button outline'
+          =button_tag 'Cancel', type: 'reset'
         -else
-          =link_to 'Cancel', collection_edit_metadata_fields_path(@collection.owner, @collection), class: 'button outline'
-        =submit_tag 'Save Subject Headings', class: 'button'
+          =link_to 'Cancel', collection_edit_metadata_fields_path(@collection.owner, @collection), class: 'button'
+        | &nbsp;
+        =button_tag 'Save Subject Headings', type: 'submit'
   -if @inventory&.validation_retryable?
     =form_tag collection_subject_headings_retry_path(@collection.owner, @collection, @field), id: 'subject-heading-authority-retry' do
       =hidden_field_tag :field_id, @field.id
