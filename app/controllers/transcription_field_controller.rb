@@ -1,6 +1,6 @@
 class TranscriptionFieldController < ApplicationController
   include ActiveModel::Validations
-  before_action :authorized?, only: [:new, :edit_fields, :add_field]
+  before_action :authorized?, only: [:new, :edit_fields, :edit_metadata_fields, :add_field, :add_fields, :delete, :reorder_fields, :reorder_field]
 
   def multiselect_form
     @transcription_field = TranscriptionField.find_by(id: params[:transcription_field_id])
@@ -17,7 +17,7 @@ class TranscriptionFieldController < ApplicationController
 
   def delete
     @collection = Collection.friendly.find(params[:collection_id])
-    field = TranscriptionField.find_by(id: params[:field_id])
+    field = TranscriptionField.where(collection: @collection).find(params[:field_id])
     field.remove_from_list
     field.destroy
     redirect_to collection_edit_fields_path(@collection.owner, @collection)
@@ -64,14 +64,14 @@ class TranscriptionFieldController < ApplicationController
         end
         if fields[:id].blank?
           # if the field doesn't exist, create a new one
-          transcription_field = TranscriptionField.new(fields.permit!)
+          transcription_field = TranscriptionField.new(fields.permit(:label, :input_type, :options, :line_number, :page_number, :percentage))
           transcription_field.starting_rows = 1
-          transcription_field.collection_id = params[:collection_id]
+          transcription_field.collection_id = @collection.id
           transcription_field.field_type = field_type
           transcription_field.save
         else
           # otherwise update field if anything changed
-          transcription_field = TranscriptionField.find_by(id: fields[:id])
+          transcription_field = TranscriptionField.where(collection: @collection, field_type: field_type).find(fields[:id])
           transcription_field.label = fields[:label]
           transcription_field.input_type = fields[:input_type]
           transcription_field.options = fields[:options] if fields[:input_type] == 'select'
@@ -100,14 +100,14 @@ class TranscriptionFieldController < ApplicationController
   def reorder_fields
     @collection = Collection.friendly.find(params[:collection_id])
     params[:field].each_with_index do |id, index|
-      TranscriptionField.where(id: id).update_all(position: index + 1, line_number: params[:line])
+      TranscriptionField.where(collection: @collection, id: id).update_all(position: index + 1, line_number: params[:line])
     end
     head :ok
   end
 
   def reorder_field
     @collection = Collection.friendly.find(params[:collection_id])
-    field = TranscriptionField.find_by(id: params[:field_id])
+    field = TranscriptionField.where(collection: @collection).find(params[:field_id])
     if params[:direction]=='up'
       if field.line_number != field.higher_item.line_number
         field.update_columns(line_number: field.higher_item.line_number)
@@ -257,12 +257,7 @@ class TranscriptionFieldController < ApplicationController
   end
 
   def authorized?
-    unless user_signed_in?
-      ajax_redirect_to dashboard_path
-    end
-
-    if @collection &&  !current_user.like_owner?(@collection)
-      ajax_redirect_to dashboard_path
-    end
+    head :forbidden unless user_signed_in? && @collection &&
+      (current_user.admin? || current_user.like_owner?(@collection))
   end
 end

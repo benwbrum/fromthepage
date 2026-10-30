@@ -123,6 +123,11 @@ class WorkController < ApplicationController
     else
       render :describe
     end
+  rescue SubjectHeadings::Selection::InvalidSelection => e
+    @work.errors.add(:base, e.message)
+    @metadata_array = JSON.parse(@work.metadata_description.presence || '[]')
+    @layout_mode = cookies[:transcribe_layout_mode] || @collection.default_orientation
+    render :describe, status: :unprocessable_entity
   end
 
   def description_versions

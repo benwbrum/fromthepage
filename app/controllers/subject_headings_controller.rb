@@ -1,0 +1,74 @@
+class SubjectHeadingsController < ApplicationController
+  rescue_from ActiveRecord::RecordNotFound, with: -> { head :not_found }
+  before_action :load_field
+  before_action :require_owner, except: :search
+
+  def show
+    @inventory = @field.subject_heading_inventory
+    render layout: false if request.xhr?
+  end
+
+  def update
+    if params[:file].present?
+      inventory = SubjectHeadings::Import.new(field: @field, upload: params[:file], instructions: params[:instructions]).call
+      inventory.queue_validation!(user: current_user) if params[:validate_authorities] == '1'
+    else
+      raise SubjectHeadings::Import::ImportError, 'Choose a CSV file.' unless @field.subject_heading_inventory
+      @field.update!(subject_heading_instructions: params[:instructions])
+    end
+    redirect_to collection_subject_headings_path(@collection.owner, @collection, @field), notice: 'Subject headings saved.'
+  rescue SubjectHeadings::Import::ImportError => e
+    @inventory = @field.reload.subject_heading_inventory
+    @error = e.message
+    render :show, layout: !request.xhr?, status: :unprocessable_entity
+  rescue ActiveRecord::RecordInvalid => e
+    @inventory = @field.reload.subject_heading_inventory
+    @error = e.record.errors.full_messages.to_sentence
+    render :show, layout: !request.xhr?, status: :unprocessable_entity
+  end
+
+  def template
+    send_data "heading,uri\r\nAbolitionists,\r\nAfrican American farmers,\r\nAgriculture,\r\n", type: 'text/csv; charset=utf-8', filename: 'subject_headings_template.csv'
+  end
+
+  def report
+    inventory = @field.subject_heading_inventory
+    return head :not_found unless inventory&.report_csv.present?
+
+    response.headers['Cache-Control'] = 'private, no-store'
+    send_data inventory.report_csv, type: 'text/csv; charset=utf-8', filename: 'subject_heading_validation.csv'
+  end
+
+  def retry_validation
+    inventory = @field.subject_heading_inventory
+    return head :conflict unless inventory && %w[failed not_requested completed].include?(inventory.validation_status)
+
+    inventory.queue_validation!(user: current_user)
+    redirect_to collection_subject_headings_path(@collection.owner, @collection, @field)
+  end
+
+  def search
+    return head :forbidden unless user_signed_in? &&
+      (current_user.admin? || current_user.like_owner?(@collection) || current_user.can_transcribe?(nil, @collection))
+
+    response.headers['Cache-Control'] = 'private, no-store'
+    scope = @field.subject_heading_inventory&.subject_headings
+    term = params[:term].to_s.strip.first(200)
+    page = [params[:page].to_i, 1].max.clamp(1, 334)
+    headings = scope ? scope.where('heading LIKE ?', "%#{ActiveRecord::Base.sanitize_sql_like(term)}%")
+      .order(:heading, :id).offset((page - 1) * 30).limit(31).to_a : []
+    render json: { results: headings.first(30).map { |h| { id: h.selection_value, text: h.heading } }, pagination: { more: headings.size > 30 } }
+  end
+
+  private
+
+  def load_field
+    raise ActiveRecord::RecordNotFound unless @collection
+    @field = @collection.metadata_fields.find(params[:field_id])
+    head :not_found unless @field.subject_headings?
+  end
+
+  def require_owner
+    head :forbidden unless user_signed_in? && (current_user.admin? || current_user.like_owner?(@collection))
+  end
+end

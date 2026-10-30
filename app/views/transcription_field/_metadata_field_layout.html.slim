@@ -35,6 +35,12 @@
             -else
               -options=[]
             =select_tag("fields[#{field.id}][#{field.label}]", options_for_select(options, content), class: 'field-input', data: { controller: 'select2', select2_placeholder_value: 'Choose...' }, size: 1, multiple: true)
+          -elsif field.subject_headings?
+            -selections = Array(content).select { |v| v.is_a?(Hash) }
+            =hidden_field_tag "fields[#{field.id}][#{field.label}][]", ''
+            =select_tag "fields[#{field.id}][#{field.label}][]", options_for_select(selections.map { |v| [v['heading'], v.to_json] }, selections.map(&:to_json)), multiple: true, class: 'field-input subject-heading-input', data: { controller: 'select2', select2_ajax_url_value: collection_subject_headings_search_path(@collection.owner, @collection, field), select2_placeholder_value: 'Search subject headings...' }
+            -if selections.any?
+              p.fgfaded =selections.map { |v| [v['heading'], v['uri']].compact.join(' — ') }.join('; ')
           -elsif field.input_type == "description"
             =hidden_field_tag "fields[#{field.id}][#{field.label}]", content, class: 'field-input'
           -elsif field.input_type == "alt text"
@@ -46,7 +52,7 @@
 -if @work&.ai_metadata_draft_available?
   -content_for :javascript
     javascript:
-      var aiMetadataDraftByEngine = #{{@work.finished_ai_work_metadata_by_engine.transform_values { |m| m.metadata_json || {} }.to_json}};
+      var aiMetadataDraftByEngine = #{{ERB::Util.json_escape(@work.finished_ai_work_metadata_by_engine.transform_values { |m| m.metadata_json || {} }.to_json)}};
       var aiMetadataDraftModelNames = #{{@work.finished_ai_work_metadata_by_engine.transform_values(&:model).to_json}};
       var aiMetadataDraftBothAgreeText = #{{t('.ai_both_agree').to_json}};
       var aiMetadataDraftDisagreeHeaderText = #{{t('.ai_disagree_header').to_json}};
@@ -62,11 +68,24 @@
         }
 
         function displayString(value) {
-          return Array.isArray(value) ? value.join(', ') : String(value);
+          return Array.isArray(value) ? value.map(function(v) { return v && v.heading ? v.heading : String(v); }).join(', ') : String(value);
         }
 
         function serializeValue(value) {
-          return Array.isArray(value) ? value.map(String).slice().sort().join('|') : String(value).trim();
+          return Array.isArray(value) ? value.map(function(v) { return typeof v === 'object' ? JSON.stringify(v) : String(v); }).slice().sort().join('|') : String(value).trim();
+        }
+
+        function applySelection($field, value) {
+          if ($field.hasClass('subject-heading-input')) {
+            value = value.map(function(v) {
+              var encoded = JSON.stringify(v);
+              if (!$field.find('option').toArray().some(function(o) { return o.value === encoded; })) {
+                $field.append(new Option(v.heading, encoded, false, false));
+              }
+              return encoded;
+            });
+          }
+          $field.val(value).trigger('change');
         }
 
         // Word-level diff via LCS, used to highlight the differing words between two AI suggestions.
@@ -142,7 +161,7 @@
 
             function applyValue(engine) {
               if (isMultiselect) {
-                $field.val(valuesByEngine[engine]).trigger('change');
+                applySelection($field, valuesByEngine[engine]);
               } else {
                 $field.val(valuesByEngine[engine]).trigger('input').trigger('change');
               }
@@ -223,7 +242,7 @@
               $option.append('<span class="ai-draft-option-label">' + escapeHtml(modelName) + '</span>');
               $option.on('click', function() {
                 if ($field.is('select[multiple]')) {
-                  $field.val(value).trigger('change');
+                  applySelection($field, value);
                 } else {
                   $field.val(value).trigger('input').trigger('change');
                 }

@@ -1,0 +1,14 @@
+-inventories = collection.metadata_fields.where(input_type: 'subject_headings').includes(:subject_heading_inventory).filter_map { |f| [f, f.subject_heading_inventory] if f.subject_heading_inventory && f.subject_heading_inventory.validation_status != 'not_requested' }
+-if inventories.any?
+  .subject-heading-validation-warnings role="status"
+    -inventories.group_by { |_, inventory| inventory.validation_status }.each do |status, entries|
+      p
+        strong ="#{entries.map { |field, _| field.label }.join(', ')}: "
+        -if %w[queued running].include?(status)
+          | Subject heading validation is in progress. The uploaded headings are available for AI Draft Metadata, but the Library of Congress check has not finished. The list may contain unverified or outdated headings. You can continue.
+        -elsif status == 'failed'
+          | Subject heading validation could not be completed. Uploaded headings remain available for AI Draft Metadata. You can continue.
+        -elsif status == 'completed'
+          | Subject heading validation reports are ready for review. Uploaded headings have not been changed automatically; a report does not mean every heading is approved or verified.
+      -entries.each do |field, inventory|
+        =link_to "Review #{field.label}", collection_subject_headings_path(collection.owner, collection, field), target: '_blank', rel: 'noopener'

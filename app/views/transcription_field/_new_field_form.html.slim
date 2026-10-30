@@ -22,6 +22,8 @@ tr.sortable-field id="#{field_id}"
     -elsif input_type_value == 'multiselect'
       span =link_to t('.configure_options'), transcription_field_configure_multiselect_options_path(field.id), id: 'edit-collaboators-button', class: 'button', data: { controller: 'litebox', litebox: { hash: 'edit-collaborators' } }
       span =options_value
+    -elsif input_type_value == 'subject_headings'
+      =link_to 'Configure Subject Headings', collection_subject_headings_path(@collection.owner, @collection, field), class: 'button', data: { controller: 'litebox' }
     -else
       =text_area_tag "transcription_fields[][options]", "#{options_value}", 'aria-label' => t('.field_options'), class: 'field-options', disabled: true
   td.field-form_width

@@ -3,6 +3,7 @@ table.form.collection-settings
     tr
       td(colspan="2")
         h3 =t('.heading')
+        =render 'shared/subject_heading_validation_warnings', collection: collection
         -if @not_started_work_metadata_count.positive? || @failed_work_metadata_count.positive?
           p =t('.description')
         -else

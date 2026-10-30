@@ -50,13 +50,15 @@ class AiWorkMetadata::Create < ApplicationInteractor
         work_id: @work.id,
         status: :processing,
         model: @sanitized_model,
-        prompt: @sanitized_prompt
+        prompt: @sanitized_prompt,
+        subject_heading_candidates: @subject_heading_candidates
       )
     elsif ai_work_metadata.status_new? || ai_work_metadata.status_error?
       ai_work_metadata.update!(
         status: :processing,
         model: @sanitized_model,
-        prompt: @sanitized_prompt
+        prompt: @sanitized_prompt,
+        subject_heading_candidates: @subject_heading_candidates
       )
 
       return ai_work_metadata

@@ -79,7 +79,7 @@ export default class extends Controller {
         dataType: 'json',
         delay: 250,
         data: function (params) {
-          var query = { term: params.term }
+          var query = { term: params.term, page: params.page || 1 }
 
           return query;
         }

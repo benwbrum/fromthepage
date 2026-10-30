@@ -26,9 +26,15 @@ class TranscriptionField < ApplicationRecord
 
   has_many :table_cells
   has_many :spreadsheet_columns, -> { order 'position' }, dependent: :destroy
+  has_one :subject_heading_inventory, dependent: :destroy
+
+  def subject_headings?
+    field_type == FieldType::METADATA && input_type == 'subject_headings'
+  end
 
   validates :options, presence: true, if: Proc.new { |field| field.input_type == 'select' }, on: [:create, :update]
   validates :percentage, numericality: { allow_nil: true, greater_than: 0, less_than_or_equal_to: 100 }
+  validates :subject_heading_instructions, length: { maximum: 20_000 }
   validates :page_number, numericality: { allow_nil: true, greater_than: 0, less_than_or_equal_to: 1000 }
   validates :label, format: { without: /[\[\]]/, message: "cannot contain '[' or ']'" }
 
@@ -40,5 +46,5 @@ class TranscriptionField < ApplicationRecord
 
   TRANSCRIPTION_INPUTS = ['text', 'select', 'date', 'textarea',
                           'description', 'instruction', 'spreadsheet', 'alt text'].freeze
-  METADATA_INPUTS = ['text', 'select', 'date', 'multiselect', 'textarea', 'instruction', 'alt text'].freeze
+  METADATA_INPUTS = ['text', 'select', 'date', 'multiselect', 'textarea', 'instruction', 'alt text', ['Subject Headings (LCSH)', 'subject_headings']].freeze
 end

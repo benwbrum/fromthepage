@@ -1,0 +1,67 @@
+class SubjectHeadings::ValidateJob < ApplicationJob
+  queue_as :subject_headings
+
+  def perform(user_id:, inventory_id:, token:)
+    inventory = SubjectHeadingInventory.find_by(id: inventory_id, validation_token: token)
+    return unless inventory
+    requester = User.find_by(id: user_id)
+    return unless requester && (requester.admin? || requester.like_owner?(inventory.transcription_field.collection))
+    if %w[completed failed].include?(inventory.validation_status)
+      notify(inventory, token)
+      return
+    end
+    # Compare-and-set prevents two deliveries from validating the same upload.
+    claimed = SubjectHeadingInventory.where(id: inventory_id, validation_token: token, validation_status: 'queued')
+      .update_all(validation_status: 'running', updated_at: Time.current)
+    return unless claimed == 1
+
+    begin
+      lookup = SubjectHeadings::AuthorityLookup.new
+      failures = 0
+      memo = {}
+      results = inventory.source_rows.map do |row|
+        # A replacement deletes this import; stop spending requests immediately.
+        return unless SubjectHeadingInventory.exists?(id: inventory_id, validation_token: token)
+        begin
+          raise SubjectHeadings::AuthorityLookup::LookupError, 'Further lookups paused after repeated service failures.' if failures >= 3
+          hits = memo[row['heading']] ||= lookup.call(row['heading'])
+          SubjectHeadings::Report.result(row, hits)
+        rescue SubjectHeadings::AuthorityLookup::LookupError => e
+          failures += 1
+          row.merge('result' => 'lookup_error', 'rationale' => e.message)
+        end
+      end
+      report = SubjectHeadings::Report.generate(results)
+      raise ArgumentError, 'Validation report exceeds storage limit' if report.bytesize >= 16.megabytes
+      attributes = { report_csv: report, completed_at: Time.current,
+        validation_status: failures.positive? ? 'failed' : 'completed',
+        validation_error: failures.positive? ? 'Some authority lookups failed. Download the partial report or retry. Uploaded headings remain available.' : nil }
+    rescue StandardError => e
+      Rails.logger.error("Subject heading validation #{inventory_id} failed: #{e.class}")
+      attributes = { validation_status: 'failed', completed_at: Time.current,
+        validation_error: 'Validation could not be completed. The uploaded inventory remains available. Please retry.' }
+    end
+    # Never attach old results to a replacement inventory or a newer attempt.
+    scope = SubjectHeadingInventory.where(id: inventory_id, validation_token: token, validation_status: 'running')
+    begin
+      updated = scope.update_all(attributes)
+    rescue ActiveRecord::StatementInvalid
+      # A report-storage failure must not strand a usable inventory in running.
+      updated = scope.update_all(validation_status: 'failed', completed_at: Time.current,
+        validation_error: 'The validation report could not be saved. Uploaded headings remain available. Please retry.')
+    end
+    notify(inventory, token) if updated == 1
+  end
+
+  private
+
+  def notify(inventory, token)
+    inventory.reload.with_lock do
+      return unless inventory.validation_token == token && inventory.notified_at.nil?
+      UserMailer.subject_heading_validation_finished(inventory).deliver_now
+      inventory.update!(notified_at: Time.current)
+    end
+  rescue ActiveRecord::RecordNotFound
+    # Inventory was replaced while validation was finishing.
+  end
+end

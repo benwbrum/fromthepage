@@ -7,7 +7,7 @@
         -next if value.nil?
         p
           b ="#{field.label}: "
-          =value.is_a?(Array) ? value.join(', ') : value
+          =value.is_a?(Array) ? value.map { |v| v.is_a?(Hash) ? [v['heading'], v['uri']].compact.join(' — ') : v }.join(', ') : value
     -if ai_work_metadata.reasoning.present?
       details
         summary =t('work.describe.ai_reasoning')

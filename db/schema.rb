@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_10_28_180728) do
+ActiveRecord::Schema[7.2].define(version: 2026_10_30_000000) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -108,6 +108,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_10_28_180728) do
     t.index ["status"], name: "index_ai_work_metadata_on_status"
     t.index ["work_id"], name: "index_ai_work_metadata_on_work_id"
     t.check_constraint "json_valid(`metadata`)", name: "metadata"
+    t.text "subject_heading_candidates", size: :medium
   end
 
   create_table "article_article_links", id: :integer, charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
@@ -1030,6 +1031,31 @@ ActiveRecord::Schema[7.2].define(version: 2026_10_28_180728) do
     t.check_constraint "json_valid(`metadata`)", name: "metadata"
   end
 
+  create_table "subject_heading_inventories", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.integer "transcription_field_id", null: false
+    t.string "filename", null: false
+    t.integer "row_count", null: false
+    t.text "source_rows", size: :medium, null: false
+    t.text "report_csv", size: :medium
+    t.string "validation_status", default: "not_requested", null: false
+    t.string "validation_token"
+    t.text "validation_error"
+    t.datetime "completed_at"
+    t.datetime "notified_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["transcription_field_id"], name: "index_subject_heading_inventories_on_transcription_field_id", unique: true
+  end
+
+  create_table "subject_headings", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "subject_heading_inventory_id", null: false
+    t.string "heading", limit: 1000, null: false
+    t.string "uri", limit: 1000
+    t.string "normalized_key", limit: 64, null: false
+    t.index ["subject_heading_inventory_id", "normalized_key"], name: "index_headings_on_inventory_and_key", unique: true
+    t.index ["subject_heading_inventory_id"], name: "index_headings_on_inventory"
+  end
+
   create_table "table_cells", id: :integer, charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
     t.integer "work_id"
     t.integer "page_id"
@@ -1315,6 +1341,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_10_28_180728) do
     t.float "bottom_offset", default: 1.0
     t.boolean "row_highlight", default: false
     t.string "field_type", default: "transcription"
+    t.text "subject_heading_instructions"
   end
 
   create_table "users", id: :integer, charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
@@ -1530,4 +1557,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_10_28_180728) do
   add_foreign_key "thredded_user_post_notifications", "users", on_delete: :cascade
   add_foreign_key "work_facets", "works"
   add_foreign_key "works", "metadata_description_versions"
+  add_foreign_key "subject_heading_inventories", "transcription_fields", on_delete: :cascade
+  add_foreign_key "subject_headings", "subject_heading_inventories", on_delete: :cascade
 end

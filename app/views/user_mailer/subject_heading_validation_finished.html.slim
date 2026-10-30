@@ -1,0 +1,9 @@
+h2 Subject heading validation
+p ="Project: #{@collection.title} — #{@field.label}"
+-if @inventory.validation_status == 'completed'
+  p Your subject heading validation report is ready. FromThePage has finished checking the uploaded headings against Library of Congress authority data.
+  p Download a CSV report containing the original headings, possible alternatives and identifiers where available, and explanations of the results. A completed check does not mean every heading is approved or verified.
+-else
+  p Validation could not be completed. Your uploaded headings remain available. You can review any partial report and retry from the configuration screen.
+p No suggested changes have been applied automatically. To adopt suggestions, edit the heading and uri columns in the CSV and upload the revised file.
+p =link_to 'Review Subject Headings', @configuration_url

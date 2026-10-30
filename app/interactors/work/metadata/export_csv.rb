@@ -116,7 +116,7 @@ class Work::Metadata::ExportCsv < ApplicationInteractor
             element = metadata.detect { |candidate| candidate['transcription_field_id'] == field.id }
             if element
               value = element['value']
-              value = value.join('; ') if value.is_a? Array
+              value = field.subject_headings? ? value.to_json : value.join('; ') if value.is_a? Array
               row << value
             else
               row << nil

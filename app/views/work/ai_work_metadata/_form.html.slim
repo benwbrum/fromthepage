@@ -2,6 +2,7 @@ table.form.collection-settings
   tr
     td(colspan="2")
       h3 =t('.heading')
+      =render 'shared/subject_heading_validation_warnings', collection: collection
       -if collection.metadata_fields.exists?
         p =t('.description')
         div[style='margin: 5px 0']
