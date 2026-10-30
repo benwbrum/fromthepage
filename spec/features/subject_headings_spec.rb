@@ -33,6 +33,10 @@ describe 'Project owner subject heading configuration', js: true do
       fill_in 'Subject assignment guidelines (optional)', with: 'Use broad topics.'
       click_button 'Save Subject Headings'
     end
+    expect(page).to have_current_path(collection_edit_metadata_fields_path(owner, collection))
+    expect(page).not_to have_css('.litebox.visible')
+    expect(page).to have_css('.flash-notice', text: 'Subject headings saved.')
+    click_link 'Configure Subject Headings'
     expect(page).to have_content('3000 imported rows; 3000 unique headings.')
     expect(page).to have_content('Validation status: Not requested')
     expect(field.reload.subject_heading_instructions).to eq('Use broad topics.')
@@ -72,6 +76,9 @@ describe 'Project owner subject heading configuration', js: true do
       check 'Check for matches in Library of Congress authority records'
       click_button 'Save Subject Headings'
     end
+    expect(page).to have_current_path(collection_edit_metadata_fields_path(owner, collection))
+    expect(page).to have_css('.flash-notice', text: 'Subject headings saved.')
+    click_link 'Configure Subject Headings'
     expect(page).to have_content('3 imported rows; 2 unique headings.')
     expect(page).to have_content('Validation status: Queued')
     expect(SubjectHeadingInventory.exists?(original.id)).to be(false)
@@ -101,11 +108,16 @@ describe 'Project owner subject heading configuration', js: true do
 
   it 'saves guidelines without a new file and keeps the separate authority retry action' do
     original = import_headings(field)
-    visit collection_subject_headings_path(owner, collection, field)
-    expect(page.evaluate_script("document.getElementById('file').required")).to be(false)
+    visit collection_edit_metadata_fields_path(owner, collection)
+    click_link 'Configure Subject Headings'
+    expect(find('#file', visible: :all).evaluate_script('this.required')).to be(false)
     expect(page).to have_content('Replacing this file changes which headings are available for future assignments. Headings already saved to item descriptions will not be changed.')
     fill_in 'Subject assignment guidelines (optional)', with: 'Prefer local cataloging conventions.'
     click_button 'Save Subject Headings'
+    expect(page).to have_current_path(collection_edit_metadata_fields_path(owner, collection))
+    expect(page).not_to have_css('.litebox.visible')
+    expect(page).to have_css('.flash-notice', text: 'Subject headings saved.')
+    click_link 'Configure Subject Headings'
     expect(page).to have_field('Subject assignment guidelines (optional)', with: 'Prefer local cataloging conventions.')
     expect(field.reload.subject_heading_inventory.id).to eq(original.id)
     click_button 'Check authorities again'

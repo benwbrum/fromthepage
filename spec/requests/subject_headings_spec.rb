@@ -6,6 +6,7 @@ describe SubjectHeadingsController, :subject_headings do
   let!(:field) { create(:transcription_field, :as_metadata, collection: collection, input_type: 'subject_headings', label: 'Topics', line_number: 1) }
   let!(:work) { create(:work, collection: collection, owner: owner) }
   let(:path) { collection_subject_headings_path(owner, collection, field) }
+  let(:editor_path) { collection_edit_metadata_fields_path(owner, collection) }
 
   before { Current.user = owner }
 
@@ -40,13 +41,30 @@ describe SubjectHeadingsController, :subject_headings do
   it 'uploads, displays inventory information and replaces headings' do
     login_as owner
     patch path, params: { file: upload_csv("heading\nOriginal\nOriginal.\n"), instructions: 'Use specific topics.' }
-    expect(response).to redirect_to(path)
+    expect(response).to redirect_to(editor_path)
     original = field.reload.subject_heading_inventory
+    follow_redirect!
+    expect(response.body).to include('Subject headings saved.')
     get path
     expect(response.body).to include('2 imported rows; 1 unique headings.', 'Use specific topics.', 'Not requested')
     patch path, params: { file: upload_csv("heading\nReplacement\n") }
     expect(field.reload.subject_heading_inventory.subject_headings.pluck(:heading)).to eq(['Replacement'])
     expect(SubjectHeadingInventory.exists?(original.id)).to be(false)
+  end
+
+  %w[upload guidelines].each do |save_type|
+    it "returns the LiteBox redirect and success notice after a #{save_type} save" do
+      import_headings(field) if save_type == 'guidelines'
+      login_as owner
+      parameters = { instructions: 'Prefer specific headings.' }
+      parameters[:file] = upload_csv("heading\nAgriculture\n") if save_type == 'upload'
+      patch path, params: parameters, headers: { 'X-Requested-With' => 'XMLHttpRequest' }
+      expect(response).to have_http_status(:created)
+      expect(response.headers['Location']).to eq(editor_path)
+      get editor_path
+      expect(response.body).to include('Subject headings saved.')
+      expect(field.reload.subject_heading_instructions).to eq('Prefer specific headings.')
+    end
   end
 
   it 'queues validation only when requested and allows retry after failure' do
@@ -139,7 +157,7 @@ describe SubjectHeadingsController, :subject_headings do
     get collection_subject_headings_report_path(owner, collection, field)
     report = response.body
     patch path, params: { file: upload_csv(report) }
-    expect(response).to redirect_to(path)
+    expect(response).to redirect_to(editor_path)
     expect(field.reload.subject_heading_inventory.subject_headings.pluck(:heading, :uri)).to eq([['Local term', nil]])
 
     edited = CSV.parse(report.delete_prefix("\uFEFF"), headers: true)
@@ -160,7 +178,7 @@ describe SubjectHeadingsController, :subject_headings do
     expect do
       patch path, params: { file: upload_csv("heading\nReplacement\n") }
     end.not_to change(AiWorkMetadata, :count)
-    expect(response).to redirect_to(path)
+    expect(response).to redirect_to(editor_path)
     expect(work.reload.metadata_description).to eq(description)
     expect(draft.reload.subject_heading_candidates).to eq(candidates)
     expect(draft.metadata_json).to eq(draft_metadata)

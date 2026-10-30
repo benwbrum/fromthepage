@@ -16,7 +16,8 @@ class SubjectHeadingsController < ApplicationController
       raise SubjectHeadings::Import::ImportError, 'Choose a CSV file.' unless @field.subject_heading_inventory
       @field.update!(subject_heading_instructions: params[:instructions])
     end
-    redirect_to collection_subject_headings_path(@collection.owner, @collection, @field), notice: 'Subject headings saved.'
+    flash[:notice] = 'Subject headings saved.'
+    ajax_redirect_to collection_edit_metadata_fields_path(@collection.owner, @collection)
   rescue SubjectHeadings::Import::ImportError => e
     @inventory = @field.reload.subject_heading_inventory
     @error = e.message
