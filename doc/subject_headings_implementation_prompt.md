@@ -31,7 +31,10 @@ frameworks and dependencies and keep other metadata datatypes compatible.
 
 ## Import and replacement
 
-Support UTF-8 with optional BOM, quoted commas, CRLF and blank rows. Require
+Use the existing CSV utility and CharlockHolmes encoding detection to accept
+common CSV encodings, including legacy spreadsheet exports and Unicode BOMs.
+Normalize text internally and keep encoding terminology out of the uploader
+instructions. Support quoted commas, CRLF and blank rows. Require
 `heading`; accept optional HTTP/HTTPS URIs in `uri`; ignore additional columns.
 Reject malformed, empty or oversized inventories clearly. Preserve legacy and
 local terms, punctuation and supplied identifiers apart from surrounding

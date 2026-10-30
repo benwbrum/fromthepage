@@ -60,13 +60,17 @@ who has lost access leaves a retryable failed state without authority requests.
 
 ## CSV contract
 
-Upload UTF-8 CSV (BOM supported), with `heading` and optional `uri` headers.
+Upload CSV with `heading` and optional `uri` headers. As with metadata and
+subject/article imports, the shared CSV utility uses CharlockHolmes to detect
+text encoding. UTF-8 (with or without BOM), detected legacy encodings such as
+Windows-1252, and UTF-16/32 CSVs are converted to UTF-8 internally. Native Excel
+workbooks are not CSV files; export them as CSV before uploading.
 Other column values never determine the active vocabulary. HTTP/HTTPS URIs are
 supported; bare LCCNs and other identifiers are not interpreted. Limits are
 5 MB for ordinary CSVs and active heading/URI text, 16 MB for report uploads,
 10,000 nonblank rows, and 1,000 characters per heading/URI. Report informational
 columns do not count toward the active vocabulary budget. Surrounding
-whitespace is removed. Malformed CSV, empty inventories, invalid UTF-8, null
+whitespace is removed. Malformed CSV, empty inventories, unreadable text, null
 bytes, and missing required columns are rejected without replacing a valid
 existing inventory.
 

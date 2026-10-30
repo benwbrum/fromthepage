@@ -22,9 +22,10 @@ class SubjectHeadings::Import
     raise ImportError, 'Choose a CSV file.' unless @upload.respond_to?(:read) && @upload.respond_to?(:original_filename)
     raise ImportError, 'CSV or report must be smaller than 16 MB.' if @upload.size > MAX_REPORT_BYTES
 
-    content = @upload.read(MAX_REPORT_BYTES + 1).to_s.dup.force_encoding(Encoding::UTF_8)
+    content = @upload.read(MAX_REPORT_BYTES + 1).to_s
     raise ImportError, 'CSV or report must be smaller than 16 MB.' if content.bytesize > MAX_REPORT_BYTES
-    raise ImportError, 'CSV must use UTF-8 encoding.' unless content.valid_encoding?
+    source_size = content.bytesize
+    content = Utils::Csv::ReadCsv.decode(content)
     raise ImportError, 'CSV must not contain null bytes.' if content.include?("\0")
 
     content = content.delete_prefix("\uFEFF")
@@ -48,7 +49,7 @@ class SubjectHeadings::Import
     end
     raise ImportError, 'CSV requires a heading column.' unless csv.headers.is_a?(Array) && csv.headers.include?('heading')
     report_upload = (SubjectHeadings::Report::HEADERS - csv.headers).empty?
-    raise ImportError, 'CSV must be 5 MB or smaller (reports may be up to 16 MB).' if !report_upload && content.bytesize > MAX_BYTES
+    raise ImportError, 'CSV must be 5 MB or smaller (reports may be up to 16 MB).' if !report_upload && source_size > MAX_BYTES
     active_bytes = rows.sum { |row| row['heading'].bytesize + row['uri'].to_s.bytesize }
     raise ImportError, 'Active vocabulary must be 5 MB or smaller.' if active_bytes > MAX_BYTES
     raise ImportError, 'CSV contains no usable headings.' if rows.empty?

@@ -28,6 +28,27 @@ describe SubjectHeadings::Import, :subject_headings do
     expect(inventory.source_rows.map { |r| r['heading'] }).to eq(['Politics, local', 'Agriculture'])
   end
 
+  it 'imports legacy Windows spreadsheet text without losing accents or punctuation' do
+    heading = 'Élections européennes — conférences françaises'
+    inventory = import_headings(field, "heading,uri\r\n#{heading},\r\n".encode('Windows-1252'))
+    expect(inventory.source_rows).to eq([{ 'heading' => heading, 'uri' => nil }])
+  end
+
+  { 'UTF-16LE' => "\xFF\xFE".b, 'UTF-16BE' => "\xFE\xFF".b, 'UTF-32LE' => "\xFF\xFE\x00\x00".b }.each do |encoding, bom|
+    it "imports #{encoding} spreadsheet CSV with a byte-order mark" do
+      content = "heading,uri\r\nÉlections,https://example.org/authority\r\n"
+      inventory = import_headings(field, bom + content.encode(encoding).b)
+      expect(inventory.source_rows).to eq([{ 'heading' => 'Élections', 'uri' => 'https://example.org/authority' }])
+    end
+  end
+
+  it 'reports unreadable text clearly and preserves the existing inventory' do
+    original = import_headings(field)
+    allow(CharlockHolmes::EncodingDetector).to receive(:detect).and_return(nil)
+    expect { import_headings(field, "heading\n\xFF".b) }.to raise_error(described_class::ImportError, /could not be read/)
+    expect(field.reload.subject_heading_inventory.id).to eq(original.id)
+  end
+
   it 'deduplicates identical labels and terminal periods, retaining singulars and subdivisions' do
     rows = ['African Americans', 'African Americans', 'African Americans.', 'African American', 'Absence without leave', 'Absence without leave--Law and legislation', 'Administrative procedure-Mississippi.']
     inventory = import_headings(field, "heading\n#{rows.join("\n")}\n")
@@ -59,8 +80,7 @@ describe SubjectHeadings::Import, :subject_headings do
     end
   end
 
-  it 'rejects invalid UTF-8 and file-size and row-count violations' do
-    expect { import_headings(field, "heading\n\xFF".b) }.to raise_error(described_class::ImportError, /UTF-8/)
+  it 'rejects file-size and row-count violations' do
     stub_const('SubjectHeadings::Import::MAX_BYTES', 10)
     expect { import_headings(field, "heading\nAgriculture\n") }.to raise_error(described_class::ImportError, /5 MB/)
     stub_const('SubjectHeadings::Import::MAX_BYTES', 5.megabytes)
