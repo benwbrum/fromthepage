@@ -99,7 +99,7 @@ rows retain all spellings so report rows and import counts can be explained.
 Reports contain exactly:
 
 ```csv
-heading,uri,suggested_heading,suggested_uri,result,rationale
+heading,uri,suggested_heading,suggested_uri,result,rationale,authority_type
 ```
 
 They use UTF-8 BOM, CRLF, standard CSV quoting and apostrophe-prefix escaping for
@@ -129,9 +129,31 @@ The service makes HTTPS GET requests to:
 * `https://id.loc.gov/authorities/names/suggest2/`
 * `https://id.loc.gov/authorities/genreForms/suggest2/`
 
-Parameters are `q` (URI-encoded full heading), `searchtype=keyword`, and `count=5`.
-The parsed response is `{count: number, hits: [{aLabel, suggestLabel, uri}]}`.
-Returned identifiers must belong to these LC authority paths. Uploaded URIs are
+Matching first verifies supplied LC authority URIs through their expanded
+MADS/RDF JSON-LD records. Other HTTP/HTTPS identifiers remain local data and
+are never fetched. Without an identifier match, Suggest2 left-anchored searches
+run across subjects, names and genre/forms (`q`, `count=20`,
+`searchtype=leftanchored`). Exact authorized labels take precedence over
+conservative spacing/terminal-period normalization and explicit MADS `hasVariant`
+/ `variantLabel` evidence. Formatting retries search the normalized string;
+original uploaded columns remain intact. Broader keyword searches run last.
+`suggestLabel` is a discovery hint, never sufficient variant evidence.
+
+Potential exact/formatting candidates are checked against their authority records.
+If those do not match, remaining left-anchored candidates are checked for explicit
+variants before keyword fallback.
+Suggestion hits missing an `aLabel` are resolved from the record rather than
+rejected solely for the missing label. Invalid record URIs or malformed responses
+remain lookup errors. Authority requests use only whitelisted LC authority paths,
+never redirects or arbitrary uploaded URLs. Record and lookup caches use a new
+version to avoid reusing the old keyword-only evidence.
+
+The report adds `authority_type` (Subject, Name, Genre/form) based on verified
+records. Multiple verified equivalent records produce `multiple_authority_matches`,
+with semicolon-separated URIs in `suggested_uri`; unrelated keyword candidates
+produce `possible_match` without replacement suggestions. A constructed heading
+with no standalone match remains `no_match_found`, with a specific explanation.
+No absence of a match implies an invalid heading. Uploaded identifiers are
 preserved as data and never fetched. No authentication credential is assumed or
 added. No advertised service rate limit is assumed: the application throttles
 uncached requests to at most four per second, sequentially. It uses 5-second
@@ -159,8 +181,8 @@ made” rationale. The configuration error summarizes failed and skipped counts.
 Successful headings reset the consecutive-failure counter.
 
 Validation is advisory. It searches subjects, names (including personal,
-corporate, and geographic names), and genre/forms, but checks only a small set
-of keyword results. It does not resolve arbitrary subdivisions or claim absence
+corporate, and geographic names), and genre/forms, but checks only a bounded set
+of search candidates. It does not resolve arbitrary subdivisions or claim absence
 from LC. A complex heading without a complete-string match is not invalid.
 Exact and variant classifications require matching returned labels; other
 candidates are possibilities. Multiple candidates are reported as ambiguous,
@@ -228,3 +250,15 @@ Chromium scenarios, JSON storage checks and existing AI regression tests, using
 a fresh MariaDB database loaded from the checked-in schema. External LC
 responses are mocked. A live LC request and production mail configuration still
 need deployment smoke checks, as described above.
+
+
+Matching verification uses mocked expanded MADS authority graphs, including
+positive and negative variant relationships; fixture outcomes are not assertions
+about the current live catalog. LC documentation and sample-record access returned
+403/unavailable in this environment. The actual Alabama failure response was not
+provided: missing suggestion labels are now tolerated when the record verifies,
+but malformed authority data still correctly requires review. Left-anchored and
+keyword discovery are bounded to 20 candidates per vocabulary; keyword-only variant relationships
+not exposed by candidate hints, remote variant links absent from the returned graph,
+and labels outside that window may remain unmatched. Authority verification adds
+requests, mitigated by seven-day record caching and the existing retry/throttle.

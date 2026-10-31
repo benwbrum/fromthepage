@@ -9,14 +9,19 @@ describe SubjectHeadings::AuthorityLookup, :subject_headings do
   before do
     described_class::SOURCES.each do |source|
       stub_request(:get, "https://id.loc.gov/authorities/#{source}/suggest2/")
-        .with(query: { 'q' => 'Agriculture', 'count' => '5', 'searchtype' => 'keyword' })
+        .with(query: { 'q' => 'Agriculture', 'count' => '20', 'searchtype' => 'leftanchored' })
+        .to_return(status: 200, body: { count: 0, hits: [] }.to_json)
+      stub_request(:get, "https://id.loc.gov/authorities/#{source}/suggest2/")
+        .with(query: { 'q' => 'Agriculture', 'count' => '20', 'searchtype' => 'keyword' })
         .to_return(status: 200, body: { count: 0, hits: [] }.to_json)
     end
+    stub_request(:get, 'https://id.loc.gov/authorities/subjects/sh85002415.madsrdf_raw.jsonld')
+      .to_return(body: [{ '@id' => hit['uri'], "#{described_class::MADS}authoritativeLabel" => [{ '@value' => 'Agriculture' }] }].to_json)
   end
 
   def stub_subject_request
     stub_request(:get, 'https://id.loc.gov/authorities/subjects/suggest2/')
-      .with(query: { 'q' => 'Agriculture', 'count' => '5', 'searchtype' => 'keyword' })
+      .with(query: { 'q' => 'Agriculture', 'count' => '20', 'searchtype' => 'leftanchored' })
   end
 
   def subject_request
@@ -25,8 +30,8 @@ describe SubjectHeadings::AuthorityLookup, :subject_headings do
 
   it 'reads the LC contract across subjects, names and genre/forms, then caches results' do
     stub_subject_request.to_return(body: { count: 1, hits: [hit] }.to_json)
-    expect(service.call('Agriculture')).to eq([hit])
-    expect(service.call('Agriculture')).to eq([hit])
+    expect(service.call('Agriculture').first).to include('aLabel' => 'Agriculture', 'evidence' => 'authority')
+    expect(service.call('Agriculture').first).to include('aLabel' => 'Agriculture', 'evidence' => 'authority')
     expect(subject_request).to have_been_made.once
   end
 
@@ -48,7 +53,7 @@ describe SubjectHeadings::AuthorityLookup, :subject_headings do
   [429, 500, 503].each do |status|
     it "retries HTTP #{status} then succeeds" do
       stub_subject_request.to_return(status: status).then.to_return(body: { count: 1, hits: [hit] }.to_json)
-      expect(service.call('Agriculture')).to eq([hit])
+      expect(service.call('Agriculture').first).to include('aLabel' => 'Agriculture', 'evidence' => 'authority')
       expect(subject_request).to have_been_made.twice
     end
   end
@@ -87,7 +92,7 @@ describe SubjectHeadings::AuthorityLookup, :subject_headings do
     service = described_class.new(cache: cache, sleeper: ->(n) { delays << n }, heartbeat: -> { heartbeat.call })
     stub_subject_request.to_return(status: 503, headers: { 'Retry-After' => (Time.now + 900).httpdate }).then.to_return(body: { count: 0, hits: [] }.to_json)
     expect(service.call('Agriculture')).to eq([])
-    expect(delays.sum).to eq(901.0)
+    expect(delays.sum).to eq(901.75)
     expect(delays.max).to eq(30)
     expect(heartbeat).to have_received(:call).at_least(30).times
   end

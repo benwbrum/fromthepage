@@ -81,7 +81,7 @@ must never silently replace active headings or identifiers.
 Generate a private downloadable CSV with exactly these columns:
 
 ```csv
-heading,uri,suggested_heading,suggested_uri,result,rationale
+heading,uri,suggested_heading,suggested_uri,result,rationale,authority_type
 ```
 
 Use classifications supported by lookup evidence and explain ambiguity. Protect
@@ -135,3 +135,18 @@ through the browser and run existing AI tests as regression checks.
 Provide the code/migration summary, LC endpoints and references actually used,
 matching and live-verification limitations, test results and owner-only manual
 QA steps. Keep the final PR and documentation within this phase boundary.
+
+
+## Evidence-based matching follow-up
+
+Verify supplied LC authority URIs, then authorized labels across the supported
+vocabularies, conservative formatting equivalents, explicit MADS variant
+relationships, and finally keyword candidates. Keep original uploaded columns
+unchanged. Mere related keywords never establish ambiguity or replacement
+suggestions. Use exact_match, multiple_authority_matches, formatting_suggestion,
+variant_match, possible_match, no_match_found and lookup_error; retain not_checked
+for rows skipped after service failures. Include verified authority_type in the
+report, preserving both legacy six-column and extended report reupload behavior.
+No request/processing failure may become no_match_found. Mock authority graphs
+for the real-example regressions and distinguish those fixtures from unverified
+claims about the live catalog.

@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe SubjectHeadings::Report, :subject_headings do
   let(:row) { { 'heading' => 'Agriculture', 'uri' => 'http://local.example/old' } }
-  let(:hit) { { 'aLabel' => 'Agriculture', 'suggestLabel' => 'Agriculture', 'uri' => 'http://id.loc.gov/authorities/subjects/sh85002415' } }
+  let(:hit) { { 'evidence' => 'authority', 'authority_type' => 'Subject', 'variants' => [], 'aLabel' => 'Agriculture', 'suggestLabel' => 'Agriculture', 'uri' => 'http://id.loc.gov/authorities/subjects/sh85002415' } }
 
   it 'classifies exact evidence, leaving the active columns untouched' do
     result = described_class.result(row, [hit])
@@ -12,8 +12,8 @@ describe SubjectHeadings::Report, :subject_headings do
   end
 
   it 'identifies a variant only when LC provides the matching suggested label' do
-    result = described_class.result(row, [hit.merge('aLabel' => 'Preferred term')])
-    expect(result['result']).to eq('variant_label')
+    result = described_class.result(row, [hit.merge('aLabel' => 'Preferred term', 'variants' => ['Agriculture'])])
+    expect(result['result']).to eq('variant_match')
   end
 
   it 'labels keyword candidates as possibilities' do
@@ -23,13 +23,13 @@ describe SubjectHeadings::Report, :subject_headings do
 
   it 'does not choose between multiple authorities' do
     result = described_class.result(row, [hit, hit.merge('uri' => 'http://id.loc.gov/authorities/names/n123')])
-    expect(result['result']).to eq('multiple_possible_matches')
-    expect(result['suggested_uri']).to be_nil
+    expect(result['result']).to eq('multiple_authority_matches')
+    expect(result['suggested_uri']).to include(hit['uri'], 'http://id.loc.gov/authorities/names/n123')
   end
 
   it 'never equates no match with invalidity' do
     expect(described_class.result(row, [])['result']).to eq('no_match_found')
-    expect(described_class.result(row.merge('heading' => 'Agriculture--Mississippi'), [])['result']).to eq('complex_heading_not_fully_verified')
+    expect(described_class.result(row.merge('heading' => 'Agriculture--Mississippi'), [])['result']).to eq('no_match_found')
   end
 
   it 'serializes exactly the contract columns with BOM, CRLF, quoting and formula protection' do

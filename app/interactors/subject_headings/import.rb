@@ -35,7 +35,7 @@ class SubjectHeadings::Import
       raise ImportError, 'CSV requires a heading column.' unless row.headers.include?('heading')
       next if row.fields.all?(&:blank?)
       heading, uri = row['heading'].to_s, row['uri'].to_s
-      if (SubjectHeadings::Report::HEADERS - row.headers).empty?
+      if (SubjectHeadings::Report::IMPORT_HEADERS - row.headers).empty?
         heading, uri = [heading, uri].map { |v| SubjectHeadings::Report.import_cell(v) }
       end
       heading, uri = heading.strip, uri.strip.presence
@@ -48,7 +48,7 @@ class SubjectHeadings::Import
       raise ImportError, 'CSV may contain at most 10,000 headings.' if rows.size > MAX_ROWS
     end
     raise ImportError, 'CSV requires a heading column.' unless csv.headers.is_a?(Array) && csv.headers.include?('heading')
-    report_upload = (SubjectHeadings::Report::HEADERS - csv.headers).empty?
+    report_upload = (SubjectHeadings::Report::IMPORT_HEADERS - csv.headers).empty?
     raise ImportError, 'CSV must be 5 MB or smaller (reports may be up to 16 MB).' if !report_upload && source_size > MAX_BYTES
     active_bytes = rows.sum { |row| row['heading'].bytesize + row['uri'].to_s.bytesize }
     raise ImportError, 'Active vocabulary must be 5 MB or smaller.' if active_bytes > MAX_BYTES

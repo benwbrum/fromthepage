@@ -62,7 +62,8 @@ describe SubjectHeadings::ValidateJob, :subject_headings do
     allow(lookup).to receive(:call).and_return([{ 'aLabel' => 'Different term', 'uri' => 'http://id.loc.gov/authorities/subjects/sh1' }])
     run_job
     expect(inventory.subject_headings.first.attributes.slice('heading', 'uri')).to eq(before)
-    expect(inventory.reload.report_csv).to include('Different term')
+    expect(inventory.reload.report_csv).to include('possible_match')
+    expect(inventory.report_csv).not_to include('Different term')
   end
 
   it 'records timeouts as failed lookups, preserves the inventory and sends failure email' do

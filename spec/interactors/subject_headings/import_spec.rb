@@ -23,6 +23,13 @@ describe SubjectHeadings::Import, :subject_headings do
     expect(inventory.subject_headings.first.attributes.slice('heading', 'uri')).to eq('heading' => 'Local term', 'uri' => nil)
   end
 
+  it 'continues to recognize old reports without authority_type and ignores the new column' do
+    legacy = "heading,uri,suggested_heading,suggested_uri,result,rationale\n'=1+1,,Other,https://example.org/other,possible_match,Review\n"
+    expect(import_headings(field, legacy).source_rows).to eq([{ 'heading' => '=1+1', 'uri' => nil }])
+    current = SubjectHeadings::Report.generate([{ 'heading' => '=1+1', 'authority_type' => 'Name' }])
+    expect(import_headings(field, current).source_rows).to eq([{ 'heading' => '=1+1', 'uri' => nil }])
+  end
+
   it 'handles BOM, CRLF, quoted commas, blank rows and surrounding whitespace' do
     inventory = import_headings(field, "\uFEFFheading,uri\r\n\r\n\" Politics, local \",\r\n,\r\nAgriculture,\r\n")
     expect(inventory.source_rows.map { |r| r['heading'] }).to eq(['Politics, local', 'Agriculture'])

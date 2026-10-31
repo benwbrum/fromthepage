@@ -44,11 +44,12 @@ class SubjectHeadings::ValidateJob < ApplicationJob
         return unless owned == 1
         claim_stamp = next_stamp
         begin
-          if consecutive_failures >= 3 && !memo.key?(row['heading'])
+          memo_key = [row['heading'], row['uri']]
+          if consecutive_failures >= 3 && !memo.key?(memo_key)
             skipped += 1
             next row.merge('result' => 'not_checked', 'rationale' => 'No request made: further lookups stopped after three consecutive failed heading lookups. Please retry the authority check later.')
           end
-          hits = memo[row['heading']] ||= lookup.call(row['heading'])
+          hits = memo[memo_key] ||= row['uri'].present? ? lookup.call(row['heading'], identifier: row['uri']) : lookup.call(row['heading'])
           consecutive_failures = 0
           SubjectHeadings::Report.result(row, hits)
         rescue SubjectHeadings::AuthorityLookup::LookupError => e

@@ -1,7 +1,8 @@
 require 'csv'
 
 class SubjectHeadings::Report
-  HEADERS = %w[heading uri suggested_heading suggested_uri result rationale].freeze
+  IMPORT_HEADERS = %w[heading uri suggested_heading suggested_uri result rationale].freeze
+  HEADERS = (IMPORT_HEADERS + %w[authority_type]).freeze
 
   def self.formula?(value)
     value.to_s.match?(/\A'*(?:[[:space:]\uFEFF]*[=+@-]|[\t\r\n])/)
@@ -24,23 +25,41 @@ class SubjectHeadings::Report
   end
 
   def self.result(row, hits)
-    exact = hits.select { |h| h['aLabel'] == row['heading'] }
-    return suggestion(row, exact, 'exact_match', 'LC returned the same authorized label. Uploaded identifiers are preserved; review any different suggested URI.') if exact.any?
-    variants = hits.select { |h| h['suggestLabel'] == row['heading'] }
-    return suggestion(row, variants, 'variant_label', 'LC matched a suggested label to a different authorized label; review before adopting.') if variants.any?
-    if hits.empty?
-      complex = row['heading'].include?('--')
-      return row.merge('result' => complex ? 'complex_heading_not_fully_verified' : 'no_match_found',
-        'rationale' => complex ? 'No complete-string authority found. Constructed subdivisions may be legitimate without one authority URI.' : 'No match found in this limited search. Local terms and unmatched headings remain usable; this does not mean invalid.')
+    verified = hits.select { |hit| hit['evidence'] == 'authority' }
+    exact = verified.select { |hit| hit['aLabel'] == row['heading'] }
+    normalized = verified.select { |hit| SubjectHeadings::AuthorityLookup.normalize(hit['aLabel']) == SubjectHeadings::AuthorityLookup.normalize(row['heading']) }
+    variants = verified.select do |hit|
+      hit.fetch('variants', []).any? { |label| SubjectHeadings::AuthorityLookup.normalize(label) == SubjectHeadings::AuthorityLookup.normalize(row['heading']) }
     end
-    suggestion(row, hits, 'possible_match', 'LC returned keyword candidates. This is a possible match, not confirmation that the uploaded heading is authorized.')
-  end
-
-  def self.suggestion(row, hits, result, rationale)
-    if hits.size > 1
-      row.merge('result' => 'multiple_possible_matches', 'rationale' => "Ambiguous: #{hits.first(5).map { |h| "#{h['aLabel']} (#{h['uri']})" }.join('; ')}. Review candidates; no replacement selected.")
+    matches, status, rationale = if exact.any?
+      [exact, 'exact_match', "Matches an LC #{exact.first['authority_type'].downcase} authority."]
+    elsif normalized.any?
+      period_only = normalized.all? { |hit| hit['aLabel'].sub(/\.\z/, '') == row['heading'].sub(/\.\z/, '') }
+      [normalized, 'formatting_suggestion', period_only ? 'Terminal period differs from authorized label.' : 'Spacing differs from authorized label.']
+    elsif variants.any?
+      [variants, 'variant_match', 'Documented variant of the authorized label.']
     else
-      row.merge('suggested_heading' => hits.first['aLabel'], 'suggested_uri' => hits.first['uri'], 'result' => result, 'rationale' => rationale)
+      rationale = if hits.any? { |hit| hit['identifier_mismatch'] }
+        'Supplied identifier has a different authorized label; review it.'
+      elsif hits.any?
+        'Related search results only; no equivalent authority verified.'
+      elsif row['heading'].include?('--')
+        'No standalone authority found; constructed subject strings may be valid.'
+      else
+        'No authority match found; local headings remain usable.'
+      end
+      return row.merge('result' => hits.empty? ? 'no_match_found' : 'possible_match', 'rationale' => rationale)
     end
+    matches = matches.uniq { |hit| hit['uri'] }
+    types = matches.map { |hit| hit['authority_type'] }.uniq
+    if matches.size > 1
+      status = 'multiple_authority_matches'
+      rationale = types.size > 1 ? "Same label appears in #{types.map(&:downcase).join(' and ')} authorities." : 'Multiple authority records establish this label.'
+    elsif hits.any? { |hit| hit['identifier_mismatch'] }
+      rationale += ' Supplied identifier identifies a different authority.'
+    end
+    row.merge('result' => status, 'rationale' => rationale, 'authority_type' => types.join('; '),
+      'suggested_heading' => matches.map { |hit| hit['aLabel'] }.uniq.join('; '),
+      'suggested_uri' => matches.map { |hit| hit['uri'] }.join('; '))
   end
 end
