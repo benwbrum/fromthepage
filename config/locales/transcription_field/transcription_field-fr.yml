@@ -58,6 +58,19 @@ fr:
       ai_option_placeholder: Cliquez sur une suggestion ci-dessous, ou saisissez votre transcription…
       ai_spreadsheet_option: Utiliser ce brouillon
       instructions: Des instructions
+    input_types:
+      alt_text: Texte alternatif
+      checkbox: Case à cocher
+      date: Date
+      description: Description
+      instruction: Instruction
+      multiselect: Sélection multiple
+      numeric: Numérique
+      select: Sélection
+      spreadsheet: Tableur
+      subject_headings: Vedettes-matière (LCSH)
+      text: Texte
+      textarea: Zone de texte
     line_form:
       field_options: Options de champ (séparées par des points-virgules)
       field_options_title: Options pour certains champs.
@@ -83,6 +96,9 @@ fr:
       input_type: Type d'entrée
       reorder_column: Réorganiser la colonne
     new_field_form:
+      subject_heading_count:
+        one: "%{count} vedette configurée"
+        other: "%{count} vedettes configurées"
       configure_options: Configurer les options
       configure_spreadsheet: Configurer la feuille de calcul
       delete_field: Supprimer le champ

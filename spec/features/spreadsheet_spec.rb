@@ -6,7 +6,7 @@ describe 'spreadsheet' do
 
     # add the spreadsheet
     page.all('#new-fields tr')[2].fill_in('transcription_fields__label', with: 'Spreadsheet field')
-    page.all('#new-fields tr')[2].select('spreadsheet', from: 'transcription_fields__input_type')
+    page.all('#new-fields tr')[2].select('Spreadsheet', from: 'transcription_fields__input_type')
 
     # hit save
     click_button 'Save'
@@ -20,11 +20,11 @@ describe 'spreadsheet' do
 
     # Set up the text field
     rows[1].fill_in('spreadsheet_columns__label', with: 'Text field')
-    rows[1].select('text', from: 'spreadsheet_columns__input_type')
+    rows[1].select('Text', from: 'spreadsheet_columns__input_type')
 
     # Set up the date field
     rows[2].fill_in('spreadsheet_columns__label', with: 'Date field')
-    rows[2].select('date', from: 'spreadsheet_columns__input_type')
+    rows[2].select('Date', from: 'spreadsheet_columns__input_type')
 
     # hit save
     click_button 'Save'

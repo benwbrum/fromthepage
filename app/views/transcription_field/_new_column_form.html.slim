@@ -8,7 +8,7 @@ tr id="#{column_id}"
   td.field-form_label
     =text_field_tag "spreadsheet_columns[][label]", "#{label_value}", 'aria-label' => t('.field_label')
   td.field-form_type
-    =select_tag("spreadsheet_columns[][input_type]", options_for_select(SpreadsheetColumn::INPUTS, "#{input_type_value}"), 'aria-label' => t('.input_type'), class: 'input_type')
+    =select_tag("spreadsheet_columns[][input_type]", options_for_select(field_input_type_options(SpreadsheetColumn::INPUTS), "#{input_type_value}"), 'aria-label' => t('.input_type'), class: 'input_type')
   td.field-form_options
     =text_area_tag "spreadsheet_columns[][options]", "#{options_value}", 'aria-label' => t('.field_options'), class: 'field-options', disabled: true
   td.field-form_actions

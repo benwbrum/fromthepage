@@ -7,6 +7,15 @@ class UserMailer < ActionMailer::Base
 
   before_action :add_inline_attachments!
 
+  def subject_heading_validation_finished(inventory)
+    @inventory = inventory
+    @field = inventory.transcription_field
+    @collection = @field.collection
+    @configuration_url = collection_subject_headings_url(@collection.owner, @collection, @field)
+    subject = inventory.validation_status == 'completed' ? 'Your subject heading validation report is ready' : 'Your subject heading validation could not be completed'
+    mail to: @collection.owner.email, subject: subject
+  end
+
   # Subject can be set in your I18n file at config/locales/en.yml
   # with the following lookup:
   #
