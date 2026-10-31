@@ -138,8 +138,25 @@ uncached requests to at most four per second, sequentially. It uses 5-second
 connect/write and 10-second read timeouts, up to three attempts with exponential
 backoff on timeouts, HTTP 429 and server failures, and seven-day Rails caching
 of successful lookups. Configure a persistent Rails cache in production for
-cross-job reuse. Errors are never cached as no-match results. After three failed
-rows a job stops issuing requests and marks remaining rows as lookup errors.
+cross-job reuse. Errors are never cached as no-match results. Backoff starts at
+30 seconds for HTTP 429/503 and 2 seconds for other transient failures, doubling
+on the second retry. A valid `Retry-After` (seconds or HTTP date) takes precedence
+when longer; there is no early retry or truncation of the server delay. Long
+waits renew the validation claim every 30 seconds and stop if the file/attempt
+has been replaced. These waits occupy the dedicated worker; this change does
+not introduce resumable jobs or a new batch endpoint.
+
+Rails logs `[LC authority]` request URLs/attempts, response status, content type
+and Retry-After at info level; retry delays at warn and exhausted failures at
+error. Debug logs include at most 4 KB of the response body. Request URLs include
+uploaded heading text, so these are application logs, not public report links.
+No credentials or arbitrary response headers are logged.
+
+After three consecutive failed headings a job stops issuing further requests.
+Requests that failed remain `lookup_error` with the HTTP status or exception;
+remaining unattempted headings are `not_checked` with an explicit “No request
+made” rationale. The configuration error summarizes failed and skipped counts.
+Successful headings reset the consecutive-failure counter.
 
 Validation is advisory. It searches subjects, names (including personal,
 corporate, and geographic names), and genre/forms, but checks only a small set

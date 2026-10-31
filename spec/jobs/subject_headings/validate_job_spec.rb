@@ -91,7 +91,10 @@ describe SubjectHeadings::ValidateJob, :subject_headings do
     allow(lookup).to receive(:call).and_raise(SubjectHeadings::AuthorityLookup::LookupError, 'Unavailable')
     run_job
     expect(lookup).to have_received(:call).exactly(3).times
-    expect(inventory.reload.report_csv).to include('Further lookups paused')
+    rows = CSV.parse(inventory.reload.report_csv.delete_prefix("\uFEFF"), headers: true)
+    expect(rows.first(3).map { |row| row['result'] }).to eq(['lookup_error'] * 3)
+    expect(rows.drop(3).map { |row| row['result'] }).to eq(['not_checked'] * 7)
+    expect(rows[-1]['rationale']).to include('No request made')
   end
 
   it 'ignores an old job after replacement' do
@@ -194,5 +197,17 @@ describe SubjectHeadings::ValidateJob, :subject_headings do
     ActiveJob::Base.queue_adapter = :test
     expect { inventory.queue_validation!(user: owner) }.to have_enqueued_job(described_class)
     expect(inventory.reload.validation_token).not_to eq(token)
+  end
+
+  it 'continues after isolated errors rather than stopping at three cumulative failures' do
+    inventory.update!(source_rows: 8.times.map { |i| { 'heading' => "Term #{i}" } })
+    allow(lookup).to receive(:call) do |heading|
+      raise SubjectHeadings::AuthorityLookup::LookupError, 'HTTP 429' if %w[0 2 4].include?(heading.split.last)
+      []
+    end
+    run_job
+    expect(lookup).to have_received(:call).exactly(8).times
+    expect(inventory.reload.report_csv).not_to include('not_checked')
+    expect(inventory.validation_status).to eq('failed')
   end
 end

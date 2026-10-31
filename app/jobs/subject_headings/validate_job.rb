@@ -25,8 +25,16 @@ class SubjectHeadings::ValidateJob < ApplicationJob
     return unless claimed == 1
 
     begin
-      lookup = SubjectHeadings::AuthorityLookup.new
+      heartbeat = lambda do
+        next_stamp = Time.current
+        owned = attempts.where(validation_status: 'running', updated_at: claim_stamp).update_all(updated_at: next_stamp)
+        raise SubjectHeadings::AuthorityLookup::LookupError, 'Validation attempt is no longer current.' unless owned == 1
+        claim_stamp = next_stamp
+      end
+      lookup = SubjectHeadings::AuthorityLookup.new(heartbeat: heartbeat)
       failures = 0
+      consecutive_failures = 0
+      skipped = 0
       memo = {}
       results = inventory.source_rows.map do |row|
         # A replacement deletes this import; stop spending requests immediately.
@@ -36,11 +44,16 @@ class SubjectHeadings::ValidateJob < ApplicationJob
         return unless owned == 1
         claim_stamp = next_stamp
         begin
-          raise SubjectHeadings::AuthorityLookup::LookupError, 'Further lookups paused after repeated service failures.' if failures >= 3
+          if consecutive_failures >= 3 && !memo.key?(row['heading'])
+            skipped += 1
+            next row.merge('result' => 'not_checked', 'rationale' => 'No request made: further lookups stopped after three consecutive failed heading lookups. Please retry the authority check later.')
+          end
           hits = memo[row['heading']] ||= lookup.call(row['heading'])
+          consecutive_failures = 0
           SubjectHeadings::Report.result(row, hits)
         rescue SubjectHeadings::AuthorityLookup::LookupError => e
           failures += 1
+          consecutive_failures += 1
           row.merge('result' => 'lookup_error', 'rationale' => e.message)
         end
       end
@@ -48,7 +61,7 @@ class SubjectHeadings::ValidateJob < ApplicationJob
       raise ArgumentError, 'Validation report exceeds storage limit' if report.bytesize >= 16.megabytes
       attributes = { report_csv: report, completed_at: Time.current,
         validation_status: failures.positive? ? 'failed' : 'completed',
-        validation_error: failures.positive? ? 'Some authority lookups failed. Download the partial report or retry. Uploaded headings remain available.' : nil }
+        validation_error: failures.positive? ? "#{failures} heading lookups failed; #{skipped} headings were not checked after requests stopped. Download the partial report or retry. Uploaded headings remain available." : nil }
     rescue StandardError => e
       Rails.logger.error("Subject heading validation #{inventory_id} failed: #{e.class}")
       attributes = { validation_status: 'failed', completed_at: Time.current,
