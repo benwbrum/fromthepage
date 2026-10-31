@@ -617,4 +617,85 @@ describe Page do
       expect(result['gemini']).not_to eq(older_gemini)
     end
   end
+
+  describe '#plaintext_for_ai' do
+    let(:work) { create(:work) }
+    let(:page) { create(:page, work: work, status: status, xml_text: "<?xml version='1.0' encoding='UTF-8'?><page><p>Human transcription</p></page>") }
+    let(:status) { :transcribed }
+
+    before { create(:ai_transcription, page_id: page.id, source_text: 'AI reading of the page', status: :finished) }
+
+    context 'when a person has transcribed the page' do
+      it 'uses the human transcription' do
+        expect(page.plaintext_for_ai).to eq('Human transcription')
+        expect(page.machine_plaintext_for_ai?).to be_falsey
+      end
+    end
+
+    context 'when a person has started but not finished the page' do
+      let(:status) { :incomplete }
+
+      it 'still prefers the human transcription' do
+        expect(page.plaintext_for_ai).to eq('Human transcription')
+      end
+    end
+
+    context 'when nobody has transcribed the page' do
+      let(:status) { :new }
+
+      it 'uses the AI transcription' do
+        expect(page.plaintext_for_ai).to eq('AI reading of the page')
+        expect(page.machine_plaintext_for_ai?).to be_truthy
+      end
+    end
+
+    context 'when nobody has transcribed the page and there is no finished AI transcription' do
+      let(:status) { :new }
+
+      before { AiTranscription.where(page_id: page.id).update_all(status: :processing) }
+
+      it 'is blank' do
+        expect(page.reload.plaintext_for_ai).to eq('')
+        expect(page.machine_plaintext_for_ai?).to be_falsey
+      end
+    end
+  end
+
+  describe '.preload_plaintext_for_ai' do
+    let(:work) { create(:work) }
+    let!(:human_page) do
+      create(:page, work: work, position: 1, status: :transcribed,
+                    xml_text: "<?xml version='1.0' encoding='UTF-8'?><page><p>Human transcription</p></page>")
+    end
+    let!(:ai_page) { create(:page, work: work, position: 2, status: :new) }
+    let!(:unfinished_page) { create(:page, work: work, position: 3, status: :new) }
+    let!(:untranscribed_page) { create(:page, work: work, position: 4, status: :new) }
+
+    before do
+      create(:ai_transcription, page_id: ai_page.id, source_text: 'Older AI text', status: :finished)
+      create(:ai_transcription, page_id: ai_page.id, source_text: 'Newer AI text', status: :finished)
+      create(:ai_transcription, page_id: ai_page.id, source_text: 'Unfinished AI text', status: :processing)
+      create(:ai_transcription, page_id: unfinished_page.id, source_text: 'Still running', status: :processing)
+    end
+
+    it 'gives the same text as loading each page on its own' do
+      pages = Page.where(id: [human_page, ai_page, unfinished_page, untranscribed_page].map(&:id)).order(:position).to_a
+      described_class.preload_plaintext_for_ai(pages)
+
+      expect(pages.map(&:plaintext_for_ai)).to eq(['Human transcription', 'Newer AI text', '', ''])
+      expect(pages.map(&:plaintext_for_ai)).to eq(Page.where(id: pages.map(&:id)).order(:position).map(&:plaintext_for_ai))
+    end
+
+    it 'does not query per page' do
+      pages = Page.where(work_id: work.id).to_a
+      queries = 0
+      counter = ->(*) { queries += 1 }
+      ActiveSupport::Notifications.subscribed(counter, 'sql.active_record') do
+        described_class.preload_plaintext_for_ai(pages)
+        pages.each(&:plaintext_for_ai)
+      end
+
+      expect(queries).to eq(2)
+    end
+  end
 end
