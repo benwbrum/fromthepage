@@ -23,6 +23,7 @@
 
 # Ignore all logfiles and tempfiles.
 /log/*.log
+/log/subject_headings/
 /log/upload
 /tmp
 tmp/**/*
