@@ -80,7 +80,7 @@ describe SubjectHeadings::AuthorityLookup, :subject_headings do
     stub_subject_request.to_return(status: 429, headers: { 'Retry-After' => '120' }).then.to_return(body: { count: 0, hits: [] }.to_json)
     expect(service.call('Agriculture')).to eq([])
     expect(delays).to include(120)
-    expect(logger).to have_received(:info).with(include('[LC authority] request', 'suggest2')).at_least(:once)
+    expect(logger).to have_received(:info).with(include('LC_AUTHORITY request', 'suggest2')).at_least(:once)
     expect(logger).to have_received(:info).with(include('"status":"429"', '"retry_after":"120"'))
     expect(logger).to have_received(:warn).with(include('"delay_seconds":120'))
   end

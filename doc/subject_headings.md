@@ -168,7 +168,7 @@ waits renew the validation claim every 30 seconds and stop if the file/attempt
 has been replaced. These waits occupy the dedicated worker; this change does
 not introduce resumable jobs or a new batch endpoint.
 
-Rails logs `[LC authority]` request URLs/attempts, response status, content type
+Logs use the plain searchable keyword `LC_AUTHORITY` for request URLs/attempts, response status, content type
 and Retry-After at info level; retry delays at warn and exhausted failures at
 error. Debug logs include at most 4 KB of the response body. Request URLs include
 uploaded heading text, so these are application logs, not public report links.
@@ -226,6 +226,34 @@ Guidance document attachment/extraction remains deferred; use the text area.
 AI subject-assignment integration belongs to the other team. Full authority
 reconciliation, automatic replacement, terminology
 modernization and vocabulary history remain outside this feature.
+
+## Validation job logs
+
+Like the upload-specific DocumentUpload process log and collection-specific
+CONTENTdm sync log, each subject-heading inventory has a dedicated append-only
+logfile: `log/subject_headings/inventory_<ID>.log`. It remains under Rails `log`,
+not the public directory. Locate it in the Rails console with
+`SubjectHeadingInventory.find(ID).log_file`.
+
+The Rails application log records a `LC_AUTHORITY job_log` entry linking each
+execution to that path. The dedicated file includes UTC timestamps, severity,
+inventory ID, Active Job ID and validation token on every entry, so retries and
+obsolete deliveries can be distinguished. It records execution/claim decisions,
+row start/end and result (with row number and total), failures/skips, memo and
+lookup cache hits, request/response and retry details, wait progress/remaining
+seconds, lease heartbeats, report generation/storage, and notification lifecycle.
+Unexpected errors include their message and backtrace. An `execution_ended`
+entry indicates the delivery exited; check `final_state_write` to establish that
+the inventory was finalized. Forced process kills may prevent a final entry.
+
+For example, `tail -f log/subject_headings/inventory_123.log` follows an inventory,
+and `rg 'LC_AUTHORITY row_finished' log/subject_headings/inventory_123.log` finds
+completed rows. Filter by validation token for a single attempt. Successful rows
+are not progress counters in the database; the report still persists at the end.
+The file logger inherits the Rails logging level; bounded response bodies require
+DEBUG. Logs include heading text and identifiers, and are not exposed as public
+links. Files append across retries and are not deleted when the inventory is
+replaced; normal application log retention should include this directory.
 
 ## Verification
 

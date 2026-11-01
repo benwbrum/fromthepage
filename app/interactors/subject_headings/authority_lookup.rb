@@ -29,7 +29,9 @@ class SubjectHeadings::AuthorityLookup
 
   def call(heading, identifier: nil)
     key = Digest::SHA256.hexdigest([heading, identifier].to_json)
-    @cache.fetch("subject-headings/loc/v2/#{key}", expires_in: 7.days) do
+    fetched = false
+    result = @cache.fetch("subject-headings/loc/v2/#{key}", expires_in: 7.days) do
+      fetched = true
       supplied = authority(identifier) if authority_uri(identifier)
       if supplied && equivalent?(heading, supplied)
         next [supplied]
@@ -52,6 +54,8 @@ class SubjectHeadings::AuthorityLookup
       verified += verify_candidates(heading, candidates)
       (verified + [supplied].compact + candidates.map { |hit| hit.merge('evidence' => 'keyword') }).uniq { |hit| hit['uri'] }
     end
+    @logger.info("LC_AUTHORITY lookup_finished #{ { heading: heading, cache_hit: !fetched, candidates: result.size }.to_json}")
+    result
   end
 
   private
@@ -123,10 +127,10 @@ class SubjectHeadings::AuthorityLookup
       http.read_timeout = 10
       http.write_timeout = 5
       http.max_retries = 0
-      @logger.info("[LC authority] request #{ { url: uri.to_s, attempt: attempts }.to_json}")
+      @logger.info("LC_AUTHORITY request #{ { url: uri.to_s, attempt: attempts }.to_json}")
       response = http.get(uri.request_uri, 'Accept' => 'application/json', 'User-Agent' => 'FromThePage-SubjectHeadings/1.0')
-      @logger.info("[LC authority] response #{ { source: source, status: response.code, retry_after: response['Retry-After'], content_type: response['Content-Type'] }.to_json}")
-      @logger.debug { "[LC authority] response body #{response.body.to_s.byteslice(0, 4096).to_s.force_encoding(Encoding::UTF_8).scrub.to_json}" }
+      @logger.info("LC_AUTHORITY response #{ { source: source, status: response.code, retry_after: response['Retry-After'], content_type: response['Content-Type'] }.to_json}")
+      @logger.debug { "LC_AUTHORITY response body #{response.body.to_s.byteslice(0, 4096).to_s.force_encoding(Encoding::UTF_8).scrub.to_json}" }
       if response.code == '429' || response.code.to_i >= 500
         raise TransientError.new("LC returned HTTP #{response.code}", retry_after: retry_after_seconds(response['Retry-After']), status: response.code)
       end
@@ -136,14 +140,14 @@ class SubjectHeadings::AuthorityLookup
       if attempts < 3
         base = e.is_a?(TransientError) && %w[429 503].include?(e.status) ? 30 : 2
         delay = [base * (2**(attempts - 1)), e.is_a?(TransientError) ? e.retry_after.to_f : 0].max
-        @logger.warn("[LC authority] retry #{ { source: source, attempt: attempts, error: e.message, delay_seconds: delay }.to_json}")
+        @logger.warn("LC_AUTHORITY retry #{ { source: source, attempt: attempts, error: e.message, delay_seconds: delay }.to_json}")
         wait(delay)
         retry
       end
-      @logger.error("[LC authority] failed #{ { source: source, attempts: attempts, error_class: e.class.name, error: e.message }.to_json}")
+      @logger.error("LC_AUTHORITY failed #{ { source: source, attempts: attempts, error_class: e.class.name, error: e.message }.to_json}")
       raise LookupError, "LC #{source} request failed after #{attempts} attempts: #{e.message} (#{e.class.name.demodulize})"
     rescue JSON::ParserError, OpenSSL::SSL::SSLError => e
-      @logger.error("[LC authority] failed #{ { source: source, error_class: e.class.name }.to_json}")
+      @logger.error("LC_AUTHORITY failed #{ { source: source, error_class: e.class.name }.to_json}")
       raise LookupError, 'Authority response could not be processed.' if e.is_a?(JSON::ParserError)
       raise LookupError, "LC #{source} request failed (#{e.class.name.demodulize})"
     end
@@ -158,13 +162,16 @@ class SubjectHeadings::AuthorityLookup
   end
 
   def wait(seconds)
+    @logger.info("LC_AUTHORITY wait_started #{ { delay_seconds: seconds, resume_at: (Time.now + seconds).utc.iso8601 }.to_json}")
     return @sleeper.call(seconds) unless @heartbeat
     while seconds.positive?
       @heartbeat.call
       interval = [seconds, 30].min
       @sleeper.call(interval)
       seconds -= interval
+      @logger.info("LC_AUTHORITY wait_progress #{ { remaining_seconds: seconds }.to_json}")
     end
     @heartbeat.call
+    @logger.info('LC_AUTHORITY wait_finished')
   end
 end

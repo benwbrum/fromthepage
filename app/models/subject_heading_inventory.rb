@@ -3,6 +3,10 @@ class SubjectHeadingInventory < ApplicationRecord
   has_many :subject_headings, dependent: :delete_all
   serialize :source_rows, coder: JSON
 
+  def log_file
+    SubjectHeadings::ValidationLog.path(id)
+  end
+
   CLAIM_TIMEOUT = 10.minutes
 
   def validation_retryable?

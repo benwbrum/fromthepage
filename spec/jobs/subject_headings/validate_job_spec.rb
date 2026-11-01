@@ -211,4 +211,15 @@ describe SubjectHeadings::ValidateJob, :subject_headings do
     expect(inventory.reload.report_csv).not_to include('not_checked')
     expect(inventory.validation_status).to eq('failed')
   end
+
+  it 'writes correlated lifecycle, row progress and notification events to a dedicated file' do
+    run_job
+    contents = File.readlines(SubjectHeadings::ValidationLog.path(inventory.id)).select { |line| line.include?(token) }.join
+    expect(contents).to include('LC_AUTHORITY execution_started', 'LC_AUTHORITY processing_started',
+      'LC_AUTHORITY row_started', 'LC_AUTHORITY row_finished', 'LC_AUTHORITY report_generated',
+      'LC_AUTHORITY final_state_write', 'LC_AUTHORITY notification_finished', 'LC_AUTHORITY execution_ended')
+    expect(contents).to include("\"inventory_id\":#{inventory.id}", token, '"job_id":', '"total_rows":1')
+    expect(contents).not_to include('[LC authority]')
+    expect(SubjectHeadings::AuthorityLookup).to have_received(:new).with(heartbeat: kind_of(Proc), logger: kind_of(ActiveSupport::Logger))
+  end
 end
