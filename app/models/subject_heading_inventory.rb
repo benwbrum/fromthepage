@@ -25,7 +25,9 @@ class SubjectHeadingInventory < ApplicationRecord
     return nil unless report.headers&.include?('result')
     failed = report.count { |row| row['result'] == 'lookup_error' }
     unattempted = report.count { |row| row['result'] == 'not_checked' }
-    { total: report.size, successful: report.size - failed - unattempted, failed: failed, unattempted: unattempted }
+    exact = report.count { |row| row['result'] == 'exact_match' }
+    successful = report.size - failed - unattempted
+    { total: report.size, successful: successful, exact: exact, review: successful - exact, failed: failed, unattempted: unattempted }
   rescue CSV::MalformedCSVError
     nil
   end
@@ -43,8 +45,11 @@ class SubjectHeadingInventory < ApplicationRecord
     if authority_check_outcome == 'completed_with_issues'
       counts = authority_check_counts
       return 'Authority check completed with issues' unless counts
-      issues = counts[:failed] + counts[:unattempted]
-      "Authority check completed with #{issues} #{issues == 1 ? 'issue' : 'issues'}"
+      if counts[:failed].positive?
+        "Authority check completed with #{counts[:failed]} lookup #{counts[:failed] == 1 ? 'error' : 'errors'}"
+      else
+        "Authority check completed with #{counts[:unattempted]} unchecked #{counts[:unattempted] == 1 ? 'heading' : 'headings'}"
+      end
     else
       "Authority check: #{authority_check_outcome.humanize}"
     end
@@ -53,13 +58,11 @@ class SubjectHeadingInventory < ApplicationRecord
   def authority_check_summary
     counts = authority_check_counts
     return nil unless counts
-    parts = ["#{counts[:successful]} of #{counts[:total]} headings were checked successfully."]
-    if counts[:failed].positive?
-      parts << "#{counts[:failed]} #{counts[:failed] == 1 ? 'lookup could' : 'lookups could'} not be completed."
-    end
-    parts << "#{counts[:unattempted]} headings were not checked after requests stopped." if counts[:unattempted].positive?
-    parts << 'Your report is ready to download.'
-    parts.join(' ')
+    parts = ["#{counts[:exact]} exact-label #{counts[:exact] == 1 ? 'match' : 'matches'}"]
+    parts << "#{counts[:review]} other #{counts[:review] == 1 ? 'result' : 'results'} for review" if counts[:review].positive?
+    parts << "#{counts[:failed]} lookup #{counts[:failed] == 1 ? 'error' : 'errors'}" if counts[:failed].positive?
+    parts << "#{counts[:unattempted]} #{counts[:unattempted] == 1 ? 'heading' : 'headings'} not checked" if counts[:unattempted].positive?
+    parts.join(' · ')
   end
 
   def queue_validation!(user: Current.user || transcription_field.collection.owner)

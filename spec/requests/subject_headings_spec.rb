@@ -183,14 +183,15 @@ describe SubjectHeadingsController, :subject_headings do
 
   it 'presents a usable report with issues as the primary action, including older failed runs' do
     inventory = import_headings(field)
-    rows = 48.times.map { |i| { 'heading' => "Term #{i}", 'result' => 'exact_match' } }
+    rows = 30.times.map { |i| { 'heading' => "Term #{i}", 'result' => 'exact_match' } }
+    rows += 18.times.map { |i| { 'heading' => "Review #{i}", 'result' => 'possible_match' } }
     rows << { 'heading' => 'Problem', 'result' => 'lookup_error' }
     inventory.update!(validation_status: 'failed', report_csv: SubjectHeadings::Report.generate(rows), validation_error: 'Old failure message')
     login_as owner
     get path, headers: { 'X-Requested-With' => 'XMLHttpRequest' }
     html = Nokogiri::HTML(response.body)
-    expect(html.text).to include('Authority check completed with 1 issue', '48 of 49 headings were checked successfully.', SubjectHeadings::Report::REUPLOAD_INSTRUCTIONS)
-    expect(html.text).not_to include('Validation status', 'Old failure message', '0 headings were not checked')
+    expect(html.text).to include('Authority check completed with 1 lookup error', '30 exact-label matches · 18 other results for review · 1 lookup error', SubjectHeadings::Report::REUPLOAD_INSTRUCTIONS)
+    expect(html.text).not_to include('Validation status', 'Old failure message', '0 headings were not checked', 'checked successfully')
     download = html.css('a').find { |link| link.text == 'Download authority check report' }
     expect(download['class']).to include('button')
     expect(html.css('button.outline').map(&:text)).to include('Retry authority check')

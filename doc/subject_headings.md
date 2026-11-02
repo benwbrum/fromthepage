@@ -297,8 +297,7 @@ requests, mitigated by seven-day record caching and the existing retry/throttle.
 A generated report is completed, or completed_with_issues if technical lookup
 errors/unattempted headings are present. Failed means report generation/storage
 could not produce a usable report (or the attempt could not start). An error-only
-CSV is still a downloadable diagnostic report: its summary explicitly says zero
-headings were checked successfully. Summary counts come from the report result
+CSV is still a downloadable diagnostic report: its summary explicitly shows zero exact-label matches and the lookup errors. Summary counts come from the report result
 column, not from matches/approval: no_match_found is a successfully checked row,
 lookup_error is a failed lookup, and not_checked is an unattempted heading.
 No database schema change is required. Older failed runs with report errors are
@@ -346,3 +345,15 @@ entire multi-candidate cell into uri. Both suggested columns remain blank for
 multi-match rows; single-match suggestions remain unchanged. Old combined-column
 reports and new grouped reports both import only heading and uri. Existing saved
 reports are not rewritten; rerun a check to download the new layout.
+
+
+The displayed completion summary separates technical execution from cataloging
+review. For example: “Authority check completed with 1 lookup error” followed by
+“30 exact-label matches · 18 other results for review · 1 lookup error”. Only
+exact_match rows count as exact-label matches; other technically completed
+outcomes (including formatting, variants, ambiguous matches and no match) count
+as results for review. Lookup errors and unattempted headings are separate and
+never inflate the review count. Zero exact matches remains explicit; zero
+review/error/unattempted clauses are omitted. The configuration and completion
+email use the same wording. These are report-row counts, not assurances of
+cataloging appropriateness, and no matching or stored metadata behavior changes.

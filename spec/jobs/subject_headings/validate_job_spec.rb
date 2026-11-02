@@ -80,7 +80,7 @@ describe SubjectHeadings::ValidateJob, :subject_headings do
     expect(inventory.subject_headings.count).to eq(1)
     expect(inventory.report_csv).to include('lookup_error', 'Timed out')
     expect(inventory.report_csv).not_to include('no_match_found')
-    expect(ActionMailer::Base.deliveries.last.subject).to include('completed with 1 issue')
+    expect(ActionMailer::Base.deliveries.last.subject).to include('completed with 1 lookup error')
     run_job
     expect(ActionMailer::Base.deliveries.size).to eq(1)
   end
@@ -100,12 +100,12 @@ describe SubjectHeadings::ValidateJob, :subject_headings do
     original = inventory.subject_headings.pluck(:heading, :uri)
     run_job
     expect(inventory.reload.validation_status).to eq('completed_with_issues')
-    expect(inventory.authority_check_counts).to eq(total: 49, successful: 48, failed: 1, unattempted: 0)
-    expect(inventory.authority_check_title).to eq('Authority check completed with 1 issue')
-    expect(inventory.authority_check_summary).to include('48 of 49 headings were checked successfully.', '1 lookup could not be completed.', 'Your report is ready to download.')
+    expect(inventory.authority_check_counts).to eq(total: 49, successful: 48, exact: 0, review: 48, failed: 1, unattempted: 0)
+    expect(inventory.authority_check_title).to eq('Authority check completed with 1 lookup error')
+    expect(inventory.authority_check_summary).to eq('0 exact-label matches · 48 other results for review · 1 lookup error')
     mail = ActionMailer::Base.deliveries.last
-    expect(mail.subject).to eq('Authority check completed with 1 issue')
-    expect(mail.html_part.body.decoded).to include('48 of 49', 'Download authority check report', 'copy its value into the heading or uri column')
+    expect(mail.subject).to eq('Authority check completed with 1 lookup error')
+    expect(mail.html_part.body.decoded).to include('0 exact-label matches · 48 other results for review · 1 lookup error', 'Download authority check report', 'copy its value into the heading or uri column')
     expect(mail.html_part.body.decoded).not_to include('0 headings were not checked')
     expect(inventory.subject_headings.pluck(:heading, :uri)).to eq(original)
   end
@@ -129,7 +129,7 @@ describe SubjectHeadings::ValidateJob, :subject_headings do
     expect(rows.first(3).map { |row| row['result'] }).to eq(['lookup_error'] * 3)
     expect(rows.drop(3).map { |row| row['result'] }).to eq(['not_checked'] * 7)
     expect(rows[-1]['rationale']).to include('No request made')
-    expect(inventory.authority_check_counts).to eq(total: 10, successful: 0, failed: 3, unattempted: 7)
+    expect(inventory.authority_check_counts).to eq(total: 10, successful: 0, exact: 0, review: 0, failed: 3, unattempted: 7)
   end
 
   it 'ignores an old job after replacement' do
