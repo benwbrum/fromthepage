@@ -24,12 +24,30 @@ describe SubjectHeadings::Report, :subject_headings do
   it 'does not choose between multiple authorities' do
     result = described_class.result(row, [hit, hit.merge('uri' => 'http://id.loc.gov/authorities/names/n123')])
     expect(result['result']).to eq('multiple_authority_matches')
-    expect(result['suggested_uri']).to include(hit['uri'], 'http://id.loc.gov/authorities/names/n123')
+    expect(result['suggested_uri']).to be_nil
+    expect(result['candidate_uris']).to include(hit['uri'], 'http://id.loc.gov/authorities/names/n123')
   end
 
   it 'never equates no match with invalidity' do
     expect(described_class.result(row, [])['result']).to eq('no_match_found')
     expect(described_class.result(row.merge('heading' => 'Agriculture--Mississippi'), [])['result']).to eq('no_match_found')
+  end
+
+  it 'flags exact name labels for review without rejecting legitimate name subjects' do
+    ['African American', 'American Missionary Association', 'Alcorn, James Lusk, 1816-1894'].each do |label|
+      result = described_class.result(row.merge('heading' => label), [hit.merge('aLabel' => label, 'authority_type' => 'Name')])
+      expect(result).to include('result' => 'possible_match', 'authority_type' => 'Name', 'suggested_uri' => hit['uri'])
+      expect(result['rationale']).to include('confirm that the person, organization or place is the intended subject')
+    end
+  end
+
+  it 'distinguishes duplicate records in one vocabulary and keeps alternatives out of suggested_uri' do
+    result = described_class.result(row, [hit, hit.merge('uri' => 'https://id.loc.gov/authorities/subjects/sh999')])
+    expect(result['result']).to eq('multiple_authority_matches')
+    expect(result['rationale']).to eq('Multiple subject authority records share this label; review the records.')
+    expect(result['suggested_uri']).to be_nil
+    expect(result['suggested_heading']).to be_nil
+    expect(result['candidate_uris']).to include(hit['uri'], 'https://id.loc.gov/authorities/subjects/sh999')
   end
 
   it 'serializes exactly the contract columns with BOM, CRLF, quoting and formula protection' do

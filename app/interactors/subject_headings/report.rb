@@ -2,7 +2,9 @@ require 'csv'
 
 class SubjectHeadings::Report
   IMPORT_HEADERS = %w[heading uri suggested_heading suggested_uri result rationale].freeze
-  HEADERS = (IMPORT_HEADERS + %w[authority_type]).freeze
+  HEADERS = (IMPORT_HEADERS + %w[authority_type candidate_uris]).freeze
+
+  REUPLOAD_INSTRUCTIONS = 'Review the suggested headings and identifiers. To accept a suggestion, copy its value into the heading or uri column. Save the CSV and upload it again. Your current headings will not change until you upload a revised file.'.freeze
 
   def self.formula?(value)
     value.to_s.match?(/\A'*(?:[[:space:]\uFEFF]*[=+@-]|[\t\r\n])/)
@@ -54,12 +56,17 @@ class SubjectHeadings::Report
     types = matches.map { |hit| hit['authority_type'] }.uniq
     if matches.size > 1
       status = 'multiple_authority_matches'
-      rationale = types.size > 1 ? "Same label appears in #{types.map(&:downcase).join(' and ')} authorities." : 'Multiple authority records establish this label.'
-    elsif hits.any? { |hit| hit['identifier_mismatch'] }
+      rationale = types.size > 1 ? "Matching records found in both #{types.map(&:downcase).join(' and ')} vocabularies; review the records." : "Multiple #{types.first.downcase} authority records share this label; review the records."
+    elsif types == ['Name'] && status == 'exact_match'
+      status = 'possible_match'
+      rationale = 'Matches an LC name authority; confirm that the person, organization or place is the intended subject.'
+    end
+    if hits.any? { |hit| hit['identifier_mismatch'] }
       rationale += ' Supplied identifier identifies a different authority.'
     end
     row.merge('result' => status, 'rationale' => rationale, 'authority_type' => types.join('; '),
-      'suggested_heading' => matches.map { |hit| hit['aLabel'] }.uniq.join('; '),
-      'suggested_uri' => matches.map { |hit| hit['uri'] }.join('; '))
+      'suggested_heading' => matches.one? ? matches.first['aLabel'] : nil,
+      'suggested_uri' => matches.one? ? matches.first['uri'] : nil,
+      'candidate_uris' => matches.size > 1 ? matches.map { |hit| hit['uri'] }.join('; ') : nil)
   end
 end

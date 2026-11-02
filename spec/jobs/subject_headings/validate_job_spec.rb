@@ -48,11 +48,11 @@ describe SubjectHeadings::ValidateJob, :subject_headings do
     expect(inventory.notified_at).to be_present
     expect(ActionMailer::Base.deliveries.size).to eq(1)
     mail = ActionMailer::Base.deliveries.last
-    expect(mail.subject).to eq('Your subject heading validation report is ready')
+    expect(mail.subject).to eq('Your subject headings authority check report is ready')
     expect(mail.to).to eq([owner.email])
     path = Rails.application.routes.url_helpers.collection_subject_headings_path(owner, collection, field)
     expect(mail.html_part.body.decoded).to include(path)
-    expect(mail.html_part.body.decoded).not_to include('/report')
+    expect(mail.html_part.body.decoded).to include('Download authority check report')
     run_job
     expect(ActionMailer::Base.deliveries.size).to eq(1)
   end
@@ -66,14 +66,14 @@ describe SubjectHeadings::ValidateJob, :subject_headings do
     expect(inventory.report_csv).not_to include('Different term')
   end
 
-  it 'records timeouts as failed lookups, preserves the inventory and sends failure email' do
+  it 'completes with issues when lookup errors are recorded in a usable report' do
     allow(lookup).to receive(:call).and_raise(SubjectHeadings::AuthorityLookup::LookupError, 'Timed out')
     run_job
-    expect(inventory.reload.validation_status).to eq('failed')
+    expect(inventory.reload.validation_status).to eq('completed_with_issues')
     expect(inventory.subject_headings.count).to eq(1)
     expect(inventory.report_csv).to include('lookup_error', 'Timed out')
     expect(inventory.report_csv).not_to include('no_match_found')
-    expect(ActionMailer::Base.deliveries.last.subject).to include('could not be completed')
+    expect(ActionMailer::Base.deliveries.last.subject).to include('completed with 1 issue')
     run_job
     expect(ActionMailer::Base.deliveries.size).to eq(1)
   end
@@ -83,8 +83,34 @@ describe SubjectHeadings::ValidateJob, :subject_headings do
     allow(lookup).to receive(:call).with('First').and_return([])
     allow(lookup).to receive(:call).with('Second').and_raise(SubjectHeadings::AuthorityLookup::LookupError, 'Network failure')
     run_job
-    expect(inventory.reload.validation_status).to eq('failed')
+    expect(inventory.reload.validation_status).to eq('completed_with_issues')
     expect(inventory.report_csv).to include('no_match_found', 'lookup_error')
+  end
+
+  it 'reports 48 successful headings and one issue without a confusing zero-skipped message' do
+    inventory.update!(source_rows: 49.times.map { |i| { 'heading' => "Term #{i}" } })
+    allow(lookup).to receive(:call).with('Term 48').and_raise(SubjectHeadings::AuthorityLookup::LookupError, 'Authority response could not be processed.')
+    original = inventory.subject_headings.pluck(:heading, :uri)
+    run_job
+    expect(inventory.reload.validation_status).to eq('completed_with_issues')
+    expect(inventory.authority_check_counts).to eq(total: 49, successful: 48, failed: 1, unattempted: 0)
+    expect(inventory.authority_check_title).to eq('Authority check completed with 1 issue')
+    expect(inventory.authority_check_summary).to include('48 of 49 headings were checked successfully.', '1 lookup could not be completed.', 'Your report is ready to download.')
+    mail = ActionMailer::Base.deliveries.last
+    expect(mail.subject).to eq('Authority check completed with 1 issue')
+    expect(mail.html_part.body.decoded).to include('48 of 49', 'Download authority check report', 'copy its value into the heading or uri column')
+    expect(mail.html_part.body.decoded).not_to include('0 headings were not checked')
+    expect(inventory.subject_headings.pluck(:heading, :uri)).to eq(original)
+  end
+
+  it 'fails when no report can be generated and sends failure wording' do
+    allow(SubjectHeadings::Report).to receive(:generate).and_raise(ArgumentError, 'Cannot generate report')
+    run_job
+    expect(inventory.reload.validation_status).to eq('failed')
+    expect(inventory.report_csv).to be_nil
+    expect(inventory.authority_check_counts).to be_nil
+    expect(ActionMailer::Base.deliveries.last.subject).to eq('Your subject headings authority check failed')
+    expect(ActionMailer::Base.deliveries.last.html_part.body.decoded).to include('No usable authority check report could be produced')
   end
 
   it 'stops querying after repeated failures and labels remaining rows not checked' do
@@ -96,6 +122,7 @@ describe SubjectHeadings::ValidateJob, :subject_headings do
     expect(rows.first(3).map { |row| row['result'] }).to eq(['lookup_error'] * 3)
     expect(rows.drop(3).map { |row| row['result'] }).to eq(['not_checked'] * 7)
     expect(rows[-1]['rationale']).to include('No request made')
+    expect(inventory.authority_check_counts).to eq(total: 10, successful: 0, failed: 3, unattempted: 7)
   end
 
   it 'ignores an old job after replacement' do
@@ -146,7 +173,7 @@ describe SubjectHeadings::ValidateJob, :subject_headings do
     allow(lookup).to receive(:call).and_raise(ArgumentError, 'Unexpected response')
     run_job
     expect(inventory.reload.validation_status).to eq('failed')
-    expect(inventory.validation_error).to include('uploaded inventory remains available')
+    expect(inventory.validation_error).to include('uploaded headings remain available')
     expect(inventory.subject_headings.count).to eq(1)
     expect(ActionMailer::Base.deliveries.size).to eq(1)
   end
@@ -209,7 +236,7 @@ describe SubjectHeadings::ValidateJob, :subject_headings do
     run_job
     expect(lookup).to have_received(:call).exactly(8).times
     expect(inventory.reload.report_csv).not_to include('not_checked')
-    expect(inventory.validation_status).to eq('failed')
+    expect(inventory.validation_status).to eq('completed_with_issues')
   end
 
   it 'writes correlated lifecycle, row progress and notification events to a dedicated file' do

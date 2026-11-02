@@ -39,7 +39,7 @@ describe 'Project owner subject heading configuration', js: true do
     expect(page).to have_css('.subject-heading-count', text: '3000 headings configured')
     click_link 'Configure Subject Headings'
     expect(page).to have_content('3000 imported rows; 3000 unique headings.')
-    expect(page).to have_content('Validation status: Not requested')
+    expect(page).to have_content('Authority check: Not requested')
     expect(field.reload.subject_heading_instructions).to eq('Use broad topics.')
     expect(field.subject_heading_inventory.subject_headings.find_by(heading: 'Agriculture').uri).to eq('https://id.loc.gov/authorities/subjects/sh85002415')
   end
@@ -86,7 +86,7 @@ describe 'Project owner subject heading configuration', js: true do
     expect(page).to have_css('.subject-heading-count', text: '2 headings configured')
     click_link 'Configure Subject Headings'
     expect(page).to have_content('3 imported rows; 2 unique headings.')
-    expect(page).to have_content('Validation status: Queued')
+    expect(page).to have_content('Authority check: Queued')
     expect(SubjectHeadingInventory.exists?(original.id)).to be(false)
     expect(field.reload.subject_heading_inventory.subject_headings.pluck(:heading)).to contain_exactly('Replacement', 'Different')
   end
@@ -128,7 +128,7 @@ describe 'Project owner subject heading configuration', js: true do
     expect(field.reload.subject_heading_inventory.id).to eq(original.id)
     expect(page).not_to have_field('Check for matches in Library of Congress authority records')
     click_button 'Run authority check'
-    expect(page).to have_content('Validation status: Queued')
+    expect(page).to have_content('Authority check: Queued')
     expect(page).to have_button('Authority check queued', disabled: true)
     expect(page).not_to have_button('Run authority check')
     expect(page).not_to have_field('Check for matches in Library of Congress authority records')

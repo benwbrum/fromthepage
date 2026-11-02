@@ -99,7 +99,7 @@ rows retain all spellings so report rows and import counts can be explained.
 Reports contain exactly:
 
 ```csv
-heading,uri,suggested_heading,suggested_uri,result,rationale,authority_type
+heading,uri,suggested_heading,suggested_uri,result,rationale,authority_type,candidate_uris
 ```
 
 They use UTF-8 BOM, CRLF, standard CSV quoting and apostrophe-prefix escaping for
@@ -150,7 +150,7 @@ version to avoid reusing the old keyword-only evidence.
 
 The report adds `authority_type` (Subject, Name, Genre/form) based on verified
 records. Multiple verified equivalent records produce `multiple_authority_matches`,
-with semicolon-separated URIs in `suggested_uri`; unrelated keyword candidates
+with semicolon-separated alternatives in `candidate_uris` and a blank `suggested_uri`; unrelated keyword candidates
 produce `possible_match` without replacement suggestions. A constructed heading
 with no standalone match remains `no_match_found`, with a specific explanation.
 No absence of a match implies an invalid heading. Uploaded identifiers are
@@ -290,3 +290,34 @@ keyword discovery are bounded to 20 candidates per vocabulary; keyword-only vari
 not exposed by candidate hints, remote variant links absent from the returned graph,
 and labels outside that window may remain unmatched. Authority verification adds
 requests, mitigated by seven-day record caching and the existing retry/throttle.
+
+
+## Authority check outcomes and safe suggestions
+
+A generated report is completed, or completed_with_issues if technical lookup
+errors/unattempted headings are present. Failed means report generation/storage
+could not produce a usable report (or the attempt could not start). An error-only
+CSV is still a downloadable diagnostic report: its summary explicitly says zero
+headings were checked successfully. Summary counts come from the report result
+column, not from matches/approval: no_match_found is a successfully checked row,
+lookup_error is a failed lookup, and not_checked is an unattempted heading.
+No database schema change is required. Older failed runs with report errors are
+presented as completed with issues without rewriting their stored status.
+
+The screen and email prioritize Download authority check report, with retry as
+a secondary action. They share concise outcome/count wording and advisory
+reupload instructions. Zero failed/unattempted clauses are omitted. Current
+reports put at most one URI in suggested_uri. Multiple verified matches leave
+both suggested columns blank and retain alternatives in candidate_uris; the
+rationale distinguishes same-vocabulary records from cross-vocabulary matches
+without implying interchangeability. Legacy reupload recognition remains based
+on the original six columns; additional informational columns never affect import.
+
+An exact Name-authority label is marked possible_match, with its verified single
+URI preserved and a request to confirm the intended person, organization or
+place. This conservatively flags topical/name-use uncertainty without declaring
+personal or corporate headings invalid. The service cannot infer intended use
+from the heading string alone; no claim is made about the live African American
+record without the original response. Matching searches, throttling and retries
+are unchanged. Existing stored report CSVs are not rewritten: rerun a check to
+get the updated suggestion columns and rationales.

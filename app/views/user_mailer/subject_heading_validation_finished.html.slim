@@ -1,9 +1,11 @@
-h2 Subject heading validation
+h2 Subject headings authority check
 p ="Project: #{@collection.title} — #{@field.label}"
--if @inventory.validation_status == 'completed'
-  p Your subject heading validation report is ready. FromThePage has finished checking the uploaded headings against Library of Congress authority data.
-  p Download a CSV report containing the original headings, possible alternatives and identifiers where available, and explanations of the results. A completed check does not mean every heading is approved or verified.
+p =@inventory.authority_check_title
+-if @inventory.authority_check_outcome == 'failed'
+  p No usable authority check report could be produced. Your uploaded headings remain available. Retry the authority check from the configuration screen.
 -else
-  p Validation could not be completed. Your uploaded headings remain available. You can review any partial report and retry from the configuration screen.
-p No suggested changes have been applied automatically. To adopt suggestions, edit the heading and uri columns in the CSV and upload the revised file.
-p =link_to 'Review Subject Headings', @configuration_url
+  p =@inventory.authority_check_summary
+  p Suggestions are advisory. A completed check does not mean every heading is approved or appropriate for your collection.
+  p =link_to 'Download authority check report', collection_subject_headings_report_url(@collection.owner, @collection, @field)
+p =SubjectHeadings::Report::REUPLOAD_INSTRUCTIONS
+p =link_to 'Configure Subject Headings', @configuration_url

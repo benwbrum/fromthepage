@@ -63,8 +63,9 @@ describe 'Evidence-based LC matching', :subject_headings do
       matched = result(heading)
       expect(matched['result']).to eq('multiple_authority_matches')
       expect(matched['authority_type']).to eq('Subject; Genre/form')
-      expect(matched['suggested_uri']).to include(subject['uri'], genre['uri'])
-      expect(matched['rationale']).to eq('Same label appears in subject and genre/form authorities.')
+      expect(matched['suggested_uri']).to be_nil
+      expect(matched['candidate_uris']).to include(subject['uri'], genre['uri'])
+      expect(matched['rationale']).to eq('Matching records found in both subject and genre/form vocabularies; review the records.')
     end
   end
 
@@ -100,7 +101,7 @@ describe 'Evidence-based LC matching', :subject_headings do
   it 'resolves an Alabama hit with a missing authorized-label hint through its authority record' do
     hit = record('Alabama', source: 'names', id: 'n123')
     search('Alabama', [hit.except('aLabel')], source: 'names')
-    expect(result('Alabama')).to include('result' => 'exact_match', 'authority_type' => 'Name')
+    expect(result('Alabama')).to include('result' => 'possible_match', 'authority_type' => 'Name')
   end
 
   it 'never turns an unprocessable Alabama authority response into no match' do

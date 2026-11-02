@@ -81,7 +81,7 @@ must never silently replace active headings or identifiers.
 Generate a private downloadable CSV with exactly these columns:
 
 ```csv
-heading,uri,suggested_heading,suggested_uri,result,rationale,authority_type
+heading,uri,suggested_heading,suggested_uri,result,rationale,authority_type,candidate_uris
 ```
 
 Use classifications supported by lookup evidence and explain ambiguity. Protect

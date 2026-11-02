@@ -34,7 +34,7 @@ class SubjectHeadings::ValidateJob < ApplicationJob
           validation_error: 'The requester no longer has project access. Please retry the authority check.')
       return
     end
-    if %w[completed failed].include?(inventory.validation_status)
+    if %w[completed completed_with_issues failed].include?(inventory.validation_status)
       log_event('already_finalized', status: inventory.validation_status)
       notify(inventory, token)
       return
@@ -101,12 +101,12 @@ class SubjectHeadings::ValidateJob < ApplicationJob
       log_event('report_generated', bytes: report.bytesize)
       raise ArgumentError, 'Validation report exceeds storage limit' if report.bytesize >= 16.megabytes
       attributes = { report_csv: report, completed_at: Time.current,
-        validation_status: failures.positive? ? 'failed' : 'completed',
-        validation_error: failures.positive? ? "#{failures} heading lookups failed; #{skipped} headings were not checked after requests stopped. Download the partial report or retry. Uploaded headings remain available." : nil }
+        validation_status: failures.positive? ? 'completed_with_issues' : 'completed',
+        validation_error: nil }
     rescue StandardError => e
       log_exception('processing_failed', e)
       attributes = { validation_status: 'failed', completed_at: Time.current,
-        validation_error: 'Validation could not be completed. The uploaded inventory remains available. Please retry.' }
+        validation_error: 'The authority check failed. No usable report could be produced. Your uploaded headings remain available. Please retry.' }
     end
     # Never attach old results to a replacement inventory or a newer attempt.
     scope = SubjectHeadingInventory.where(id: inventory_id, validation_token: token, validation_status: 'running', updated_at: claim_stamp)
@@ -117,7 +117,7 @@ class SubjectHeadings::ValidateJob < ApplicationJob
       log_exception('report_storage_failed', e)
       # A report-storage failure must not strand a usable inventory in running.
       updated = scope.update_all(validation_status: 'failed', completed_at: Time.current,
-        validation_error: 'The validation report could not be saved. Uploaded headings remain available. Please retry.')
+        validation_error: 'The authority check report could not be saved. Uploaded headings remain available. Please retry.')
       log_event('failure_state_write', updated: updated)
     end
     notify(inventory, token) if updated == 1

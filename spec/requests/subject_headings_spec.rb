@@ -158,6 +158,21 @@ describe SubjectHeadingsController, :subject_headings do
     expect(response.headers['Cache-Control']).to include('private', 'no-store')
   end
 
+  it 'presents a usable report with issues as the primary action, including older failed runs' do
+    inventory = import_headings(field)
+    rows = 48.times.map { |i| { 'heading' => "Term #{i}", 'result' => 'exact_match' } }
+    rows << { 'heading' => 'Problem', 'result' => 'lookup_error' }
+    inventory.update!(validation_status: 'failed', report_csv: SubjectHeadings::Report.generate(rows), validation_error: 'Old failure message')
+    login_as owner
+    get path, headers: { 'X-Requested-With' => 'XMLHttpRequest' }
+    html = Nokogiri::HTML(response.body)
+    expect(html.text).to include('Authority check completed with 1 issue', '48 of 49 headings were checked successfully.', SubjectHeadings::Report::REUPLOAD_INSTRUCTIONS)
+    expect(html.text).not_to include('Validation status', 'Old failure message', '0 headings were not checked')
+    download = html.css('a').find { |link| link.text == 'Download authority check report' }
+    expect(download['class']).to include('button')
+    expect(html.css('button.outline').map(&:text)).to include('Retry authority check')
+  end
+
   it 'scopes configuration to the requested project' do
     other_collection = create(:collection, owner_user_id: owner.id, works: [])
     other_field = create(:transcription_field, :as_metadata, collection: other_collection, input_type: 'subject_headings')
@@ -174,7 +189,7 @@ describe SubjectHeadingsController, :subject_headings do
     ]))
     login_as owner
     get path
-    expect(response.body).to include('Download validation report')
+    expect(response.body).to include('Download authority check report')
     get collection_subject_headings_report_path(owner, collection, field)
     report = response.body
     patch path, params: { file: upload_csv(report) }
