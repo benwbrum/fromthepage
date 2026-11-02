@@ -99,7 +99,7 @@ rows retain all spellings so report rows and import counts can be explained.
 Reports contain exactly:
 
 ```csv
-heading,uri,suggested_heading,suggested_uri,result,rationale,authority_type,candidate_uris
+heading,uri,suggested_heading,suggested_uri,result,rationale,authority_type,subject_candidates,genre_form_candidates,name_candidates
 ```
 
 They use UTF-8 BOM, CRLF, standard CSV quoting and apostrophe-prefix escaping for
@@ -150,7 +150,7 @@ version to avoid reusing the old keyword-only evidence.
 
 The report adds `authority_type` (Subject, Name, Genre/form) based on verified
 records. Multiple verified equivalent records produce `multiple_authority_matches`,
-with semicolon-separated alternatives in `candidate_uris` and a blank `suggested_uri`; unrelated keyword candidates
+with alternatives grouped into `subject_candidates`, `genre_form_candidates` and `name_candidates` and a blank `suggested_uri`; unrelated keyword candidates
 produce `possible_match` without replacement suggestions. A constructed heading
 with no standalone match remains `no_match_found`, with a specific explanation.
 No absence of a match implies an invalid heading. Uploaded identifiers are
@@ -308,7 +308,7 @@ The screen and email prioritize Download authority check report, with retry as
 a secondary action. They share concise outcome/count wording and advisory
 reupload instructions. Zero failed/unattempted clauses are omitted. Current
 reports put at most one URI in suggested_uri. Multiple verified matches leave
-both suggested columns blank and retain alternatives in candidate_uris; the
+both suggested columns blank and retain alternatives in the three vocabulary-specific candidate columns; the
 rationale distinguishes same-vocabulary records from cross-vocabulary matches
 without implying interchangeability. Legacy reupload recognition remains based
 on the original six columns; additional informational columns never affect import.
@@ -330,3 +330,19 @@ upload messaging. Saves without a requested check retain the normal success
 notice. Enqueue failures show an alert confirming the saved headings without
 promising an email. The validation job sends completion/failure notifications
 to the requesting owner or authorized administrator, matching the info flash.
+
+
+Reports group multi-match alternatives in subject_candidates,
+genre_form_candidates and name_candidates, replacing the combined candidate_uris
+column. Each candidate is a verified authorized label followed by an em dash
+and its authority URI; multiple candidates within a vocabulary occupy separate
+lines in that cell. Enable text wrapping in your spreadsheet to see every entry.
+No unrelated keyword results are included. Record subtypes/usage restrictions
+are not inferred or added by this formatting change.
+
+Candidate columns are informational. To adopt an identifier, copy one URI from
+a candidate entry into uri, review heading, save and reupload. Never copy an
+entire multi-candidate cell into uri. Both suggested columns remain blank for
+multi-match rows; single-match suggestions remain unchanged. Old combined-column
+reports and new grouped reports both import only heading and uri. Existing saved
+reports are not rewritten; rerun a check to download the new layout.

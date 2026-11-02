@@ -22,10 +22,12 @@ describe SubjectHeadings::Report, :subject_headings do
   end
 
   it 'does not choose between multiple authorities' do
-    result = described_class.result(row, [hit, hit.merge('uri' => 'http://id.loc.gov/authorities/names/n123')])
+    result = described_class.result(row, [hit, hit.merge('uri' => 'http://id.loc.gov/authorities/names/n123', 'authority_type' => 'Name')])
     expect(result['result']).to eq('multiple_authority_matches')
     expect(result['suggested_uri']).to be_nil
-    expect(result['candidate_uris']).to include(hit['uri'], 'http://id.loc.gov/authorities/names/n123')
+    expect(result['subject_candidates']).to include(hit['uri'])
+    expect(result['name_candidates']).to include('http://id.loc.gov/authorities/names/n123')
+    expect(result['genre_form_candidates']).to be_nil
   end
 
   it 'never equates no match with invalidity' do
@@ -47,7 +49,29 @@ describe SubjectHeadings::Report, :subject_headings do
     expect(result['rationale']).to eq('Multiple subject authority records share this label; review the records.')
     expect(result['suggested_uri']).to be_nil
     expect(result['suggested_heading']).to be_nil
-    expect(result['candidate_uris']).to include(hit['uri'], 'https://id.loc.gov/authorities/subjects/sh999')
+    expect(result['subject_candidates']).to eq("Agriculture — #{hit['uri']}\nAgriculture — https://id.loc.gov/authorities/subjects/sh999")
+    expect(result['name_candidates']).to be_nil
+    expect(result['genre_form_candidates']).to be_nil
+  end
+
+  it 'groups verified alternatives into all three review-only columns and round-trips the original values' do
+    label = '=Example, with punctuation'
+    original = { 'heading' => label, 'uri' => 'https://example.org/local' }
+    hits = [hit.merge('aLabel' => label),
+      hit.merge('aLabel' => label, 'uri' => 'https://id.loc.gov/authorities/genreForms/gf123', 'authority_type' => 'Genre/form'),
+      hit.merge('aLabel' => label, 'uri' => 'https://id.loc.gov/authorities/names/n123', 'authority_type' => 'Name')]
+    result = described_class.result(original, hits)
+    csv = described_class.generate([result])
+    parsed = CSV.parse(csv.delete_prefix("\uFEFF"), headers: true)
+    expect(parsed.headers).not_to include('candidate_uris')
+    %w[subject_candidates genre_form_candidates name_candidates].zip(hits).each do |column, candidate|
+      expect(parsed.first[column]).to eq("'#{label} — #{candidate['uri']}")
+    end
+    expect(parsed.first['suggested_uri']).to be_nil
+    owner = create(:unique_user, :owner)
+    collection = create(:collection, owner_user_id: owner.id, works: [])
+    field = create(:transcription_field, :as_metadata, collection: collection, input_type: 'subject_headings')
+    expect(import_headings(field, csv).source_rows).to eq([original])
   end
 
   it 'serializes exactly the contract columns with BOM, CRLF, quoting and formula protection' do

@@ -2,7 +2,8 @@ require 'csv'
 
 class SubjectHeadings::Report
   IMPORT_HEADERS = %w[heading uri suggested_heading suggested_uri result rationale].freeze
-  HEADERS = (IMPORT_HEADERS + %w[authority_type candidate_uris]).freeze
+  CANDIDATE_COLUMNS = { 'Subject' => 'subject_candidates', 'Genre/form' => 'genre_form_candidates', 'Name' => 'name_candidates' }.freeze
+  HEADERS = (IMPORT_HEADERS + %w[authority_type] + CANDIDATE_COLUMNS.values).freeze
 
   REUPLOAD_INSTRUCTIONS = 'Review the suggested headings and identifiers. To accept a suggestion, copy its value into the heading or uri column. Save the CSV and upload it again. Your current headings will not change until you upload a revised file.'.freeze
 
@@ -64,9 +65,12 @@ class SubjectHeadings::Report
     if hits.any? { |hit| hit['identifier_mismatch'] }
       rationale += ' Supplied identifier identifies a different authority.'
     end
-    row.merge('result' => status, 'rationale' => rationale, 'authority_type' => types.join('; '),
+    candidates = CANDIDATE_COLUMNS.to_h do |type, column|
+      entries = matches.size > 1 ? matches.select { |hit| hit['authority_type'] == type } : []
+      [column, entries.empty? ? nil : entries.map { |hit| "#{hit['aLabel']} — #{hit['uri']}" }.join("\n")]
+    end
+    row.merge(candidates).merge('result' => status, 'rationale' => rationale, 'authority_type' => types.join('; '),
       'suggested_heading' => matches.one? ? matches.first['aLabel'] : nil,
-      'suggested_uri' => matches.one? ? matches.first['uri'] : nil,
-      'candidate_uris' => matches.size > 1 ? matches.map { |hit| hit['uri'] }.join('; ') : nil)
+      'suggested_uri' => matches.one? ? matches.first['uri'] : nil)
   end
 end

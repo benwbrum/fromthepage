@@ -64,7 +64,9 @@ describe 'Evidence-based LC matching', :subject_headings do
       expect(matched['result']).to eq('multiple_authority_matches')
       expect(matched['authority_type']).to eq('Subject; Genre/form')
       expect(matched['suggested_uri']).to be_nil
-      expect(matched['candidate_uris']).to include(subject['uri'], genre['uri'])
+      expect(matched['subject_candidates']).to include(subject['uri'])
+      expect(matched['genre_form_candidates']).to include(genre['uri'])
+      expect(matched['name_candidates']).to be_nil
       expect(matched['rationale']).to eq('Matching records found in both subject and genre/form vocabularies; review the records.')
     end
   end
