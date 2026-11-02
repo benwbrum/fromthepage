@@ -61,11 +61,11 @@ describe 'Metadata Description' do
     end
     within '#new-fields tr:nth-child(4)' do
       fill_in 'transcription_fields__label', with: 'Second metadata field'
-      select 'textarea', from: 'transcription_fields__input_type'
+      select 'Text Area', from: 'transcription_fields__input_type'
     end
     within '#new-fields tr:nth-child(5)' do
       fill_in 'transcription_fields__label', with: 'Third metadata field'
-      select 'select', from: 'transcription_fields__input_type'
+      select 'Select', from: 'transcription_fields__input_type'
     end
 
     expect(collection.metadata_fields).to be_empty

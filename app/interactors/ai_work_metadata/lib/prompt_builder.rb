@@ -5,8 +5,8 @@ class AiWorkMetadata::Lib::PromptBuilder
     @work = work
     @collection = work.collection
     ordered_fields = @collection.metadata_fields.order(:line_number, :position)
-    @prompt_fields = ordered_fields
-    @fields = ordered_fields.reject { |field| SKIP_TYPES.include?(field.input_type) }
+    @prompt_fields = ordered_fields.reject { |field| field.input_type == 'subject_headings' }
+    @fields = @prompt_fields.reject { |field| SKIP_TYPES.include?(field.input_type) }
   end
 
   def build

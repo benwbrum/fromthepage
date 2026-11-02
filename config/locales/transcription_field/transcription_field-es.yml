@@ -58,6 +58,19 @@ es:
       ai_option_placeholder: Haga clic en una sugerencia a continuación, o escriba su transcripción…
       ai_spreadsheet_option: Usar este borrador
       instructions: Instrucciones
+    input_types:
+      alt_text: Texto alternativo
+      checkbox: Casilla de verificación
+      date: Fecha
+      description: Descripción
+      instruction: Instrucción
+      multiselect: Selección múltiple
+      numeric: Numérico
+      select: Selección
+      spreadsheet: Hoja de cálculo
+      subject_headings: Encabezamientos de materia (LCSH)
+      text: Texto
+      textarea: Área de texto
     line_form:
       field_options: Opciones de campo (separa con punto y coma)
       field_options_title: Opciones para los campos seleccionados.
@@ -83,6 +96,9 @@ es:
       input_type: Tipo de entrada
       reorder_column: Reordenar columna
     new_field_form:
+      subject_heading_count:
+        one: "%{count} encabezamiento configurado"
+        other: "%{count} encabezamientos configurados"
       configure_options: Configurar opciones
       configure_spreadsheet: Configurar hoja de cálculo
       delete_field: Eliminar campo

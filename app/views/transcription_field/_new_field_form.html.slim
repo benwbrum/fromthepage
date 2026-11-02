@@ -15,13 +15,18 @@ tr.sortable-field id="#{field_id}"
       -inputs = TranscriptionField::TRANSCRIPTION_INPUTS
     -else
       -inputs = TranscriptionField::METADATA_INPUTS
-    =select_tag("transcription_fields[][input_type]", options_for_select(inputs, "#{input_type_value}"), 'aria-label' => t('.input_type'), class: 'input_type')
+    =select_tag("transcription_fields[][input_type]", options_for_select(field_input_type_options(inputs), "#{input_type_value}"), 'aria-label' => t('.input_type'), class: 'input_type')
   td.field-form_options
     -if input_type_value == 'spreadsheet'
       =link_to t('.configure_spreadsheet'), transcription_field_spreadsheet_column_path(field.id), class: 'button'
     -elsif input_type_value == 'multiselect'
       span =link_to t('.configure_options'), transcription_field_configure_multiselect_options_path(field.id), id: 'edit-collaboators-button', class: 'button', data: { controller: 'litebox', litebox: { hash: 'edit-collaborators' } }
       span =options_value
+    -elsif input_type_value == 'subject_headings'
+      =link_to 'Configure Subject Headings', collection_subject_headings_path(@collection.owner, @collection, field), class: 'button', data: { controller: 'litebox' }
+      -if (inventory = field.subject_heading_inventory)
+        | &nbsp;
+        span.fgfaded.subject-heading-count =t('.subject_heading_count', count: inventory.subject_headings.count)
     -else
       =text_area_tag "transcription_fields[][options]", "#{options_value}", 'aria-label' => t('.field_options'), class: 'field-options', disabled: true
   td.field-form_width

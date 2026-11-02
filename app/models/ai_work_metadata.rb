@@ -35,6 +35,8 @@ class AiWorkMetadata < ApplicationRecord
   }.freeze
 
   belongs_to :work
+  # Storage reserved for the separate subject-assignment implementation.
+  serialize :subject_heading_candidates, coder: JSON
   has_one :collection, through: :work
 
   # TODO: We need to upgrade our DB version to utilize native json column field.
