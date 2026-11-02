@@ -36,7 +36,7 @@ class SubjectHeadings::ValidateJob < ApplicationJob
     end
     if %w[completed completed_with_issues failed].include?(inventory.validation_status)
       log_event('already_finalized', status: inventory.validation_status)
-      notify(inventory, token)
+      notify(inventory, token, requester)
       return
     end
     # Compare-and-set prevents two deliveries from validating the same upload.
@@ -120,17 +120,17 @@ class SubjectHeadings::ValidateJob < ApplicationJob
         validation_error: 'The authority check report could not be saved. Uploaded headings remain available. Please retry.')
       log_event('failure_state_write', updated: updated)
     end
-    notify(inventory, token) if updated == 1
+    notify(inventory, token, requester) if updated == 1
   end
 
-  def notify(inventory, token)
+  def notify(inventory, token, requester)
     inventory.reload.with_lock do
       unless inventory.validation_token == token && inventory.notified_at.nil?
         log_event('notification_skipped', already_notified: inventory.notified_at.present?)
         return
       end
       log_event('notification_started')
-      UserMailer.subject_heading_validation_finished(inventory).deliver_now
+      UserMailer.subject_heading_validation_finished(inventory, recipient: requester).deliver_now
       inventory.update!(notified_at: Time.current)
       log_event('notification_finished')
     end

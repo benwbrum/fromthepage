@@ -9,14 +9,22 @@ class SubjectHeadingsController < ApplicationController
   end
 
   def update
+    message_type, message = :notice, 'Subject headings saved.'
     if params[:file].present?
       inventory = SubjectHeadings::Import.new(field: @field, upload: params[:file], instructions: params[:instructions]).call
-      inventory.queue_validation!(user: current_user) if params[:validate_authorities] == '1'
+      if params[:validate_authorities] == '1'
+        inventory.queue_validation!(user: current_user)
+        if inventory.validation_status == 'failed'
+          message_type, message = :alert, 'New subject headings have been saved, but the authority check could not be queued. Please retry from Configure Subject Headings.'
+        else
+          message_type, message = :info, "New subject headings have been saved. Email will be sent to #{ERB::Util.html_escape(current_user.email)} once the Library of Congress authority check is finished."
+        end
+      end
     else
       raise SubjectHeadings::Import::ImportError, 'Choose a CSV file.' unless @field.subject_heading_inventory
       @field.update!(subject_heading_instructions: params[:instructions])
     end
-    flash[:notice] = 'Subject headings saved.'
+    flash[message_type] = message
     ajax_redirect_to collection_edit_metadata_fields_path(@collection.owner, @collection)
   rescue SubjectHeadings::Import::ImportError => e
     @inventory = @field.reload.subject_heading_inventory

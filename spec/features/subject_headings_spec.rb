@@ -82,7 +82,7 @@ describe 'Project owner subject heading configuration', js: true do
       click_button 'Save Subject Headings'
     end
     expect(page).to have_current_path(collection_edit_metadata_fields_path(owner, collection))
-    expect(page).to have_css('.flash-notice', text: 'Subject headings saved.')
+    expect(page).to have_css('.flash-info', text: "New subject headings have been saved. Email will be sent to #{owner.email} once the Library of Congress authority check is finished.")
     expect(page).to have_css('.subject-heading-count', text: '2 headings configured')
     click_link 'Configure Subject Headings'
     expect(page).to have_content('3 imported rows; 2 unique headings.')

@@ -66,6 +66,13 @@ describe SubjectHeadings::ValidateJob, :subject_headings do
     expect(inventory.report_csv).not_to include('Different term')
   end
 
+  it 'emails the requesting administrator when they differ from the collection owner' do
+    requester = create(:unique_user, :admin)
+    described_class.perform_now(user_id: requester.id, inventory_id: inventory.id, token: token)
+    expect(ActionMailer::Base.deliveries.last.to).to eq([requester.email])
+    expect(inventory.reload.notified_at).to be_present
+  end
+
   it 'completes with issues when lookup errors are recorded in a usable report' do
     allow(lookup).to receive(:call).and_raise(SubjectHeadings::AuthorityLookup::LookupError, 'Timed out')
     run_job

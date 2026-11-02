@@ -90,7 +90,7 @@ serialization. Add no decision/approval column. Only `heading` and `uri` control
 the imported inventory. Reuploading an unedited report must preserve the
 inventory; owners adopt suggestions by editing those two columns and reuploading.
 
-Use existing mailer conventions to notify the project owner on completion or
+Use existing mailer conventions to notify the requesting project owner or authorized administrator on completion or
 failure. Link to the authorized configuration screen rather than a temporary
 download URL. Avoid duplicate emails on normal job retries and preserve the
 inventory when authority services or email delivery fail. Expire abandoned

@@ -81,6 +81,29 @@ describe SubjectHeadingsController, :subject_headings do
     expect(inventory.reload.validation_token).not_to eq(old_token)
   end
 
+  it 'shows the current requester an info flash when an uploaded file is queued for checking' do
+    requester = create(:unique_user, :admin)
+    login_as requester
+    ActiveJob::Base.queue_adapter = :test
+    patch path, params: { file: upload_csv("heading\nOriginal\n"), validate_authorities: '1' }, headers: { 'X-Requested-With' => 'XMLHttpRequest' }
+    expect(response).to have_http_status(:created)
+    get editor_path
+    html = Nokogiri::HTML(response.body)
+    expect(html.at_css('.flash-info').text).to include('New subject headings have been saved.', requester.email, 'once the Library of Congress authority check is finished.')
+    expect(html.at_css('.flash-notice')).to be_nil
+  end
+
+  it 'keeps uploaded headings but does not promise email if enqueueing fails' do
+    login_as owner
+    allow(SubjectHeadings::ValidateJob).to receive(:perform_later).and_return(false)
+    patch path, params: { file: upload_csv("heading\nOriginal\n"), validate_authorities: '1' }
+    follow_redirect!
+    html = Nokogiri::HTML(response.body)
+    expect(html.at_css('.flash-alert').text).to include('headings have been saved', 'could not be queued')
+    expect(html.at_css('.flash-info')).to be_nil
+    expect(field.reload.subject_heading_inventory.subject_headings.pluck(:heading)).to eq(['Original'])
+  end
+
   {
     'not_requested' => 'Run authority check',
     'completed' => 'Run authority check again',

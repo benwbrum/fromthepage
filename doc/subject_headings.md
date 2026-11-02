@@ -321,3 +321,12 @@ from the heading string alone; no claim is made about the live African American
 record without the original response. Matching searches, throttling and retries
 are unchanged. Existing stored report CSVs are not rewritten: rerun a check to
 get the updated suggestion columns and rationales.
+
+
+When an upload requests an authority check and enqueueing succeeds, the editor
+shows an info flash confirming that headings were saved and naming the current
+requester's email for completion notification, consistent with asynchronous
+upload messaging. Saves without a requested check retain the normal success
+notice. Enqueue failures show an alert confirming the saved headings without
+promising an email. The validation job sends completion/failure notifications
+to the requesting owner or authorized administrator, matching the info flash.
