@@ -81,6 +81,13 @@ de:
       save_to_incomplete_tooltip: Eine unvollständige Seite speichern
       save_to_needs_review_tooltip: Änderungen speichern
       save_to_transcribed_tooltip: Änderungen speichern
+    save_session_recovery:
+      explanation: Ihre Sitzung konnte nicht überprüft werden. Kopieren Sie den unten angezeigten Inhalt, bevor Sie sich erneut anmelden und den Editor öffnen. Lassen Sie diese Seite geöffnet, bis Ihre Eingaben gesichert sind.
+      open_editor: Editor in einem neuen Tab öffnen
+      sign_in: In einem neuen Tab anmelden
+      submitted_fields: Übermittelte Felder (JSON)
+      submitted_text: Übermittelter Text
+      title: Ihre Änderungen wurden nicht gespeichert
     save_transcription:
       error_message: 'Bei der Analyse des Mark-ups in Ihrem Transkript ist ein Fehler aufgetreten. Diese Art von Fehler tritt häufig auf, wenn eine spitze Klammer fehlt oder wenn ein HTML-Tag offen gelassen wird. Überprüfen Sie alle < oder > in Ihrem Text. (Fehler beim Parsen: %{error_message})'
       saved_and_next_notice: Gespeichert. Zur nächsten Seite wechseln.

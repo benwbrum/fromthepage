@@ -81,6 +81,13 @@ es:
       save_to_incomplete_tooltip: Guardar una página incompleta
       save_to_needs_review_tooltip: Guardar tus cambios
       save_to_transcribed_tooltip: Guardar tus cambios
+    save_session_recovery:
+      explanation: No pudimos verificar su sesión. Copie el contenido enviado que aparece abajo antes de volver a iniciar sesión y abrir el editor. Mantenga esta página abierta hasta que sus cambios estén a salvo.
+      open_editor: Abrir el editor en una pestaña nueva
+      sign_in: Iniciar sesión en una pestaña nueva
+      submitted_fields: Campos enviados (JSON)
+      submitted_text: Texto enviado
+      title: Sus cambios no se han guardado
     save_transcription:
       error_message: 'Se produjo un error al analizar el formato en la transcripción. Este tipo de error a menudo ocurre si falta un corchete angular o si se deja una etiqueta de HTML abierta. Verifica cualquier instancia de < or=""> símbolos en el texto. (El error del analizador fue: %{error_message})'
       saved_and_next_notice: Guardado. Pasando a la siguiente página.

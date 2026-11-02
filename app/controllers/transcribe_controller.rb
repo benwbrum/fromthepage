@@ -7,7 +7,11 @@ class TranscribeController  < ApplicationController
   before_action :authorized?, except: [:zoom, :guest, :help, :still_editing, :active_editing]
   before_action :active?, except: [:still_editing, :active_editing]
 
-  protect_from_forgery except: [:zoom, :unzoom]
+  prepend_before_action :require_save_session, only: [:save_transcription, :save_translation]
+  # The default strategy is null_session, which can clear an already-authorized
+  # user's session and then continue into the save action with no current_user.
+  protect_from_forgery with: :exception, prepend: true, except: [:zoom, :unzoom]
+  rescue_from ActionController::InvalidAuthenticityToken, with: :recover_unverified_save
   # this prevents failed redirects after sign up
   skip_before_action :store_current_location
   skip_before_action :load_objects_from_params, only: :still_editing
@@ -249,6 +253,8 @@ class TranscribeController  < ApplicationController
 
     render action: 'display_page'
   rescue REXML::ParseException, StandardError => e
+    return render_save_session_recovery(:unauthorized, :missing_user, error: e) unless current_user
+
     if params['save'] || save_to_incomplete || save_to_needs_review || save_to_transcribed || approve_to_transcribed
       log_transcript_exception(e, message)
     end
@@ -401,6 +407,8 @@ class TranscribeController  < ApplicationController
 
     render action: 'translate'
   rescue REXML::ParseException, StandardError => e
+    return render_save_session_recovery(:unauthorized, :missing_user, error: e) unless current_user
+
     if params['save']
       log_translation_exception(e, message)
     end
@@ -475,13 +483,14 @@ class TranscribeController  < ApplicationController
     # we have access to @page, @user, and params
     @transcript_date = Time.now
     log_message = "#{attempt_type}\t#{@transcript_date}\n"
-    log_message << "#{attempt_type}\tUser\tID: #{current_user.id}\tEmail: #{current_user.email}\tDisplay Name: #{current_user.display_name}\n"
+    user = current_user
+    log_message << "#{attempt_type}\tUser\tID: #{user&.id}\tEmail: #{user&.email}\tDisplay Name: #{user&.display_name}\n"
     log_message << "#{attempt_type}\tCollection\tID: #{@collection.id}\tTitle:#{@collection.title}\tOwner Email: #{@collection.owner.email}\n"
     log_message << "#{attempt_type}\tWork\tID: #{@work.id}\tTitle: #{@work.title}\n"
     log_message << "#{attempt_type}\tPage\tID: #{@page.id}\tPosition: #{@page.position}\tTitle:#{@page.title}\n"
     log_message << "#{attempt_type}\tSource Text:\nBEGIN_SOURCE_TEXT\n#{source_text}\nEND_SOURCE_TEXT\n\n"
 
-    logger.info(log_message)
+    logger.info("#{attempt_type} request_id=#{request.request_id} user_id=#{user&.id} page_id=#{@page.id} attempt")
     log_message
   end
 
@@ -607,6 +616,41 @@ class TranscribeController  < ApplicationController
   end
 
   private
+
+  def require_save_session
+    render_save_session_recovery(:unauthorized, :missing_user) unless current_user
+  end
+
+  def recover_unverified_save(exception)
+    raise exception unless ['save_transcription', 'save_translation'].include?(action_name)
+
+    render_save_session_recovery(:unprocessable_entity, :invalid_csrf, error: exception)
+  end
+
+  def render_save_session_recovery(status, reason, error: nil)
+    # Do not load records or render the editor here: the session may be absent
+    # and the normal editor requires an authorized user and collection context.
+    submitted_page = params[:page]
+    if submitted_page.is_a?(ActionController::Parameters)
+      field = action_name == 'save_translation' ? :source_translation : :source_text
+      @submitted_text = submitted_page[field].to_s
+    end
+    if params[:fields].is_a?(ActionController::Parameters)
+      @submitted_fields = JSON.pretty_generate(params[:fields].to_unsafe_h)
+    end
+    if params[:page_id].to_s.match?(/\A\d+\z/)
+      if action_name == 'save_translation'
+        @recovery_editor_path = transcribe_translate_path(page_id: params[:page_id])
+      else
+        @recovery_editor_path = transcribe_display_page_path(page_id: params[:page_id])
+      end
+    end
+
+    response.headers['Cache-Control'] = 'no-store'
+    response.headers['Referrer-Policy'] = 'no-referrer'
+    logger.warn("Save rejected request_id=#{request.request_id} reason=#{reason} error_class=#{error&.class}")
+    render :save_session_recovery, layout: false, status: status
+  end
 
   def authorized?
     unless user_signed_in?
