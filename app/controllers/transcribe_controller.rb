@@ -7,7 +7,11 @@ class TranscribeController  < ApplicationController
   before_action :authorized?, except: [:zoom, :guest, :help, :still_editing, :active_editing]
   before_action :active?, except: [:still_editing, :active_editing]
 
-  protect_from_forgery except: [:zoom, :unzoom]
+  prepend_before_action :require_save_session, only: [:save_transcription, :save_translation]
+  # The default strategy is null_session, which can clear an already-authorized
+  # user's session and then continue into the save action with no current_user.
+  protect_from_forgery with: :exception, prepend: true, except: [:zoom, :unzoom]
+  rescue_from ActionController::InvalidAuthenticityToken, with: :recover_unverified_save
   # this prevents failed redirects after sign up
   skip_before_action :store_current_location
   skip_before_action :load_objects_from_params, only: :still_editing
@@ -16,6 +20,8 @@ class TranscribeController  < ApplicationController
 
   def display_page
     @ai_draft_used = false
+    return if params[:recovery_id] && !restore_recovered_draft
+
     rollback_article_categories(params[:rollback_delete_ids], params[:rollback_unset_ids])
 
     handle_display_page_data
@@ -107,6 +113,7 @@ class TranscribeController  < ApplicationController
       end
 
       if @page.save
+        discard_recovered_draft
         # TODO: Implement in save_transcription refactor PR as well
         if @page.ai_draft_used
           record_deed(DeedType::AI_DRAFT)
@@ -249,6 +256,8 @@ class TranscribeController  < ApplicationController
 
     render action: 'display_page'
   rescue REXML::ParseException, StandardError => e
+    return render_save_session_recovery(:unauthorized, :missing_user, error: e) unless current_user
+
     if params['save'] || save_to_incomplete || save_to_needs_review || save_to_transcribed || approve_to_transcribed
       log_transcript_exception(e, message)
     end
@@ -297,6 +306,8 @@ class TranscribeController  < ApplicationController
   end
 
   def translate
+    return if params[:recovery_id] && !restore_recovered_draft
+
     handle_translate_data
   end
 
@@ -338,6 +349,7 @@ class TranscribeController  < ApplicationController
 
       if @page.save
         log_translation_success
+        discard_recovered_draft
         record_translation_deed
 
         unless @page.collection.subjects_disabled || (@page.source_translation.include?('[[') == false)
@@ -401,6 +413,8 @@ class TranscribeController  < ApplicationController
 
     render action: 'translate'
   rescue REXML::ParseException, StandardError => e
+    return render_save_session_recovery(:unauthorized, :missing_user, error: e) unless current_user
+
     if params['save']
       log_translation_exception(e, message)
     end
@@ -475,13 +489,14 @@ class TranscribeController  < ApplicationController
     # we have access to @page, @user, and params
     @transcript_date = Time.now
     log_message = "#{attempt_type}\t#{@transcript_date}\n"
-    log_message << "#{attempt_type}\tUser\tID: #{current_user.id}\tEmail: #{current_user.email}\tDisplay Name: #{current_user.display_name}\n"
+    user = current_user
+    log_message << "#{attempt_type}\tUser\tID: #{user&.id}\tEmail: #{user&.email}\tDisplay Name: #{user&.display_name}\n"
     log_message << "#{attempt_type}\tCollection\tID: #{@collection.id}\tTitle:#{@collection.title}\tOwner Email: #{@collection.owner.email}\n"
     log_message << "#{attempt_type}\tWork\tID: #{@work.id}\tTitle: #{@work.title}\n"
     log_message << "#{attempt_type}\tPage\tID: #{@page.id}\tPosition: #{@page.position}\tTitle:#{@page.title}\n"
     log_message << "#{attempt_type}\tSource Text:\nBEGIN_SOURCE_TEXT\n#{source_text}\nEND_SOURCE_TEXT\n\n"
 
-    logger.info(log_message)
+    logger.info("#{attempt_type} request_id=#{request.request_id} user_id=#{user&.id} page_id=#{@page.id} attempt")
     log_message
   end
 
@@ -607,6 +622,143 @@ class TranscribeController  < ApplicationController
   end
 
   private
+
+  def require_save_session
+    render_save_session_recovery(:unauthorized, :missing_user) unless current_user
+  end
+
+  def recover_unverified_save(exception)
+    raise exception unless ['save_transcription', 'save_translation'].include?(action_name)
+
+    context = Transcribe::Lib::DraftRecovery.verify_form(params[:save_recovery_token], page_id: params[:page_id], mode: recovery_mode)
+    if context && (!current_user || context['user_id'] == current_user.id)
+      draft = { 'context' => context, 'page' => recovery_page_attributes,
+                'fields' => params[:fields].is_a?(ActionController::Parameters) ? params[:fields].to_unsafe_h : nil,
+                'ai_draft_used' => ActiveModel::Type::Boolean.new.cast(params[:ai_draft_used]) }
+      if !current_user || recovery_context(context)
+        @resume_recovery_id = Transcribe::Lib::DraftRecovery.store(draft)
+        @recovery_editor_path = recovered_editor_path(context, @resume_recovery_id) if @resume_recovery_id
+        if current_user && @resume_recovery_id
+          no_store_recovery_response
+          return redirect_to @recovery_editor_path, status: :see_other
+        end
+      end
+    end
+
+    render_save_session_recovery(:unprocessable_entity, :invalid_csrf, error: exception)
+  end
+
+  def recovery_mode
+    ['translate', 'save_translation'].include?(action_name) ? 'translation' : 'transcription'
+  end
+
+  def save_recovery_token
+    Transcribe::Lib::DraftRecovery.form_token(user: current_user, page: @page, collection: @collection, mode: recovery_mode)
+  end
+  helper_method :save_recovery_token
+
+  def recovery_page_attributes
+    return {} unless params[:page].is_a?(ActionController::Parameters)
+
+    params[:page].permit(:source_text, :source_translation, :title).to_h
+  end
+
+  def recovery_context(context)
+    page = Page.find_by(id: context['page_id'])
+    klass = { 'Collection' => Collection, 'DocumentSet' => DocumentSet }[context['collection_type']]
+    collection = klass&.find_by(id: context['collection_id'])
+    return unless page&.work && collection && collection.pages.exists?(page.id)
+    return unless collection.active? && collection.show_to?(current_user) && current_user.can_transcribe?(page.work, collection)
+
+    [page, collection]
+  end
+
+  def recovered_editor_path(context, id)
+    options = { recovery_id: id }
+    if context['mode'] == 'translation'
+      collection_translate_page_path(context['owner_slug'], context['collection_slug'], context['work_slug'], context['page_id'], **options)
+    else
+      collection_transcribe_page_path(context['owner_slug'], context['collection_slug'], context['work_slug'], context['page_id'], **options)
+    end
+  end
+
+  def restore_recovered_draft
+    no_store_recovery_response
+    draft = Transcribe::Lib::DraftRecovery.fetch(params[:recovery_id])
+    unless draft
+      flash.now[:alert] = t('transcribe.save_session_recovery.unavailable')
+      return true
+    end
+    context = draft['context']
+    if context['user_id'] != current_user.id
+      head :forbidden
+      return false
+    end
+    unless context['page_id'] == @page.id && context['collection_id'] == @collection.id &&
+           context['collection_type'] == @collection.class.name && context['mode'] == recovery_mode
+      head :not_found
+      return false
+    end
+
+    @page.assign_attributes(draft['page'])
+    if draft['fields'].present?
+      ids = @collection.transcription_fields.pluck(:id).map(&:to_s)
+      raise ArgumentError, 'Unavailable draft fields' unless @page.field_based && (draft['fields'].keys - ids).empty?
+
+      @page = TranscriptionField::Lib::Utils.parse_fields(page: @page, field_cells: draft['fields'])
+    end
+    @recovery_id = params[:recovery_id]
+    @ai_draft_used = draft['ai_draft_used']
+    flash.now[:alert] = t('transcribe.save_session_recovery.restored')
+    true
+  rescue JSON::ParserError, ArgumentError, TypeError, NoMethodError => e
+    @submitted_text = draft['page'][recovery_mode == 'translation' ? 'source_translation' : 'source_text']
+    @submitted_fields = JSON.pretty_generate(draft['fields']) if draft['fields']
+    render_save_session_recovery(:unprocessable_entity, :unavailable_fields, error: e)
+    false
+  end
+
+  def discard_recovered_draft
+    draft = Transcribe::Lib::DraftRecovery.fetch(params[:recovery_id])
+    return unless draft && draft['context']['user_id'] == current_user.id && draft['context']['page_id'] == @page.id
+
+    Transcribe::Lib::DraftRecovery.delete(params[:recovery_id])
+  end
+
+  def no_store_recovery_response
+    response.headers['Cache-Control'] = 'no-store'
+    # Keep same-origin form Origins valid while hiding recovery URLs from other sites.
+    response.headers['Referrer-Policy'] = 'same-origin'
+    response.headers['X-Robots-Tag'] = 'noindex, nofollow, noarchive'
+  end
+
+  def render_save_session_recovery(status, reason, error: nil)
+    # Do not load records or render the editor here: the session may be absent
+    # and the normal editor requires an authorized user and collection context.
+    submitted_page = params[:page]
+    if submitted_page.is_a?(ActionController::Parameters)
+      field = action_name == 'save_translation' ? :source_translation : :source_text
+      @submitted_text ||= submitted_page[field].to_s
+    end
+    if params[:fields].is_a?(ActionController::Parameters)
+      @submitted_fields = JSON.pretty_generate(params[:fields].to_unsafe_h)
+    end
+    if !@recovery_editor_path && params[:page_id].to_s.match?(/\A\d+\z/)
+      if action_name == 'save_translation'
+        @recovery_editor_path = transcribe_translate_path(page_id: params[:page_id])
+      else
+        @recovery_editor_path = transcribe_display_page_path(page_id: params[:page_id])
+      end
+    end
+
+    no_store_recovery_response
+    logger.warn("Save rejected request_id=#{request.request_id} reason=#{reason} error_class=#{error&.class}")
+    # Only submitted content belongs on this screen, never unloaded/private
+    # collection context left over from a failed action.
+    @collection = @work = @page = @user = @document_set = @quality_sampling = nil
+    flash.clear unless current_user
+    switch_locale { render :save_session_recovery, layout: 'application', status: status }
+  end
 
   def authorized?
     unless user_signed_in?

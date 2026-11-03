@@ -81,6 +81,19 @@ pt:
       save_to_incomplete_tooltip: Salvar uma página incompleta
       save_to_needs_review_tooltip: Salve suas alterações
       save_to_transcribed_tooltip: Salve suas alterações
+    save_session_recovery:
+      explanation: Não foi possível verificar sua sessão. Copie o conteúdo enviado abaixo antes de entrar novamente e reabrir o editor. Mantenha esta página aberta até que suas alterações estejam seguras.
+      manual_recovery: Não foi possível restaurar estas alterações automaticamente. Copie o conteúdo abaixo antes de reabrir o editor. Suas alterações não foram salvas.
+      open_editor: Continuar editando
+      restored: Sua sessão mudou enquanto você editava. Seu rascunho foi restaurado, mas ainda não foi salvo. Revise-o e clique em Salvar novamente.
+      resume_explanation: Sua sessão terminou antes que estas alterações fossem salvas. Guardamos uma cópia temporária do seu rascunho para que você possa continuar editando depois de entrar. Mantenha esta página aberta até salvar suas alterações.
+      return_here: Depois de entrar, volte a esta aba para continuar.
+      sign_in: Entrar em uma nova aba
+      submitted_fields: Campos enviados (JSON)
+      submitted_text: Texto enviado
+      title: Suas alterações não foram salvas
+      unavailable: O rascunho temporário não está mais disponível. A versão salva é exibida. Volte à página ou aba anterior para recuperar seu conteúdo não salvo antes de continuar.
+      view_draft: Ver o rascunho preservado
     save_transcription:
       error_message: 'Houve um erro ao analisar as marcas na sua transcrição. Este tipo de erro muitas vezes ocorre se um colchete angular está faltando ou se uma tag HTML é deixada aberta. Verifique quaisquer instâncias de < or=""> símbolos no seu texto. (O erro do analisador foi: %{error_message})'
       saved_and_next_notice: Salvo. Passando para a próxima página.

@@ -81,6 +81,19 @@ en:
       save_to_incomplete_tooltip: Save an incomplete page
       save_to_needs_review_tooltip: Save your changes
       save_to_transcribed_tooltip: Save your changes
+    save_session_recovery:
+      explanation: We could not verify your session. Copy your submitted content below before signing in again and reopening the editor. Keep this page open until your work is safe.
+      manual_recovery: We could not restore these changes automatically. Copy your content below before reopening the editor. Your changes have not been saved.
+      open_editor: Resume editing
+      restored: Your session changed while you were editing. Your draft has been restored, but it has not been saved. Review it and press Save again.
+      resume_explanation: Your session ended before these changes could be saved. We have kept a temporary copy of your draft so you can resume editing after signing in. Keep this page open until you have saved your work.
+      return_here: After signing in, return to this tab to continue.
+      sign_in: Sign in in a new tab
+      submitted_fields: Submitted fields (JSON)
+      submitted_text: Submitted text
+      title: Your changes have not been saved
+      unavailable: The temporary draft is no longer available. Your saved version is shown. Return to the previous page or tab to recover your unsaved content before continuing.
+      view_draft: View retained draft
     save_transcription:
       error_message: 'There was an error parsing the mark-up in your transcript.  This kind of error often occurs if an angle bracket is missing or if an HTML tag is left open.  Check any instances of < or > symbols in your text.  (The parser error was: %{error_message})'
       saved_and_next_notice: Saved. Moving to the next page.
