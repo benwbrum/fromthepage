@@ -81,6 +81,19 @@ fr:
       save_to_incomplete_tooltip: Enregistrer une page incomplète
       save_to_needs_review_tooltip: Enregistrez vos modifications
       save_to_transcribed_tooltip: Enregistrez vos modifications
+    save_session_recovery:
+      explanation: Nous n’avons pas pu vérifier votre session. Copiez le contenu envoyé ci-dessous avant de vous reconnecter et de rouvrir l’éditeur. Gardez cette page ouverte jusqu’à ce que vos modifications soient en sécurité.
+      manual_recovery: Nous n’avons pas pu restaurer ces modifications automatiquement. Copiez le contenu ci-dessous avant de rouvrir l’éditeur. Vos modifications n’ont pas été enregistrées.
+      open_editor: Reprendre la saisie
+      restored: Votre session a changé pendant la saisie. Votre brouillon a été restauré, mais n’a pas été enregistré. Vérifiez-le et cliquez de nouveau sur Enregistrer.
+      resume_explanation: Votre session s’est terminée avant l’enregistrement de ces modifications. Nous avons conservé une copie temporaire de votre brouillon pour que vous puissiez reprendre la saisie après la connexion. Gardez cette page ouverte jusqu’à l’enregistrement de vos modifications.
+      return_here: Après la connexion, revenez dans cet onglet pour continuer.
+      sign_in: Se connecter dans un nouvel onglet
+      submitted_fields: Champs envoyés (JSON)
+      submitted_text: Texte envoyé
+      title: Vos modifications n’ont pas été enregistrées
+      unavailable: Le brouillon temporaire n’est plus disponible. La version enregistrée est affichée. Revenez à la page ou à l’onglet précédent pour récupérer votre contenu non enregistré avant de continuer.
+      view_draft: Voir le brouillon conservé
     save_transcription:
       error_message: 'Une erreur s''est produite lors de l''analyse du balisage dans votre relevé de notes. Ce type d''erreur se produit souvent s''il manque un crochet angulaire ou si une balise HTML est laissée ouverte. Vérifiez toutes les occurrences des symboles < ou > dans votre texte. (L''erreur de l''analyseur était : %{error_message})'
       saved_and_next_notice: Enregistré. Passage à la page suivante.

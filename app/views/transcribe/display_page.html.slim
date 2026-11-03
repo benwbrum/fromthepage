@@ -20,6 +20,8 @@
   = hidden_field_tag(:autolinked_source_text, @autolinked_source_text)
 =form_for(@page, :url => { :action => 'save_transcription' }, :html => { class: editor_class, id: 'custom_form_id' }) do |f|
   =hidden_field_tag(:page_id, @page.id)
+  =hidden_field_tag :save_recovery_token, save_recovery_token
+  =hidden_field_tag :recovery_id, @recovery_id if @recovery_id
   =hidden_field_tag(:flow, params[:flow])
   =hidden_field_tag(:quality_sampling_id, params[:quality_sampling_id])
   =hidden_field_tag(:ai_draft_used, @ai_draft_used)
