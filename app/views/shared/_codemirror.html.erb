@@ -12,19 +12,84 @@
     var ai_plaintext = <%= raw(@page.ai_plaintext.to_json) %>;
     var ai_plaintext_caveat = <%= raw(t(@page.ai_plaintext_has_emoji_placeholders? ? '.ai_plaintext_caveat' : '.ai_plaintext_caveat_no_emoji').to_json) %>;
 
-    function appendAiPlaintext(cm, pred) {
+    function disableSaveButtonsBasedOnWordCount(aiPlaintext) {
+      const WORDS_PER_MINUTE = 300;
+      const MIN_SECONDS = 5;
+      const MAX_SECONDS = 60;
+
+      const wordCount = aiPlaintext.trim().split(/\s+/).filter(Boolean).length;
+      const delaySeconds = Math.min(
+        MAX_SECONDS,
+        Math.max(
+          MIN_SECONDS,
+          Math.ceil(wordCount / WORDS_PER_MINUTE * 60)
+        )
+      );
+
+      const $buttons = $('#save_button_top, #finish_button_top, #approve_button_top');
+
+      if ($buttons.length === 0) return;
+
+      const originalTitles = {};
+      let remaining = delaySeconds;
+
+      var reviewAiDraftOne = <%= raw(t(".review_ai_draft.one", count: "%{count}").to_json) %>;
+      var reviewAiDraftOther = <%= raw(t(".review_ai_draft.other", count: "%{count}").to_json) %>;
+
+      function updateTooltips() {
+        const title = (remaining === 1 ? reviewAiDraftOne : reviewAiDraftOther)
+          .replace('%{count}', remaining);
+
+        $buttons.attr('title', title);
+      }
+
+      $buttons.each(function () {
+        originalTitles[this.id] = this.title;
+        $(this).prop('disabled', true);
+      });
+
+      updateTooltips();
+
+      const timer = setInterval(function () {
+        remaining--;
+
+        if (remaining <= 0) {
+          clearInterval(timer);
+
+          $buttons.each(function () {
+            $(this)
+              .prop('disabled', false)
+              .attr('title', originalTitles[this.id]);
+          });
+
+          return;
+        }
+
+        updateTooltips();
+      }, 1000);
+    }
+
+    function appendAiPlaintext(cm) {
       var currentText = cm.getValue();
-      // append ai_plaintext to the end of the current text
       cm.setValue(currentText + ai_plaintext_caveat + "\n" + ai_plaintext);
       cm.markClean();
-    };
+    }
+
     document.getElementById("copy-ai-plaintext").addEventListener("click", function() {
       appendAiPlaintext(myCodeMirror);
-      // now disable the button
+
       $('#copy-ai-plaintext').prop('disabled', true);
       $('#ai_draft_used').val('true');
-    });
 
+      disableSaveButtonsBasedOnWordCount(ai_plaintext);
+      $('#flash_wrapper').append('<%= j(render(
+        partial: "shared/flash",
+        locals: {
+          type: :alert,
+          message: t(".review_ai_draft.zero")
+        }
+      )) %>');
+    });
   </script>
 <% end %>
 
