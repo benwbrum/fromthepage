@@ -619,7 +619,9 @@ class TranscribeController  < ApplicationController
   end
 
   def active?
-    return head(:not_found) unless @collection && @work && @page
+    # Next-page navigation starts from a work, without a current page ID.
+    return head(:not_found) unless @collection && @work
+    return head(:not_found) unless @page || action_name == 'goto_next_untranscribed_page'
 
     return if @collection.active?
 

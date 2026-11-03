@@ -165,3 +165,20 @@ Use synthetic IDs and content for testing; the representative payload shape is:
 For the admin AI error detail view, use the error-detail URL with the ID of a
 finished (non-error) AI transcription. Expect a direct HTTP 404 with no Location
 header. Actual error records should still show their diagnostic details.
+
+## IIIF import selectors and next-page navigation
+
+- As an owner, use Start A Project → Import IIIF Manifest with a collection URL.
+  Choose **Create Collection** and import checked manifests. Expect the processing
+  notice and the new collection page, rather than an empty 404 response. Repeat
+  with an existing owned collection and an owned document set. A signed-out user
+  or a user selecting someone else's document set must not start an import.
+  Missing source collections/document sets should return a controlled 404.
+- In Transcribe, click Next on a work's final page. For an incomplete work, expect
+  another page in that work. For a completed work, expect an available page in the
+  document set or collection. If the document set is complete, fall back to an
+  accessible page in its parent collection; if the collection is complete, return
+  to the owner's profile with the completion notice. Repeat with restricted works
+  present to confirm inaccessible pages are skipped. These work-level links do
+  not require a current page ID; malformed owner/collection/work contexts still
+  return 404.

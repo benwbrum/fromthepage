@@ -6,6 +6,11 @@ class ScCollectionsController < ApplicationController
   before_action :set_sc_collection, only: %i[show edit update destroy explore_manifest import_manifest]
   before_action :require_authenticated_user, only: %i[import_collection convert_manifest cdm_bulk_import_new cdm_bulk_import_create]
 
+  # These form values select a new collection or a document set, not a URL
+  # collection. import_collection resolves the destination and checks ownership.
+  skip_before_action :validate_url_context, only: :import_collection,
+    if: -> { params[:collection_id] == 'sc_collection' || params[:collection_id].to_s.match?(/\AD\d+\z/) }
+
   respond_to :html
 
   def index
@@ -154,7 +159,7 @@ class ScCollectionsController < ApplicationController
   end
 
   def import_collection
-    sc_collection = ScCollection.find_by(id: params[:sc_collection_id])
+    sc_collection = ScCollection.find(params[:sc_collection_id])
     collection_id = params[:collection_id]
     cdm_ocr = !params[:contentdm_ocr].blank?
     annotation_ocr = !params[:annotation_ocr].blank?
@@ -169,7 +174,7 @@ class ScCollectionsController < ApplicationController
     end
 
     if collection_id.is_a?(String) && (md = collection_id.match(/D(\d+)/))
-      document_set = DocumentSet.find_by(id: md[1])
+      document_set = DocumentSet.find(md[1])
       collection = document_set.collection
     else
       collection = Collection.find_by(id: collection_id)
