@@ -9,7 +9,15 @@ class ExportController < ApplicationController
 
   DEFAULT_WORKS_PER_PAGE = 15
 
-  before_action :require_owner, only: [:index, :work_metadata_csv]
+  before_action :require_owner, only: [:index, :work_metadata_csv, :subject_details_csv,
+    :subject_coocurrence_csv, :subject_distribution_csv, :subject_index_csv, :export_all_tables]
+  before_action :require_work_download_access, only: [
+    :show, :printable, :new_grover_export, :grover_printable, :tei, :table_csv,
+    :page_plaintext_verbatim, :page_plaintext_translation_verbatim, :page_plaintext_emended,
+    :page_plaintext_translation_emended, :page_plaintext_searchable,
+    :work_plaintext_verbatim, :work_plaintext_translation_verbatim, :work_plaintext_emended,
+    :work_plaintext_translation_emended, :work_plaintext_searchable
+  ]
 
   def index
     filtered_data

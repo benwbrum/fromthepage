@@ -44,8 +44,12 @@
         br
         =hidden_field_tag :sc_collection_id, @sc_collection.id
         -new_collection = @collection ? @collection.id : nil
+        -import_options = target_collection_options(new_collection)
+        -unless @sc_collection.collection
+          -import_options += options_for_select([["Create Collection: #{@sc_collection.label}", 'sc_collection']])
+        -import_options += options_for_select([['Add New Collection', 'new']])
         .iiif-select-form
-          =select_tag :collection_id, target_collection_options(new_collection), id: 'manifest_import', prompt: t('.select_a_collection_to_import_into'), required: true, 'aria-label' => t('.select_a_collection')
+          =select_tag :collection_id, import_options, id: 'manifest_import', prompt: t('.select_a_collection_to_import_into'), required: true, 'aria-label' => t('.select_a_collection')
           =button_tag t('.import_checked_manifests')
 
         =check_box_tag("select_all", 1, true, data: { controller: 'select-all', select_all: 'manifest_checks' })
@@ -77,14 +81,6 @@
 
     -content_for :javascript
       javascript:
-        $(function(){
-          var collection = "#{@sc_collection.collection}"
-          if(collection == ''){
-            $('#manifest_import').append("<option value='sc_collection'>Create Collection: #{@sc_collection.label}</option>");
-          }
-          $('#manifest_import').append("<option value='new'>Add New Collection</option>");
-        });
-
         $(function(){
           $('#manifest_import').on('change', function(){
             var col = $(this).val();

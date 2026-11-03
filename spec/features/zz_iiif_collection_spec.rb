@@ -17,22 +17,35 @@ RSpec.describe 'uploads data for collections', order: :defined do
     end
   end
 
-  it 'imports an IIIF collection', js: true do
+  it 'queues an IIIF collection import', js: true do
+    # Exercise the browser-to-job handoff; task behavior has its own specs.
+    queued_imports = []
+    allow(Process).to receive(:spawn).and_wrap_original do |original, *args, **options|
+      if args.any? { |arg| arg.is_a?(String) && arg.start_with?('fromthepage:import_iiif_collection[') }
+        queued_imports << args
+        12_345
+      else
+        original.call(*args, **options)
+      end
+    end
+    allow(Process).to receive(:detach).and_call_original
+    allow(Process).to receive(:detach).with(12_345).and_return(nil)
     visit dashboard_owner_path
     VCR.use_cassette('iiif/cambridge_hebrew_mss', record: :none) do
       page.find('.tabs').click_link('Start A Project')
       page.find(:css, '#import-iiif-manifest').click
       page.fill_in 'at_id', with: at_id
       find_button('iiif_import').click
-      expect(page).to have_content(at_id)
+      expect(page).to have_content(at_id, wait: 20)
       expect(page).to have_content('Manifests')
       select('Create Collection', from: 'manifest_import')
       click_button('Import Checked Manifests')
-      expect(page.find('.flash_message')).to have_content('IIIF collection import is processing')
-      sleep(55)
+      expect(page).to have_css('.flash_message', text: 'IIIF collection import is processing', wait: 20)
+      imported = owner.collections.last
+      expect(page).to have_current_path(collection_path(owner, imported))
       expect(page).to have_content('Works')
-      expect(owner.collections.last.title).to have_content('Library')
-      expect(owner.collections.last.works.count).not_to be_nil
+      expect(imported.title).to have_content('Library')
+      expect(queued_imports.size).to eq(1)
     end
   end
 

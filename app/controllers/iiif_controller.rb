@@ -8,6 +8,7 @@ class IiifController < ApplicationController
   before_action :set_api_user
   before_action :load_objects_from_ids
   before_action :check_api_access, except: [:collections, :contributions, :for, :collection_for_domain]
+  before_action :authorize_export_download, if: -> { action_name.start_with?('export_work_') }
 
   ANNOTATION_FIELDS = {
     'transcription' => :source_text,
@@ -1190,5 +1191,17 @@ private
     authenticate_with_http_token do |token, options|
       @api_user = User.find_by(api_key: token)
     end
+  end
+
+  def authorize_export_download
+    return head(:not_found) unless @work && @collection
+    # Explicit public API access also supports server-to-server consumers such
+    # as Voyant. Manifests and annotations retain their existing API policy.
+    return if @collection.api_access
+
+    user = current_user || @api_user
+    return head(:unauthorized) unless user
+
+    head(:forbidden) unless work_download_allowed?(@collection, user)
   end
 end

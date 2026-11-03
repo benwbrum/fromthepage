@@ -13,6 +13,7 @@ class ApplicationController < ActionController::Base
   end
 
   before_action :load_objects_from_params
+  before_action :validate_url_context
   before_action :record_new_relic_request_attributes
   before_action :store_current_location, unless: :devise_controller?
   before_action :load_html_blocks
@@ -227,11 +228,57 @@ class ApplicationController < ActionController::Base
     @collection = Collection::Lib::SetFriendlyFind.perform(id: id, work_reference: @work)
   end
 
+  # An explicitly requested context must not be silently repaired by a work
+  # lookup or fall through to a global listing when the collection is missing.
+  def validate_url_context
+    return head(:not_found) if @work && !@collection
+
+    if params.key?(:collection_id)
+      requested_collection = Collection::Lib::SetFriendlyFind.perform(id: params[:collection_id])
+      return head(:not_found) unless requested_collection && requested_collection == @collection
+    end
+    if @collection && params[:user_slug]
+      owner = User.friendly.find(params[:user_slug], allow_nil: true)
+      return head(:not_found) unless owner && owner == @collection.owner
+    end
+    if @work && @collection
+      return head(:not_found) unless @collection.works.exists?(@work.id)
+    end
+    return head(:not_found) if @page && @work && @page.work_id != @work.id
+
+    if self.class.name.start_with?('Thredded::')
+      return head(:not_found) unless @collection&.messageboards_enabled? && @collection.messageboard_group && @collection.show_to?(current_user)
+      if params[:messageboard_id]
+        return head(:not_found) unless messageboard.messageboard_group_id == @collection.messageboard_group.id
+      end
+      if controller_name == 'messageboard_groups' && action_name == 'show'
+        return head(:not_found) unless params[:id].to_s == @collection.messageboard_group.id.to_s
+      end
+
+      redirect_to(main_app.new_user_session_path) unless current_user
+    end
+  end
+
+  def work_download_allowed?(collection, user = current_user)
+    user && collection && collection.show_to?(user) && (collection.user_download || user.like_owner?(collection))
+  end
+  helper_method :work_download_allowed?
+
+  def require_work_download_access
+    return redirect_to(main_app.new_user_session_path) unless current_user
+    return head(:not_found) unless @work && @collection
+
+    head(:forbidden) unless work_download_allowed?(@collection)
+  end
+
   def bad_record_id(e)
+    return head(:not_found) if e.is_a?(ActiveRecord::RecordNotFound)
+    return head(:bad_request) unless request.format.html?
+
     logger.error("Bad record ID exception for params=#{params.inspect}")
     logger.error(e.backtrace[2])
     if @collection
-      redirect_to controller: 'collection', action: 'show', collection_id: @collection.id
+      redirect_to main_app.collection_path(@collection.owner, @collection)
     else
       redirect_to '/404'
     end

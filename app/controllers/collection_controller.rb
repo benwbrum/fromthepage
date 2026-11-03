@@ -691,6 +691,8 @@ class CollectionController < ApplicationController
   end
 
   def works_list
+    return head(:not_found) unless @collection
+
     filtered_works
 
     respond_to do |format|

@@ -1,9 +1,10 @@
 class BulkExportController < ApplicationController
   before_action :require_logged_in
+  before_action :require_work_download_access, only: [:create_for_work, :create_for_work_ajax]
   before_action :set_bulk_export, only: [:show, :edit, :download]
   before_action :authorized?, except: [:new, :create, :create_for_work, :create_for_work_ajax, :create_for_owner]
   before_action :authorize_collection, only: [:new, :create, :create_for_work_ajax, :create_for_owner]
-  before_action :require_collection_owner, only: [:new, :create]
+  before_action :require_collection_owner, only: [:new, :create, :create_for_work, :create_for_work_ajax]
 
   PAGES_PER_SCREEN = 20
 

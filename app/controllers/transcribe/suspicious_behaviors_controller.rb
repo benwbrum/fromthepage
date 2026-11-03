@@ -4,6 +4,7 @@ class Transcribe::SuspiciousBehaviorsController < ApplicationController
   def create
     collection = Collection.find(params[:collection_id])
     page = collection.pages.find(params[:page_id])
+    return head(:forbidden) unless current_user.can_transcribe?(page.work, collection)
 
     result = SuspiciousBehaviors::Create.new(
       collection: collection,

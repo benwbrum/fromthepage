@@ -11,6 +11,8 @@ class StaticController < ApplicationController
   end
 
   def landing_page
+    return head(:not_acceptable) unless request.format.html?
+
     if user_signed_in? && params[:logo] != 'true'
       if current_user.admin
         return redirect_to admin_path

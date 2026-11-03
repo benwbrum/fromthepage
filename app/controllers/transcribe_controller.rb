@@ -14,7 +14,6 @@ class TranscribeController  < ApplicationController
   rescue_from ActionController::InvalidAuthenticityToken, with: :recover_unverified_save
   # this prevents failed redirects after sign up
   skip_before_action :store_current_location
-  skip_before_action :load_objects_from_params, only: :still_editing
   skip_before_action :load_html_blocks, only: [:still_editing, :active_editing]
   skip_around_action :switch_locale, only: [:still_editing, :active_editing]
 
@@ -433,7 +432,6 @@ class TranscribeController  < ApplicationController
 
   def still_editing
     if current_user
-      @page = Page.find(params[:page_id])
       @page.update_columns(edit_started_at: Time.now, edit_started_by_user_id: current_user.id)
       render plain: ''
     else
@@ -773,6 +771,10 @@ class TranscribeController  < ApplicationController
   end
 
   def active?
+    # Next-page navigation starts from a work, without a current page ID.
+    return head(:not_found) unless @collection && @work
+    return head(:not_found) unless @page || action_name == 'goto_next_untranscribed_page'
+
     return if @collection.active?
 
     # Redirect to collection overview instead of display page for inactive collections

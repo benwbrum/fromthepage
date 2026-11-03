@@ -40,7 +40,7 @@ describe TranscribeController do
     end
 
     context 'when read-only document set and user is not a collaborator' do
-      let!(:document_set) { create(:document_set, :read_only, owner_user_id: owner.id, collection_id: collection.id) }
+      let!(:document_set) { create(:document_set, :read_only, owner_user_id: owner.id, collection_id: collection.id, works: [work]) }
       let!(:user) { create(:unique_user) }
       let(:action_path) { collection_transcribe_page_path(owner, document_set, work, page) }
 

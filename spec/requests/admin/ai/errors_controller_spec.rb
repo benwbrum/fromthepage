@@ -118,10 +118,11 @@ describe Admin::Ai::ErrorsController do
     context 'when record is not an error' do
       let(:action_path) { admin_ai_error_path(ai_transcription_finished) }
 
-      it 'redirects to 404 for non-error record' do
+      it 'returns 404 for a non-error record' do
         login_as admin
         subject
-        expect(response).to redirect_to('/404')
+        expect(response).to have_http_status(:not_found)
+        expect(response.headers['Location']).to be_nil
       end
     end
   end
