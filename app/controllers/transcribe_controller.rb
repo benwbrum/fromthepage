@@ -621,6 +621,8 @@ class TranscribeController  < ApplicationController
   end
 
   def active?
+    return head(:not_found) unless @collection && @work && @page
+
     return if @collection.active?
 
     # Redirect to collection overview instead of display page for inactive collections

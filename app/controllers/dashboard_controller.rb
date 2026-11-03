@@ -11,6 +11,8 @@ class DashboardController < ApplicationController
   before_action :authorized?,
     only: [:owner, :staging, :startproject, :summary]
 
+  before_action :require_dashboard_user, only: [:watchlist, :exports, :deeds]
+
   before_action :get_data,
     only: [:owner, :staging, :upload, :startproject, :empty_work, :create_work, :summary, :exports]
 
@@ -343,6 +345,12 @@ class DashboardController < ApplicationController
   end
 
   private
+
+  def require_dashboard_user
+    return if action_name == 'deeds' && params[:all].present?
+
+    redirect_to new_user_session_path unless current_user
+  end
 
   def authorized?
     return if user_signed_in? && current_user.owner

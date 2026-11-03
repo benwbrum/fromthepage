@@ -87,7 +87,13 @@ class NotesController < ApplicationController
     if @collection.present?
       notes_scope = @collection.notes.includes(:user, :work, :page, { collection: :owner })
     else
-      notes_scope = Note.all.includes(:user, :work, :page, { collection: :owner })
+      visible = Collection.unrestricted
+      if current_user
+        visible = visible.where.not(id: current_user.blocked_collections.select(:id))
+        visible = visible.or(Collection.where(id: current_user.all_owner_collections.select(:id)))
+                         .or(Collection.where(id: current_user.collection_collaborations.select(:id)))
+      end
+      notes_scope = Note.where(collection_id: visible.select(:id)).includes(:user, :work, :page, { collection: :owner })
     end
 
     if params[:search]

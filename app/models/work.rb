@@ -307,6 +307,8 @@ class Work < ApplicationRecord
   end
 
   def access_object(user)
+    return nil unless self.collection
+
     if self.collection.show_to?(user)
       # public collection or collection that has authorized access
       self.collection

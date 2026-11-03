@@ -32,7 +32,7 @@
             =button_tag t('.search')
 
         -if ELASTIC_ENABLED
-          =form_tag(collection_work_search_path, :method => :get, class: 'collection-search') do
+          =form_tag(collection_work_search_path(@collection.owner, @collection, @work), :method => :get, class: 'collection-search') do
             =label_tag 'term', t('.search_in_work'), class: 'sr-only'
             =search_field_tag :term, query, :placeholder => t('.search_in_work')
             =button_tag t('.search')

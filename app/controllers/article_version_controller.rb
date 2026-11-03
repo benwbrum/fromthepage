@@ -7,11 +7,15 @@ class ArticleVersionController < ApplicationController
       return
     end
 
+    return head(:not_found) unless @article && @collection && @collection.articles.exists?(@article.id)
+
     @selected_version = @article_version.present? ? @article_version : @article.article_versions.first
     @previous_version = @selected_version.prev if @selected_version.present?
   end
 
   def list
-    render 'show'
+    respond_to do |format|
+      format.html { render 'show' }
+    end
   end
 end

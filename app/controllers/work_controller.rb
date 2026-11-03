@@ -30,6 +30,8 @@ class WorkController < ApplicationController
     :restore_description_version
   ]
   before_action :authorized_to_describe?, only: [:describe, :save_description]
+  before_action :require_work_download_access, only: [:download, :configurable_printout]
+  before_action :require_printout_owner, only: [:configurable_printout]
 
   # no layout if xhr request
   layout :dynamic_layout, only: [:new, :create, :configurable_printout, :edit_scribes, :remove_scribe]
@@ -435,6 +437,10 @@ class WorkController < ApplicationController
     return if user_signed_in? && current_user.can_transcribe?(@work, @collection)
 
     redirect_to metadata_overview_collection_work_path(@collection.owner, @collection, @work)
+  end
+
+  def require_printout_owner
+    head(:forbidden) unless current_user.like_owner?(@collection)
   end
 
   def require_segmentation_feature

@@ -13,6 +13,8 @@ class ArticleController < ApplicationController
   end
 
   def list
+    return head(:not_found) unless @collection
+
     base_articles = @collection.articles
     @categories = Category.recursive_tree_for(@collection.is_a?(DocumentSet) ? @collection.collection_id : @collection.id)
     @categories_tree = @categories.group_by(&:parent_id)
@@ -24,6 +26,8 @@ class ArticleController < ApplicationController
       @ancestor_ids = []
     elsif params[:selected_category_id].present?
       @selected_category = @categories.find { |category| category.id == params[:selected_category_id].to_i }
+      return head(:not_found) unless @selected_category
+
       @articles_exist = base_articles.joins(:categories).where(categories: { id: @selected_category.id }).exists?
       @ancestor_ids = Category.ancestors_for(@selected_category.id).pluck(:id)
     else

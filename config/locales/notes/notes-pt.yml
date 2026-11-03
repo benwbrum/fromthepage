@@ -25,6 +25,7 @@ pt:
       cancel: Cancelar
       confirm_delete_message: Você tem certeza que deseja apagar esta nota?
       delete: Apagar
+      deleted_user: Usuário excluído
       edit: Editar
       microphone: Microfone
       update: Atualizar

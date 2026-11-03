@@ -1,16 +1,27 @@
 class SearchAttempt::Lib::Utils
   def self.highlight_terms(transcription, search_string)
     doc = Nokogiri::HTML.fragment(transcription)
-    words_regex = /\b(#{search_string.split(' ').join('|')})\b/i
+    words = search_string.to_s.split.uniq.sort_by { |word| -word.length }
+    return doc.to_html.html_safe if words.empty?
+
+    words_regex = /(?<!\w)(#{words.map { |word| Regexp.escape(word) }.join('|')})(?!\w)/i
 
     doc.traverse do |node|
-      if node.text? && node.parent.name != 'script'
-        node.replace(
-          node.text.gsub(words_regex) do |match|
-            "<span class=\"highlighted\">#{match}</span>"
-          end
-        )
+      next unless node.text?
+      next if node.ancestors.any? { |ancestor| ['script', 'style'].include?(ancestor.name) }
+
+      replacement = Nokogiri::HTML::DocumentFragment.new(doc.document)
+      node.text.split(words_regex).each_with_index do |text, index|
+        if index.odd?
+          span = Nokogiri::XML::Node.new('span', doc.document)
+          span['class'] = 'highlighted'
+          span.content = text
+          replacement.add_child(span)
+        else
+          replacement.add_child(Nokogiri::XML::Text.new(text, doc.document))
+        end
       end
+      node.replace(replacement)
     end
 
     doc.to_html.html_safe

@@ -130,6 +130,7 @@ class UserController < ApplicationController
   def profile
     # Find the user if it isn't already set
     @user ||= User.friendly.find(params[:id])
+    return head(:not_found) if @user.owner? && @user.slug.blank?
 
     if !@user.deleted || current_user&.admin
       @collections_and_document_sets = @user.visible_collections_and_document_sets(current_user)

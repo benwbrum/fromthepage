@@ -25,6 +25,7 @@ fr:
       cancel: Annuler
       confirm_delete_message: Voulez-vous vraiment supprimer cette note ?
       delete: Effacer
+      deleted_user: Utilisateur supprimé
       edit: Éditer
       microphone: Microphone
       update: Mise à jour
