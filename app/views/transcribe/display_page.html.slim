@@ -139,7 +139,7 @@
         setInterval("transcribe_periodic_timer()", 60000);
         function transcribe_periodic_timer() {
           $.ajax({
-            url: "#{collection_transcribe_still_editing_path(current_user.slug, @collection.id, @work.id, @page.id)}",
+            url: "#{collection_transcribe_still_editing_path(@collection.owner.slug, @collection.slug, @work.slug, @page.id)}",
             error: function(xhr) {
               if(xhr.status==401) {
                 // user has been logged out
@@ -166,7 +166,7 @@
 
     function transcribe_active_editing() {
       $.ajax({
-        url: "#{active_editing_collection_work_path(@collection.owner.slug, @collection.id, @work.id, @page.id)}"
+        url: "#{active_editing_collection_work_path(@collection.owner.slug, @collection.slug, @work.slug, @page.id)}"
       });
     }
 

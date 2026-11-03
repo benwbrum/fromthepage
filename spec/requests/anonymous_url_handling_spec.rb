@@ -120,6 +120,56 @@ RSpec.describe 'Anonymous access and malformed URL handling', type: :request do
     end
   end
 
+  describe 'editor heartbeats' do
+    it 'uses the collection owner context and records activity for a signed-in transcriber' do
+      login_as visitor
+      heartbeat = collection_transcribe_still_editing_path(owner.slug, collection.slug, work.slug, page.id)
+      get collection_transcribe_page_path(owner, collection, work, page)
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include(heartbeat)
+
+      get heartbeat
+      expect(response).to have_http_status(:ok)
+      expect(page.reload.edit_started_by_user_id).to eq(visitor.id)
+      expect(page.edit_started_at).to be_present
+    end
+
+    it 'returns session expired without updating the page when signed out' do
+      get collection_transcribe_still_editing_path(owner.slug, collection.id, work.id, page.id)
+      expect(response).to have_http_status(:unauthorized)
+      expect(response.body).to eq('session expired')
+      expect(page.reload.edit_started_at).to be_nil
+    end
+
+    it 'rejects mismatched collection, work, and owner contexts without recording activity' do
+      login_as visitor
+      other = create(:collection, owner_user_id: owner.id)
+      other_work = create(:work, collection: collection, owner_user_id: owner.id)
+      [[owner.slug, other.id, work.id], [owner.slug, collection.id, other_work.id],
+       [visitor.slug, collection.id, work.id]].each do |slug, collection_id, work_id|
+        get collection_transcribe_still_editing_path(slug, collection_id, work_id, page.id)
+        expect(response).to have_http_status(:not_found)
+        expect(page.reload.edit_started_at).to be_nil
+      end
+    end
+
+    it 'preserves public document-set context when its parent collection is private' do
+      collection.update!(visibility: :private)
+      set = create(:document_set, :public, collection: collection, owner_user_id: owner.id, works: [work])
+      login_as visitor
+      heartbeat = collection_transcribe_still_editing_path(owner.slug, set.slug, work.slug, page.id)
+      active = active_editing_collection_work_path(owner.slug, set.slug, work.slug, page.id)
+      get collection_transcribe_page_path(owner, set, work, page)
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include(heartbeat, active)
+      get active
+      expect(response).to have_http_status(:ok)
+      get heartbeat
+      expect(response).to have_http_status(:ok)
+      expect(page.reload.edit_started_by_user_id).to eq(visitor.id)
+    end
+  end
+
   describe 'personal dashboards' do
     it 'preserves the explicitly public all-deeds feed' do
       get dashboard_deeds_path, params: { all: true }

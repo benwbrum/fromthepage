@@ -144,3 +144,24 @@ Use synthetic IDs and content for testing; the representative payload shape is:
 ```json
 {"suspicious_behavior":{"behavior_type":"large_paste","metadata":{"content":"test"}}}
 ```
+
+## Editor heartbeat and required review workflow
+
+1. Sign in as a project owner. Under Settings → Quality Control, select the
+   required-review workflow.
+2. Open a new page in Transcribe, enter text, and click Done. Expect the normal
+   Saved notice and navigation to the next page, without a connection warning.
+3. Navigate back: the text should be present and the page should need review.
+   Enter a translation and save it; its translation status should need review too.
+4. Repeat transcription as an ordinary registered transcriber. In browser network
+   tools, `still_editing` requests should return 200 and use the collection owner's
+   URL prefix, even when the transcriber is a different user. Test a public
+   document set with a private parent collection as well.
+5. With synthetic records, request that heartbeat using an unrelated collection,
+   another work, or the wrong owner prefix. Expect 404 with no change to the
+   page's editing timestamp/user. After logout, the valid public-context heartbeat
+   should return 401 rather than claiming a connection failure.
+
+For the admin AI error detail view, use the error-detail URL with the ID of a
+finished (non-error) AI transcription. Expect a direct HTTP 404 with no Location
+header. Actual error records should still show their diagnostic details.
