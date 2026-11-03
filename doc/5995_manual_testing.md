@@ -26,6 +26,8 @@ recovery reference; draft content is not in the URL or session cookie.
 Inspect saved page content, status, version history, and deeds: the recovery must
 not have saved the new content. Press Save again from the restored editor: this
 fresh request should work normally and remove the temporary cached draft.
+The recovery warning should disappear and the normal Saved notice should appear;
+the editor URL should no longer contain a recovery reference.
 
 Repeat with field-based and spreadsheet transcription, and with translation.
 Values should populate their real editor controls, without copying JSON manually.

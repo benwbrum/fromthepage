@@ -727,7 +727,8 @@ class TranscribeController  < ApplicationController
 
   def no_store_recovery_response
     response.headers['Cache-Control'] = 'no-store'
-    response.headers['Referrer-Policy'] = 'no-referrer'
+    # Keep same-origin form Origins valid while hiding recovery URLs from other sites.
+    response.headers['Referrer-Policy'] = 'same-origin'
     response.headers['X-Robots-Tag'] = 'noindex, nofollow, noarchive'
   end
 

@@ -69,6 +69,7 @@ RSpec.describe 'Restoring transcription drafts after a session change', type: :r
       patch save_path, params: draft_params
       expect(response).to have_http_status(:see_other)
       expect(response.headers['Cache-Control']).to include('no-store')
+      expect(response.headers['Referrer-Policy']).to eq('same-origin')
       id = recovery_id
       expect(response.location).not_to include('source_text', 'draft-content')
       follow_redirect!
@@ -85,6 +86,9 @@ RSpec.describe 'Restoring transcription drafts after a session change', type: :r
     expect(response).to have_http_status(:redirect)
     expect(page.reload.source_text).to eq(text)
     expect(Transcribe::Lib::DraftRecovery.fetch(id)).to be_nil
+    follow_redirect! while response.redirect?
+    expect(response.body).not_to include(I18n.t('transcribe.save_session_recovery.restored'))
+    expect(response.body).not_to include(I18n.t('transcribe.save_session_recovery.unavailable'))
   end
 
   it 'styles logged-out recovery in the application layout and resumes after login in the other tab' do
