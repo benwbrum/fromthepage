@@ -109,7 +109,7 @@ RSpec.describe 'Restoring transcription drafts after a session change', type: :r
       expect(response.parsed_body.at_css('pre#submitted_text')).to be_present
       expect(response.parsed_body.css('textarea, [contenteditable]')).to be_empty
       expect(response.parsed_body.at_css('section.signon a[target="_blank"][href="/users/sign_in"]')).to be_present
-      resume = response.parsed_body.at_css('section.signon a.button.outline')['href']
+      resume = response.parsed_body.at_css('ol.recovery-steps li:last-child a')['href']
       expect(recovery_id(resume)).to be_present
       expect(response.parsed_body.at_css('#submitted_text').text.delete_prefix("\n")).to eq(text)
     end
