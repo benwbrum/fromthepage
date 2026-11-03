@@ -245,12 +245,12 @@ RSpec.describe 'Transcription save session recovery', type: :request do
     expect(response.parsed_body.at_css('section.signon a[href="/users/sign_in"][target="_blank"]')).to be_present
   end
 
-  it 'filters tokens and submitted content from request parameter logs' do
+  it 'filters security tokens while retaining submitted content in request parameter logs' do
     parameters = { authenticity_token: 'secret', page: { source_text: submitted_text, source_translation: 'private' },
                    fields: { '123' => { 'Cell' => 'private' } } }
     filtered = ActiveSupport::ParameterFilter.new(Rails.application.config.filter_parameters).filter(parameters)
 
     expect(filtered).to eq(authenticity_token: '[FILTERED]',
-                           page: { source_text: '[FILTERED]', source_translation: '[FILTERED]' }, fields: '[FILTERED]')
+                           page: parameters[:page], fields: parameters[:fields])
   end
 end

@@ -62,8 +62,9 @@ still explicitly save it.
   possession of a marker never authorizes a database save.
 - Evict/expire a cached draft before following its editor link: show an explicit
   warning that only the saved version is available, rather than claiming recovery.
-- Test a large text/field submission: no cookie overflow; source text, fields,
-  recovery markers, and references must be filtered from ordinary request logs.
+- Test a large text/field submission: no cookie overflow. Submitted text,
+  translations, and field values should remain visible in request parameter logs;
+  authenticity tokens, recovery markers, and references must remain filtered.
 
 Forms already open before this update do not have the new signed marker. Their
 content remains copyable on the styled fallback screen, but automatic restoration
