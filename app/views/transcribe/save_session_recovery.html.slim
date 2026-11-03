@@ -1,24 +1,18 @@
-doctype html
-html lang=I18n.locale
-  head
-    meta charset="utf-8"
-    meta name="viewport" content="width=device-width, initial-scale=1"
-    meta name="robots" content="noindex, nofollow, noarchive"
-    title =t('.title')
-    style
-      | main { max-width: 60rem; margin: 2rem auto; padding: 0 1rem; font-family: system-ui, sans-serif; line-height: 1.5; }
-      | textarea { box-sizing: border-box; width: 100%; }
-  body
-    main
-      h1 =t('.title')
-      p =t('.explanation')
-      p =link_to t('.sign_in'), new_user_session_path, target: '_blank', rel: 'noopener noreferrer'
-      -if @recovery_editor_path
-        p =link_to t('.open_editor'), @recovery_editor_path, target: '_blank', rel: 'noopener noreferrer'
-      p
-        =label_tag :submitted_text, t('.submitted_text')
-      =text_area_tag :submitted_text, @submitted_text, readonly: true, rows: 20, cols: 80
-      -if @submitted_fields
-        p
-          =label_tag :submitted_fields, t('.submitted_fields')
-        =text_area_tag :submitted_fields, @submitted_fields, readonly: true, rows: 20, cols: 80
+-content_for :page_title, t('.title')
+
+section.signon
+  h1 =t('.title')
+  -if current_user
+    p =t('.manual_recovery')
+  -else
+    p =@resume_recovery_id ? t('.resume_explanation') : t('.explanation')
+    p =link_to t('.sign_in'), new_user_session_path, class: 'button big', target: '_blank', rel: 'noopener noreferrer'
+  -if @recovery_editor_path
+    p =link_to t('.open_editor'), @recovery_editor_path, class: 'button outline', data: { turbo: false }
+  .signon_field
+    =label_tag :submitted_text, t('.submitted_text')
+    =text_area_tag :submitted_text, @submitted_text, readonly: true, rows: 12
+  -if @submitted_fields
+    .signon_field
+      =label_tag :submitted_fields, t('.submitted_fields')
+      =text_area_tag :submitted_fields, @submitted_fields, readonly: true, rows: 12

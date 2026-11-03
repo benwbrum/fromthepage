@@ -40,10 +40,18 @@ RSpec.describe 'Transcription save session recovery', type: :request do
     expect(response).to have_http_status(status)
     expect(response).to render_template(:save_session_recovery)
     expect(response.headers['Cache-Control']).to include('no-store')
+    expect(response.headers['X-Robots-Tag']).to eq('noindex, nofollow, noarchive')
     # Rails adds a leading newline that the browser strips from textarea values.
     expect(response.parsed_body.at_css('textarea').text.delete_prefix("\n")).to eq(submitted_text)
-    expect(response.parsed_body.css('script')).to be_empty
-    expect(response.parsed_body.at_css('a[href="/users/sign_in"]')).to be_present
+    expect(response.parsed_body.css('script').any? { |script| script.text.include?("alert('test')") }).to be(false)
+    expect(response.parsed_body.at_css('header.header')).to be_present
+    expect(response.body).to include('/assets/application')
+    sign_in = response.parsed_body.at_css('section.signon a[target="_blank"][href="/users/sign_in"]')
+    if response.parsed_body.at_css('header a.header_user[href="/users/sign_in"]')
+      expect(sign_in).to be_present
+    else
+      expect(sign_in).to be_nil
+    end
     expect(page.reload.attributes).to eq(original_attributes)
     expect(PageVersion.count).to eq(original_versions)
     expect(Deed.count).to eq(original_deeds)
@@ -235,7 +243,7 @@ RSpec.describe 'Transcription save session recovery', type: :request do
     expect(response).to have_http_status(:unprocessable_entity)
     expect(response).to render_template(:save_session_recovery)
     expect(response.parsed_body.at_css('#submitted_text').text.strip).to eq('')
-    expect(response.parsed_body.css('a').length).to eq(1)
+    expect(response.parsed_body.at_css('section.signon a[href="/users/sign_in"][target="_blank"]')).to be_present
   end
 
   it 'filters tokens and submitted content from request parameter logs' do

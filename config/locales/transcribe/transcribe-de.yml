@@ -83,11 +83,15 @@ de:
       save_to_transcribed_tooltip: Änderungen speichern
     save_session_recovery:
       explanation: Ihre Sitzung konnte nicht überprüft werden. Kopieren Sie den unten angezeigten Inhalt, bevor Sie sich erneut anmelden und den Editor öffnen. Lassen Sie diese Seite geöffnet, bis Ihre Eingaben gesichert sind.
-      open_editor: Editor in einem neuen Tab öffnen
+      manual_recovery: Diese Änderungen konnten nicht automatisch wiederhergestellt werden. Kopieren Sie den Inhalt unten, bevor Sie den Editor erneut öffnen. Ihre Änderungen wurden nicht gespeichert.
+      open_editor: Bearbeitung fortsetzen
+      restored: Ihre Sitzung hat sich während der Bearbeitung geändert. Ihr Entwurf wurde wiederhergestellt, aber noch nicht gespeichert. Prüfen Sie ihn und klicken Sie erneut auf Speichern.
+      resume_explanation: Ihre Sitzung wurde beendet, bevor diese Änderungen gespeichert werden konnten. Melden Sie sich in einem neuen Tab an, kehren Sie dann hierher zurück und setzen Sie die Bearbeitung fort. Sie können den Inhalt auch unten kopieren.
       sign_in: In einem neuen Tab anmelden
       submitted_fields: Übermittelte Felder (JSON)
       submitted_text: Übermittelter Text
       title: Ihre Änderungen wurden nicht gespeichert
+      unavailable: Der vorübergehend gespeicherte Entwurf ist nicht mehr verfügbar. Ihre gespeicherte Version wird angezeigt. Kehren Sie zur vorherigen Seite oder zum vorherigen Tab zurück, um Ihre ungespeicherten Eingaben zu sichern.
     save_transcription:
       error_message: 'Bei der Analyse des Mark-ups in Ihrem Transkript ist ein Fehler aufgetreten. Diese Art von Fehler tritt häufig auf, wenn eine spitze Klammer fehlt oder wenn ein HTML-Tag offen gelassen wird. Überprüfen Sie alle < oder > in Ihrem Text. (Fehler beim Parsen: %{error_message})'
       saved_and_next_notice: Gespeichert. Zur nächsten Seite wechseln.

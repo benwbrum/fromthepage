@@ -83,11 +83,15 @@ es:
       save_to_transcribed_tooltip: Guardar tus cambios
     save_session_recovery:
       explanation: No pudimos verificar su sesión. Copie el contenido enviado que aparece abajo antes de volver a iniciar sesión y abrir el editor. Mantenga esta página abierta hasta que sus cambios estén a salvo.
-      open_editor: Abrir el editor en una pestaña nueva
+      manual_recovery: No pudimos restaurar estos cambios automáticamente. Copie el contenido de abajo antes de volver a abrir el editor. Sus cambios no se han guardado.
+      open_editor: Continuar editando
+      restored: Su sesión cambió mientras editaba. Su borrador se ha restaurado, pero no se ha guardado. Revíselo y vuelva a pulsar Guardar.
+      resume_explanation: Su sesión terminó antes de que se guardaran estos cambios. Inicie sesión en una pestaña nueva, vuelva aquí y continúe editando. También puede copiar el contenido de abajo.
       sign_in: Iniciar sesión en una pestaña nueva
       submitted_fields: Campos enviados (JSON)
       submitted_text: Texto enviado
       title: Sus cambios no se han guardado
+      unavailable: El borrador temporal ya no está disponible. Se muestra la versión guardada. Vuelva a la página o pestaña anterior para recuperar el contenido sin guardar antes de continuar.
     save_transcription:
       error_message: 'Se produjo un error al analizar el formato en la transcripción. Este tipo de error a menudo ocurre si falta un corchete angular o si se deja una etiqueta de HTML abierta. Verifica cualquier instancia de < or=""> símbolos en el texto. (El error del analizador fue: %{error_message})'
       saved_and_next_notice: Guardado. Pasando a la siguiente página.
