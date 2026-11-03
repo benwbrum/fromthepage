@@ -4,15 +4,21 @@ section.signon
   h1 =t('.title')
   -if current_user
     p =t('.manual_recovery')
+    -if @recovery_editor_path
+      p =link_to t('.open_editor'), @recovery_editor_path, class: 'button outline', data: { turbo: false }
   -else
     p =@resume_recovery_id ? t('.resume_explanation') : t('.explanation')
-    p =link_to t('.sign_in'), new_user_session_path, class: 'button big', target: '_blank', rel: 'noopener noreferrer'
-  -if @recovery_editor_path
-    p =link_to t('.open_editor'), @recovery_editor_path, class: 'button outline', data: { turbo: false }
-  .signon_field
-    =label_tag :submitted_text, t('.submitted_text')
-    =text_area_tag :submitted_text, @submitted_text, readonly: true, rows: 12
-  -if @submitted_fields
-    .signon_field
-      =label_tag :submitted_fields, t('.submitted_fields')
-      =text_area_tag :submitted_fields, @submitted_fields, readonly: true, rows: 12
+    ol.recovery-steps
+      li
+        p =link_to t('.sign_in'), new_user_session_path, class: 'button big', target: '_blank', rel: 'noopener noreferrer'
+      -if @recovery_editor_path
+        li
+          p =t('.return_here')
+          p =link_to t('.open_editor'), @recovery_editor_path, class: 'button outline', data: { turbo: false }
+  details.recovery-preview
+    summary =t('.view_draft')
+    h2#submitted_text_label =t('.submitted_text')
+    pre#submitted_text aria-labelledby="submitted_text_label" =@submitted_text
+    -if @submitted_fields
+      h2#submitted_fields_label =t('.submitted_fields')
+      pre#submitted_fields aria-labelledby="submitted_fields_label" =@submitted_fields

@@ -93,13 +93,21 @@ RSpec.describe 'Restoring transcription drafts after a session change', type: :r
 
   it 'styles logged-out recovery in the application layout and resumes after login in the other tab' do
     open_original_form
+    collection.update!(visibility: :private)
     reset!
+    get editor_path
+    expect(flash[:error]).to be_present
     resume = nil
     expect_no_save do
       patch save_path, params: draft_params
       expect(response).to have_http_status(:unprocessable_entity)
       expect(response.parsed_body.at_css('header.header')).to be_present
       expect(response.body).to include('/assets/application')
+      expect(response.parsed_body.css('#flash_wrapper .flash')).to be_empty
+      expect(response.parsed_body.css('ol.recovery-steps > li').length).to eq(2)
+      expect(response.parsed_body.at_css('details.recovery-preview')['open']).to be_nil
+      expect(response.parsed_body.at_css('pre#submitted_text')).to be_present
+      expect(response.parsed_body.css('textarea, [contenteditable]')).to be_empty
       expect(response.parsed_body.at_css('section.signon a[target="_blank"][href="/users/sign_in"]')).to be_present
       resume = response.parsed_body.at_css('section.signon a.button.outline')['href']
       expect(recovery_id(resume)).to be_present

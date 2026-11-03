@@ -756,6 +756,7 @@ class TranscribeController  < ApplicationController
     # Only submitted content belongs on this screen, never unloaded/private
     # collection context left over from a failed action.
     @collection = @work = @page = @user = @document_set = @quality_sampling = nil
+    flash.clear unless current_user
     switch_locale { render :save_session_recovery, layout: 'application', status: status }
   end
 

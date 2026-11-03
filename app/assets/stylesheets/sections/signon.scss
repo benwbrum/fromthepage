@@ -93,3 +93,26 @@
     margin-bottom: 100px;
   }
 }
+
+// Session recovery presents retained content as a document, not an editor.
+.recovery-steps {
+  padding-left: 1.5em;
+  li { padding-left: 0.4em; }
+}
+
+.recovery-preview {
+  margin-top: 2em;
+  summary {
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  pre {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    max-height: 20rem;
+    overflow: auto;
+    font: inherit;
+    border-left: 3px solid $inputBorderColor;
+    padding: 0.5em 1em;
+  }
+}

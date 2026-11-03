@@ -41,8 +41,7 @@ RSpec.describe 'Transcription save session recovery', type: :request do
     expect(response).to render_template(:save_session_recovery)
     expect(response.headers['Cache-Control']).to include('no-store')
     expect(response.headers['X-Robots-Tag']).to eq('noindex, nofollow, noarchive')
-    # Rails adds a leading newline that the browser strips from textarea values.
-    expect(response.parsed_body.at_css('textarea').text.delete_prefix("\n")).to eq(submitted_text)
+    expect(response.parsed_body.at_css('pre#submitted_text').text.delete_prefix("\n")).to eq(submitted_text)
     expect(response.parsed_body.css('script').any? { |script| script.text.include?("alert('test')") }).to be(false)
     expect(response.parsed_body.at_css('header.header')).to be_present
     expect(response.body).to include('/assets/application')

@@ -37,8 +37,12 @@ AI-draft attribution should be retained when applicable.
 
 Repeat steps 1–3, but only log out in B; do not sign back in before saving in A.
 
-Expected: A shows a recovery screen inside the application layout with styled
-buttons and retained, copyable content. Sign-in opens in a new tab. After signing
+Expected: A shows a recovery screen inside the application layout without a flash
+message, including any private-project access error from earlier navigation.
+Numbered steps guide sign-in and returning to this tab to resume editing. The
+retained draft is collapsed under **View retained draft**; expand it to inspect or
+copy text/JSON in a document preview, with no textareas or editable controls.
+Sign-in opens in a new tab. After signing
 back into the same account, return to A and choose **Resume editing**. The normal
 editor should be populated and show the same unsaved-draft warning. The user must
 still explicitly save it.
