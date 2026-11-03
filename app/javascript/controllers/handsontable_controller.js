@@ -55,6 +55,16 @@ export default class extends Controller {
     document.getElementById(`fields-${this.transcriptionFieldValue.id}`).value = JSON.stringify(this._handsontable.getData());
 
     this._handsontable.validateCells();
+
+    // Expose via window.hot so that code using the legacy global (including
+    // FtpDraftAutosave) can interact with the Handsontable instance.
+    window.hot = this._handsontable;
+  }
+
+  disconnect() {
+    if (window.hot === this._handsontable) {
+      window.hot = undefined;
+    }
   }
 
   columnsConfig() {
