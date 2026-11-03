@@ -38,7 +38,7 @@
 <h4>Zip File</h4>
 <p>
   <% if @bulk_export.output.attached? %>
-    <%= link_to('Download', url_for(@bulk_export.output)) %>
+    <%= link_to('Download', rails_storage_proxy_url(@bulk_export.output)) %>
   <% else %>
     <%= link_to('Download', bulk_export_download_path(@bulk_export)) %>
   <% end %>
