@@ -50,6 +50,31 @@ describe Work::Export::Lib::Utils do
   describe '.xml_to_latex' do
     let(:page) { nil }
 
+    it 'preserves nested additions inside a date and produces parseable LaTeX' do
+      xml = '<page><p><date when="1840-01-29">Jan<add>"</add> 29<add>th</add> 1840.</date></p></page>'
+
+      result = described_class.xml_to_latex(page: page, xml_text: xml)
+
+      expect(result).to eq(
+        'Jan\textsuperscript{\underline{"}} 29\textsuperscript{\underline{th}} 1840.' +
+        described_class::LINEBREAK_ELEMENT * 2
+      )
+
+      output, error, status = Open3.capture3('pandoc', '--from=latex+raw_tex', '--to=json', stdin_data: result)
+      expect(status.success?).to be(true), error
+      expect(JSON.parse(output)['blocks']).not_to be_empty
+    end
+
+    it 'escapes source text once inside unhandled containers while preserving nested formatting' do
+      xml = '<page><p><span><date><hi rend="sup"><hi rend="underline">100% &amp; {x}</hi></hi></date></span></p></page>'
+
+      result = described_class.xml_to_latex(page: page, xml_text: xml)
+
+      expect(result).to eq(
+        '\textsuperscript{\underline{100\% \& \{x\}}}' + described_class::LINEBREAK_ELEMENT * 2
+      )
+    end
+
     let(:table_xml) do
       '<table><tbody><tr><td>First</td><td>Second</td></tr></tbody></table>'
     end
