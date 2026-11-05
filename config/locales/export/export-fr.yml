@@ -2,6 +2,7 @@
 fr:
   export:
     accessible_pdf:
+      ditto: idem
       struck_through: 'biffé : %{text}'
       subscript: 'indice : %{text}'
       superscript: 'exposant : %{text}'

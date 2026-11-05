@@ -2,6 +2,7 @@
 pt:
   export:
     accessible_pdf:
+      ditto: idem
       struck_through: 'riscado: %{text}'
       subscript: 'subscrito: %{text}'
       superscript: 'sobrescrito: %{text}'

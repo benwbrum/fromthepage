@@ -2,6 +2,7 @@
 es:
   export:
     accessible_pdf:
+      ditto: ídem
       struck_through: 'tachado: %{text}'
       subscript: 'subíndice: %{text}'
       superscript: 'superíndice: %{text}'

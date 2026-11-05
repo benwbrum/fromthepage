@@ -2,6 +2,7 @@
 en:
   export:
     accessible_pdf:
+      ditto: ditto
       struck_through: 'struck through: %{text}'
       subscript: 'subscript: %{text}'
       superscript: 'superscript: %{text}'

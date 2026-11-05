@@ -17,8 +17,9 @@
 #
 # It then repairs the things a screen reader otherwise cannot recover from the
 # transcription markup - struck, underlined, superscript and subscript text,
-# and unmarked table headers - and pads ragged tables so every row exposes the
-# same number of cells, which Acrobat's table "Regularity" check requires.
+# two written forms of a ditto mark, and unmarked table headers - and pads
+# ragged tables so every row exposes the same number of cells, which Acrobat's
+# table "Regularity" check requires.
 #
 # None of it rewrites the transcription: the words on the page are still the
 # words that were transcribed. The one visible change is that a header row the
@@ -62,6 +63,23 @@ class Work::Export::AccessiblePdfHtml
   TRANSPARENT_PIXEL = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACwAAAAAAQABAAACAkQBADs='.freeze
   INVISIBLE_STYLE = 'width:1px;height:1px;display:block;margin:0;border:0'.freeze
 
+  # "D°" - a standalone capital D immediately followed by a superscript "o" -
+  # is the standard 19th-century ledger abbreviation for "ditto" (from the
+  # Italian "detto"). Matched narrowly: the generic superscript label would
+  # otherwise read this as "D, superscript: o", true but useless, when the
+  # convention is unambiguous. Requires D to be its own token (whitespace or
+  # start-of-text before it, nothing after it in the same text node) so this
+  # never fires mid-word.
+  DITTO_ABBREVIATION = /(?:\A|\s)D\z/.freeze
+
+  # A " with nothing touching it on either side - no letter immediately before
+  # or after - is a ditto mark: shorthand for "repeat the entry above",
+  # conventional in transcribed ledgers and memoranda lists. An actual
+  # quotation always hugs the word it quotes with no space, so this never
+  # matches one. Screen readers do not announce quotation marks at all, so
+  # without this the mark simply vanishes.
+  DITTO_QUOTE = /(?<!\S)"(?!\S)/.freeze
+
   def self.call(html)
     new(html).call
   end
@@ -77,6 +95,8 @@ class Work::Export::AccessiblePdfHtml
     flatten_anchors(doc)
     unwrap_line_breaks(doc)
     annotate_formatting(doc)
+    merge_ditto_abbreviations(doc)
+    annotate_ditto_marks(doc)
 
     doc.css('table').each do |table|
       regularize_table(table)
@@ -131,6 +151,74 @@ class Work::Export::AccessiblePdfHtml
       node['role'] = 'img'
       node['aria-label'] = I18n.t("export.accessible_pdf.#{FORMATTING_TAGS[node.name]}", text: words)
     end
+  end
+
+  # `annotate_formatting` already labelled every <sup> "superscript: <text>",
+  # D included. Here, a D<sup>o</sup> pair is pulled back out of that generic
+  # labelling and merged into one "ditto" figure covering both characters, so
+  # AT announces the word once instead of "D, superscript: o".
+  def merge_ditto_abbreviations(doc)
+    doc.css('sup').each do |sup|
+      next unless sup.text.strip.casecmp('o').zero?
+
+      letter = sup.previous_sibling
+      next unless letter&.text? && letter.content.match?(DITTO_ABBREVIATION)
+
+      sup.remove_attribute('role')
+      sup.remove_attribute('aria-label')
+
+      # Split the trailing "D" off the rest of the text node, if there is any,
+      # so only that single letter - not whatever precedes it - joins the
+      # figure. Either way the letter stays visible; it just moves into a
+      # wrapper alongside the <sup>.
+      rest = letter.content[0..-2]
+      d_char = letter.content[-1]
+
+      if rest.empty?
+        d_node = letter
+      else
+        letter.content = rest
+        d_node = Nokogiri::XML::Text.new(d_char, doc)
+        letter.add_next_sibling(d_node)
+      end
+
+      wrapper = doc.create_element('span', role: 'img', 'aria-label' => I18n.t('export.accessible_pdf.ditto'))
+      d_node.add_previous_sibling(wrapper)
+      wrapper.add_child(d_node)
+      wrapper.add_child(sup)
+    end
+  end
+
+  # A standalone " elsewhere in the text - never inside something already
+  # labelled above, so a struck or underlined ditto mark is announced once,
+  # by its outer label - is wrapped the same way: the character stays exactly
+  # where it is, visible, but carries a "ditto" label instead of going silent.
+  def annotate_ditto_marks(doc)
+    doc.xpath('.//text()').each do |text_node|
+      content = text_node.content
+      next unless content.match?(DITTO_QUOTE)
+      next if text_node.ancestors.any? { |ancestor| ancestor['role'] == 'img' }
+
+      wrap_ditto_marks(text_node)
+    end
+  end
+
+  def wrap_ditto_marks(text_node)
+    doc = text_node.document
+    pieces = text_node.content.split(DITTO_QUOTE, -1)
+    label = I18n.t('export.accessible_pdf.ditto')
+
+    replacement = pieces.each_with_index.flat_map do |piece, index|
+      nodes = piece.empty? ? [] : [Nokogiri::XML::Text.new(piece, doc)]
+      next nodes if index == pieces.size - 1
+
+      mark = doc.create_element('span', role: 'img', 'aria-label' => label)
+      mark.content = '"'
+      nodes + [mark]
+    end
+
+    replacement.each { |node| text_node.add_previous_sibling(node) }
+    text_node.remove
   end
 
   def regularize_table(table)

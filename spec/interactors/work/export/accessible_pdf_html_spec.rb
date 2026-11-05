@@ -301,6 +301,92 @@ describe Work::Export::AccessiblePdfHtml do
     end
   end
 
+  describe 'ditto abbreviations' do
+    describe 'D<sup>o</sup>' do
+      it 'merges the D and the superscript into one "ditto" figure' do
+        result = doc('<p>new D<sup>o</sup></p>')
+
+        wrapper = result.at_css('sup').parent
+        expect(wrapper.name).to eq('span')
+        expect(wrapper['role']).to eq('img')
+        expect(wrapper['aria-label']).to eq('ditto')
+        expect(wrapper.text).to eq('Do')
+      end
+
+      it 'removes the generic superscript label from the <sup> itself' do
+        sup = doc('<p>new D<sup>o</sup></p>').at_css('sup')
+
+        expect(sup['role']).to be_nil
+        expect(sup['aria-label']).to be_nil
+      end
+
+      it 'keeps the visible text exactly as written' do
+        result = doc('<p>Bbls D<sup>o</sup> in Lynchburg</p>')
+
+        expect(result.css('p').text).to eq('Bbls Do in Lynchburg')
+      end
+
+      it 'handles D as the only text before the superscript' do
+        result = doc('<p>D<sup>o</sup></p>')
+
+        wrapper = result.at_css('sup').parent
+        expect(wrapper['aria-label']).to eq('ditto')
+        expect(result.css('p').text).to eq('Do')
+      end
+
+      it 'does not merge when D is not its own token' do
+        result = doc('<p>GRAND<sup>o</sup></p>')
+
+        sup = result.at_css('sup')
+        expect(sup.parent.name).not_to eq('span')
+        expect(sup['aria-label']).to eq('superscript: o')
+      end
+
+      it 'does not merge a superscript letter other than o' do
+        result = doc('<p>D<sup>r</sup></p>')
+
+        sup = result.at_css('sup')
+        expect(sup.parent.name).not_to eq('span')
+        expect(sup['aria-label']).to eq('superscript: r')
+      end
+    end
+
+    describe 'a lone "' do
+      it 'labels an isolated quote mark as ditto, leaving it visible' do
+        result = doc('<table><tr><td>" 14</td></tr></table>')
+
+        mark = result.at_css('span[role="img"]')
+        expect(mark['aria-label']).to eq('ditto')
+        expect(mark.text).to eq('"')
+        expect(result.at_css('td').text).to eq('" 14')
+      end
+
+      it 'labels two ditto marks in the same cell separately' do
+        result = doc('<table><tr><td>" "</td></tr></table>')
+
+        marks = result.css('span[role="img"]')
+        expect(marks.size).to eq(2)
+        expect(marks.map(&:text)).to eq(['"', '"'])
+        expect(result.at_css('td').text).to eq('" "')
+      end
+
+      it 'does not label quotes wrapping an actual quotation' do
+        result = doc('<p>she said "hello world" today</p>')
+
+        expect(result.css('span[role="img"]')).to be_empty
+        expect(result.css('p').text).to eq('she said "hello world" today')
+      end
+
+      it 'does not separately label a ditto mark already inside a labelled deletion' do
+        result = doc('<p><strike>" repeated</strike></p>')
+
+        expect(result.at_css('strike')['aria-label']).to eq('struck through: " repeated')
+        expect(result.css('strike span[role="img"]')).to be_empty
+      end
+    end
+  end
+
+
   it 'applies every transform in one pass' do
     html = <<~HTML
       <p>1845 Feby 22 <a href="/article/show?article_id=1">Mr Moon</a> has<span class="line-break"> </span>shingles</p>
