@@ -29,4 +29,4 @@ paths:
 - Editor helpers in `spec_helper`: `fill_in_editor_field(text)` (handles CodeMirror), `select2_select(id:, value:)`,
   `wait_for_upload_processing`
 - `spec/i18n_spec.rb` fails on missing/unused locale keys — adding or removing view text means updating `config/locales/*`
-- Never commit `binding.pry` (CI greps for it)
+- Never commit Pry breakpoints — CI greps every file outside `.github/` for them (see CLAUDE.md)

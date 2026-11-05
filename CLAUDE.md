@@ -80,7 +80,9 @@ Scoped rules live in `.claude/rules/` and load when you touch matching paths:
 
 ## CI gotchas
 
-- CI greps the whole repo for `binding.pry` and fails — remove debuggers before pushing
+- CI greps the whole repo (docs included, `.github/` excluded) for Pry breakpoints and fails — remove debuggers before pushing
+  - Don't write the breakpoint call in any file, even Markdown, or with a space/dash in place of the dot —
+    the grep's `.` matches any single char between the two words
 - 4 parallel shards; flaky failures often come from spec order/data leakage (see `testing.md`)
 - A separate job boots SolidQueue workers in test env for 5s — `config/queue.yml` and job class loading must stay valid
 - Coveralls runs on PRs; new lines should be covered by specs
