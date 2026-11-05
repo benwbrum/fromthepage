@@ -1,6 +1,6 @@
 # FromThePage — Claude guide
 
-Rails 7.2 / Ruby 3.3.5 crowdsourced transcription platform. MariaDB (mysql2), Elasticsearch via Chewy,
+Rails 7.2 / Ruby 3.3.5 crowdsourced transcription platform. MariaDB 11.8 (mysql2), Elasticsearch via Chewy,
 SolidQueue for jobs, Importmap + Stimulus + Turbo (Drive disabled), Slim views. Main branch: `development`.
 
 ## AI contribution policy (open source — read first)

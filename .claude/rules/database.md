@@ -6,7 +6,8 @@ paths:
 
 # Database & models
 
-- MariaDB 10.11 via `mysql2`, `utf8mb4_unicode_ci`, `sql_mode: TRADITIONAL`, `strict: false`
+- MariaDB 11.8 (prod + CI) via `mysql2`, `utf8mb4_unicode_ci`, `sql_mode: TRADITIONAL`, `strict: false`
+  - MariaDB 11 images/installs drop the `mysql*` CLI aliases — use `mariadb`, `mariadb-admin`, `mariadb-dump`
   - Test MySQL-specific behaviour (index length limits on utf8mb4 strings, case-insensitive collation comparisons)
 - Schema is `db/schema.rb` (Ruby, not structure.sql); migrations are `ActiveRecord::Migration[7.2]`
 - `config/database.yml` is a protected linked file — never edit it
