@@ -6,10 +6,13 @@ class ScCollectionsController < ApplicationController
   before_action :set_sc_collection, only: %i[show edit update destroy explore_manifest import_manifest]
   before_action :require_authenticated_user, only: %i[import_collection convert_manifest cdm_bulk_import_new cdm_bulk_import_create]
 
-  # These form values select a new collection or a document set, not a URL
-  # collection. import_collection resolves the destination and checks ownership.
-  skip_before_action :validate_url_context, only: :import_collection,
-    if: -> { params[:collection_id] == 'sc_collection' || params[:collection_id].to_s.match?(/\AD\d+\z/) }
+  # Import form destinations are resolved and authorized by their actions,
+  # separately from owner/collection/work URL context.
+  skip_before_action :load_objects_from_params, only: :cdm_bulk_import_create
+  skip_before_action :validate_url_context, if: -> {
+    action_name == 'cdm_bulk_import_create' ||
+      (action_name == 'import_collection' && (params[:collection_id] == 'sc_collection' || params[:collection_id].to_s.match?(/\AD\d+\z/)))
+  }
 
   respond_to :html
 
@@ -22,8 +25,17 @@ class ScCollectionsController < ApplicationController
   def cdm_bulk_import_new; end
 
   def cdm_bulk_import_create
+    selector = params[:collection_id].to_s
+    destination = if (match = selector.match(/\AD(\d+)\z/))
+      DocumentSet.find_by(id: match[1])
+    elsif selector.match?(/\A\d+\z/)
+      Collection.find_by(id: selector)
+    end
+    return head(:not_found) unless destination
+    return head(:forbidden) unless current_user.like_owner?(destination)
+
     import = CdmBulkImport.new
-    import.collection_param = params[:collection_id]
+    import.collection_param = selector
     import.ocr_correction = params[:ocr_correction]
     import.generate_ai_draft = params[:generate_ai_draft]
     import.user = current_user

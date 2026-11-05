@@ -182,3 +182,19 @@ header. Actual error records should still show their diagnostic details.
   present to confirm inaccessible pages are skipped. These work-level links do
   not require a current page ID; malformed owner/collection/work contexts still
   return 404.
+
+## Document-set CONTENTdm imports and printout configuration
+
+- As the parent collection's owner or staff member, open the CONTENTdm bulk-import
+  form and choose an owned document set. Submit synthetic CONTENTdm URLs. Expect
+  the import-started notice and owner dashboard; the import should retain its
+  `D<ID>` destination. Repeat with an owned collection.
+- As another signed-in user, change the destination to that collection's numeric
+  ID or the document set's `D<ID>`. Expect 403, with no import record or background
+  task. Missing/malformed destinations return 404; signed-out requests cannot
+  start imports.
+- As owner, open a work's Download tab through a document set and choose Configure
+  for its printout. Expect the dialog to render rather than an association error.
+  The export uses the parent collection plus the selected document set; the form
+  and URL retain the document-set context. Repeat with a private parent collection
+  and public document set. Non-owners receive 403 and anonymous users must sign in.

@@ -43,7 +43,12 @@ class WorkController < ApplicationController
 
   def configurable_printout
     @bulk_export = BulkExport.new
-    @bulk_export.collection = @collection
+    if @collection.is_a? DocumentSet
+      @bulk_export.document_set = @collection
+      @bulk_export.collection = @collection.collection
+    else
+      @bulk_export.collection = @collection
+    end
     @bulk_export.work = @work
     @bulk_export.text_pdf_work = true
     @bulk_export.report_arguments['include_contributors'] = true
