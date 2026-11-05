@@ -231,7 +231,9 @@ class Work::Export::Lib::Utils
       tex_figure = page.tex_figures.find_by(position: position)
       "#{tex_figure.source}\n"
     else
-      latex_escape(content)
+      # Text nodes are already escaped and child elements already contain LaTeX.
+      # Unhandled containers must preserve that content without escaping it again.
+      content
     end
   end
 
