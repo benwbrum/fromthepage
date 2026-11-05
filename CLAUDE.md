@@ -3,6 +3,18 @@
 Rails 7.2 / Ruby 3.3.5 crowdsourced transcription platform. MariaDB (mysql2), Elasticsearch via Chewy,
 SolidQueue for jobs, Importmap + Stimulus + Turbo (Drive disabled), Slim views. Main branch: `development`.
 
+## AI contribution policy (open source — read first)
+
+- AI-assisted PRs are welcome, but AI use MUST be disclosed explicitly — never present AI output as solely human work
+- Policy for all contributors is in `CONTRIBUTING.md` ("AI-assisted contributions")
+- Every PR you author or substantially draft must fill in the "AI Disclosure" section of `.github/pull_request_template.md`:
+  - Tool/model used (e.g. Claude Code, Claude Opus 5.5) and what it did (code, tests, docs, review)
+  - Confirmation that a human contributor reviewed, ran, and understands the changes
+- Commits you author keep the `Co-Authored-By:` trailer for the AI model; never strip or omit it
+- The human submitter is accountable for the change: correctness, licensing, and responding to review
+- Don't copy code of unknown or incompatible license into the repo; all contributions fall under the project's `LICENSE`
+- Never include secrets, user data from production, or private telemetry in prompts, commits, or PR text
+
 Scoped rules live in `.claude/rules/` and load when you touch matching paths:
 `interactors.md`, `jobs.md`, `testing.md`, `database.md`, `frontend.md`, `security.md`.
 
@@ -75,7 +87,8 @@ Scoped rules live in `.claude/rules/` and load when you touch matching paths:
 
 ## Workflow expectations
 
-- Branch naming: `feature/<issue-number>-brief-description`
+- Open/link an issue first; branch off `development` with the issue number first: `<issue-number>-brief-description`
+- Every commit message includes the issue number (e.g. `#6001 Pin Puppeteer ...`); PRs link the issue via closing keywords
 - For issue work: plan first (code changes, impacts, tests, perf, security, back-compat, source link e.g. Featurebase) and get approval before implementing
 - Include specs covering every new line; improving coverage of adjacent code is welcome
 - Untracked scratch files in repo root (`*.txt`, `test.rb`, `html.html`, `bin/run_specs`) are personal — never commit them
