@@ -15,10 +15,10 @@
 #   * `<span class="line-break">` becomes the whitespace it carries. A reading
 #     copy reflows; diplomatic line-by-line layout belongs to other editions.
 #
-# It then repairs the two things a screen reader otherwise cannot recover from
-# the transcription markup - author deletions and unmarked table headers - and
-# pads ragged tables so every row exposes the same number of cells, which
-# Acrobat's table "Regularity" check requires.
+# It then repairs the things a screen reader otherwise cannot recover from the
+# transcription markup - struck, underlined, superscript and subscript text,
+# and unmarked table headers - and pads ragged tables so every row exposes the
+# same number of cells, which Acrobat's table "Regularity" check requires.
 #
 # None of it rewrites the transcription: the words on the page are still the
 # words that were transcribed. The one visible change is that a header row the
@@ -26,11 +26,29 @@
 class Work::Export::AccessiblePdfHtml
   PAD_CONTENT = "\u00A0" # non-breaking space: renders blank but is not "empty"
 
-  # Tags a transcriber can use to mark text the author struck out. `<hi
-  # rend="str">` arrives here as `<strike>`; `<s>` and `<del>` can be typed
-  # into the transcription directly.
-  DELETION_TAGS = %w[strike s del].freeze
-  DELETION_SELECTOR = DELETION_TAGS.join(', ').freeze
+  # Tags whose meaning lives entirely in visual styling Chrome drops from the
+  # PDF structure tree - struck, underlined, superscript and subscript text
+  # all get tagged `NonStruct`, the same as plain prose, so AT cannot tell
+  # them apart from the words around them. `<hi rend="str"/"underline"/"sup"/
+  # "sub">` arrive here as `<strike>`/`<u>`/`<sup>`/`<sub>`; `<s>` and `<del>`
+  # can also be typed into the transcription directly. Each maps to the locale
+  # key for the label `role="img"` + `aria-label` attaches below.
+  FORMATTING_TAGS = {
+    'strike' => 'struck_through',
+    's' => 'struck_through',
+    'del' => 'struck_through',
+    'u' => 'underlined',
+    'sup' => 'superscript',
+    'sub' => 'subscript'
+  }.freeze
+  FORMATTING_SELECTOR = FORMATTING_TAGS.keys.join(', ').freeze
+
+  # A footnote marker is a `<sup>` whose own text ("*") is the least important
+  # part of it - `abstract_xml_helper.rb` nests the entire footnote body
+  # inside it. Labelling the node generically would swallow that whole body
+  # into a figure's alternate text, hiding real content behind "superscript:
+  # <the whole footnote>" instead of leaving it in the normal reading flow.
+  FOOTNOTE_MARKER_CLASS = 'footnote-marker'.freeze
 
   # `process_linewise_markup` marks a cell the transcriber explicitly declared
   # as a header (a `!`-prefixed wiki cell) with this class. A `<thead>` whose
@@ -58,7 +76,7 @@ class Work::Export::AccessiblePdfHtml
     doc = Nokogiri::HTML5.parse(@html)
     flatten_anchors(doc)
     unwrap_line_breaks(doc)
-    annotate_deletions(doc)
+    annotate_formatting(doc)
 
     doc.css('table').each do |table|
       regularize_table(table)
@@ -92,26 +110,26 @@ class Work::Export::AccessiblePdfHtml
     end
   end
 
-  # A line through a word is pure visual styling: Chrome drops `<strike>`,
-  # `<s>` and `<del>` from the structure tree, so AT reads struck words as
-  # ordinary text and a listener never learns the author cut them.
-  #
-  # `role="img"` plus `aria-label` is the one hook Chrome does export - it
-  # becomes a `/Figure` carrying `/Alt`, so the deletion is announced as
-  # "struck through: <words>" while the page still shows the words with a line
-  # through them.
-  def annotate_deletions(doc)
-    doc.css(DELETION_SELECTOR).each do |node|
-      # An outer deletion already labels everything inside it, and a struck
-      # table would be swallowed whole by the figure's alternate text.
-      next if node.ancestors(DELETION_SELECTOR).any?
+  # `role="img"` plus `aria-label` is the one hook Chrome exports as styling
+  # changes nothing else reaches - it becomes a `/Figure` carrying `/Alt`, so
+  # e.g. a deletion is announced as "struck through: <words>" while the page
+  # still shows the words exactly as styled.
+  def annotate_formatting(doc)
+    doc.css(FORMATTING_SELECTOR).each do |node|
+      next if node['class'].to_s.split.include?(FOOTNOTE_MARKER_CLASS)
+
+      # An outer styled run already labels everything inside it - a struck
+      # superscript is one deletion, not a deletion wrapping a separately
+      # announced superscript - and a styled table would be swallowed whole
+      # into the figure's alternate text.
+      next if node.ancestors(FORMATTING_SELECTOR).any?
       next if node.at_css('table')
 
       words = node.text.gsub(/\s+/, ' ').strip
       next if words.empty?
 
       node['role'] = 'img'
-      node['aria-label'] = I18n.t('export.accessible_pdf.struck_through', text: words)
+      node['aria-label'] = I18n.t("export.accessible_pdf.#{FORMATTING_TAGS[node.name]}", text: words)
     end
   end
 

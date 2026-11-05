@@ -106,7 +106,10 @@ describe Work::Export::AccessiblePdfHtml do
   describe 'announcing author deletions' do
     # Chrome drops <strike>/<s>/<del> from the PDF structure tree entirely, so
     # role="img" + aria-label (which it exports as a /Figure with /Alt) is the
-    # only way a screen reader learns the author cut the words.
+    # only way a screen reader learns the author cut the words. Covers only
+    # the deletion tags - underline/superscript/subscript are below, since
+    # they share the mechanism but not the ancestor-table-swallowing risk a
+    # deletion runs into when it wraps a whole struck table.
     %w[strike s del].each do |tag|
       it "labels <#{tag}> so a screen reader announces the deletion" do
         result = doc("<p>Saturday 1<#{tag}>8</#{tag}>th Meeting</p>")
@@ -150,6 +153,64 @@ describe Work::Export::AccessiblePdfHtml do
 
       expect(result.at_css('del')['role']).to be_nil
       expect(result.at_css('table')).to be_present
+    end
+  end
+
+  describe 'announcing underline, superscript and subscript' do
+    # Same mechanism as deletions - Chrome drops <u>/<sup>/<sub> from the
+    # structure tree entirely, so without a label they read as plain text
+    # indistinguishable from what surrounds them.
+    { 'u' => 'underlined', 'sup' => 'superscript', 'sub' => 'subscript' }.each do |tag, word|
+      it "labels <#{tag}> so a screen reader announces it as #{word}" do
+        result = doc("<p>1<#{tag}>8</#{tag}>th</p>")
+
+        node = result.at_css(tag)
+        expect(node['role']).to eq('img')
+        expect(node['aria-label']).to eq("#{word}: 8")
+      end
+
+      it "keeps <#{tag}> text visible and unchanged" do
+        result = doc("<p>a <#{tag}>middle</#{tag}> b</p>")
+
+        expect(result.css(tag).text).to eq('middle')
+        expect(result.css('p').text).to eq('a middle b')
+      end
+    end
+
+    it 'labels only the outermost of two different nested styles' do
+      result = doc('<p><strike>struck <sup>raised</sup> words</strike></p>')
+
+      expect(result.at_css('strike')['aria-label']).to eq('struck through: struck raised words')
+      expect(result.at_css('sup')['aria-label']).to be_nil
+    end
+
+    it 'labels a superscript that is not inside any other styled run' do
+      result = doc('<p>Halling<sup>wood</sup></p>')
+
+      expect(result.at_css('sup')['aria-label']).to eq('superscript: wood')
+    end
+  end
+
+  describe 'footnote markers' do
+    # abstract_xml_helper.rb renders a <footnote> as <sup class="footnote-marker">
+    # with the entire footnote body nested inside it. Labelling that node like
+    # any other superscript would swallow the whole footnote into a figure's
+    # alternate text instead of leaving it in the normal reading flow.
+    it 'leaves a footnote marker untouched' do
+      html = '<p>text<sup class="footnote-marker">*<span class="footnote-body">the note</span></sup></p>'
+
+      result = doc(html)
+      expect(result.at_css('sup')['role']).to be_nil
+      expect(result.css('p').text).to eq('text*the note')
+    end
+
+    it 'still labels an ordinary superscript elsewhere on the same page' do
+      html = '<p>a<sup class="footnote-marker">*<span class="footnote-body">note</span></sup></p>' \
+             '<p>1<sup>8</sup>th</p>'
+
+      result = doc(html)
+      expect(result.css('sup')[0]['role']).to be_nil
+      expect(result.css('sup')[1]['aria-label']).to eq('superscript: 8')
     end
   end
 
