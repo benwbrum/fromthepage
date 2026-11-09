@@ -2,8 +2,12 @@
 de:
   export:
     accessible_pdf:
+      ditto: dito
       struck_through: 'durchgestrichen: %{text}'
+      subscript: 'tiefgestellt: %{text}'
+      superscript: 'hochgestellt: %{text}'
       table_without_headers: Tabelle wie transkribiert, %{rows} Zeilen und %{columns} Spalten. Im Original wurden keine Spaltenüberschriften markiert, daher werden die Zellen ohne sie gelesen.
+      underlined: 'unterstrichen: %{text}'
     edit_contentdm_credentials:
       connect: Verbinden
       contentdm_credentials: CONTENTdm-Berechtigung

@@ -2,8 +2,12 @@
 es:
   export:
     accessible_pdf:
+      ditto: ídem
       struck_through: 'tachado: %{text}'
+      subscript: 'subíndice: %{text}'
+      superscript: 'superíndice: %{text}'
       table_without_headers: Tabla según la transcripción, %{rows} filas por %{columns} columnas. Los encabezados de columna no se marcaron en la transcripción original, por lo que las celdas se leen sin ellos.
+      underlined: 'subrayado: %{text}'
     edit_contentdm_credentials:
       connect: Conectar
       contentdm_credentials: Credenciales CONTENTdm

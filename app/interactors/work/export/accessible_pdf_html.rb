@@ -15,10 +15,11 @@
 #   * `<span class="line-break">` becomes the whitespace it carries. A reading
 #     copy reflows; diplomatic line-by-line layout belongs to other editions.
 #
-# It then repairs the two things a screen reader otherwise cannot recover from
-# the transcription markup - author deletions and unmarked table headers - and
-# pads ragged tables so every row exposes the same number of cells, which
-# Acrobat's table "Regularity" check requires.
+# It then repairs the things a screen reader otherwise cannot recover from the
+# transcription markup - struck, underlined, superscript and subscript text,
+# two written forms of a ditto mark, and unmarked table headers - and pads
+# ragged tables so every row exposes the same number of cells, which Acrobat's
+# table "Regularity" check requires.
 #
 # None of it rewrites the transcription: the words on the page are still the
 # words that were transcribed. The one visible change is that a header row the
@@ -26,11 +27,29 @@
 class Work::Export::AccessiblePdfHtml
   PAD_CONTENT = "\u00A0" # non-breaking space: renders blank but is not "empty"
 
-  # Tags a transcriber can use to mark text the author struck out. `<hi
-  # rend="str">` arrives here as `<strike>`; `<s>` and `<del>` can be typed
-  # into the transcription directly.
-  DELETION_TAGS = %w[strike s del].freeze
-  DELETION_SELECTOR = DELETION_TAGS.join(', ').freeze
+  # Tags whose meaning lives entirely in visual styling Chrome drops from the
+  # PDF structure tree - struck, underlined, superscript and subscript text
+  # all get tagged `NonStruct`, the same as plain prose, so AT cannot tell
+  # them apart from the words around them. `<hi rend="str"/"underline"/"sup"/
+  # "sub">` arrive here as `<strike>`/`<u>`/`<sup>`/`<sub>`; `<s>` and `<del>`
+  # can also be typed into the transcription directly. Each maps to the locale
+  # key for the label `role="img"` + `aria-label` attaches below.
+  FORMATTING_TAGS = {
+    'strike' => 'struck_through',
+    's' => 'struck_through',
+    'del' => 'struck_through',
+    'u' => 'underlined',
+    'sup' => 'superscript',
+    'sub' => 'subscript'
+  }.freeze
+  FORMATTING_SELECTOR = FORMATTING_TAGS.keys.join(', ').freeze
+
+  # A footnote marker is a `<sup>` whose own text ("*") is the least important
+  # part of it - `abstract_xml_helper.rb` nests the entire footnote body
+  # inside it. Labelling the node generically would swallow that whole body
+  # into a figure's alternate text, hiding real content behind "superscript:
+  # <the whole footnote>" instead of leaving it in the normal reading flow.
+  FOOTNOTE_MARKER_CLASS = 'footnote-marker'.freeze
 
   # `process_linewise_markup` marks a cell the transcriber explicitly declared
   # as a header (a `!`-prefixed wiki cell) with this class. A `<thead>` whose
@@ -43,6 +62,23 @@ class Work::Export::AccessiblePdfHtml
   # not disturb the printed page rides on a pixel nobody can see.
   TRANSPARENT_PIXEL = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACwAAAAAAQABAAACAkQBADs='.freeze
   INVISIBLE_STYLE = 'width:1px;height:1px;display:block;margin:0;border:0'.freeze
+
+  # "D°" - a standalone capital D immediately followed by a superscript "o" -
+  # is the standard 19th-century ledger abbreviation for "ditto" (from the
+  # Italian "detto"). Matched narrowly: the generic superscript label would
+  # otherwise read this as "D, superscript: o", true but useless, when the
+  # convention is unambiguous. Requires D to be its own token (whitespace or
+  # start-of-text before it, nothing after it in the same text node) so this
+  # never fires mid-word.
+  DITTO_ABBREVIATION = /(?:\A|\s)D\z/.freeze
+
+  # A " with nothing touching it on either side - no letter immediately before
+  # or after - is a ditto mark: shorthand for "repeat the entry above",
+  # conventional in transcribed ledgers and memoranda lists. An actual
+  # quotation always hugs the word it quotes with no space, so this never
+  # matches one. Screen readers do not announce quotation marks at all, so
+  # without this the mark simply vanishes.
+  DITTO_QUOTE = /(?<!\S)"(?!\S)/.freeze
 
   def self.call(html)
     new(html).call
@@ -58,7 +94,9 @@ class Work::Export::AccessiblePdfHtml
     doc = Nokogiri::HTML5.parse(@html)
     flatten_anchors(doc)
     unwrap_line_breaks(doc)
-    annotate_deletions(doc)
+    annotate_formatting(doc)
+    merge_ditto_abbreviations(doc)
+    annotate_ditto_marks(doc)
 
     doc.css('table').each do |table|
       regularize_table(table)
@@ -92,27 +130,95 @@ class Work::Export::AccessiblePdfHtml
     end
   end
 
-  # A line through a word is pure visual styling: Chrome drops `<strike>`,
-  # `<s>` and `<del>` from the structure tree, so AT reads struck words as
-  # ordinary text and a listener never learns the author cut them.
-  #
-  # `role="img"` plus `aria-label` is the one hook Chrome does export - it
-  # becomes a `/Figure` carrying `/Alt`, so the deletion is announced as
-  # "struck through: <words>" while the page still shows the words with a line
-  # through them.
-  def annotate_deletions(doc)
-    doc.css(DELETION_SELECTOR).each do |node|
-      # An outer deletion already labels everything inside it, and a struck
-      # table would be swallowed whole by the figure's alternate text.
-      next if node.ancestors(DELETION_SELECTOR).any?
+  # `role="img"` plus `aria-label` is the one hook Chrome exports as styling
+  # changes nothing else reaches - it becomes a `/Figure` carrying `/Alt`, so
+  # e.g. a deletion is announced as "struck through: <words>" while the page
+  # still shows the words exactly as styled.
+  def annotate_formatting(doc)
+    doc.css(FORMATTING_SELECTOR).each do |node|
+      next if node['class'].to_s.split.include?(FOOTNOTE_MARKER_CLASS)
+
+      # An outer styled run already labels everything inside it - a struck
+      # superscript is one deletion, not a deletion wrapping a separately
+      # announced superscript - and a styled table would be swallowed whole
+      # into the figure's alternate text.
+      next if node.ancestors(FORMATTING_SELECTOR).any?
       next if node.at_css('table')
 
       words = node.text.gsub(/\s+/, ' ').strip
       next if words.empty?
 
       node['role'] = 'img'
-      node['aria-label'] = I18n.t('export.accessible_pdf.struck_through', text: words)
+      node['aria-label'] = I18n.t("export.accessible_pdf.#{FORMATTING_TAGS[node.name]}", text: words)
     end
+  end
+
+  # `annotate_formatting` already labelled every <sup> "superscript: <text>",
+  # D included. Here, a D<sup>o</sup> pair is pulled back out of that generic
+  # labelling and merged into one "ditto" figure covering both characters, so
+  # AT announces the word once instead of "D, superscript: o".
+  def merge_ditto_abbreviations(doc)
+    doc.css('sup').each do |sup|
+      next unless sup.text.strip.casecmp('o').zero?
+
+      letter = sup.previous_sibling
+      next unless letter&.text? && letter.content.match?(DITTO_ABBREVIATION)
+
+      sup.remove_attribute('role')
+      sup.remove_attribute('aria-label')
+
+      # Split the trailing "D" off the rest of the text node, if there is any,
+      # so only that single letter - not whatever precedes it - joins the
+      # figure. Either way the letter stays visible; it just moves into a
+      # wrapper alongside the <sup>.
+      rest = letter.content[0..-2]
+      d_char = letter.content[-1]
+
+      if rest.empty?
+        d_node = letter
+      else
+        letter.content = rest
+        d_node = Nokogiri::XML::Text.new(d_char, doc)
+        letter.add_next_sibling(d_node)
+      end
+
+      wrapper = doc.create_element('span', role: 'img', 'aria-label' => I18n.t('export.accessible_pdf.ditto'))
+      d_node.add_previous_sibling(wrapper)
+      wrapper.add_child(d_node)
+      wrapper.add_child(sup)
+    end
+  end
+
+  # A standalone " elsewhere in the text - never inside something already
+  # labelled above, so a struck or underlined ditto mark is announced once,
+  # by its outer label - is wrapped the same way: the character stays exactly
+  # where it is, visible, but carries a "ditto" label instead of going silent.
+  def annotate_ditto_marks(doc)
+    doc.xpath('.//text()').each do |text_node|
+      content = text_node.content
+      next unless content.match?(DITTO_QUOTE)
+      next if text_node.ancestors.any? { |ancestor| ancestor['role'] == 'img' }
+
+      wrap_ditto_marks(text_node)
+    end
+  end
+
+  def wrap_ditto_marks(text_node)
+    doc = text_node.document
+    pieces = text_node.content.split(DITTO_QUOTE, -1)
+    label = I18n.t('export.accessible_pdf.ditto')
+
+    replacement = pieces.each_with_index.flat_map do |piece, index|
+      nodes = piece.empty? ? [] : [Nokogiri::XML::Text.new(piece, doc)]
+      next nodes if index == pieces.size - 1
+
+      mark = doc.create_element('span', role: 'img', 'aria-label' => label)
+      mark.content = '"'
+      nodes + [mark]
+    end
+
+    replacement.each { |node| text_node.add_previous_sibling(node) }
+    text_node.remove
   end
 
   def regularize_table(table)
