@@ -5,7 +5,7 @@ other automated assistant) can lint and test FromThePage in the same way that CI
 
 ## 1. Start required services
 
-Launch MySQL 5.7 and Elasticsearch 8.15.0 containers with the environment variables that the
+Launch MariaDB 11.8 and Elasticsearch 8.15.0 containers with the environment variables that the
 project's GitHub Actions workflow expects. The example below names the containers `mysql` and
 `elasticsearch` so the application can resolve them via hostname:
 
@@ -15,7 +15,7 @@ docker run --rm -d \
   -e MYSQL_DATABASE=diary_test \
   -e MYSQL_ROOT_PASSWORD=password \
   -p 3306:3306 \
-  mysql:5.7
+  mariadb:11.8
 
 docker run --rm -d \
   --name elasticsearch \
