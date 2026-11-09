@@ -29,12 +29,18 @@ class AiWorkMetadata::Lib::PromptBuilder
       Expected JSON format:
       #{example_json}
 
-      Document text:
-      #{@work.verbatim_transcription_plaintext}
+      #{document_text_label}
+      #{@work.plaintext_for_ai}
     PROMPT
   end
 
   private
+
+  def document_text_label
+    return 'Document text:' unless @work.machine_plaintext_for_ai?
+
+    'Document text (some or all of it is machine transcription and may contain errors):'
+  end
 
   def instructions
     return '' if @collection.description_instructions.blank?
