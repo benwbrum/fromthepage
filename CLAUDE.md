@@ -1,7 +1,8 @@
 # FromThePage — Claude guide
 
 Rails 7.2 / Ruby 3.3.5 crowdsourced transcription platform. MariaDB 11.8 (mysql2), Elasticsearch via Chewy,
-SolidQueue for jobs, Importmap + Stimulus + Turbo (Drive disabled), Slim views. Main branch: `development`.
+SolidQueue for jobs, Importmap + Stimulus + Turbo (Drive disabled), Slim views. Main branch: `development`;
+production deploys from `fromthepage.com` (see `doc/deployment.md`).
 
 ## AI contribution policy (open source — read first)
 
@@ -77,6 +78,18 @@ Scoped rules live in `.claude/rules/` and load when you touch matching paths:
   - `config.ru`, `config/database.yml`, `config/environments/production.rb`
   - `config/initializers/01fromthepage.rb`, `config/initializers/rack_attack.rb`, `config/initializers/omniauth.rb`
   - `config/newrelic.yml`, `public/robots.txt`
+- `.env` is linked too (gitignored, so CI can't check it); new ENV vars go in `.env.example`, and the servers'
+  shared `.env` must be updated before the deploy that needs them
+
+## Deployment (details: `doc/deployment.md`)
+
+- Flow: feature PR → `development` → promotion PR `development` → `fromthepage.com` → maintainer runs `cap production deploy`
+  - `staging` / `master` branches and their Capistrano stages are stale since 2020 — don't target them
+- Capistrano releases (last 20 kept) + Passenger (`tmp/restart.txt`) + `systemctl restart solid_queue`
+  - Migrations run before restart and `deploy:rollback` doesn't revert them — keep schema changes additive
+  - Rollback restores deleted files (e.g. a removed initializer comes back with its old behaviour)
+  - Writes under `public/` outside linked dirs (`public/uploads`, `public/text`, `public/images/...`) vanish next release
+- PRs that touch ENV, linked files, migrations, job signatures or server deps need a "Deployment notes" section
 
 ## CI gotchas
 

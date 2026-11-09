@@ -16,6 +16,12 @@ Closes #<!-- issue number -->
 - [ ] `bundle exec rubocop` passes
 - [ ] No changes to protected linked files (`config.ru`, `config/database.yml`, `config/environments/production.rb`, `config/initializers/{01fromthepage,rack_attack,omniauth}.rb`, `config/newrelic.yml`, `public/robots.txt`) — or they are called out below
 
+## Deployment notes
+
+<!-- Delete if not applicable. Production deploys from `fromthepage.com` via Capistrano; see doc/deployment.md. -->
+<!-- New ENV vars (add to .env.example + server .env before deploy), linked file/dir changes, destructive or
+     slow migrations, job argument changes, server dependency changes, user-visible side effects (e.g. forced logout). -->
+
 ## AI Disclosure
 
 <!-- Required. See "AI-assisted contributions" in CONTRIBUTING.md. Check exactly one box. -->
