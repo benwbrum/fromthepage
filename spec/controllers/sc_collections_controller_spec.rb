@@ -8,6 +8,7 @@ describe ScCollectionsController, type: :controller do
 
     before do
       controller.instance_variable_set(:@raw_manifest, nil)
+      allow(IiifHttp).to receive(:sleep)
     end
 
     it 'fetches manifest with custom headers for SSL compatibility' do
@@ -48,7 +49,7 @@ describe ScCollectionsController, type: :controller do
       expect(uri).to have_received(:open).once
     end
 
-    it 'retries on SSL errors up to 2 attempts' do
+    it 'retries on SSL errors' do
       call_count = 0
       uri = URI.parse(manifest_url)
       allow(URI).to receive(:parse).and_return(uri)
@@ -64,7 +65,7 @@ describe ScCollectionsController, type: :controller do
       expect(uri).to have_received(:open).twice
     end
 
-    it 'retries on EOF errors up to 2 attempts' do
+    it 'retries on EOF errors' do
       call_count = 0
       uri = URI.parse(manifest_url)
       allow(URI).to receive(:parse).and_return(uri)
@@ -80,7 +81,7 @@ describe ScCollectionsController, type: :controller do
       expect(uri).to have_received(:open).twice
     end
 
-    it 'raises error after 2 failed attempts' do
+    it 'raises error after the last failed attempt' do
       uri = URI.parse(manifest_url)
       allow(URI).to receive(:parse).and_return(uri)
       allow(uri).to receive(:open).and_raise(OpenSSL::SSL::SSLError.new('SSL_read: unexpected eof while reading'))
@@ -89,7 +90,7 @@ describe ScCollectionsController, type: :controller do
         controller.send(:fetch_manifest, manifest_url)
       end.to raise_error(OpenSSL::SSL::SSLError)
 
-      expect(uri).to have_received(:open).twice
+      expect(uri).to have_received(:open).exactly(IiifHttp::ATTEMPTS).times
     end
 
     it 'does not retry on other types of errors' do

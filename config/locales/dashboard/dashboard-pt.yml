@@ -80,8 +80,9 @@ pt:
       volunteer_text: Cada voluntário ajuda a tornar a história mais acessível. Agradecemos a contribuição de %{user_display_name} para nosso esforço de crowdsourcing!
       worked_on_collections: "%{user_name} trabalhou nas seguintes coleções das seguintes instituições"
     ia_upload:
-      import_from_archive_dot_org: Importar de Archive.org
+      import: Importar
       import_from_the_internet_archive: Importar de Internet Archive
+      paste_in_the_url: Cole o URL de um item do archive.org, por exemplo https://archive.org/details/IDENTIFIER.
     landing_page:
       by: " por "
       institutions: Instituições
