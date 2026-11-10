@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   include CookiesConsent
   include NewRelicRequestAttributes
+  include Permissions
 
   DEFAULT_PER_PAGE = 200
 

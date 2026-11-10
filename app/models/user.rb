@@ -310,6 +310,8 @@ class User < ApplicationRecord
     Work.where(collection_id: all_owner_collections.select(:id))
   end
 
+  # TODO: Deprecate. Duplicated in Permissions::WorkRules.transcriber? (app/lib/permissions).
+  # Keep both in sync until every controller uses require_permission.
   def can_transcribe?(work, collection = nil)
     return true if like_owner?(collection)
 
@@ -329,6 +331,8 @@ class User < ApplicationRecord
     !work&.restrict_scribes || has_scribe_access || like_owner?(work)
   end
 
+  # TODO: Deprecate. Duplicated in Permissions::CollectionRules.reviewer? (app/lib/permissions).
+  # Keep both in sync until every controller uses require_permission.
   def can_review?(obj)
     # object could be a page or a collection
     if obj.is_a? Page
@@ -342,6 +346,9 @@ class User < ApplicationRecord
     end
   end
 
+  # TODO: Deprecate. Duplicated in Permissions::CollectionRules.collaborator? and
+  # Permissions::DocumentSetRules.collaborator? (app/lib/permissions).
+  # Keep both in sync until every controller uses require_permission.
   def collaborator?(obj)
     if obj.is_a? DocumentSet
       obj.collection.collaborators.include?(self) || obj.collaborators.include?(self)
@@ -350,6 +357,8 @@ class User < ApplicationRecord
     end
   end
 
+  # TODO: Deprecate. Duplicated in Permissions::{Collection,DocumentSet,Work}Rules.owner?
+  # (app/lib/permissions). Keep both in sync until every controller uses require_permission.
   def like_owner?(obj)
     if Collection == obj.class
       return self == obj.owner || obj.owners.include?(self)
