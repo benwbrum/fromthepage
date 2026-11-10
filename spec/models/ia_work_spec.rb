@@ -78,6 +78,40 @@ RSpec.describe IaWork, type: :model do
       expect(work.ia_leaves.first.ocr_text).to eq("Redirected\n\n")
       expect(work.server).to be_nil
     end
+
+    it 'falls back to _scandata.xml filename when Scandata metadata is missing' do
+      identifier = 'missing-scandata-format'
+      location_url = "http://www.archive.org/services/find_file.php?file=#{identifier}"
+      scandata_url = "https://archive.org/download/#{identifier}/#{identifier}_scandata.xml"
+      djvu_url = "https://archive.org/download/#{identifier}/#{identifier}_djvu.xml"
+      location_document = <<~XML
+        <root>
+          <results server="ia111111.us.archive.org" dir="/items/#{identifier}" />
+          <identifier>#{identifier}</identifier>
+          <title>Scandata Format Missing</title>
+          <imagecount>1</imagecount>
+          <file name="#{identifier}_scandata.xml"></file>
+          <file name="#{identifier}_djvu.xml"><format>Djvu XML</format></file>
+          <file name="#{identifier}_jp2.zip"><format>Single Page Processed JP2 ZIP</format></file>
+        </root>
+      XML
+      scandata_document = <<~XML
+        <book><pageData><page leafNum="0"><pageNumber>1</pageNumber><pageType>Normal</pageType><cropBox><w>100</w><h>200</h></cropBox></page></pageData></book>
+      XML
+      djvu_document = <<~XML
+        <DJVUXML><BODY><OBJECT><PARAM name="PAGE" value="page_0000.djvu"/><PARAGRAPH><LINE><WORD>Fallback</WORD></LINE></PARAGRAPH></OBJECT></BODY></DJVUXML>
+      XML
+
+      stub_request(:get, location_url).to_return(body: location_document)
+      stub_request(:get, scandata_url).to_return(body: scandata_document)
+      stub_request(:get, djvu_url).to_return(body: djvu_document)
+
+      work = described_class.new
+      work.ingest_work(identifier)
+
+      expect(work.scandata_file).to eq("#{identifier}_scandata.xml")
+      expect(work.ia_leaves.first.ocr_text).to eq("Fallback\n\n")
+    end
   end
 
   describe '#zip_file' do

@@ -315,21 +315,23 @@ class IaWork < ApplicationRecord
   end
 
   def files_from_loc(loc_doc)
-    formats = loc_doc.search('file').search('format')
+    files = loc_doc.search('file')
+    formats = files.search('format')
 
-    scandata = formats.select { |e| e.inner_text=='Scandata' }.first.parent['name']
-    djvu = formats.select { |e| e.inner_text=='Djvu XML' }.first.parent['name']
-    zips = formats.select { |e| e.inner_text=='Single Page Processed JP2 ZIP' }
-    if zips.size < 1
-      zips = formats.select { |e| e.inner_text=='Single Page Processed JP2 Tar' }
+    scandata = formats.find { |e| e.inner_text == 'Scandata' }&.parent&.[]('name')
+    if scandata.blank?
+      scandata = files.find { |f| f['name'].to_s.downcase.end_with?('_scandata.xml') }&.[]('name')
     end
-    if zips.size < 1
-      zips = formats.select { |e| e.inner_text=='Single Page Processed JPEG Tar' }
+    djvu = formats.find { |e| e.inner_text == 'Djvu XML' }&.parent&.[]('name')
+    zips = formats.select { |e| e.inner_text == 'Single Page Processed JP2 ZIP' }
+    if zips.empty?
+      zips = formats.select { |e| e.inner_text == 'Single Page Processed JP2 Tar' }
+    end
+    if zips.empty?
+      zips = formats.select { |e| e.inner_text == 'Single Page Processed JPEG Tar' }
     end
 
-
-
-    zip = zips.first.parent['name']
+    zip = zips.first&.parent&.[]('name')
 
     [scandata, djvu, zip]
   end
