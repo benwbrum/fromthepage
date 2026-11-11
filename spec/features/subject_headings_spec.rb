@@ -27,10 +27,9 @@ describe 'Project owner subject heading configuration', js: true do
     file.write("heading,uri\n#{rows.join("\n")}\n")
     file.rewind
     within('.litebox-embed') do
-      expect(page).to have_unchecked_field('Check for matches in Library of Congress authority records')
-      attach_file 'Subject headings file', file.path, make_visible: true
+      attach_file 'Subject Headings File', file.path, make_visible: true
       expect(find('.input-file input[type="text"]').value).to end_with(File.basename(file.path))
-      fill_in 'Subject assignment guidelines (optional)', with: 'Use broad topics.'
+      fill_in 'Subject Assignment Guidelines (optional)', with: 'Use broad topics.'
       click_button 'Save Subject Headings'
     end
     expect(page).to have_current_path(collection_edit_metadata_fields_path(owner, collection))
@@ -38,8 +37,7 @@ describe 'Project owner subject heading configuration', js: true do
     expect(page).to have_css('.flash-notice', text: 'Subject headings saved.')
     expect(page).to have_css('.subject-heading-count', text: '3000 headings configured')
     click_link 'Configure Subject Headings'
-    expect(page).to have_content('3000 imported rows; 3000 unique headings.')
-    expect(page).to have_content('Authority check: Not requested')
+    expect(page).to have_content('3,000 rows · 3,000 unique headings')
     expect(field.reload.subject_heading_instructions).to eq('Use broad topics.')
     expect(field.subject_heading_inventory.subject_headings.find_by(heading: 'Agriculture').uri).to eq('https://id.loc.gov/authorities/subjects/sh85002415')
   end
@@ -51,13 +49,13 @@ describe 'Project owner subject heading configuration', js: true do
     file.write("subject\nAgriculture\n")
     file.rewind
     within('.litebox-embed') do
-      fill_in 'Subject assignment guidelines (optional)', with: 'Keep these guidelines.'
-      attach_file 'Subject headings file', file.path, make_visible: true
+      fill_in 'Subject Assignment Guidelines (optional)', with: 'Keep these guidelines.'
+      attach_file 'Subject Headings File', file.path, make_visible: true
       click_button 'Save Subject Headings'
       error = find('.validation[role="alert"]')
       expect(error).to have_css('.validation_summary li', text: 'CSV requires a heading column.')
       expect(error.style('border-left-width')['border-left-width']).to eq('3px')
-      expect(page).to have_field('Subject assignment guidelines (optional)', with: 'Keep these guidelines.')
+      expect(page).to have_field('Subject Assignment Guidelines (optional)', with: 'Keep these guidelines.')
       expect(page).to have_button('Save Subject Headings')
     end
     expect(field.reload.subject_heading_inventory).to be_nil
@@ -65,45 +63,64 @@ describe 'Project owner subject heading configuration', js: true do
     file&.close!
   end
 
-  it 'replaces a configured inventory and requests advisory checking' do
-    original = import_headings(field)
-    visit collection_subject_headings_path(owner, collection, field)
-    expect(page).to have_content('1 imported rows; 1 unique headings.')
-    expect(page).to have_button('Run authority check')
-    expect(page).not_to have_field('Check for matches in Library of Congress authority records')
-    file = Tempfile.new(['replacement', '.csv'])
+  it 'validates a file in the background, then reviews it and switches between the modals' do
+    import_headings(field, "heading\nSaved\n")
+    visit collection_edit_metadata_fields_path(owner, collection)
+    click_link 'Validate Subject Headings'
+    file = Tempfile.new(['local', '.csv'])
     file.write("heading\nReplacement\nReplacement.\nDifferent\n")
     file.rewind
     within('.litebox-embed') do
-      attach_file 'Subject headings file', file.path, make_visible: true
-      expect(page).not_to have_button('Run authority check')
-      expect(page).to have_content('Select this option, then click Save Subject Headings to check the uploaded file.')
-      check 'Check for matches in Library of Congress authority records'
-      click_button 'Save Subject Headings'
+      expect(page).to have_content('It does not save any headings to this field.')
+      expect(page).to have_button('Start Validation', disabled: true)
+      attach_file 'file', file.path, make_visible: true
+      click_button 'Start Validation'
     end
     expect(page).to have_current_path(collection_edit_metadata_fields_path(owner, collection))
-    expect(page).to have_css('.flash-info', text: "New subject headings have been saved. Email will be sent to #{owner.email} once the Library of Congress authority check is finished.")
-    expect(page).to have_css('.subject-heading-count', text: '2 headings configured')
-    click_link 'Configure Subject Headings'
-    expect(page).to have_content('3 imported rows; 2 unique headings.')
-    expect(page).to have_content('Authority check: Queued')
-    expect(SubjectHeadingInventory.exists?(original.id)).to be(false)
-    expect(field.reload.subject_heading_inventory.subject_headings.pluck(:heading)).to contain_exactly('Replacement', 'Different')
+    expect(page).to have_css('.flash-info', text: "Validation started. Email will be sent to #{owner.email} when it is finished.")
+    expect(page).to have_button(text: 'Validating… 0%', disabled: true)
+    validation = field.reload.subject_heading_validation
+    expect(validation).to have_attributes(status: 'queued', row_count: 3, total_count: 2)
+    expect(field.subject_heading_inventory.subject_headings.pluck(:heading)).to eq(['Saved'])
+
+    validation.update!(status: 'completed_with_issues', report_csv: SubjectHeadings::Report.generate([
+      { 'heading' => 'Replacement', 'result' => 'exact_match' },
+      { 'heading' => 'Different', 'result' => 'lookup_error' }
+    ]))
+    using_wait_time(10) do
+      expect(page).to have_link(text: 'Review Validation')
+    end
+    expect(find('.subject-heading-badge').text).to eq('1')
+    click_link(text: 'Review Validation')
+    within('.litebox-embed') do
+      expect(page).to have_content('2 headings were checked against Library of Congress authority records.')
+      expect(page).to have_button('Retry Lookup Errors')
+      within('ol') { click_link 'Configure Subject Headings' }
+      expect(page).to have_css('h3', text: 'Configure Subject Headings')
+      expect(page).to have_content('1 row · 1 unique heading')
+      click_link 'Validate Subject Headings'
+      expect(page).to have_css('h3', text: 'Validate Subject Headings')
+      click_button 'Cancel'
+    end
+    expect(page).not_to have_css('.litebox.visible')
+    expect(field.reload.subject_heading_inventory.subject_headings.pluck(:heading)).to eq(['Saved'])
+  ensure
+    file&.close!
   end
 
   it 'fits desktop and mobile screens and cancels guideline edits without saving' do
     visit collection_edit_metadata_fields_path(owner, collection)
     click_link 'Configure Subject Headings'
-    dialog = find('.litebox-embed.subject-heading-configuration')
+    dialog = find('.litebox-embed.subject-heading-modal')
     expect(dialog.rect.width).to be_between(650, 750)
-    expect(dialog).to have_css('.subject-heading-section', count: 3)
+    expect(dialog).to have_css('.subject-heading-section', count: 2)
     expect(find_button('Save Subject Headings').rect.height).to eq(find_button('Browse').rect.height)
     expect(find_button('Cancel').rect.height).to eq(find_button('Browse').rect.height)
     expect(find('#instructions')[:rows]).to eq('5')
-    fill_in 'Subject assignment guidelines (optional)', with: 'Unsaved guideline'
+    fill_in 'Subject Assignment Guidelines (optional)', with: 'Unsaved guideline'
     page.current_window.resize_to(390, 844)
-    expect(page.evaluate_script("document.querySelector('.subject-heading-configuration').getBoundingClientRect().right <= window.innerWidth")).to be(true)
-    expect(page.evaluate_script("Array.from(document.querySelectorAll('.subject-heading-configuration button')).every(button => button.scrollWidth <= button.clientWidth && button.getBoundingClientRect().right <= window.innerWidth)")).to be(true)
+    expect(page.evaluate_script("document.querySelector('.subject-heading-modal').getBoundingClientRect().right <= window.innerWidth")).to be(true)
+    expect(page.evaluate_script("Array.from(document.querySelectorAll('.subject-heading-modal button')).every(button => button.scrollWidth <= button.clientWidth && button.getBoundingClientRect().right <= window.innerWidth)")).to be(true)
     click_button 'Cancel'
     expect(page).not_to have_css('.litebox.visible')
     expect(field.reload.subject_heading_instructions).to be_nil
@@ -112,26 +129,19 @@ describe 'Project owner subject heading configuration', js: true do
     page.current_window.resize_to(1200, 900)
   end
 
-  it 'saves guidelines without a new file and keeps the separate authority retry action' do
+  it 'saves guidelines without a new file' do
     original = import_headings(field)
     visit collection_edit_metadata_fields_path(owner, collection)
     click_link 'Configure Subject Headings'
     expect(find('#file', visible: :all).evaluate_script('this.required')).to be(false)
     expect(page).to have_content('Replacing this file changes which headings are available for future assignments. Headings already saved to item descriptions will not be changed.')
-    fill_in 'Subject assignment guidelines (optional)', with: 'Prefer local cataloging conventions.'
+    fill_in 'Subject Assignment Guidelines (optional)', with: 'Prefer local cataloging conventions.'
     click_button 'Save Subject Headings'
     expect(page).to have_current_path(collection_edit_metadata_fields_path(owner, collection))
     expect(page).not_to have_css('.litebox.visible')
     expect(page).to have_css('.flash-notice', text: 'Subject headings saved.')
     click_link 'Configure Subject Headings'
-    expect(page).to have_field('Subject assignment guidelines (optional)', with: 'Prefer local cataloging conventions.')
-    expect(field.reload.subject_heading_inventory.id).to eq(original.id)
-    expect(page).not_to have_field('Check for matches in Library of Congress authority records')
-    click_button 'Run authority check'
-    expect(page).to have_content('Authority check: Queued')
-    expect(page).to have_button('Authority check queued', disabled: true)
-    expect(page).not_to have_button('Run authority check')
-    expect(page).not_to have_field('Check for matches in Library of Congress authority records')
+    expect(page).to have_field('Subject Assignment Guidelines (optional)', with: 'Prefer local cataloging conventions.')
     expect(field.reload.subject_heading_inventory.id).to eq(original.id)
   end
 

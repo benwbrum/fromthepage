@@ -68,7 +68,7 @@ es:
       numeric: Numérico
       select: Selección
       spreadsheet: Hoja de cálculo
-      subject_headings: Encabezamientos de materia (LCSH)
+      subject_headings: Encabezamientos de materia
       text: Texto
       textarea: Área de texto
     line_form:

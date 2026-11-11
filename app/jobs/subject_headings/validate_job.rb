@@ -1,14 +1,14 @@
 class SubjectHeadings::ValidateJob < ApplicationJob
   queue_as :subject_headings
 
-  def perform(user_id:, inventory_id:, token:)
-    path = SubjectHeadings::ValidationLog.path(inventory_id)
-    Rails.logger.info("LC_AUTHORITY job_log #{ { inventory_id: inventory_id, job_id: job_id, path: path.to_s }.to_json}")
-    SubjectHeadings::ValidationLog.open(inventory_id: inventory_id, job_id: job_id, token: token) do |logger|
+  def perform(user_id:, validation_id:, token:)
+    path = SubjectHeadings::ValidationLog.path(validation_id)
+    Rails.logger.info("LC_AUTHORITY job_log #{ { validation_id: validation_id, job_id: job_id, path: path.to_s }.to_json}")
+    SubjectHeadings::ValidationLog.open(validation_id: validation_id, job_id: job_id, token: token) do |logger|
       @validation_logger = logger
       log_event('execution_started', user_id: user_id)
       begin
-        validate(user_id: user_id, inventory_id: inventory_id, token: token)
+        validate(user_id: user_id, validation_id: validation_id, token: token)
       rescue StandardError => e
         log_exception('execution_failed', e)
         raise
@@ -20,39 +20,39 @@ class SubjectHeadings::ValidateJob < ApplicationJob
 
   private
 
-  def validate(user_id:, inventory_id:, token:)
-    inventory = SubjectHeadingInventory.find_by(id: inventory_id, validation_token: token)
-    unless inventory
-      log_event('obsolete_inventory_or_token')
+  def validate(user_id:, validation_id:, token:)
+    validation = SubjectHeadingValidation.find_by(id: validation_id, token: token)
+    unless validation
+      log_event('obsolete_validation_or_token')
       return
     end
     requester = User.find_by(id: user_id)
-    unless requester && (requester.admin? || requester.like_owner?(inventory.transcription_field.collection))
+    unless requester && (requester.admin? || requester.like_owner?(validation.transcription_field.collection))
       log_event('requester_no_longer_authorized', user_id: user_id)
-      SubjectHeadingInventory.where(id: inventory_id, validation_token: token, validation_status: 'queued')
-        .update_all(validation_status: 'failed', completed_at: Time.current,
-          validation_error: 'The requester no longer has project access. Please retry the authority check.')
+      SubjectHeadingValidation.where(id: validation_id, token: token, status: 'queued')
+        .update_all(status: 'failed', completed_at: Time.current,
+          error_message: 'The requester no longer has project access. Please validate the file again.')
       return
     end
-    if %w[completed completed_with_issues failed].include?(inventory.validation_status)
-      log_event('already_finalized', status: inventory.validation_status)
-      notify(inventory, token, requester)
+    if validation.finished?
+      log_event('already_finalized', status: validation.status)
+      notify(validation, token, requester)
       return
     end
     # Compare-and-set prevents two deliveries from validating the same upload.
     claim_stamp = Time.current
-    attempts = SubjectHeadingInventory.where(id: inventory_id, validation_token: token)
-    claimable = attempts.where(validation_status: 'queued').or(
-      attempts.where(validation_status: 'running').where('updated_at < ?', SubjectHeadingInventory::CLAIM_TIMEOUT.ago)
+    attempts = SubjectHeadingValidation.where(id: validation_id, token: token)
+    claimable = attempts.where(status: 'queued').or(
+      attempts.where(status: 'running').where('updated_at < ?', SubjectHeadingValidation::CLAIM_TIMEOUT.ago)
     )
-    claimed = claimable.update_all(validation_status: 'running', updated_at: claim_stamp)
-    log_event('claim_result', claimed: claimed, previous_status: inventory.validation_status)
+    claimed = claimable.update_all(status: 'running', updated_at: claim_stamp)
+    log_event('claim_result', claimed: claimed, previous_status: validation.status)
     return unless claimed == 1
 
     begin
       heartbeat = lambda do
         next_stamp = Time.current
-        owned = attempts.where(validation_status: 'running', updated_at: claim_stamp).update_all(updated_at: next_stamp)
+        owned = attempts.where(status: 'running', updated_at: claim_stamp).update_all(updated_at: next_stamp)
         raise SubjectHeadings::AuthorityLookup::LookupError, 'Validation attempt is no longer current.' unless owned == 1
         claim_stamp = next_stamp
         log_event('lease_renewed', row: @row_index, at: claim_stamp.iso8601(6))
@@ -62,26 +62,33 @@ class SubjectHeadings::ValidateJob < ApplicationJob
       consecutive_failures = 0
       skipped = 0
       memo = {}
-      rows = inventory.source_rows
-      log_event('processing_started', total_rows: rows.size)
+      processed = 0
+      # A retry rechecks only the lookup errors and unchecked headings of the previous report.
+      retrying = validation.report_csv.present?
+      rows = retrying ? validation.report_rows : validation.source_rows
+      log_event('processing_started', total_rows: rows.size, retrying: retrying)
       results = rows.each_with_index.map do |row, index|
         @row_index = index + 1
+        next row if retrying && !SubjectHeadingValidation::ERROR_RESULTS.include?(row['result'])
+
+        row = row.slice('heading', 'uri')
         log_event('row_started', row: @row_index, total_rows: rows.size, heading: row['heading'], uri: row['uri'])
-        # A replacement deletes this import; stop spending requests immediately.
+        # Replacing the validation deletes this record; stop spending requests immediately.
         next_stamp = Time.current
-        owned = attempts.where(validation_status: 'running', updated_at: claim_stamp)
-          .update_all(updated_at: next_stamp)
+        owned = attempts.where(status: 'running', updated_at: claim_stamp)
+          .update_all(updated_at: next_stamp, processed_count: processed)
         unless owned == 1
           log_event('ownership_lost', row: @row_index)
           return
         end
+        processed += 1
         claim_stamp = next_stamp
         begin
           memo_key = [row['heading'], row['uri']]
           if consecutive_failures >= 3 && !memo.key?(memo_key)
             skipped += 1
             log_event('row_not_checked', row: @row_index, skipped: skipped, failures: failures)
-            next row.merge('result' => 'not_checked', 'rationale' => 'No request made: further lookups stopped after three consecutive failed heading lookups. Please retry the authority check later.')
+            next row.merge('result' => 'not_checked', 'rationale' => 'No request made: further lookups stopped after three consecutive failed heading lookups. Please retry lookup errors later.')
           end
           log_event('row_memo_hit', row: @row_index) if memo.key?(memo_key)
           hits = memo[memo_key] ||= row['uri'].present? ? lookup.call(row['heading'], identifier: row['uri']) : lookup.call(row['heading'])
@@ -100,42 +107,43 @@ class SubjectHeadings::ValidateJob < ApplicationJob
       report = SubjectHeadings::Report.generate(results)
       log_event('report_generated', bytes: report.bytesize)
       raise ArgumentError, 'Validation report exceeds storage limit' if report.bytesize >= 16.megabytes
-      attributes = { report_csv: report, completed_at: Time.current,
-        validation_status: failures.positive? ? 'completed_with_issues' : 'completed',
-        validation_error: nil }
+      issues = results.any? { |row| SubjectHeadingValidation::ERROR_RESULTS.include?(row['result']) }
+      attributes = { report_csv: report, completed_at: Time.current, processed_count: processed,
+        status: issues ? 'completed_with_issues' : 'completed',
+        error_message: nil }
     rescue StandardError => e
       log_exception('processing_failed', e)
-      attributes = { validation_status: 'failed', completed_at: Time.current,
-        validation_error: 'The authority check failed. No usable report could be produced. Your uploaded headings remain available. Please retry.' }
+      attributes = { status: 'failed', completed_at: Time.current,
+        error_message: 'Validation failed and no report could be produced. Please try again.' }
     end
-    # Never attach old results to a replacement inventory or a newer attempt.
-    scope = SubjectHeadingInventory.where(id: inventory_id, validation_token: token, validation_status: 'running', updated_at: claim_stamp)
+    # Never attach old results to a replacement validation or a newer attempt.
+    scope = SubjectHeadingValidation.where(id: validation_id, token: token, status: 'running', updated_at: claim_stamp)
     begin
       updated = scope.update_all(attributes)
-      log_event('final_state_write', updated: updated, status: attributes[:validation_status])
+      log_event('final_state_write', updated: updated, status: attributes[:status])
     rescue ActiveRecord::StatementInvalid => e
       log_exception('report_storage_failed', e)
-      # A report-storage failure must not strand a usable inventory in running.
-      updated = scope.update_all(validation_status: 'failed', completed_at: Time.current,
-        validation_error: 'The authority check report could not be saved. Uploaded headings remain available. Please retry.')
+      # A report-storage failure must not strand the validation in running.
+      updated = scope.update_all(status: 'failed', completed_at: Time.current,
+        error_message: 'The validation report could not be saved. Please try again.')
       log_event('failure_state_write', updated: updated)
     end
-    notify(inventory, token, requester) if updated == 1
+    notify(validation, token, requester) if updated == 1
   end
 
-  def notify(inventory, token, requester)
-    inventory.reload.with_lock do
-      unless inventory.validation_token == token && inventory.notified_at.nil?
-        log_event('notification_skipped', already_notified: inventory.notified_at.present?)
+  def notify(validation, token, requester)
+    validation.reload.with_lock do
+      unless validation.token == token && validation.notified_at.nil?
+        log_event('notification_skipped', already_notified: validation.notified_at.present?)
         return
       end
       log_event('notification_started')
-      UserMailer.subject_heading_validation_finished(inventory, recipient: requester).deliver_now
-      inventory.update!(notified_at: Time.current)
+      UserMailer.subject_heading_validation_finished(validation, recipient: requester).deliver_now
+      validation.update!(notified_at: Time.current)
       log_event('notification_finished')
     end
   rescue ActiveRecord::RecordNotFound
-    log_event('notification_inventory_replaced')
+    log_event('notification_validation_replaced')
   end
 
   def log_event(event, **data)

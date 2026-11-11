@@ -4,7 +4,7 @@ describe TranscriptionFieldHelper, type: :helper do
   it 'uses title-case English labels while preserving metadata type values and order' do
     I18n.with_locale(:en) do
       options = helper.field_input_type_options(TranscriptionField::METADATA_INPUTS)
-      expect(options.map(&:first)).to eq(['Text', 'Select', 'Date', 'Multiselect', 'Text Area', 'Instruction', 'Alt Text', 'Subject Headings (LCSH)'])
+      expect(options.map(&:first)).to eq(['Text', 'Select', 'Date', 'Multiselect', 'Text Area', 'Instruction', 'Alt Text', 'Subject Headings'])
       expect(options.map(&:last)).to eq(TranscriptionField::METADATA_INPUTS)
     end
   end

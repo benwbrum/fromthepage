@@ -1,0 +1,5 @@
+-label = local_assigns[:label] || 'Cancel'
+-if request.xhr?
+  =button_tag label, type: 'button', data: { action: 'subject-headings#close' }
+-else
+  =link_to label, collection_edit_metadata_fields_path(@collection.owner, @collection), class: 'button'

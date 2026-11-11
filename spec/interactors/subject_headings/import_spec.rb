@@ -8,7 +8,7 @@ describe SubjectHeadings::Import, :subject_headings do
   it 'imports a one-column inventory immediately without validation' do
     inventory = import_headings(field, "heading\nAbolitionists\nAgriculture\n")
     expect(inventory.row_count).to eq(2)
-    expect(inventory.validation_status).to eq('not_requested')
+    expect(field.reload.subject_heading_validation).to be_nil
     expect(inventory.subject_headings.pluck(:heading)).to contain_exactly('Abolitionists', 'Agriculture')
   end
 

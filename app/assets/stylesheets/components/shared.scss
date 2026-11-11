@@ -1625,27 +1625,122 @@ button, .button, .dropdown dd a {
   }
 }
 
-// Subject heading configuration uses the standard LiteBox, form and toolbar styles.
-.subject-heading-configuration {
-  width: 700px;
+// Subject heading Validate / Review / Configure modals use the standard LiteBox,
+// form and toolbar styles. The body scrolls so the title and buttons stay visible.
+.subject-heading-modal {
+  width: 740px;
   max-width: 100%;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 80px);
   overflow-wrap: anywhere;
 
-  .subject-heading-section {
-    margin-top: 1.5em;
-    padding-top: 1em;
-    border-top: 1px solid $borderColor;
-
-    h4 { margin: 0 0 0.5em; }
-    p { margin: 0.5em 0; }
+  form {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
   }
 
+  .subject-heading-modal_header {
+    padding-bottom: 0.75em;
+    border-bottom: 1px solid $borderColor;
+    h3 { margin: 0 2em 0.25em 0; }
+    p { margin: 0; }
+  }
+
+  .subject-heading-modal_body {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 1em 0;
+    p { margin: 0.5em 0; }
+    ol { margin: 0.5em 0; padding-left: 1.5em; }
+  }
+
+  .subject-heading-modal_footer {
+    flex-shrink: 0;
+    margin: 0;
+    padding-top: 0.75em;
+    display: block;
+    .toolbar_group {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 0.5em;
+    }
+  }
+
+  .subject-heading-section {
+    margin-top: 1em;
+    padding-top: 1em;
+    border-top: 1px solid $borderColor;
+    &:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
+    h4 { margin: 0 0 0.5em; }
+  }
+
+  .subject-heading-summary {
+    margin: 0 0 0.75em;
+    padding: 0.5em 0.75em;
+    background: $bgWhite;
+    border: 1px solid $borderColor;
+    p { margin: 0; }
+  }
+
+  .subject-heading-counts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin: 0.75em 0;
+    background: $bgWhite;
+    border: 1px solid $borderColor;
+
+    > div {
+      display: flex;
+      flex-direction: column-reverse;
+      justify-content: flex-end;
+      padding: 0.5em 0.75em;
+      & + div { border-left: 1px solid $borderColor; }
+    }
+    dt { font-size: 13px; color: $bodyFgFaded; }
+    dd { margin: 0; font-size: 20px; font-weight: 600; }
+    .subject-heading-counts_errors { color: $fgLink; }
+
+    @media (max-width: 480px) {
+      grid-template-columns: 1fr;
+      > div + div { border-left: 0; border-top: 1px solid $borderColor; }
+    }
+  }
+
+  .subject-heading-retry { display: inline; }
   textarea { resize: vertical; }
-  .subject-heading-check {
-    display: flex;
-    align-items: baseline;
+}
+
+// Field options cell on the metadata field editor.
+.subject-heading-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+
+  .subject-heading-validating {
+    display: inline-flex;
+    align-items: center;
     gap: 0.5em;
-    input { flex-shrink: 0; }
+    progress {
+      width: 60px;
+      height: 6px;
+      accent-color: $fgLink;
+    }
+  }
+
+  .subject-heading-badge {
+    display: inline-block;
+    margin-left: 0.4em;
+    padding: 0 0.5em;
+    border-radius: 999px;
+    background: $fgLink;
+    color: $fgWhite;
+    font-size: 12px;
+    line-height: 1.5;
   }
 }

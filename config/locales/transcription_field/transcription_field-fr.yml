@@ -68,7 +68,7 @@ fr:
       numeric: Numérique
       select: Sélection
       spreadsheet: Tableur
-      subject_headings: Vedettes-matière (LCSH)
+      subject_headings: Vedettes-matière
       text: Texte
       textarea: Zone de texte
     line_form:

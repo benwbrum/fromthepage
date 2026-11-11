@@ -1,0 +1,18 @@
+-validation = field.subject_heading_validation
+-inventory = field.subject_heading_inventory
+-collection = field.collection
+.subject-heading-buttons data-controller=(validation&.in_progress? ? 'subject-heading-status' : nil) data-subject-heading-status-url-value=collection_subject_headings_buttons_path(collection.owner, collection, field)
+  -if validation.nil?
+    =link_to 'Validate Subject Headings', collection_new_subject_headings_validation_path(collection.owner, collection, field), class: 'button', data: { controller: 'litebox' }
+  -elsif validation.in_progress?
+    button.subject-heading-validating type="button" disabled=true
+      span role="status" ="Validating… #{validation.progress_percent}%"
+      progress max="100" value=validation.progress_percent aria-hidden="true"
+  -else
+    =link_to collection_subject_headings_validation_path(collection.owner, collection, field), class: 'button', data: { controller: 'litebox' }
+      | Review Validation
+      -if validation.badge_count.positive?
+        span.subject-heading-badge title="Possible matches and lookup errors" =number_with_delimiter(validation.badge_count)
+  =link_to 'Configure Subject Headings', collection_subject_headings_path(collection.owner, collection, field), class: 'button', data: { controller: 'litebox' }
+  -if inventory
+    span.fgfaded.subject-heading-count =t('transcription_field.new_field_form.subject_heading_count', count: inventory.unique_count)

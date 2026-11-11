@@ -68,7 +68,7 @@ en:
       numeric: Numeric
       select: Select
       spreadsheet: Spreadsheet
-      subject_headings: Subject Headings (LCSH)
+      subject_headings: Subject Headings
       text: Text
       textarea: Text Area
     line_form:

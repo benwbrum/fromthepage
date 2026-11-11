@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_10_30_000000) do
+ActiveRecord::Schema[7.2].define(version: 2026_11_11_000000) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -1036,15 +1036,27 @@ ActiveRecord::Schema[7.2].define(version: 2026_10_30_000000) do
     t.string "filename", null: false
     t.integer "row_count", null: false
     t.text "source_rows", size: :medium, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["transcription_field_id"], name: "index_subject_heading_inventories_on_transcription_field_id", unique: true
+  end
+
+  create_table "subject_heading_validations", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.integer "transcription_field_id", null: false
+    t.string "filename", null: false
+    t.integer "row_count", null: false
+    t.text "source_rows", size: :medium, null: false
     t.text "report_csv", size: :medium
-    t.string "validation_status", default: "not_requested", null: false
-    t.string "validation_token"
-    t.text "validation_error"
+    t.string "status", default: "queued", null: false
+    t.string "token"
+    t.text "error_message"
+    t.integer "processed_count", default: 0, null: false
+    t.integer "total_count", default: 0, null: false
     t.datetime "completed_at"
     t.datetime "notified_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["transcription_field_id"], name: "index_subject_heading_inventories_on_transcription_field_id", unique: true
+    t.index ["transcription_field_id"], name: "index_subject_heading_validations_on_transcription_field_id", unique: true
   end
 
   create_table "subject_headings", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
@@ -1558,5 +1570,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_10_30_000000) do
   add_foreign_key "work_facets", "works"
   add_foreign_key "works", "metadata_description_versions"
   add_foreign_key "subject_heading_inventories", "transcription_fields", on_delete: :cascade
+  add_foreign_key "subject_heading_validations", "transcription_fields", on_delete: :cascade
   add_foreign_key "subject_headings", "subject_heading_inventories", on_delete: :cascade
 end

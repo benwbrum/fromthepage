@@ -1,0 +1,14 @@
+.litebox-embed.subject-heading-modal data-controller="subject-headings"
+  =render 'subject_headings/modal_header', title: 'Validate Subject Headings', subtitle: @field.label
+  =form_tag collection_subject_headings_validation_path(@collection.owner, @collection, @field), method: :post, multipart: true do
+    .subject-heading-modal_body
+      p Check a subject headings file for duplicates and against Library of Congress authority records. Validation produces a report of matches and suggested identifiers for you to review. It does not save any headings to this field.
+      =render 'subject_headings/file_input', required: true
+      p.fgfaded
+        | Don't need to validate?&nbsp;
+        =link_to 'Configure Subject Headings', collection_subject_headings_path(@collection.owner, @collection, @field), data: { action: 'subject-headings#swap' }
+        |  to upload your file directly.
+    .subject-heading-modal_footer.toolbar
+      .toolbar_group.aright.wrap-text
+        =render 'subject_headings/cancel_button'
+        =button_tag 'Start Validation', type: 'submit', disabled: true, data: { subject_headings_target: 'submit' }

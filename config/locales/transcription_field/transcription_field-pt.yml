@@ -68,7 +68,7 @@ pt:
       numeric: Numérico
       select: Seleção
       spreadsheet: Planilha
-      subject_headings: Cabeçalhos de assunto (LCSH)
+      subject_headings: Cabeçalhos de assunto
       text: Texto
       textarea: Área de texto
     line_form:

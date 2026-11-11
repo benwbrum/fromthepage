@@ -1,0 +1,52 @@
+-counts = @validation.counts
+.litebox-embed.subject-heading-modal data-controller="subject-headings"
+  =render 'subject_headings/modal_header', title: 'Review Subject Heading Validation', subtitle: "#{@field.label} · #{@validation.filename}"
+  .subject-heading-modal_body
+    -if @validation.in_progress?
+      p role="status" ="Validating… #{@validation.progress_percent}%. You can close this window; the report will be ready here when validation finishes."
+    -if counts
+      p ="#{number_with_delimiter(counts[:total])} headings were checked against Library of Congress authority records. Your headings have not been changed."
+      -if @validation.duplicate_count.positive?
+        p.fgfaded ="#{pluralize(number_with_delimiter(@validation.duplicate_count), 'duplicate row')} merged from #{pluralize(number_with_delimiter(@validation.row_count), 'row')} in the file."
+      dl.subject-heading-counts
+        div
+          dt Exact matches
+          dd =number_with_delimiter(counts[:exact])
+        div
+          dt Possible matches to review
+          dd =number_with_delimiter(counts[:possible])
+        div
+          dt Lookup errors
+          dd.subject-heading-counts_errors =number_with_delimiter(counts[:errors])
+      p =link_to 'Download Validation Report', collection_subject_headings_report_path(@collection.owner, @collection, @field), class: 'button'
+
+      section.subject-heading-section aria-labelledby="subject-heading-apply-title"
+        h4#subject-heading-apply-title Apply Suggestions
+        ol
+          li Download the validation report.
+          li To accept a suggestion, copy its value into the heading or URI column.
+          li
+            | Save the CSV and upload it in&nbsp;
+            =link_to 'Configure Subject Headings', collection_subject_headings_path(@collection.owner, @collection, @field), data: { action: 'subject-headings#swap' }
+            | .
+        p.fgfaded No headings are saved to this field until you upload a file in Configure Subject Headings.
+
+      -if counts[:errors].positive?
+        section.subject-heading-section aria-labelledby="subject-heading-errors-title"
+          h4#subject-heading-errors-title Lookup Errors
+          p ="#{pluralize(number_with_delimiter(counts[:errors]), 'heading')} could not be checked, usually because the Library of Congress service did not respond. Retrying checks only these headings."
+          -if @validation.retryable?
+            =form_tag collection_subject_headings_retry_path(@collection.owner, @collection, @field), class: 'subject-heading-retry' do
+              =button_tag 'Retry Lookup Errors', type: 'submit'
+    -elsif @validation.status == 'failed'
+      .validation role="alert"
+        ul.validation_summary
+          li =@validation.error_message.presence || 'Validation failed and no report could be produced.'
+      -if @validation.retryable?
+        =form_tag collection_subject_headings_retry_path(@collection.owner, @collection, @field), class: 'subject-heading-retry' do
+          =button_tag 'Try Validation Again', type: 'submit'
+
+  .subject-heading-modal_footer.toolbar
+    .toolbar_group.aright.wrap-text
+      =link_to 'Validate Another File', collection_new_subject_headings_validation_path(@collection.owner, @collection, @field), class: 'button', data: { action: 'subject-headings#swap' }
+      =render 'subject_headings/cancel_button', label: 'Close'

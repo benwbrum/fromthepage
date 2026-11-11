@@ -3,37 +3,57 @@ class SubjectHeadingsController < ApplicationController
   before_action :load_field
   before_action :require_owner
 
+  # Configure Subject Headings modal: the only place headings are saved.
   def show
     @inventory = @field.subject_heading_inventory
     render layout: false if request.xhr?
   end
 
   def update
-    message_type, message = :notice, 'Subject headings saved.'
     if params[:file].present?
-      inventory = SubjectHeadings::Import.new(field: @field, upload: params[:file], instructions: params[:instructions]).call
-      if params[:validate_authorities] == '1'
-        inventory.queue_validation!(user: current_user)
-        if inventory.validation_status == 'failed'
-          message_type, message = :alert, 'New subject headings have been saved, but the authority check could not be queued. Please retry from Configure Subject Headings.'
-        else
-          message_type, message = :info, "New subject headings have been saved. Email will be sent to #{ERB::Util.html_escape(current_user.email)} once the Library of Congress authority check is finished."
-        end
-      end
+      SubjectHeadings::Import.new(field: @field, upload: params[:file], instructions: params[:instructions]).call
     else
       raise SubjectHeadings::Import::ImportError, 'Choose a CSV file.' unless @field.subject_heading_inventory
       @field.update!(subject_heading_instructions: params[:instructions])
     end
-    flash[message_type] = message
+    flash[:notice] = 'Subject headings saved.'
     ajax_redirect_to collection_edit_metadata_fields_path(@collection.owner, @collection)
   rescue SubjectHeadings::Import::ImportError => e
-    @inventory = @field.reload.subject_heading_inventory
     @error = e.message
-    render :show, layout: !request.xhr?, status: :unprocessable_entity
+    render_configure_error
   rescue ActiveRecord::RecordInvalid => e
-    @inventory = @field.reload.subject_heading_inventory
     @error = e.record.errors.full_messages.to_sentence
-    render :show, layout: !request.xhr?, status: :unprocessable_entity
+    render_configure_error
+  end
+
+  # Validate Subject Headings modal.
+  def new_validation
+    render layout: false if request.xhr?
+  end
+
+  def create_validation
+    validation = SubjectHeadingValidation.start!(field: @field, upload: params[:file], user: current_user)
+    if validation.in_progress?
+      flash[:info] = "Validation started. Email will be sent to #{ERB::Util.html_escape(current_user.email)} when it is finished."
+    else
+      flash[:alert] = validation.error_message
+    end
+    ajax_redirect_to collection_edit_metadata_fields_path(@collection.owner, @collection)
+  rescue SubjectHeadings::Import::ImportError => e
+    @error = e.message
+    render :new_validation, layout: !request.xhr?, status: :unprocessable_entity
+  end
+
+  # Review Subject Heading Validation modal.
+  def validation
+    @validation = @field.subject_heading_validation
+    return redirect_to collection_new_subject_headings_validation_path(@collection.owner, @collection, @field) unless @validation
+    render layout: false if request.xhr?
+  end
+
+  # The field row's validation/configuration buttons, polled while validation runs.
+  def buttons
+    render partial: 'subject_headings/field_buttons', locals: { field: @field }
   end
 
   def template
@@ -41,22 +61,28 @@ class SubjectHeadingsController < ApplicationController
   end
 
   def report
-    inventory = @field.subject_heading_inventory
-    return head :not_found unless inventory&.report_csv.present?
+    validation = @field.subject_heading_validation
+    return head :not_found unless validation&.report_csv.present?
 
     response.headers['Cache-Control'] = 'private, no-store'
-    send_data inventory.report_csv, type: 'text/csv; charset=utf-8', filename: 'subject_heading_validation.csv'
+    filename = "#{File.basename(validation.filename, '.*')}_validation.csv"
+    send_data validation.report_csv, type: 'text/csv; charset=utf-8', filename: filename
   end
 
   def retry_validation
-    inventory = @field.subject_heading_inventory
-    return head :conflict unless inventory&.validation_retryable?
+    validation = @field.subject_heading_validation
+    return head :conflict unless validation&.retryable? && validation.queue!(user: current_user)
 
-    return head :conflict unless inventory.queue_validation!(user: current_user)
-    redirect_to collection_subject_headings_path(@collection.owner, @collection, @field)
+    flash[:info] = "Retrying lookup errors. Email will be sent to #{ERB::Util.html_escape(current_user.email)} when it is finished."
+    ajax_redirect_to collection_edit_metadata_fields_path(@collection.owner, @collection)
   end
 
   private
+
+  def render_configure_error
+    @inventory = @field.reload.subject_heading_inventory
+    render :show, layout: !request.xhr?, status: :unprocessable_entity
+  end
 
   def load_field
     raise ActiveRecord::RecordNotFound unless @collection

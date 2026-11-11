@@ -27,6 +27,7 @@ class TranscriptionField < ApplicationRecord
   has_many :table_cells
   has_many :spreadsheet_columns, -> { order 'position' }, dependent: :destroy
   has_one :subject_heading_inventory, dependent: :destroy
+  has_one :subject_heading_validation, dependent: :destroy
 
   def subject_headings?
     field_type == FieldType::METADATA && input_type == 'subject_headings'

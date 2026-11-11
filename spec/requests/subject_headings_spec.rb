@@ -7,6 +7,10 @@ describe SubjectHeadingsController, :subject_headings do
   let!(:work) { create(:work, collection: collection, owner: owner) }
   let(:path) { collection_subject_headings_path(owner, collection, field) }
   let(:editor_path) { collection_edit_metadata_fields_path(owner, collection) }
+  let(:validation_path) { collection_subject_headings_validation_path(owner, collection, field) }
+  let(:new_validation_path) { collection_new_subject_headings_validation_path(owner, collection, field) }
+  let(:retry_path) { collection_subject_headings_retry_path(owner, collection, field) }
+  let(:xhr) { { 'X-Requested-With' => 'XMLHttpRequest' } }
 
   before { Current.user = owner }
 
@@ -23,17 +27,25 @@ describe SubjectHeadingsController, :subject_headings do
     expect(collection.metadata_fields.find_by(label: 'New Topics')).to be_subject_headings
     get collection_edit_metadata_fields_path(owner, collection)
     expect(response).to have_http_status(:ok)
-    expect(response.body).to include('Configure Subject Headings', 'Subject Headings (LCSH)')
+    html = Nokogiri::HTML(response.body)
+    expect(html.css('select option').map(&:text)).to include('Subject Headings')
+    expect(response.body).not_to include('(LCSH)')
+    new_field = collection.metadata_fields.find_by(label: 'New Topics')
+    buttons = html.at_css(".subject-heading-buttons[data-subject-heading-status-url-value$='/#{new_field.id}/subject_headings/buttons']")
+    expect(buttons.css('a.button').map(&:text)).to eq(['Validate Subject Headings', 'Configure Subject Headings'])
   end
 
   it 'opens the initial configuration modal and downloads a template' do
     login_as owner
     get path, headers: { 'X-Requested-With' => 'XMLHttpRequest' }
     expect(response).to have_http_status(:ok)
-    expect(response.body).to include('Save Subject Headings', 'Subject assignment guidelines (optional)')
-    expect(response.body).to include('Download CSV template', 'Describe how subject headings should be assigned to documents in this collection. These guidelines will be used by AI Draft Metadata.')
-    expect(Nokogiri::HTML(response.body).text).not_to include('inventory', 'UTF-8', 'attachments are not currently supported')
-    expect(Nokogiri::HTML(response.body).at_css('#validate_authorities')['checked']).to be_nil
+    expect(response.body).to include('Save Subject Headings', 'Subject Assignment Guidelines (optional)', 'Subject Headings File')
+    expect(response.body).to include('Download CSV Template', 'Describe how subject headings should be assigned to documents in this collection. These guidelines will be used by AI Draft Metadata.')
+    expect(response.body).to include('CSV with a heading column and an optional URI or ID column. Maximum 10,000 rows.')
+    html = Nokogiri::HTML(response.body)
+    expect(html.text).not_to include('inventory', 'UTF-8', 'attachments are not currently supported', 'Authority check')
+    expect(html.at_css('#validate_authorities')).to be_nil
+    expect(html.at_css("a[href='#{new_validation_path}']").text).to eq('Validate Subject Headings')
     get collection_subject_headings_template_path(owner, collection, field)
     expect(response.body).to start_with('heading,uri')
   end
@@ -46,7 +58,7 @@ describe SubjectHeadingsController, :subject_headings do
     follow_redirect!
     expect(response.body).to include('Subject headings saved.')
     get path
-    expect(response.body).to include('2 imported rows; 1 unique headings.', 'Use specific topics.', 'Not requested')
+    expect(response.body).to include('2 rows · 1 unique heading · 1 duplicate row merged', 'Use specific topics.')
     patch path, params: { file: upload_csv("heading\nReplacement\n") }
     expect(field.reload.subject_heading_inventory.subject_headings.pluck(:heading)).to eq(['Replacement'])
     expect(SubjectHeadingInventory.exists?(original.id)).to be(false)
@@ -67,70 +79,12 @@ describe SubjectHeadingsController, :subject_headings do
     end
   end
 
-  it 'queues validation only when requested and allows retry after failure' do
-    login_as owner
-    ActiveJob::Base.queue_adapter = :test
-    expect { patch path, params: { file: upload_csv("heading\nOriginal\n"), validate_authorities: '1' } }.to have_enqueued_job(SubjectHeadings::ValidateJob)
-    inventory = field.reload.subject_heading_inventory
-    expect(inventory.validation_status).to eq('queued')
-    post collection_subject_headings_retry_path(owner, collection, field)
-    expect(response).to have_http_status(:conflict)
-    inventory.update!(validation_status: 'failed')
-    old_token = inventory.validation_token
-    expect { post collection_subject_headings_retry_path(owner, collection, field) }.to have_enqueued_job(SubjectHeadings::ValidateJob)
-    expect(inventory.reload.validation_token).not_to eq(old_token)
-  end
-
-  it 'shows the current requester an info flash when an uploaded file is queued for checking' do
-    requester = create(:unique_user, :admin)
-    login_as requester
-    ActiveJob::Base.queue_adapter = :test
-    patch path, params: { file: upload_csv("heading\nOriginal\n"), validate_authorities: '1' }, headers: { 'X-Requested-With' => 'XMLHttpRequest' }
-    expect(response).to have_http_status(:created)
-    get editor_path
-    html = Nokogiri::HTML(response.body)
-    expect(html.at_css('.flash-info').text).to include('New subject headings have been saved.', requester.email, 'once the Library of Congress authority check is finished.')
-    expect(html.at_css('.flash-notice')).to be_nil
-  end
-
-  it 'keeps uploaded headings but does not promise email if enqueueing fails' do
-    login_as owner
-    allow(SubjectHeadings::ValidateJob).to receive(:perform_later).and_return(false)
-    patch path, params: { file: upload_csv("heading\nOriginal\n"), validate_authorities: '1' }
-    follow_redirect!
-    html = Nokogiri::HTML(response.body)
-    expect(html.at_css('.flash-alert').text).to include('headings have been saved', 'could not be queued')
-    expect(html.at_css('.flash-info')).to be_nil
-    expect(field.reload.subject_heading_inventory.subject_headings.pluck(:heading)).to eq(['Original'])
-  end
-
-  {
-    'not_requested' => 'Run authority check',
-    'completed' => 'Run authority check again',
-    'failed' => 'Retry authority check',
-    'queued' => 'Authority check queued',
-    'running' => 'Authority check in progress'
-  }.each do |status, label|
-    it "offers one saved-file authority check control for #{status}" do
-      inventory = import_headings(field)
-      inventory.update!(validation_status: status)
-      login_as owner
-      get path, headers: { 'X-Requested-With' => 'XMLHttpRequest' }
-      html = Nokogiri::HTML(response.body)
-      button = html.at_css('[data-subject-heading-configuration-target="savedCheck"] button')
-      expect(button.text).to eq(label)
-      expect(button.key?('disabled')).to eq(%w[queued running].include?(status))
-      expect(html.at_css('[data-subject-heading-configuration-target="uploadCheck"]').key?('hidden')).to be(true)
-      expect(html.at_css('#validate_authorities').key?('disabled')).to be(true)
-    end
-  end
-
   it 'reports malformed CSV without deleting the current inventory' do
     inventory = import_headings(field)
     login_as owner
     patch path, params: { file: upload_csv('bad header') }
     expect(response).to have_http_status(:unprocessable_entity)
-    error = Nokogiri::HTML(response.body).at_css('.validation[role="alert"] .validation_summary li')
+    error = Nokogiri::HTML(response.body).at_css('.input-file + .validation[role="alert"] .validation_summary li')
     expect(error.text).to include('requires a heading column')
     expect(field.reload.subject_heading_inventory.id).to eq(inventory.id)
   end
@@ -170,31 +124,8 @@ describe SubjectHeadingsController, :subject_headings do
     expect(response).to be_redirect
     get collection_subject_headings_report_path(owner, collection, field)
     expect(response).to be_redirect
-  end
-
-  it 'serves reports through an authorized private endpoint' do
-    inventory = import_headings(field)
-    inventory.update!(report_csv: SubjectHeadings::Report.generate(inventory.source_rows))
-    login_as owner
-    get collection_subject_headings_report_path(owner, collection, field)
-    expect(response.body).to eq(inventory.report_csv)
-    expect(response.headers['Cache-Control']).to include('private', 'no-store')
-  end
-
-  it 'presents a usable report with issues as the primary action, including older failed runs' do
-    inventory = import_headings(field)
-    rows = 30.times.map { |i| { 'heading' => "Term #{i}", 'result' => 'exact_match' } }
-    rows += 18.times.map { |i| { 'heading' => "Review #{i}", 'result' => 'possible_match' } }
-    rows << { 'heading' => 'Problem', 'result' => 'lookup_error' }
-    inventory.update!(validation_status: 'failed', report_csv: SubjectHeadings::Report.generate(rows), validation_error: 'Old failure message')
-    login_as owner
-    get path, headers: { 'X-Requested-With' => 'XMLHttpRequest' }
-    html = Nokogiri::HTML(response.body)
-    expect(html.text).to include('Authority check completed with 1 lookup error', '30 exact-label matches · 18 other results for review · 1 lookup error', SubjectHeadings::Report::REUPLOAD_INSTRUCTIONS)
-    expect(html.text).not_to include('Validation status', 'Old failure message', '0 headings were not checked', 'checked successfully')
-    download = html.css('a').find { |link| link.text == 'Download authority check report' }
-    expect(download['class']).to include('button')
-    expect(html.css('button.outline').map(&:text)).to include('Retry authority check')
+    get validation_path
+    expect(response).to be_redirect
   end
 
   it 'scopes configuration to the requested project' do
@@ -205,15 +136,12 @@ describe SubjectHeadingsController, :subject_headings do
     expect(response).to have_http_status(:not_found)
   end
 
-  it 'lets owners reupload an advisory report without accepting its suggestions' do
-    inventory = import_headings(field, "heading\nLocal term\n")
-    inventory.update!(report_csv: SubjectHeadings::Report.generate([
+  it 'lets owners upload a validation report in Configure without accepting its suggestions' do
+    validation_for(field, "heading\nLocal term\n", status: 'completed', report_csv: SubjectHeadings::Report.generate([
       { 'heading' => 'Local term', 'uri' => nil, 'suggested_heading' => 'Suggested term',
         'suggested_uri' => 'https://example.org/suggested', 'result' => 'possible_match', 'rationale' => 'Review this suggestion.' }
     ]))
     login_as owner
-    get path
-    expect(response.body).to include('Download authority check report')
     get collection_subject_headings_report_path(owner, collection, field)
     report = response.body
     patch path, params: { file: upload_csv(report) }
@@ -263,9 +191,137 @@ describe SubjectHeadingsController, :subject_headings do
       expect(response).to have_http_status(:forbidden)
       get collection_subject_headings_report_path(owner, collection, field)
       expect(response).to have_http_status(:forbidden)
-      post collection_subject_headings_retry_path(owner, collection, field)
+      post retry_path
+      expect(response).to have_http_status(:forbidden)
+      get new_validation_path
+      expect(response).to have_http_status(:forbidden)
+      post validation_path, params: { file: upload_csv("heading\nInjected\n") }
+      expect(response).to have_http_status(:forbidden)
+      get validation_path
+      expect(response).to have_http_status(:forbidden)
+      get collection_subject_headings_buttons_path(owner, collection, field)
       expect(response).to have_http_status(:forbidden)
       expect(field.reload.subject_heading_inventory).to be_nil
+      expect(field.subject_heading_validation).to be_nil
+    end
+  end
+
+  describe 'validation' do
+    before do
+      login_as owner
+      ActiveJob::Base.queue_adapter = :test
+    end
+
+    it 'opens the Validate modal with a disabled Start Validation button and a link to Configure' do
+      get new_validation_path, headers: xhr
+      html = Nokogiri::HTML(response.body)
+      expect(html.at_css('h3').text).to eq('Validate Subject Headings')
+      expect(html.text).to include('It does not save any headings to this field.', "Don't need to validate?", 'Maximum 10,000 rows.')
+      expect(html.at_css('button[type=submit]').text).to eq('Start Validation')
+      expect(html.at_css('button[type=submit]').key?('disabled')).to be(true)
+      expect(html.at_css("a[href='#{path}']").text).to eq('Configure Subject Headings')
+    end
+
+    it 'starts a background validation without saving headings and shows progress on the field row' do
+      expect do
+        post validation_path, params: { file: upload_csv("heading\nAgriculture\nAgriculture.\nAbolitionists\n") }, headers: xhr
+      end.to have_enqueued_job(SubjectHeadings::ValidateJob)
+      expect(response).to have_http_status(:created)
+      expect(response.headers['Location']).to eq(editor_path)
+      expect(field.reload.subject_heading_inventory).to be_nil
+      expect(field.subject_heading_validation).to have_attributes(status: 'queued', row_count: 3, total_count: 2)
+
+      get editor_path
+      html = Nokogiri::HTML(response.body)
+      expect(html.at_css('.flash-info').text).to include('Validation started.', owner.email)
+      buttons = html.at_css('.subject-heading-buttons')
+      expect(buttons['data-controller']).to eq('subject-heading-status')
+      expect(buttons.at_css('button[disabled]').text).to include('Validating… 0%')
+      expect(buttons.css('a.button').map(&:text)).to eq(['Configure Subject Headings'])
+
+      field.subject_heading_validation.update!(status: 'running', processed_count: 1)
+      get collection_subject_headings_buttons_path(owner, collection, field), headers: xhr
+      expect(Nokogiri::HTML(response.body).at_css('button[disabled]').text).to include('Validating… 50%')
+    end
+
+    it 'shows an inline error for an invalid file' do
+      post validation_path, params: { file: upload_csv("subject\nAgriculture\n") }, headers: xhr
+      expect(response).to have_http_status(:unprocessable_entity)
+      html = Nokogiri::HTML(response.body)
+      expect(html.at_css('.input-file + .validation[role="alert"]').text).to include('CSV requires a heading column.')
+      expect(html.at_css('h3').text).to eq('Validate Subject Headings')
+      expect(field.reload.subject_heading_validation).to be_nil
+    end
+
+    it 'reviews a finished validation with counts, report download and lookup error retry' do
+      rows = 30.times.map { |i| { 'heading' => "Term #{i}", 'result' => 'exact_match' } }
+      rows += 18.times.map { |i| { 'heading' => "Review #{i}", 'result' => 'possible_match' } }
+      rows << { 'heading' => 'Problem', 'result' => 'lookup_error' }
+      validation_for(field, status: 'completed_with_issues', report_csv: SubjectHeadings::Report.generate(rows), filename: 'local.csv')
+
+      get editor_path
+      review = Nokogiri::HTML(response.body).at_css("a.button[href='#{validation_path}']")
+      expect(review.text).to include('Review Validation')
+      expect(review.at_css('.subject-heading-badge').text).to eq('19')
+
+      get validation_path, headers: xhr
+      html = Nokogiri::HTML(response.body)
+      expect(html.at_css('h3').text).to eq('Review Subject Heading Validation')
+      expect(html.text).to include('Topics · local.csv', '49 headings were checked against Library of Congress authority records. Your headings have not been changed.')
+      counts = html.css('.subject-heading-counts > div').map { |cell| [cell.at_css('dt').text, cell.at_css('dd').text] }
+      expect(counts).to eq([['Exact matches', '30'], ['Possible matches to review', '18'], ['Lookup errors', '1']])
+      expect(html.css('h4').map(&:text)).to eq(['Apply Suggestions', 'Lookup Errors'])
+      expect(html.text).to include('1 heading could not be checked', 'No headings are saved to this field until you upload a file in Configure Subject Headings.')
+      expect(html.at_css("a.button[href='#{collection_subject_headings_report_path(owner, collection, field)}']").text).to eq('Download Validation Report')
+      expect(html.at_css("form[action='#{retry_path}'] button").text).to eq('Retry Lookup Errors')
+      expect(html.at_css("a[href='#{new_validation_path}']").text).to eq('Validate Another File')
+
+      expect { post retry_path, headers: xhr }.to have_enqueued_job(SubjectHeadings::ValidateJob)
+      expect(response).to have_http_status(:created)
+      expect(field.subject_heading_validation.reload).to have_attributes(status: 'queued', total_count: 1)
+      post retry_path
+      expect(response).to have_http_status(:conflict)
+    end
+
+    it 'omits lookup errors when there are none and does not allow a retry' do
+      validation_for(field, status: 'completed', report_csv: SubjectHeadings::Report.generate([{ 'heading' => 'Agriculture', 'result' => 'exact_match' }]))
+      get validation_path, headers: xhr
+      html = Nokogiri::HTML(response.body)
+      expect(html.css('h4').map(&:text)).to eq(['Apply Suggestions'])
+      expect(html.text).not_to include('Retry Lookup Errors')
+      post retry_path
+      expect(response).to have_http_status(:conflict)
+      get editor_path
+      expect(Nokogiri::HTML(response.body).at_css('.subject-heading-badge')).to be_nil
+    end
+
+    it 'shows a failed validation with a retry' do
+      validation_for(field, status: 'failed', error_message: 'Validation failed and no report could be produced. Please try again.')
+      get validation_path, headers: xhr
+      html = Nokogiri::HTML(response.body)
+      expect(html.at_css('.validation[role="alert"]').text).to include('no report could be produced')
+      expect(html.at_css("form[action='#{retry_path}'] button").text).to eq('Try Validation Again')
+    end
+
+    it 'serves reports through an authorized private endpoint' do
+      validation = validation_for(field, status: 'completed', report_csv: SubjectHeadings::Report.generate([{ 'heading' => 'Agriculture' }]), filename: 'local.csv')
+      get collection_subject_headings_report_path(owner, collection, field)
+      expect(response.body).to eq(validation.report_csv)
+      expect(response.headers['Cache-Control']).to include('private', 'no-store')
+      expect(response.headers['Content-Disposition']).to include('local_validation.csv')
+    end
+
+    it 'sends owners to the Validate modal before any validation exists' do
+      get validation_path
+      expect(response).to redirect_to(new_validation_path)
+      get collection_subject_headings_report_path(owner, collection, field)
+      expect(response).to have_http_status(:not_found)
+    end
+
+    it 'keeps the last validation when a file is configured' do
+      validation = validation_for(field, status: 'completed', report_csv: SubjectHeadings::Report.generate([{ 'heading' => 'Agriculture', 'result' => 'possible_match' }]))
+      patch path, params: { file: upload_csv("heading\nAgriculture\n") }
+      expect(field.reload.subject_heading_validation.id).to eq(validation.id)
     end
   end
 end

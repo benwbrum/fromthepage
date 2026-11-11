@@ -1,0 +1,11 @@
+-label = local_assigns[:label]
+.input-file data-controller="file-picker"
+  =file_field_tag :file, accept: '.csv,text/csv', required: required, 'aria-label': (label ? nil : 'Subject headings file'), 'aria-describedby': 'subject-heading-file-help', 'aria-invalid': (@error.present? ? 'true' : nil), data: { subject_headings_target: 'file', action: 'change->subject-headings#fileChosen' }
+  input type="text" placeholder="Click to browse a file" aria-hidden="true" tabindex="-1" readonly=true
+  button type="button" Browse
+-if @error
+  .validation role="alert"
+    ul.validation_summary
+      li =@error
+p#subject-heading-file-help.fgfaded CSV with a heading column and an optional URI or ID column. Maximum 10,000 rows.
+p =link_to 'Download CSV Template', collection_subject_headings_template_path(@collection.owner, @collection, @field)

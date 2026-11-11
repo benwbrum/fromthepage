@@ -41,22 +41,19 @@ describe 'Subject heading review regressions', :subject_headings, type: :request
 
   it 'offers owner recovery only for an expired validation claim' do
     subject_field = create(:transcription_field, :as_metadata, collection: collection, input_type: 'subject_headings')
-    inventory = import_headings(subject_field)
-    inventory.update!(validation_status: 'running', validation_token: 'old-attempt')
-    path = collection_subject_headings_path(owner, collection, subject_field)
+    validation = validation_for(subject_field, status: 'running', token: 'old-attempt')
+    path = collection_subject_headings_validation_path(owner, collection, subject_field)
     retry_path = collection_subject_headings_retry_path(owner, collection, subject_field)
     get path
-    expect(response.body).not_to include('Retry authority check')
+    expect(response.body).not_to include('Try Validation Again')
     post retry_path
     expect(response).to have_http_status(:conflict)
 
-    inventory.update_columns(updated_at: 20.minutes.ago)
-    get path
-    expect(response.body).to include('Retry authority check')
+    validation.update_columns(updated_at: 20.minutes.ago)
     ActiveJob::Base.queue_adapter = :test
     expect { post retry_path }.to have_enqueued_job(SubjectHeadings::ValidateJob)
-    expect(response).to redirect_to(path)
-    expect(inventory.reload.validation_status).to eq('queued')
-    expect(inventory.validation_token).not_to eq('old-attempt')
+    expect(response).to redirect_to(collection_edit_metadata_fields_path(owner, collection))
+    expect(validation.reload.status).to eq('queued')
+    expect(validation.token).not_to eq('old-attempt')
   end
 end

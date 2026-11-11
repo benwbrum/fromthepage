@@ -1,11 +1,13 @@
-h2 Subject headings authority check
-p ="Project: #{@collection.title} — #{@field.label}"
-p =@inventory.authority_check_title
--if @inventory.authority_check_outcome == 'failed'
-  p No usable authority check report could be produced. Your uploaded headings remain available. Retry the authority check from the configuration screen.
+h2 Subject heading validation
+p ="Project: #{@collection.title} — #{@field.label} · #{@validation.filename}"
+-if (counts = @validation.counts)
+  p ="#{number_with_delimiter(counts[:total])} headings were checked against Library of Congress authority records. Your headings have not been changed."
+  ul
+    li ="#{number_with_delimiter(counts[:exact])} exact matches"
+    li ="#{number_with_delimiter(counts[:possible])} possible matches to review"
+    -if counts[:errors].positive?
+      li ="#{number_with_delimiter(counts[:errors])} lookup errors"
+  p Suggestions are advisory. No headings are saved to this field until you upload a file in Configure Subject Headings.
 -else
-  p =@inventory.authority_check_summary
-  p Suggestions are advisory. A completed check does not mean every heading is approved or appropriate for your collection.
-  p =link_to 'Download authority check report', collection_subject_headings_report_url(@collection.owner, @collection, @field)
-p =SubjectHeadings::Report::REUPLOAD_INSTRUCTIONS
-p =link_to 'Configure Subject Headings', @configuration_url
+  p Validation failed and no report could be produced. Please validate the file again.
+p =link_to 'Review Validation', @review_url

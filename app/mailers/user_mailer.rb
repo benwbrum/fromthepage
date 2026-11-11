@@ -7,12 +7,12 @@ class UserMailer < ActionMailer::Base
 
   before_action :add_inline_attachments!
 
-  def subject_heading_validation_finished(inventory, recipient: nil)
-    @inventory = inventory
-    @field = inventory.transcription_field
+  def subject_heading_validation_finished(validation, recipient: nil)
+    @validation = validation
+    @field = validation.transcription_field
     @collection = @field.collection
-    @configuration_url = collection_subject_headings_url(@collection.owner, @collection, @field)
-    subject = inventory.authority_check_outcome == 'failed' ? 'Your subject headings authority check failed' : (inventory.authority_check_outcome == 'completed_with_issues' ? inventory.authority_check_title : 'Your subject headings authority check report is ready')
+    @review_url = collection_subject_headings_validation_url(@collection.owner, @collection, @field)
+    subject = validation.status == 'failed' ? 'Your subject heading validation failed' : 'Your subject heading validation is ready to review'
     mail to: (recipient || @collection.owner).email, subject: subject
   end
 

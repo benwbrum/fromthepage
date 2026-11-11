@@ -17,12 +17,12 @@ class SubjectHeadings::Import
     @field, @upload, @instructions = field, upload, instructions
   end
 
-  def call
-    raise ImportError, 'This field is not a subject-heading metadata field.' unless @field.subject_headings?
-    raise ImportError, 'Choose a CSV file.' unless @upload.respond_to?(:read) && @upload.respond_to?(:original_filename)
-    raise ImportError, 'CSV or report must be smaller than 16 MB.' if @upload.size > MAX_REPORT_BYTES
+  # Parses an uploaded CSV (or validation report) into heading/uri rows without saving anything.
+  def self.parse(upload)
+    raise ImportError, 'Choose a CSV file.' unless upload.respond_to?(:read) && upload.respond_to?(:original_filename)
+    raise ImportError, 'CSV or report must be smaller than 16 MB.' if upload.size > MAX_REPORT_BYTES
 
-    content = @upload.read(MAX_REPORT_BYTES + 1).to_s
+    content = upload.read(MAX_REPORT_BYTES + 1).to_s
     raise ImportError, 'CSV or report must be smaller than 16 MB.' if content.bytesize > MAX_REPORT_BYTES
     source_size = content.bytesize
     content = Utils::Csv::ReadCsv.decode(content)
@@ -54,20 +54,38 @@ class SubjectHeadings::Import
     raise ImportError, 'Active vocabulary must be 5 MB or smaller.' if active_bytes > MAX_BYTES
     raise ImportError, 'CSV contains no usable headings.' if rows.empty?
 
+    rows
+  rescue CSV::MalformedCSVError, ArgumentError => e
+    raise ImportError, "Malformed CSV: #{e.message}"
+  end
+
+  def self.unique(rows)
+    rows.uniq { |row| key(row['heading'], row['uri']) }
+  end
+
+  def self.filename(upload)
+    File.basename(upload.original_filename.to_s).truncate(255)
+  end
+
+  def initialize(field:, upload:, instructions: nil)
+    @field, @upload, @instructions = field, upload, instructions
+  end
+
+  def call
+    raise ImportError, 'This field is not a subject-heading metadata field.' unless @field.subject_headings?
+    rows = self.class.parse(@upload)
+
     @field.with_lock do
       @field.subject_heading_inventory&.destroy!
       inventory = @field.create_subject_heading_inventory!(
-        filename: File.basename(@upload.original_filename.to_s).truncate(255),
+        filename: self.class.filename(@upload),
         row_count: rows.size, source_rows: rows
       )
-      unique = rows.uniq { |row| self.class.key(row['heading'], row['uri']) }
-      inventory.subject_headings.insert_all!(unique.map do |row|
+      inventory.subject_headings.insert_all!(self.class.unique(rows).map do |row|
         row.merge('normalized_key' => self.class.key(row['heading'], row['uri']))
       end)
       @field.update!(subject_heading_instructions: @instructions) unless @instructions.nil?
       inventory
     end
-  rescue CSV::MalformedCSVError, ArgumentError => e
-    raise ImportError, "Malformed CSV: #{e.message}"
   end
 end

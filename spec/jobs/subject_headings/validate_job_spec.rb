@@ -4,160 +4,197 @@ describe SubjectHeadings::ValidateJob, :subject_headings do
   let!(:owner) { create(:unique_user, :owner) }
   let!(:collection) { create(:collection, owner_user_id: owner.id, works: []) }
   let!(:field) { create(:transcription_field, :as_metadata, collection: collection, input_type: 'subject_headings') }
-  let(:inventory) { import_headings(field) }
   let(:token) { SecureRandom.uuid }
+  let!(:validation) { validation_for(field, token: token) }
   let(:lookup) { instance_double(SubjectHeadings::AuthorityLookup, call: []) }
 
   before do
     Current.user = owner
     allow(SubjectHeadings::AuthorityLookup).to receive(:new).and_return(lookup)
-    inventory.update!(validation_status: 'queued', validation_token: token)
     ActionMailer::Base.deliveries.clear
   end
 
-  def run_job
-    described_class.perform_now(user_id: owner.id, inventory_id: inventory.id, token: token)
+  def run_job(id = validation.id)
+    described_class.perform_now(user_id: owner.id, validation_id: id, token: token)
   end
 
-  it 'queues optional validation without delaying inventory availability' do
-    inventory.update!(validation_status: 'not_requested')
-    ActiveJob::Base.queue_adapter = :test
-    expect { inventory.queue_validation!(user: owner) }.to have_enqueued_job(described_class).with(user_id: owner.id, inventory_id: inventory.id, token: kind_of(String))
-    expect(inventory.reload.validation_status).to eq('queued')
-    expect(inventory.subject_headings.count).to eq(1)
+  def report_results
+    validation.reload.report_rows.map { |row| [row['heading'], row['result']] }
   end
 
-  it 'keeps the inventory usable and retryable when enqueueing fails' do
-    inventory.update!(validation_status: 'not_requested')
-    allow(described_class).to receive(:perform_later).and_return(false)
-    inventory.queue_validation!(user: owner)
-    expect(inventory.reload.validation_status).to eq('failed')
-    expect(inventory.validation_error).to include('could not be queued')
-    expect(inventory.subject_headings.count).to eq(1)
+  def set_rows(headings)
+    validation.update!(source_rows: headings.map { |heading| { 'heading' => heading } }, row_count: headings.size, total_count: headings.size)
   end
 
-  it 'marks running during lookup and completes with a report and one email' do
+  describe 'starting a validation' do
+    it 'merges duplicate rows, queues the job and never saves headings to the field' do
+      ActiveJob::Base.queue_adapter = :test
+      upload = heading_upload("heading\nAgriculture\nAgriculture.\nAbolitionists\n", 'local.csv')
+      started = nil
+      expect { started = SubjectHeadingValidation.start!(field: field, upload: upload, user: owner) }
+        .to have_enqueued_job(described_class).with(user_id: owner.id, validation_id: kind_of(Integer), token: kind_of(String))
+      expect(started).to have_attributes(status: 'queued', filename: 'local.csv', row_count: 3, total_count: 2, duplicate_count: 1)
+      expect(SubjectHeadingValidation.exists?(validation.id)).to be(false)
+      expect(field.reload.subject_heading_inventory).to be_nil
+    end
+
+    it 'leaves a configured file untouched' do
+      inventory = import_headings(field, "heading\nSaved\n")
+      ActiveJob::Base.queue_adapter = :test
+      SubjectHeadingValidation.start!(field: field, upload: heading_upload("heading\nOther\n"), user: owner)
+      expect(field.reload.subject_heading_inventory.id).to eq(inventory.id)
+      expect(inventory.subject_headings.pluck(:heading)).to eq(['Saved'])
+    end
+
+    it 'records a failure when enqueueing fails' do
+      allow(described_class).to receive(:perform_later).and_return(false)
+      started = SubjectHeadingValidation.start!(field: field, upload: heading_upload("heading\nOriginal\n"), user: owner)
+      expect(started.reload.status).to eq('failed')
+      expect(started.error_message).to include('could not be started')
+      expect(started).to be_retryable
+    end
+  end
+
+  it 'marks running during lookup, tracks progress and completes with a report and one email' do
+    set_rows(%w[First Second])
+    seen = []
     allow(lookup).to receive(:call) do
-      expect(inventory.reload.validation_status).to eq('running')
+      seen << validation.reload.slice(:status, :processed_count)
       []
     end
     run_job
-    expect(inventory.reload.validation_status).to eq('completed')
-    expect(inventory.report_csv).to include('no_match_found')
-    expect(inventory.completed_at).to be_present
-    expect(inventory.notified_at).to be_present
+    expect(seen).to eq([{ 'status' => 'running', 'processed_count' => 0 }, { 'status' => 'running', 'processed_count' => 1 }])
+    expect(validation.reload.status).to eq('completed')
+    expect(validation.processed_count).to eq(2)
+    expect(validation.report_csv).to include('no_match_found')
+    expect(validation.completed_at).to be_present
+    expect(validation.notified_at).to be_present
     expect(ActionMailer::Base.deliveries.size).to eq(1)
     mail = ActionMailer::Base.deliveries.last
-    expect(mail.subject).to eq('Your subject headings authority check report is ready')
+    expect(mail.subject).to eq('Your subject heading validation is ready to review')
     expect(mail.to).to eq([owner.email])
-    path = Rails.application.routes.url_helpers.collection_subject_headings_path(owner, collection, field)
-    expect(mail.html_part.body.decoded).to include(path)
-    expect(mail.html_part.body.decoded).to include('Download authority check report')
+    path = Rails.application.routes.url_helpers.collection_subject_headings_validation_path(owner, collection, field)
+    expect(mail.html_part.body.decoded).to include(path, 'Review Validation', '2 headings were checked')
     run_job
     expect(ActionMailer::Base.deliveries.size).to eq(1)
   end
 
-  it 'never applies suggestions to the active inventory' do
-    before = inventory.subject_headings.first.attributes.slice('heading', 'uri')
+  it 'never saves suggestions or headings to the field' do
     allow(lookup).to receive(:call).and_return([{ 'aLabel' => 'Different term', 'uri' => 'http://id.loc.gov/authorities/subjects/sh1' }])
     run_job
-    expect(inventory.subject_headings.first.attributes.slice('heading', 'uri')).to eq(before)
-    expect(inventory.reload.report_csv).to include('possible_match')
-    expect(inventory.report_csv).not_to include('Different term')
+    expect(field.reload.subject_heading_inventory).to be_nil
+    expect(validation.reload.report_csv).to include('possible_match')
+    expect(validation.report_csv).not_to include('Different term')
   end
 
   it 'emails the requesting administrator when they differ from the collection owner' do
     requester = create(:unique_user, :admin)
-    described_class.perform_now(user_id: requester.id, inventory_id: inventory.id, token: token)
+    described_class.perform_now(user_id: requester.id, validation_id: validation.id, token: token)
     expect(ActionMailer::Base.deliveries.last.to).to eq([requester.email])
-    expect(inventory.reload.notified_at).to be_present
+    expect(validation.reload.notified_at).to be_present
   end
 
   it 'completes with issues when lookup errors are recorded in a usable report' do
     allow(lookup).to receive(:call).and_raise(SubjectHeadings::AuthorityLookup::LookupError, 'Timed out')
     run_job
-    expect(inventory.reload.validation_status).to eq('completed_with_issues')
-    expect(inventory.subject_headings.count).to eq(1)
-    expect(inventory.report_csv).to include('lookup_error', 'Timed out')
-    expect(inventory.report_csv).not_to include('no_match_found')
-    expect(ActionMailer::Base.deliveries.last.subject).to include('completed with 1 lookup error')
+    expect(validation.reload.status).to eq('completed_with_issues')
+    expect(validation.report_csv).to include('lookup_error', 'Timed out')
+    expect(validation.report_csv).not_to include('no_match_found')
+    expect(validation.counts).to eq(total: 1, exact: 0, possible: 0, errors: 1)
+    expect(ActionMailer::Base.deliveries.last.html_part.body.decoded).to include('1 lookup errors')
     run_job
     expect(ActionMailer::Base.deliveries.size).to eq(1)
   end
 
-  it 'retains successful rows in a partial report' do
-    inventory.update!(source_rows: [{ 'heading' => 'First' }, { 'heading' => 'Second' }])
-    allow(lookup).to receive(:call).with('First').and_return([])
-    allow(lookup).to receive(:call).with('Second').and_raise(SubjectHeadings::AuthorityLookup::LookupError, 'Network failure')
+  it 'counts exact matches, possible matches and lookup errors' do
+    set_rows(49.times.map { |i| "Term #{i}" })
+    allow(lookup).to receive(:call) do |heading|
+      raise SubjectHeadings::AuthorityLookup::LookupError, 'Authority response could not be processed.' if heading == 'Term 48'
+      heading == 'Term 0' ? [{ 'aLabel' => 'Term 0', 'uri' => 'http://id.loc.gov/authorities/subjects/sh0', 'evidence' => 'authority', 'authority_type' => 'Subject' }] : []
+    end
     run_job
-    expect(inventory.reload.validation_status).to eq('completed_with_issues')
-    expect(inventory.report_csv).to include('no_match_found', 'lookup_error')
-  end
-
-  it 'reports 48 successful headings and one issue without a confusing zero-skipped message' do
-    inventory.update!(source_rows: 49.times.map { |i| { 'heading' => "Term #{i}" } })
-    allow(lookup).to receive(:call).with('Term 48').and_raise(SubjectHeadings::AuthorityLookup::LookupError, 'Authority response could not be processed.')
-    original = inventory.subject_headings.pluck(:heading, :uri)
-    run_job
-    expect(inventory.reload.validation_status).to eq('completed_with_issues')
-    expect(inventory.authority_check_counts).to eq(total: 49, successful: 48, exact: 0, review: 48, failed: 1, unattempted: 0)
-    expect(inventory.authority_check_title).to eq('Authority check completed with 1 lookup error')
-    expect(inventory.authority_check_summary).to eq('0 exact-label matches · 48 other results for review · 1 lookup error')
-    mail = ActionMailer::Base.deliveries.last
-    expect(mail.subject).to eq('Authority check completed with 1 lookup error')
-    expect(mail.html_part.body.decoded).to include('0 exact-label matches · 48 other results for review · 1 lookup error', 'Download authority check report', 'copy its value into the heading or uri column')
-    expect(mail.html_part.body.decoded).not_to include('0 headings were not checked')
-    expect(inventory.subject_headings.pluck(:heading, :uri)).to eq(original)
+    expect(validation.reload.counts).to eq(total: 49, exact: 1, possible: 47, errors: 1)
+    expect(validation.badge_count).to eq(48)
+    expect(validation).to be_lookup_errors
   end
 
   it 'fails when no report can be generated and sends failure wording' do
     allow(SubjectHeadings::Report).to receive(:generate).and_raise(ArgumentError, 'Cannot generate report')
     run_job
-    expect(inventory.reload.validation_status).to eq('failed')
-    expect(inventory.report_csv).to be_nil
-    expect(inventory.authority_check_counts).to be_nil
-    expect(ActionMailer::Base.deliveries.last.subject).to eq('Your subject headings authority check failed')
-    expect(ActionMailer::Base.deliveries.last.html_part.body.decoded).to include('No usable authority check report could be produced')
+    expect(validation.reload.status).to eq('failed')
+    expect(validation.report_csv).to be_nil
+    expect(validation.counts).to be_nil
+    expect(validation).to be_retryable
+    expect(ActionMailer::Base.deliveries.last.subject).to eq('Your subject heading validation failed')
+    expect(ActionMailer::Base.deliveries.last.html_part.body.decoded).to include('no report could be produced')
   end
 
   it 'stops querying after repeated failures and labels remaining rows not checked' do
-    inventory.update!(source_rows: 10.times.map { |i| { 'heading' => "Term #{i}" } })
+    set_rows(10.times.map { |i| "Term #{i}" })
     allow(lookup).to receive(:call).and_raise(SubjectHeadings::AuthorityLookup::LookupError, 'Unavailable')
     run_job
     expect(lookup).to have_received(:call).exactly(3).times
-    rows = CSV.parse(inventory.reload.report_csv.delete_prefix("\uFEFF"), headers: true)
-    expect(rows.first(3).map { |row| row['result'] }).to eq(['lookup_error'] * 3)
-    expect(rows.drop(3).map { |row| row['result'] }).to eq(['not_checked'] * 7)
-    expect(rows[-1]['rationale']).to include('No request made')
-    expect(inventory.authority_check_counts).to eq(total: 10, successful: 0, exact: 0, review: 0, failed: 3, unattempted: 7)
+    expect(report_results.first(3).map(&:last)).to eq(['lookup_error'] * 3)
+    expect(report_results.drop(3).map(&:last)).to eq(['not_checked'] * 7)
+    expect(validation.counts).to eq(total: 10, exact: 0, possible: 0, errors: 10)
   end
 
-  it 'ignores an old job after replacement' do
-    old_id = inventory.id
-    replacement = import_headings(field, "heading\nReplacement\n")
-    described_class.perform_now(user_id: owner.id, inventory_id: old_id, token: token)
-    expect(replacement.reload.validation_status).to eq('not_requested')
-    expect(replacement.report_csv).to be_nil
-    expect(ActionMailer::Base.deliveries).to be_empty
-  end
-
-  it 'does not overwrite or notify when an inventory is replaced during lookup' do
-    replacement = nil
-    allow(lookup).to receive(:call) do
-      replacement = import_headings(field, "heading\nReplacement\n")
+  it 'retries only lookup errors and unchecked headings, keeping earlier results in order' do
+    set_rows(['=Formula', 'Second', 'Third'])
+    allow(lookup).to receive(:call) do |heading|
+      raise SubjectHeadings::AuthorityLookup::LookupError, 'Timed out' if heading == 'Second'
       []
     end
     run_job
-    expect(replacement.reload.validation_status).to eq('not_requested')
+    expect(report_results).to eq([['=Formula', 'no_match_found'], ['Second', 'lookup_error'], ['Third', 'no_match_found']])
+
+    ActiveJob::Base.queue_adapter = :test
+    expect(validation.queue!(user: owner)).to be_truthy
+    expect(validation.reload).to have_attributes(status: 'queued', total_count: 1, processed_count: 0)
+    allow(lookup).to receive(:call).and_return([])
+    described_class.perform_now(user_id: owner.id, validation_id: validation.id, token: validation.token)
+    expect(lookup).to have_received(:call).with('Second').twice
+    expect(lookup).to have_received(:call).with('=Formula').once
+    expect(validation.reload.status).to eq('completed')
+    expect(report_results).to eq([['=Formula', 'no_match_found'], ['Second', 'no_match_found'], ['Third', 'no_match_found']])
+    expect(validation.report_csv).to include("'=Formula").and(satisfy { |csv| !csv.include?("''=Formula") })
+  end
+
+  it 'does not offer a retry for a completed validation without lookup errors' do
+    run_job
+    expect(validation.reload).not_to be_retryable
+    expect(validation.queue!(user: owner)).to be(false)
+  end
+
+  it 'ignores an old job after the field is validated again' do
+    old_id = validation.id
+    replacement = validation_for(field, "heading\nReplacement\n")
+    run_job(old_id)
+    expect(replacement.reload.status).to eq('queued')
+    expect(replacement.report_csv).to be_nil
+    expect(lookup).not_to have_received(:call)
+    expect(ActionMailer::Base.deliveries).to be_empty
+  end
+
+  it 'does not overwrite or notify when a new validation replaces this one during lookup' do
+    replacement = nil
+    allow(lookup).to receive(:call) do
+      replacement = validation_for(field, "heading\nReplacement\n")
+      []
+    end
+    set_rows(%w[First Second])
+    run_job
+    expect(lookup).to have_received(:call).once
+    expect(replacement.reload.status).to eq('queued')
     expect(replacement.report_csv).to be_nil
     expect(ActionMailer::Base.deliveries).to be_empty
   end
 
   it 'ignores duplicate running deliveries and obsolete retry tokens' do
-    inventory.update!(validation_status: 'running')
+    validation.update!(status: 'running')
     run_job
     expect(lookup).not_to have_received(:call)
-    inventory.update!(validation_status: 'queued', validation_token: SecureRandom.uuid)
+    validation.update!(status: 'queued', token: SecureRandom.uuid)
     run_job
     expect(lookup).not_to have_received(:call)
   end
@@ -166,8 +203,8 @@ describe SubjectHeadings::ValidateJob, :subject_headings do
     allow(UserMailer).to receive(:subject_heading_validation_finished).and_raise(IOError, 'SMTP temporarily unavailable')
     ActiveJob::Base.queue_adapter = :test
     expect { run_job }.to have_enqueued_job(described_class)
-    expect(inventory.reload.validation_status).to eq('completed')
-    expect(inventory.notified_at).to be_nil
+    expect(validation.reload.status).to eq('completed')
+    expect(validation.notified_at).to be_nil
     allow(UserMailer).to receive(:subject_heading_validation_finished).and_call_original
     run_job
     expect(lookup).to have_received(:call).once
@@ -176,33 +213,33 @@ describe SubjectHeadings::ValidateJob, :subject_headings do
     expect(ActionMailer::Base.deliveries.size).to eq(1)
   end
 
-  it 'records unexpected processing failures without corrupting available headings' do
+  it 'records unexpected processing failures' do
     allow(lookup).to receive(:call).and_raise(ArgumentError, 'Unexpected response')
     run_job
-    expect(inventory.reload.validation_status).to eq('failed')
-    expect(inventory.validation_error).to include('uploaded headings remain available')
-    expect(inventory.subject_headings.count).to eq(1)
+    expect(validation.reload.status).to eq('failed')
+    expect(validation.error_message).to include('no report could be produced')
     expect(ActionMailer::Base.deliveries.size).to eq(1)
   end
 
   it 'does not perform authority requests for a user without project permission' do
     stranger = create(:unique_user)
-    described_class.perform_now(user_id: stranger.id, inventory_id: inventory.id, token: token)
-    expect(inventory.reload.validation_status).to eq('failed')
-    expect(inventory).to be_validation_retryable
+    described_class.perform_now(user_id: stranger.id, validation_id: validation.id, token: token)
+    expect(validation.reload.status).to eq('failed')
+    expect(validation).to be_retryable
     expect(lookup).not_to have_received(:call)
     expect(ActionMailer::Base.deliveries).to be_empty
   end
+
   it 'fails a queued attempt when its requester has been deleted' do
-    described_class.perform_now(user_id: -1, inventory_id: inventory.id, token: token)
-    expect(inventory.reload.validation_status).to eq('failed')
+    described_class.perform_now(user_id: -1, validation_id: validation.id, token: token)
+    expect(validation.reload.status).to eq('failed')
     expect(lookup).not_to have_received(:call)
   end
 
   it 'recovers an expired running claim on redelivery' do
-    inventory.update!(validation_status: 'running', updated_at: 20.minutes.ago)
+    validation.update!(status: 'running', updated_at: 20.minutes.ago)
     run_job
-    expect(inventory.reload.validation_status).to eq('completed')
+    expect(validation.reload.status).to eq('completed')
     expect(ActionMailer::Base.deliveries.size).to eq(1)
   end
 
@@ -211,7 +248,7 @@ describe SubjectHeadings::ValidateJob, :subject_headings do
     allow(lookup).to receive(:call) do
       calls += 1
       if calls == 1
-        inventory.update_columns(updated_at: 20.minutes.ago)
+        validation.update_columns(updated_at: 20.minutes.ago)
         run_job
         [{ 'aLabel' => 'Stale suggestion', 'uri' => 'http://id.loc.gov/authorities/subjects/sh1' }]
       else
@@ -219,41 +256,40 @@ describe SubjectHeadings::ValidateJob, :subject_headings do
       end
     end
     run_job
-    expect(inventory.reload.validation_status).to eq('completed')
-    expect(inventory.report_csv).not_to include('Stale suggestion')
+    expect(validation.reload.status).to eq('completed')
+    expect(validation.report_csv).not_to include('Stale suggestion')
     expect(ActionMailer::Base.deliveries.size).to eq(1)
   end
 
   it 'allows owner retry only after the running lease expires' do
-    inventory.update!(validation_status: 'running')
-    expect(inventory.queue_validation!(user: owner)).to be(false)
-    inventory.update_columns(updated_at: 20.minutes.ago)
-    expect(inventory).to be_validation_retryable
+    validation.update!(status: 'running')
+    expect(validation.queue!(user: owner)).to be(false)
+    validation.update_columns(updated_at: 20.minutes.ago)
+    expect(validation.reload).to be_retryable
     ActiveJob::Base.queue_adapter = :test
-    expect { inventory.queue_validation!(user: owner) }.to have_enqueued_job(described_class)
-    expect(inventory.reload.validation_token).not_to eq(token)
+    expect { validation.queue!(user: owner) }.to have_enqueued_job(described_class)
+    expect(validation.reload.token).not_to eq(token)
   end
 
   it 'continues after isolated errors rather than stopping at three cumulative failures' do
-    inventory.update!(source_rows: 8.times.map { |i| { 'heading' => "Term #{i}" } })
+    set_rows(8.times.map { |i| "Term #{i}" })
     allow(lookup).to receive(:call) do |heading|
       raise SubjectHeadings::AuthorityLookup::LookupError, 'HTTP 429' if %w[0 2 4].include?(heading.split.last)
       []
     end
     run_job
     expect(lookup).to have_received(:call).exactly(8).times
-    expect(inventory.reload.report_csv).not_to include('not_checked')
-    expect(inventory.validation_status).to eq('completed_with_issues')
+    expect(validation.reload.report_csv).not_to include('not_checked')
+    expect(validation.status).to eq('completed_with_issues')
   end
 
   it 'writes correlated lifecycle, row progress and notification events to a dedicated file' do
     run_job
-    contents = File.readlines(SubjectHeadings::ValidationLog.path(inventory.id)).select { |line| line.include?(token) }.join
+    contents = File.readlines(SubjectHeadings::ValidationLog.path(validation.id)).select { |line| line.include?(token) }.join
     expect(contents).to include('LC_AUTHORITY execution_started', 'LC_AUTHORITY processing_started',
       'LC_AUTHORITY row_started', 'LC_AUTHORITY row_finished', 'LC_AUTHORITY report_generated',
       'LC_AUTHORITY final_state_write', 'LC_AUTHORITY notification_finished', 'LC_AUTHORITY execution_ended')
-    expect(contents).to include("\"inventory_id\":#{inventory.id}", token, '"job_id":', '"total_rows":1')
-    expect(contents).not_to include('[LC authority]')
+    expect(contents).to include("\"validation_id\":#{validation.id}", token, '"job_id":', '"total_rows":1')
     expect(SubjectHeadings::AuthorityLookup).to have_received(:new).with(heartbeat: kind_of(Proc), logger: kind_of(ActiveSupport::Logger))
   end
 end
