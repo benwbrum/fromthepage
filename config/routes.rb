@@ -202,19 +202,6 @@ Fromthepage::Application.routes.draw do
     get ':bulk_export_id/download', to: 'bulk_export#download', as: 'download'
   end
 
-  scope 'ia', as: 'ia' do
-    get 'import_work', to: 'ia#import_work'
-    get 'book_form', to: 'ia#ia_book_form'
-    get 'manage', to: 'ia#manage'
-    get 'mark_beginning', to: 'ia#mark_beginning'
-    get 'mark_end', to: 'ia#mark_end'
-    get 'title_from_ocr_top', to: 'ia#title_from_ocr_top'
-    get 'title_from_ocr_bottom', to: 'ia#title_from_ocr_bottom'
-    post 'convert', to: 'ia#convert'
-    post 'import_work', to: 'ia#import_work'
-    match 'confirm_import', to: 'ia#confirm_import', via: [:get, :post]
-  end
-
   scope 'dashboard', as: 'dashboard' do
     get '/' => 'dashboard#index'
     get 'owner' => 'dashboard#owner'
@@ -311,6 +298,7 @@ Fromthepage::Application.routes.draw do
     get 'explore_manifest', to: 'sc_collections#explore_manifest'
     get 'explore_collection', to: 'sc_collections#explore_collection'
     post 'import_cdm', to: 'sc_collections#import_cdm'
+    post 'import_ia', to: 'sc_collections#import_ia'
     get 'cdm_bulk_import', to: 'sc_collections#cdm_bulk_import_new', as: 'cdm_bulk_import_new'
     post 'cdm_bulk_import', to: 'sc_collections#cdm_bulk_import_create', as: 'cdm_bulk_import_create'
     match 'import', to: 'sc_collections#import', via: [:get, :post]

@@ -80,8 +80,9 @@ en:
       volunteer_text: Each volunteer helps make history more accessible. We appreciate %{user_display_name}\'s contribution to our crowdsourcing effort!
       worked_on_collections: "%{user_name} has worked on the following collections by the following institutions:"
     ia_upload:
-      import_from_archive_dot_org: Import From Archive.org
+      import: Import
       import_from_the_internet_archive: Import from the Internet Archive
+      paste_in_the_url: Paste in the URL of an item on archive.org, such as https://archive.org/details/IDENTIFIER.
     landing_page:
       by: " by "
       institutions: Institutions

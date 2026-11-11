@@ -1,0 +1,640 @@
+{
+ "@context": "http://iiif.io/api/presentation/3/context.json",
+ "behavior": [
+  "paged"
+ ],
+ "homepage": [
+  {
+   "format": "text/html",
+   "id": "https://archive.org/details/mcht_c55_massey_26",
+   "label": {
+    "en": [
+     "Item Page on Internet Archive"
+    ]
+   },
+   "type": "Text"
+  }
+ ],
+ "id": "https://iiif.archive.org/iiif/mcht_c55_massey_26/manifest.json",
+ "items": [
+  {
+   "annotations": [
+    {
+     "id": "https://iiif.archive.org/iiif/3/annotations/mcht_c55_massey_26/mcht_c55_massey_26_djvu.xml/1.json",
+     "type": "AnnotationPage"
+    }
+   ],
+   "height": 4200,
+   "id": "https://iiif.archive.org/iiif/mcht_c55_massey_26$0/canvas",
+   "items": [
+    {
+     "id": "https://iiif.archive.org/iiif/mcht_c55_massey_26/annotationPage/0",
+     "items": [
+      {
+       "body": {
+        "format": "image/jpeg",
+        "id": "https://iiif.archive.org/image/iiif/3/mcht_c55_massey_26%2Fmcht_c55_massey_26_jp2.zip%2Fmcht_c55_massey_26_jp2%2Fmcht_c55_massey_26_0000.jp2/full/max/0/default.jpg",
+        "service": [
+         {
+          "id": "https://iiif.archive.org/image/iiif/3/mcht_c55_massey_26%2Fmcht_c55_massey_26_jp2.zip%2Fmcht_c55_massey_26_jp2%2Fmcht_c55_massey_26_0000.jp2",
+          "profile": "level2",
+          "type": "ImageService3"
+         }
+        ],
+        "type": "Image"
+       },
+       "id": "https://iiif.archive.org/iiif/mcht_c55_massey_26/annotation/0",
+       "motivation": "painting",
+       "target": "https://iiif.archive.org/iiif/mcht_c55_massey_26$0/canvas",
+       "type": "Annotation"
+      }
+     ],
+     "type": "AnnotationPage"
+    }
+   ],
+   "label": {
+    "none": [
+     "0"
+    ]
+   },
+   "type": "Canvas",
+   "width": 3302
+  },
+  {
+   "annotations": [
+    {
+     "id": "https://iiif.archive.org/iiif/3/annotations/mcht_c55_massey_26/mcht_c55_massey_26_djvu.xml/2.json",
+     "type": "AnnotationPage"
+    }
+   ],
+   "height": 4200,
+   "id": "https://iiif.archive.org/iiif/mcht_c55_massey_26$1/canvas",
+   "items": [
+    {
+     "id": "https://iiif.archive.org/iiif/mcht_c55_massey_26/annotationPage/1",
+     "items": [
+      {
+       "body": {
+        "format": "image/jpeg",
+        "id": "https://iiif.archive.org/image/iiif/3/mcht_c55_massey_26%2Fmcht_c55_massey_26_jp2.zip%2Fmcht_c55_massey_26_jp2%2Fmcht_c55_massey_26_0001.jp2/full/max/0/default.jpg",
+        "service": [
+         {
+          "id": "https://iiif.archive.org/image/iiif/3/mcht_c55_massey_26%2Fmcht_c55_massey_26_jp2.zip%2Fmcht_c55_massey_26_jp2%2Fmcht_c55_massey_26_0001.jp2",
+          "profile": "level2",
+          "type": "ImageService3"
+         }
+        ],
+        "type": "Image"
+       },
+       "id": "https://iiif.archive.org/iiif/mcht_c55_massey_26/annotation/1",
+       "motivation": "painting",
+       "target": "https://iiif.archive.org/iiif/mcht_c55_massey_26$1/canvas",
+       "type": "Annotation"
+      }
+     ],
+     "type": "AnnotationPage"
+    }
+   ],
+   "label": {
+    "none": [
+     "1"
+    ]
+   },
+   "type": "Canvas",
+   "width": 3319
+  }
+ ],
+ "label": {
+  "none": [
+   "Letter from Harry Massey to Barbara Massey [Jan. 01, 1940]"
+  ]
+ },
+ "metadata": [
+  {
+   "label": {
+    "none": [
+     "identifier"
+    ]
+   },
+   "value": {
+    "none": [
+     "mcht_c55_massey_26"
+    ]
+   }
+  },
+  {
+   "label": {
+    "none": [
+     "creator"
+    ]
+   },
+   "value": {
+    "none": [
+     "Massey, J. H."
+    ]
+   }
+  },
+  {
+   "label": {
+    "none": [
+     "date"
+    ]
+   },
+   "value": {
+    "none": [
+     "[1940]"
+    ]
+   }
+  },
+  {
+   "label": {
+    "none": [
+     "language"
+    ]
+   },
+   "value": {
+    "none": [
+     "english-handwritten"
+    ]
+   }
+  },
+  {
+   "label": {
+    "none": [
+     "mediatype"
+    ]
+   },
+   "value": {
+    "none": [
+     "texts"
+    ]
+   }
+  },
+  {
+   "label": {
+    "none": [
+     "rights"
+    ]
+   },
+   "value": {
+    "none": [
+     "For questions or information about duplication, licensing, or copyright status for this item, email <a href=\"mailto:specialcollections@middlebury.libanswers.com\" rel=\"ugc nofollow\">Middlebury College Special Collections</a>."
+    ]
+   }
+  },
+  {
+   "label": {
+    "none": [
+     "scanner"
+    ]
+   },
+   "value": {
+    "none": [
+     "Internet Archive Python library 1.8.1"
+    ]
+   }
+  },
+  {
+   "label": {
+    "none": [
+     "subject"
+    ]
+   },
+   "value": {
+    "none": [
+     "Correspondence",
+     "World War, 1939-1945",
+     "Great Britain - Army - Regiment of Foot, 22nd (Cheshire)",
+     "Massey, Barbara",
+     "manuscripts"
+    ]
+   }
+  },
+  {
+   "label": {
+    "none": [
+     "title"
+    ]
+   },
+   "value": {
+    "none": [
+     "Letter from Harry Massey to Barbara Massey [Jan. 01, 1940]"
+    ]
+   }
+  },
+  {
+   "label": {
+    "none": [
+     "addeddate"
+    ]
+   },
+   "value": {
+    "none": [
+     "2018-12-03 19:11:00"
+    ]
+   }
+  },
+  {
+   "label": {
+    "none": [
+     "identifier-access"
+    ]
+   },
+   "value": {
+    "none": [
+     "http://archive.org/details/mcht_c55_massey_26"
+    ]
+   }
+  },
+  {
+   "label": {
+    "none": [
+     "identifier-ark"
+    ]
+   },
+   "value": {
+    "none": [
+     "ark:/13960/t0sr68q7w"
+    ]
+   }
+  },
+  {
+   "label": {
+    "none": [
+     "collection"
+    ]
+   },
+   "value": {
+    "none": [
+     "middlebury-historic-texts",
+     "middleburycollege",
+     "americana"
+    ]
+   }
+  },
+  {
+   "label": {
+    "none": [
+     "notes"
+    ]
+   },
+   "value": {
+    "none": [
+     "A full-text transcription for this object is available by selecting TEXT from the download options on this page.",
+     "Please contact <a href=\"mailto:specialcollections@middlebury.libanswers.com\" rel=\"ugc nofollow\">Middlebury College Special Collections</a> to report errors, provide additional information, or make other suggestions and help improve our cataloging for this item."
+    ]
+   }
+  },
+  {
+   "label": {
+    "none": [
+     "related"
+    ]
+   },
+   "value": {
+    "none": [
+     "http://fromthepage.com/middleburycollege/letters-from-world-war-ii-j-h-massey/letter-from-harry-massey-to-barbara-massey-0fbd1a80-dd3e-44b7-b8da-34bef64ff61c"
+    ]
+   }
+  },
+  {
+   "label": {
+    "none": [
+     "source"
+    ]
+   },
+   "value": {
+    "none": [
+     "C55"
+    ]
+   }
+  },
+  {
+   "label": {
+    "none": [
+     "rightsstatement"
+    ]
+   },
+   "value": {
+    "none": [
+     "http://rightsstatements.org/vocab/CNE/1.0/"
+    ]
+   }
+  },
+  {
+   "label": {
+    "none": [
+     "transcript"
+    ]
+   },
+   "value": {
+    "none": [
+     "Lieut J. H. Massey, Garrison Mess, 301st I.T.C., Oswestry. Darling Barbara, I will have to write quickly as the post goes in a few minutes. I'm afraid there is no alteration in the destination & I am still booked for the Middle East. Four other people arrived with me, & we went straight to see the Adjutant. He was unable to tell me much at all - except that this is one of the Assembly Points for the Draft - & we may be sent off any time. Two days - 4 or 5 days - or anything. So that does not help so very much. I don't know what you will think about\ncoming up darling. I'm afraid if you did it might just be disappointing. And on the other hand, we may not see each other for so long. You decide what to do darling. I hope this will arrive on Monday & I will write again tomorrow. I cant tell you how I felt leaving you today. It was just too sad for words. All my love to you sweetheart. Always your Harry.\nOn His Majesty's Service. Postmark 14 SEP 1940, Shropshire Mrs H Massey, Stanmore"
+    ]
+   }
+  },
+  {
+   "label": {
+    "none": [
+     "foldoutcount"
+    ]
+   },
+   "value": {
+    "none": [
+     "0"
+    ]
+   }
+  },
+  {
+   "label": {
+    "none": [
+     "ocr"
+    ]
+   },
+   "value": {
+    "none": [
+     "tesseract 5.3.0-6-g76ae: language not currently OCRable"
+    ]
+   }
+  },
+  {
+   "label": {
+    "none": [
+     "ocr_module_version"
+    ]
+   },
+   "value": {
+    "none": [
+     "0.0.21"
+    ]
+   }
+  },
+  {
+   "label": {
+    "none": [
+     "page_number_confidence"
+    ]
+   },
+   "value": {
+    "none": [
+     "0"
+    ]
+   }
+  },
+  {
+   "label": {
+    "none": [
+     "page_number_module_version"
+    ]
+   },
+   "value": {
+    "none": [
+     "1.0.5"
+    ]
+   }
+  },
+  {
+   "label": {
+    "none": [
+     "pdf_degraded"
+    ]
+   },
+   "value": {
+    "none": [
+     "invalid-jp2-headers"
+    ]
+   }
+  },
+  {
+   "label": {
+    "none": [
+     "pdf_module_version"
+    ]
+   },
+   "value": {
+    "none": [
+     "0.0.25"
+    ]
+   }
+  },
+  {
+   "label": {
+    "none": [
+     "ai-note"
+    ]
+   },
+   "value": {
+    "none": [
+     "Text appearing in the 'ai-summary' field of this record was automatically generated using ChatGPT 3.5 and may not have been reviewed by a human reader."
+    ]
+   }
+  },
+  {
+   "label": {
+    "none": [
+     "ai-summary"
+    ]
+   },
+   "value": {
+    "none": [
+     "In the letter, Lieut J. H. Massey informs his wife, Barbara, about his continued deployment to the Middle East. He mentions uncertainty about when they might be sent off, possibly within two to five days. Massey expresses his sadness at leaving Barbara and leaves the decision to her regarding whether she should visit him before he departs. The letter is signed \\Always your Harry\\ and includes a postmark dated September 14, 1940."
+    ]
+   }
+  },
+  {
+   "label": {
+    "none": [
+     "inclusive-description-statement"
+    ]
+   },
+   "value": {
+    "none": [
+     "https://www.middlebury.edu/library/special-collections/about/language-archival-and-library-catalogs"
+    ]
+   }
+  }
+ ],
+ "partOf": [
+  {
+   "id": "https://iiif.archive.org/iiif/middlebury-historic-texts/collection.json",
+   "type": "Collection"
+  },
+  {
+   "id": "https://iiif.archive.org/iiif/middleburycollege/collection.json",
+   "type": "Collection"
+  },
+  {
+   "id": "https://iiif.archive.org/iiif/americana/collection.json",
+   "type": "Collection"
+  }
+ ],
+ "provider": [
+  {
+   "homepage": [
+    {
+     "format": "text/html",
+     "id": "https://archive.org",
+     "label": {
+      "en": [
+       "Internet Archive Homepage"
+      ]
+     },
+     "type": "Text"
+    }
+   ],
+   "id": "https://archive.org",
+   "label": {
+    "en": [
+     "The Internet Archive"
+    ]
+   },
+   "logo": [
+    {
+     "format": "image/png",
+     "height": 79,
+     "id": "https://archive.org/images/glogo.png",
+     "type": "Image",
+     "width": 79
+    }
+   ],
+   "type": "Agent"
+  }
+ ],
+ "rendering": [
+  {
+   "format": "application/x-bittorrent",
+   "id": "https://archive.org/download/mcht_c55_massey_26/mcht_c55_massey_26_archive.torrent",
+   "label": {
+    "en": [
+     "Archive BitTorrent"
+    ]
+   },
+   "type": "Dataset"
+  },
+  {
+   "format": "application/gzip",
+   "id": "https://archive.org/download/mcht_c55_massey_26/mcht_c55_massey_26_chocr.html.gz",
+   "label": {
+    "en": [
+     "chOCR"
+    ]
+   },
+   "type": "Text"
+  },
+  {
+   "format": "application/xml",
+   "id": "https://archive.org/download/mcht_c55_massey_26/mcht_c55_massey_26_djvu.xml",
+   "label": {
+    "en": [
+     "Djvu XML"
+    ]
+   },
+   "type": "Dataset"
+  },
+  {
+   "format": "text/html",
+   "id": "https://archive.org/download/mcht_c55_massey_26/mcht_c55_massey_26_hocr.html",
+   "label": {
+    "en": [
+     "hOCR"
+    ]
+   },
+   "type": "Text"
+  },
+  {
+   "format": "application/gzip",
+   "id": "https://archive.org/download/mcht_c55_massey_26/mcht_c55_massey_26_hocr_searchtext.txt.gz",
+   "label": {
+    "en": [
+     "OCR Search Text"
+    ]
+   },
+   "type": "Text"
+  },
+  {
+   "format": "application/zip",
+   "id": "https://archive.org/download/mcht_c55_massey_26/mcht_c55_massey_26_jp2.zip",
+   "label": {
+    "en": [
+     "Single Page Processed JP2 ZIP"
+    ]
+   },
+   "type": "Image"
+  }
+ ],
+ "rights": "http://creativecommons.org/licenses/by/4.0/legalcode",
+ "seeAlso": [
+  {
+   "format": "application/json",
+   "id": "https://archive.org/metadata/mcht_c55_massey_26",
+   "label": {
+    "en": [
+     "Item Metadata"
+    ]
+   },
+   "type": "Metadata"
+  },
+  {
+   "format": "application/json",
+   "id": "https://archive.org/download/mcht_c55_massey_26/mcht_c55_massey_26_hocr_pageindex.json.gz",
+   "label": {
+    "en": [
+     "OCR Page Index"
+    ]
+   },
+   "type": "Dataset"
+  },
+  {
+   "format": "application/json",
+   "id": "https://archive.org/download/mcht_c55_massey_26/mcht_c55_massey_26_page_numbers.json",
+   "label": {
+    "en": [
+     "Page Numbers JSON"
+    ]
+   },
+   "type": "Dataset"
+  },
+  {
+   "format": "application/xml",
+   "id": "https://archive.org/download/mcht_c55_massey_26/mcht_c55_massey_26_scandata.xml",
+   "label": {
+    "en": [
+     "Scandata"
+    ]
+   },
+   "type": "Dataset"
+  }
+ ],
+ "service": [
+  {
+   "@context": "http://iiif.io/api/search/1/context.json",
+   "@id": "https://iiif.archive.org/iiif/search/mcht_c55_massey_26",
+   "@type": "SearchService1",
+   "profile": "http://iiif.io/api/search/1/search"
+  }
+ ],
+ "summary": {
+  "none": [
+   "<p>This is a scanned copy of the original manuscript, held by Middlebury College Special Collections (Middlebury, Vt.)</p>"
+  ]
+ },
+ "thumbnail": [
+  {
+   "format": "image/jpeg",
+   "height": 229,
+   "id": "https://iiif.archive.org/image/iiif/2/mcht_c55_massey_26%2f__ia_thumb.jpg/full/180,/0/default.jpg",
+   "service": [
+    {
+     "@id": "https://iiif.archive.org/image/iiif/2/mcht_c55_massey_26%2F__ia_thumb.jpg",
+     "@type": "ImageService2",
+     "format": "image/jpeg",
+     "profile": "http://iiif.io/api/image/2/level2.json"
+    }
+   ],
+   "type": "Image",
+   "width": 180
+  }
+ ],
+ "type": "Manifest",
+ "viewingDirection": "left-to-right"
+}
