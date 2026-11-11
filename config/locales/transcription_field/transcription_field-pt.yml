@@ -96,9 +96,6 @@ pt:
       input_type: Tipo de entrada
       reorder_column: Reordenar coluna
     new_field_form:
-      subject_heading_count:
-        one: "%{count} cabeçalho configurado"
-        other: "%{count} cabeçalhos configurados"
       configure_options: Configurar opções
       configure_spreadsheet: Configurar planilha
       delete_field: Excluir campo
@@ -107,4 +104,7 @@ pt:
       input_type: Tipo de entrada
       page_number: Número de página
       reorder_field: Reordenar campo
+      subject_heading_count:
+        one: "%{count} cabeçalho configurado"
+        other: "%{count} cabeçalhos configurados"
       width_percentage: Porcentagem de largura

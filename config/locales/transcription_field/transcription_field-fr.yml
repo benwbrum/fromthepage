@@ -96,9 +96,6 @@ fr:
       input_type: Type d'entrée
       reorder_column: Réorganiser la colonne
     new_field_form:
-      subject_heading_count:
-        one: "%{count} vedette configurée"
-        other: "%{count} vedettes configurées"
       configure_options: Configurer les options
       configure_spreadsheet: Configurer la feuille de calcul
       delete_field: Supprimer le champ
@@ -107,4 +104,7 @@ fr:
       input_type: Type d'entrée
       page_number: Numéro de page
       reorder_field: Champ de réorganisation
+      subject_heading_count:
+        one: "%{count} vedette configurée"
+        other: "%{count} vedettes configurées"
       width_percentage: Pourcentage de largeur
