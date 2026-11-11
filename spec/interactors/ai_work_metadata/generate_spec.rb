@@ -23,8 +23,6 @@ describe AiWorkMetadata::Generate do
   before do
     Current.user = owner
     allow_any_instance_of(AiWorkMetadata::Lib::Gemini::GenerateHandler).to receive(:perform).and_return(handler_response)
-    allow_any_instance_of(AiWorkMetadata::Lib::Claude::GenerateHandler).to receive(:perform).and_return(handler_response)
-    allow_any_instance_of(AiWorkMetadata::Lib::OpenAi::GenerateHandler).to receive(:perform).and_return(handler_response)
   end
 
   context 'when the response is valid JSON matching the expected fields' do
@@ -37,23 +35,26 @@ describe AiWorkMetadata::Generate do
     end
   end
 
-  context 'when the model is a claude model' do
-    let(:model) { 'claude-sonnet-4-6' }
+  it 'calls the Gemini handler with the stored model and prompt' do
+    handler = instance_double(AiWorkMetadata::Lib::Gemini::GenerateHandler, perform: handler_response)
+    expect(AiWorkMetadata::Lib::Gemini::GenerateHandler).to receive(:new)
+      .with(model: model, prompt: 'Sample prompt').and_return(handler)
 
-    it 'uses the claude handler' do
-      expect(result.success?).to be_truthy
-      ai_work_metadata.reload
-      expect(ai_work_metadata.metadata_json).to eq({ text_field.id.to_s => 'A great title' })
-    end
+    expect(result.success?).to be_truthy
   end
 
-  context 'when the model is an openai model' do
-    let(:model) { 'gpt-4o' }
+  %w[claude-sonnet-4-6 gpt-4o unknown-model].each do |unsupported_model|
+    context "when a queued record uses #{unsupported_model}" do
+      let(:model) { unsupported_model }
 
-    it 'uses the openai handler' do
-      expect(result.success?).to be_truthy
-      ai_work_metadata.reload
-      expect(ai_work_metadata.metadata_json).to eq({ text_field.id.to_s => 'A great title' })
+      it 'fails before constructing an API handler and preserves the record model' do
+        expect(AiWorkMetadata::Lib::Gemini::GenerateHandler).not_to receive(:new)
+
+        expect(result.success?).to be_falsey
+        expect(result.full_errors.message).to eq('AI Draft Metadata generation only supports Gemini models')
+        expect(ai_work_metadata.reload.model).to eq(model)
+        expect(ai_work_metadata.metadata_json).to be_nil
+      end
     end
   end
 

@@ -58,6 +58,13 @@ class AiWorkMetadata < ApplicationRecord
     error: 'error'
   }, prefix: :status
 
+  def self.validate_generation_model!(model)
+    raise ArgumentError, 'AI Draft Metadata generation only supports Gemini models' unless model.to_s.start_with?('gemini-')
+
+    model
+  end
+
+  # Retain provider attribution for historical drafts; generation only supports Gemini.
   def engine
     self.class.engine_for_model(model)
   end
