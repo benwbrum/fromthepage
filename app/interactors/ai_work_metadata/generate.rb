@@ -17,6 +17,8 @@ class AiWorkMetadata::Generate < ApplicationInteractor
   end
 
   def perform
+    AiWorkMetadata.validate_generation_model!(@ai_work_metadata.model)
+
     response_text, reasoning, metadata, _response = generate_handler.perform
 
     handle_response(response_text, reasoning, metadata)
@@ -46,20 +48,9 @@ class AiWorkMetadata::Generate < ApplicationInteractor
   end
 
   def generate_handler
-    @generate_handler ||= handler_class.new(
+    @generate_handler ||= AiWorkMetadata::Lib::Gemini::GenerateHandler.new(
       model: @ai_work_metadata.model,
       prompt: @ai_work_metadata.prompt
     )
-  end
-
-  def handler_class
-    case @ai_work_metadata.engine
-    when 'claude'
-      AiWorkMetadata::Lib::Claude::GenerateHandler
-    when 'openai'
-      AiWorkMetadata::Lib::OpenAi::GenerateHandler
-    else
-      AiWorkMetadata::Lib::Gemini::GenerateHandler
-    end
   end
 end

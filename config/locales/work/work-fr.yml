@@ -45,7 +45,7 @@ fr:
       create:
         success: Tâche de brouillon de métadonnées par IA lancée.
       form:
-        description: Générer des brouillons de métadonnées de cette œuvre par IA avec Gemini et Claude.
+        description: Générer des brouillons de métadonnées de cette œuvre par IA avec Gemini.
         drafts_heading: Brouillons
         generate: Générer un brouillon de métadonnées par IA
         heading: Brouillon de métadonnées par IA

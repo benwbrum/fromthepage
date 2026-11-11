@@ -1,6 +1,6 @@
 module AiWorkMetadata::Lib::Common
   def sanitize_model
-    @model ||= AiWorkMetadata::DEFAULT_MODEL
+    AiWorkMetadata.validate_generation_model!(@model || AiWorkMetadata::DEFAULT_MODEL)
   end
 
   def build_prompt
