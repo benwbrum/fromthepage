@@ -26,6 +26,7 @@ class AiWorkMetadata < ApplicationRecord
   self.table_name = 'ai_work_metadata'
 
   DEFAULT_MODEL = 'gemini-3.7-flash'
+  SUBJECT_HEADING_MODEL = 'gemini-3.6-flash'
   MAX_FAILED_ERRORS = 100
   FE_COLOR_STATUSES = {
     finished: '#6C2',
@@ -35,6 +36,9 @@ class AiWorkMetadata < ApplicationRecord
   }.freeze
 
   belongs_to :work
+  # AI subject heading suggestions, keyed by subject heading field id like metadata_json:
+  # { '<field id>' => [{ 'heading' => ..., 'uri' => ... }, ...] }
+  serialize :subject_heading_candidates, coder: JSON
   has_one :collection, through: :work
 
   # TODO: We need to upgrade our DB version to utilize native json column field.

@@ -295,4 +295,38 @@ describe Work do
       end
     end
   end
+
+  describe '#plaintext_for_ai' do
+    let(:work) { create(:work) }
+    let!(:human_page) { create(:page, work: work, position: 1, status: :transcribed, xml_text: "<?xml version='1.0' encoding='UTF-8'?><page><p>First page by a person</p></page>") }
+    let!(:ai_page) { create(:page, work: work, position: 2, status: :new) }
+    let!(:blank_page) { create(:page, work: work, position: 3, status: :blank) }
+
+    before do
+      create(:ai_transcription, page_id: ai_page.id, source_text: 'Second page read by AI', status: :finished)
+      create(:ai_transcription, page_id: blank_page.id, source_text: 'Ignored', status: :finished)
+    end
+
+    it 'combines human transcription with AI transcription for untranscribed pages, skipping blank pages' do
+      expect(work.reload.plaintext_for_ai).to eq("First page by a person\n\n\nSecond page read by AI")
+      expect(work.machine_plaintext_for_ai?).to be_truthy
+    end
+
+    it 'loads AI text for all pages at once' do
+      work.reload
+      queries = 0
+      counter = ->(*) { queries += 1 }
+      ActiveSupport::Notifications.subscribed(counter, 'sql.active_record') do
+        work.plaintext_for_ai
+        work.machine_plaintext_for_ai?
+      end
+
+      expect(queries).to eq(3) # pages, latest finished AI transcription ids, and their text
+    end
+
+    it 'is not machine text when every page has a human transcription' do
+      ai_page.update_columns(status: 'transcribed', xml_text: "<?xml version='1.0' encoding='UTF-8'?><page><p>Second page by a person</p></page>")
+      expect(work.reload.machine_plaintext_for_ai?).to be_falsey
+    end
+  end
 end

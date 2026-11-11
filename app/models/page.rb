@@ -646,6 +646,42 @@ class Page < ApplicationRecord
     end
   end
 
+  # Text for AI prompts: the page's human transcription, or its latest finished AI transcription
+  # if nobody has transcribed it yet
+  def plaintext_for_ai
+    human_plaintext_for_ai.presence || machine_plaintext_for_ai
+  end
+
+  def machine_plaintext_for_ai?
+    human_plaintext_for_ai.blank? && machine_plaintext_for_ai.present?
+  end
+
+  def human_plaintext_for_ai
+    return '' if status_new? || status_blank?
+
+    @human_plaintext_for_ai ||= verbatim_transcription_plaintext.to_s.strip
+  end
+
+  attr_writer :machine_plaintext_for_ai
+
+  def machine_plaintext_for_ai
+    @machine_plaintext_for_ai ||= ai_transcription_plaintext(finished_ai_transcription)
+  end
+
+  # Loads the AI text plaintext_for_ai needs for many pages in two queries that fetch only text
+  # columns, instead of a query per page that also loads prompts and reasoning
+  def self.preload_plaintext_for_ai(pages)
+    pages = pages.reject do |page|
+      page.status_blank? || page.human_plaintext_for_ai.present? || page.instance_variable_defined?(:@machine_plaintext_for_ai)
+    end
+    return if pages.empty?
+
+    latest_ids = AiTranscription.status_finished.where(page_id: pages.map(&:id)).group(:page_id).maximum(:id).values
+    latest = AiTranscription.where(id: latest_ids).select(:id, :page_id, :source_text, :transcription_json).index_by(&:page_id)
+
+    pages.each { |page| page.machine_plaintext_for_ai = page.send(:ai_transcription_plaintext, latest[page.id]) }
+  end
+
   def ai_plaintext_has_emoji_placeholders?
     self.ai_plaintext.include?('🤔')
   end
@@ -874,6 +910,14 @@ class Page < ApplicationRecord
       end
     end
     values.join(' ')
+  end
+
+  def ai_transcription_plaintext(ai_transcription)
+    return '' if ai_transcription.nil?
+
+    text = ai_transcription.source_text.presence
+    text ||= field_transcription_json_to_plaintext(ai_transcription.transcription_json) if ai_transcription.transcription_json.present?
+    text.to_s.strip
   end
 
   def field_transcription_json_to_plaintext(transcription_json)

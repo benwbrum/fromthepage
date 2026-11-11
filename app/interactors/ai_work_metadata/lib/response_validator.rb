@@ -1,7 +1,8 @@
 class AiWorkMetadata::Lib::ResponseValidator
-  SKIP_TYPES = %w[instruction].freeze
+  SKIP_TYPES = %w[instruction subject_headings].freeze
 
   def initialize(collection:, response_text:)
+    @subject_field_ids = collection.metadata_fields.select(&:subject_headings?).map { |f| f.id.to_s }
     @response_text = response_text
     @fields = collection.metadata_fields.reject { |f| SKIP_TYPES.include?(f.input_type) }
     @errors = []
@@ -12,6 +13,7 @@ class AiWorkMetadata::Lib::ResponseValidator
     parse_json
     return false if @parsed_json.nil?
 
+    @subject_field_ids.each { |id| @parsed_json.delete(id) }
     validate_field_keys
     validate_field_types
     @errors.empty?

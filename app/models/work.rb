@@ -332,6 +332,17 @@ class Work < ApplicationRecord
       .join("\n\n\n")
   end
 
+  # Text for AI prompts: human transcription where pages have it, AI transcription elsewhere
+  def plaintext_for_ai
+    Page.preload_plaintext_for_ai(pages)
+    pages.reject(&:status_blank?).map(&:plaintext_for_ai).compact_blank.join("\n\n\n")
+  end
+
+  def machine_plaintext_for_ai?
+    Page.preload_plaintext_for_ai(pages)
+    pages.any? { |page| !page.status_blank? && page.machine_plaintext_for_ai? }
+  end
+
   def ai_metadata_draft_available?
     finished_ai_work_metadata_by_engine.any?
   end

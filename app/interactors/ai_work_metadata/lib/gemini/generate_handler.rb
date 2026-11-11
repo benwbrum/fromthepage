@@ -9,9 +9,16 @@ class AiWorkMetadata::Lib::Gemini::GenerateHandler
   VERSION_MAP = ::Gemini::ModelSupport::VERSION_MAP
   REASONING_MAP = ::Gemini::ModelSupport::REASONING_MAP
 
-  def initialize(prompt:, model:)
+  # @params system_instruction: optional
+  #   - Text sent ahead of the prompt that is the same for every request (e.g. a vocabulary),
+  #     so Gemini can cache it across requests
+  # @params json_response: optional
+  #   - Ask Gemini to respond with JSON only
+  def initialize(prompt:, model:, system_instruction: nil, json_response: false)
     @prompt = prompt
     @model = model
+    @system_instruction = system_instruction
+    @json_response = json_response
   end
 
   def perform
@@ -85,15 +92,12 @@ class AiWorkMetadata::Lib::Gemini::GenerateHandler
       }
     }
 
-    if REASONING_MAP[@model]
-      @payload = @payload.merge({
-        generation_config: {
-          thinking_config: {
-            include_thoughts: true
-          }
-        }
-      })
-    end
+    @payload[:system_instruction] = { parts: [{ text: @system_instruction }] } if @system_instruction.present?
+
+    generation_config = {}
+    generation_config[:thinking_config] = { include_thoughts: true } if REASONING_MAP[@model]
+    generation_config[:response_mime_type] = 'application/json' if @json_response
+    @payload[:generation_config] = generation_config if generation_config.any?
 
     @payload
   end
@@ -124,6 +128,7 @@ class AiWorkMetadata::Lib::Gemini::GenerateHandler
       prompt_token_count: usage['promptTokenCount'],
       candidates_token_count: usage['candidatesTokenCount'],
       thoughts_token_count: usage['thoughtsTokenCount'],
+      cached_content_token_count: usage['cachedContentTokenCount'],
       total_token_count: usage['totalTokenCount']
     }.compact
   end

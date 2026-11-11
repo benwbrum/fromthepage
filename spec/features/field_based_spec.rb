@@ -52,11 +52,11 @@ describe 'collection field-based transcription settings' do
     end
     within '#new-fields tr:nth-child(4)' do
       fill_in 'transcription_fields__label', with: 'Second field'
-      select 'textarea', from: 'transcription_fields__input_type'
+      select 'Text Area', from: 'transcription_fields__input_type'
     end
     within '#new-fields tr:nth-child(5)' do
       fill_in 'transcription_fields__label', with: 'Third field'
-      select 'select', from: 'transcription_fields__input_type'
+      select 'Select', from: 'transcription_fields__input_type'
     end
     click_button 'Save'
 
@@ -144,7 +144,7 @@ describe 'collection field-based transcription settings' do
 
     line_two_fields = page.all('#new-fields tbody').last.all('tr.sortable-field')
     line_two_fields.first.fill_in('transcription_fields__label', with: 'Spreadsheet field')
-    line_two_fields.first.select('spreadsheet', from: 'transcription_fields__input_type')
+    line_two_fields.first.select('Spreadsheet', from: 'transcription_fields__input_type')
 
     click_button 'Add Additional Field'
     page
