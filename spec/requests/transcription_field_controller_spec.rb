@@ -453,15 +453,44 @@ describe TranscriptionFieldController do
   end
 
   describe 'GET line_form' do
+    def line_form(collection_id: collection.slug, line_count: 'Line 1')
+      get transcription_field_line_form_path,
+          params: { collection_id: collection_id, line_count: line_count, field_type: 'transcription' }, xhr: true
+    end
+
     it 'denies a signed-out XHR' do
-      get transcription_field_line_form_path, params: { line_count: 'Line 1', field_type: 'transcription' }, xhr: true
+      line_form
+
+      expect(response).to have_http_status(:created)
+      expect(response.headers['Location']).to end_with(dashboard_path)
+    end
+
+    it 'denies a signed-in non-owner XHR' do
+      login_as stranger
+      line_form
+
+      expect(response).to have_http_status(:created)
+      expect(response.headers['Location']).to end_with(collection_path(owner, collection))
+    end
+
+    it 'denies a request with no collection_id' do
+      login_as owner
+      line_form(collection_id: nil)
 
       expect(response).to have_http_status(:created)
     end
 
-    it 'renders for any signed-in user' do
-      login_as stranger
-      get transcription_field_line_form_path, params: { line_count: 'Line 1', field_type: 'transcription' }, xhr: true
+    it 'renders the next line for the owner' do
+      login_as owner
+      line_form
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include('Line 2')
+    end
+
+    it 'does not raise when line_count is missing' do
+      login_as owner
+      line_form(line_count: nil)
 
       expect(response).to have_http_status(:ok)
     end

@@ -121,10 +121,11 @@ class TranscriptionFieldController < ApplicationController
   end
 
   def line_form
-    # Renders an empty form row. It reads no record and changes nothing.
-    require_permission(:signed_in)
+    # Renders an empty form row. It reads no record, but only the field editor of the
+    # collection's owner calls it, so require that rather than just a signed-in user.
+    require_permission(:collection_owner, @collection)
 
-    @line_count = params[:line_count].strip.next
+    @line_count = params[:line_count].to_s.strip.next
     @count = @line_count.split(' ').last.to_i
     @field_type = params[:field_type]
     respond_to do |format|
