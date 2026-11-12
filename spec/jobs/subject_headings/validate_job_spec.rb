@@ -285,7 +285,7 @@ describe SubjectHeadings::ValidateJob, :subject_headings do
 
   it 'writes correlated lifecycle, row progress and notification events to a dedicated file' do
     run_job
-    contents = File.readlines(SubjectHeadings::ValidationLog.path(validation.id)).select { |line| line.include?(token) }.join
+    contents = File.readlines(SubjectHeadings::ValidationLog.path).select { |line| line.include?(token) }.join
     expect(contents).to include('LC_AUTHORITY execution_started', 'LC_AUTHORITY processing_started',
       'LC_AUTHORITY row_started', 'LC_AUTHORITY row_finished', 'LC_AUTHORITY report_generated',
       'LC_AUTHORITY final_state_write', 'LC_AUTHORITY notification_finished', 'LC_AUTHORITY execution_ended')

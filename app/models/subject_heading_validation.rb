@@ -29,10 +29,6 @@ class SubjectHeadingValidation < ApplicationRecord
     validation
   end
 
-  def log_file
-    SubjectHeadings::ValidationLog.path(id)
-  end
-
   def in_progress?
     %w[queued running].include?(status)
   end

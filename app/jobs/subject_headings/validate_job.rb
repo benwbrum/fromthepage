@@ -2,7 +2,7 @@ class SubjectHeadings::ValidateJob < ApplicationJob
   queue_as :subject_headings
 
   def perform(user_id:, validation_id:, token:)
-    path = SubjectHeadings::ValidationLog.path(validation_id)
+    path = SubjectHeadings::ValidationLog.path
     Rails.logger.info("LC_AUTHORITY job_log #{ { validation_id: validation_id, job_id: job_id, path: path.to_s }.to_json}")
     SubjectHeadings::ValidationLog.open(validation_id: validation_id, job_id: job_id, token: token) do |logger|
       @validation_logger = logger

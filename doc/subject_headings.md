@@ -250,11 +250,8 @@ modernization and vocabulary history remain outside this feature.
 
 ## Validation job logs
 
-Like the upload-specific DocumentUpload process log and collection-specific
-CONTENTdm sync log, each subject-heading validation has a dedicated append-only
-logfile: `log/subject_headings/validation_<ID>.log`. It remains under Rails `log`,
-not the public directory. Locate it in the Rails console with
-`SubjectHeadingValidation.find(ID).log_file`.
+All subject-heading validations write to one dedicated append-only logfile,
+`log/subject_headings.log`, under Rails `log` rather than the public directory.
 
 The Rails application log records a `LC_AUTHORITY job_log` entry linking each
 execution to that path. The dedicated file includes UTC timestamps, severity,
@@ -267,14 +264,14 @@ Unexpected errors include their message and backtrace. An `execution_ended`
 entry indicates the delivery exited; check `final_state_write` to establish that
 the validation was finalized. Forced process kills may prevent a final entry.
 
-For example, `tail -f log/subject_headings/validation_123.log` follows a validation,
-and `rg 'LC_AUTHORITY row_finished' log/subject_headings/validation_123.log` finds
-completed rows. Filter by validation token for a single attempt. `processed_count`
+For example, `tail -f log/subject_headings.log | grep '"validation_id":123'` follows
+a validation, and `rg '"validation_id":123.*LC_AUTHORITY row_finished' log/subject_headings.log`
+finds its completed rows. Filter by validation token for a single attempt. `processed_count`
 on the validation drives the field row's progress; the report persists at the end.
 The file logger inherits the Rails logging level; bounded response bodies require
 DEBUG. Logs include heading text and identifiers, and are not exposed as public
-links. Files append across retries and are not deleted when the validation is
-replaced; normal application log retention should include this directory.
+links. The file appends across validations and retries and is not trimmed when a
+validation is replaced; normal application log retention should include it.
 
 ## Verification
 
