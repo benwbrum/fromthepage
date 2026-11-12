@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 # SEC-02: every TranscriptionFieldController action requires the collection owner (or an
-# admin). Records are looked up through their collection, so ids from another collection
-# can't be used. Mutations no longer go over GET.
+# admin). Every request carries collection_id and fields are looked up through @collection,
+# so ids from another collection can't be used. Mutations no longer go over GET.
 describe TranscriptionFieldController do
   before do
     Current.user = owner
@@ -19,6 +19,9 @@ describe TranscriptionFieldController do
   let!(:spreadsheet_field) do
     create(:transcription_field, :as_transcription, :spreadsheet_field,
            collection_id: collection.id, label: 'Sheet', top_offset: 0.0, bottom_offset: 0.0)
+  end
+  let!(:metadata_field) do
+    create(:transcription_field, :as_metadata, collection_id: collection.id, label: 'Meta', input_type: 'multiselect')
   end
   let!(:column) { create(:spreadsheet_column, transcription_field_id: spreadsheet_field.id, label: 'Column', position: 1) }
 
@@ -170,8 +173,15 @@ describe TranscriptionFieldController do
       expect(TranscriptionField.where(label: 'Brand new', collection_id: other_collection.id)).to be_empty
     end
 
+    it 'flashes an error and falls back to a text field when a select has no options' do
+      login_as owner
+      add_fields(collection_id: collection.slug, fields: [{ id: field.id, label: 'Original', line_number: 1, input_type: 'select' }])
+
+      expect(flash[:error]).to eq(I18n.t('transcription_field.add_fields.must_have_options_list'))
+      expect(field.reload.input_type).to eq('text')
+    end
+
     it 'updates metadata fields too (they are not in Collection#transcription_fields)' do
-      metadata_field = create(:transcription_field, :as_metadata, collection_id: collection.id, label: 'Meta')
       login_as owner
       post transcription_field_add_fields_path, params: {
         collection_id: collection.slug,
@@ -212,13 +222,49 @@ describe TranscriptionFieldController do
     end
   end
 
+  describe 'DELETE delete (metadata field)' do
+    it 'lets the owner delete a metadata field' do
+      login_as owner
+      delete transcription_field_delete_path, params: { field_id: metadata_field.id, collection_id: collection.slug }
+
+      expect(TranscriptionField.exists?(metadata_field.id)).to be(false)
+    end
+  end
+
   describe 'POST save_multiselect_options' do
+    def save_multiselect(field_id:, collection_id:)
+      post transcription_field_save_multiselect_options_path(field_id),
+           params: { collection_id: collection_id, options: 'a;b' }
+    end
+
     it 'denies a signed-in non-owner' do
       login_as stranger
-      post transcription_field_save_multiselect_options_path(field.id), params: { transcription_field_id: field.id, options: ['x'] }
+      save_multiselect(field_id: metadata_field.id, collection_id: collection.id)
 
       expect_denied_signed_in
-      expect(field.reload.options).to be_nil
+      expect(metadata_field.reload.options).to be_nil
+    end
+
+    it 'denies a request with no collection_id' do
+      login_as other_owner
+      save_multiselect(field_id: metadata_field.id, collection_id: nil)
+
+      expect(response).to have_http_status(:see_other)
+      expect(metadata_field.reload.options).to be_nil
+    end
+
+    it "doesn't let another collection's owner change the field through their own collection" do
+      login_as other_owner
+      save_multiselect(field_id: metadata_field.id, collection_id: other_collection.id)
+
+      expect(metadata_field.reload.options).to be_nil
+    end
+
+    it 'lets the owner save the options' do
+      login_as owner
+      save_multiselect(field_id: metadata_field.id, collection_id: collection.id)
+
+      expect(metadata_field.reload.options).to eq('a;b')
     end
   end
 
@@ -246,7 +292,7 @@ describe TranscriptionFieldController do
         login_as owner
         delete transcription_field_spreadsheet_column_delete_path, params: params
 
-        expect(response).to redirect_to(transcription_field_spreadsheet_column_path(spreadsheet_field.id))
+        expect(response).to redirect_to(transcription_field_spreadsheet_column_path(spreadsheet_field.id, collection_id: collection))
         expect(SpreadsheetColumn.exists?(column.id)).to be(false)
       end
 
@@ -279,10 +325,24 @@ describe TranscriptionFieldController do
       end
     end
 
+    describe 'POST add_columns (validation)' do
+      it 'flashes an error when starting rows is blank' do
+        login_as owner
+        post transcription_field_spreadsheet_column_add_columns_path, params: {
+          collection_id: collection.id,
+          transcription_field_id: spreadsheet_field.id,
+          starting_rows: '',
+          spreadsheet_columns: [{ id: column.id, label: 'Column', input_type: 'text' }]
+        }
+
+        expect(flash[:error]).to eq(I18n.t('transcription_field.add_columns.starting_rows_must_not_be_blank'))
+      end
+    end
+
     describe 'PATCH enable_ruler / disable_ruler' do
       it 'denies a signed-in non-owner' do
         login_as stranger
-        patch transcription_field_spreadsheet_column_enable_ruler_path(spreadsheet_field)
+        patch transcription_field_spreadsheet_column_enable_ruler_path(spreadsheet_field, collection_id: collection.slug)
 
         expect_denied_signed_in
         expect(spreadsheet_field.reload.row_highlight).to be_falsey
@@ -290,17 +350,32 @@ describe TranscriptionFieldController do
 
       it 'lets the owner toggle the ruler' do
         login_as owner
-        patch transcription_field_spreadsheet_column_enable_ruler_path(spreadsheet_field)
+        patch transcription_field_spreadsheet_column_enable_ruler_path(spreadsheet_field, collection_id: collection.slug)
         expect(spreadsheet_field.reload.row_highlight).to be(true)
 
-        patch transcription_field_spreadsheet_column_disable_ruler_path(spreadsheet_field)
+        patch transcription_field_spreadsheet_column_disable_ruler_path(spreadsheet_field, collection_id: collection.slug)
         expect(spreadsheet_field.reload.row_highlight).to be(false)
+      end
+
+      it 'denies a request with no collection_id' do
+        login_as owner
+        patch transcription_field_spreadsheet_column_enable_ruler_path(spreadsheet_field)
+
+        expect(response).to have_http_status(:see_other)
+        expect(spreadsheet_field.reload.row_highlight).to be_falsey
+      end
+
+      it "doesn't let another collection's owner toggle it through their own collection" do
+        login_as other_owner
+        patch transcription_field_spreadsheet_column_enable_ruler_path(spreadsheet_field, collection_id: other_collection.slug)
+
+        expect(spreadsheet_field.reload.row_highlight).to be_falsey
       end
 
       it 'cannot be triggered over GET' do
         login_as owner
         begin
-          get "/transcription_field/spreadsheet_column/#{spreadsheet_field.id}/enable_ruler"
+          get "/transcription_field/spreadsheet_column/#{spreadsheet_field.id}/enable_ruler", params: { collection_id: collection.slug }
         rescue ActionController::RoutingError
           # no matching GET route at all is also fine
         end
@@ -314,14 +389,14 @@ describe TranscriptionFieldController do
         login_as owner
         expect do
           post transcription_field_spreadsheet_column_save_offset_path(spreadsheet_field, other_page),
-               params: { selector: 'xywh=pixel:0,100,50,200' }
+               params: { collection_id: collection.slug, selector: 'xywh=pixel:0,100,50,200' }
         end.not_to(change { spreadsheet_field.reload.top_offset })
       end
 
       it 'lets the owner save the offset for a page in the collection' do
         login_as owner
         post transcription_field_spreadsheet_column_save_offset_path(spreadsheet_field, page),
-             params: { selector: 'xywh=pixel:0,100,50,200' }
+             params: { collection_id: collection.slug, selector: 'xywh=pixel:0,100,50,200' }
 
         expect(spreadsheet_field.reload.top_offset).to eq(0.1)
       end
@@ -336,9 +411,9 @@ describe TranscriptionFieldController do
     [
       [:edit_fields, -> { collection_edit_fields_path(owner, collection) }],
       [:edit_metadata_fields, -> { collection_edit_metadata_fields_path(owner, collection) }],
-      [:multiselect_form, -> { transcription_field_configure_multiselect_options_path(field.id) }],
-      [:edit_columns, -> { transcription_field_spreadsheet_column_path(spreadsheet_field.id) }],
-      [:choose_offset, -> { transcription_field_spreadsheet_column_choose_offset_path(spreadsheet_field.id) }]
+      [:multiselect_form, -> { transcription_field_configure_multiselect_options_path(metadata_field.id, collection_id: collection.slug) }],
+      [:edit_columns, -> { transcription_field_spreadsheet_column_path(spreadsheet_field.id, collection_id: collection.slug) }],
+      [:choose_offset, -> { transcription_field_spreadsheet_column_choose_offset_path(spreadsheet_field.id, collection_id: collection.slug) }]
     ].each do |action, path|
       describe action.to_s do
         it 'denies a signed-in non-owner' do
@@ -355,6 +430,25 @@ describe TranscriptionFieldController do
           expect(response).to have_http_status(:ok)
         end
       end
+    end
+  end
+
+  describe 'GET column_form' do
+    let(:path) { "/transcription_field/spreadsheet_column/#{spreadsheet_field.id}/column_form" }
+
+    it 'denies a signed-in non-owner XHR' do
+      login_as stranger
+      get path, params: { collection_id: collection.slug }, xhr: true
+
+      expect(response).to have_http_status(:created)
+      expect(response.headers['Location']).to end_with(collection_path(owner, collection))
+    end
+
+    it 'renders for the owner' do
+      login_as owner
+      get path, params: { collection_id: collection.slug }, xhr: true
+
+      expect(response).to have_http_status(:ok)
     end
   end
 

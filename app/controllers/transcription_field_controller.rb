@@ -1,20 +1,21 @@
 class TranscriptionFieldController < ApplicationController
-  include ActiveModel::Validations
-
   enforce_permission_checks
 
-  # Loads @transcription_field / @collection before any action runs, so each action can
-  # call require_permission on its first line. line_form has no record.
-  before_action :load_permission_context, except: [:line_form]
+  # @collection is loaded from params[:collection_id] by ApplicationController, so every
+  # action that acts on a field receives collection_id and looks the field up *through*
+  # @collection. A field id from another collection is a 404.
 
   def multiselect_form
     require_permission(:collection_owner, @collection)
+
+    # multiselect is a metadata-only input type
+    @transcription_field = @collection.metadata_fields.find(params[:transcription_field_id])
   end
 
   def save_multiselect
     require_permission(:collection_owner, @collection)
 
-    transcription_field = require_transcription_field
+    transcription_field = @collection.metadata_fields.find(params[:transcription_field_id])
     transcription_field.options = params[:options]
     transcription_field.save!
     ajax_redirect_to collection_edit_metadata_fields_path(@collection.owner, @collection)
@@ -23,7 +24,8 @@ class TranscriptionFieldController < ApplicationController
   def delete
     require_permission(:collection_owner, @collection)
 
-    field = require_transcription_field
+    # Serves both the transcription and the metadata field editors
+    field = TranscriptionField.where(collection_id: @collection.id).find(params[:field_id])
     field.remove_from_list
     field.destroy
     redirect_to collection_edit_fields_path(@collection.owner, @collection)
@@ -55,6 +57,7 @@ class TranscriptionFieldController < ApplicationController
 
     field_type = params[:field_type]
     new_fields = params[:transcription_fields]
+    error_messages = []
 
 
     new_fields.each_with_index do |fields, index|
@@ -67,20 +70,20 @@ class TranscriptionFieldController < ApplicationController
           fields[:options] = nil
           if fields[:input_type] == 'select'
             fields[:input_type] = 'text'
-            errors.add(:base, t('.must_have_options_list'))
+            error_messages << t('.must_have_options_list')
           end
         else
           fields[:options].gsub!(/;\s/, ';')
         end
         if fields[:id].blank?
           # if the field doesn't exist, create a new one
-          transcription_field = collection_fields.new(transcription_field_params(fields))
+          transcription_field = TranscriptionField.where(collection_id: @collection.id).new(transcription_field_params(fields))
           transcription_field.starting_rows = 1
           transcription_field.field_type = field_type
           transcription_field.save
         else
           # otherwise update field if anything changed
-          transcription_field = collection_fields.find(fields[:id])
+          transcription_field = TranscriptionField.where(collection_id: @collection.id).find(fields[:id])
           transcription_field.label = fields[:label]
           transcription_field.input_type = fields[:input_type]
           transcription_field.options = fields[:options] if fields[:input_type] == 'select'
@@ -91,8 +94,8 @@ class TranscriptionFieldController < ApplicationController
         end
       end
     end
-    if errors[:base].any?
-      flash[:error] = errors[:base].uniq.join(' ')
+    if error_messages.any?
+      flash[:error] = error_messages.uniq.join(' ')
     end
     if params[:done].nil?
       if field_type == TranscriptionField::FieldType::TRANSCRIPTION
@@ -109,7 +112,8 @@ class TranscriptionFieldController < ApplicationController
   def reorder_fields
     require_permission(:collection_owner, @collection)
 
-    fields = collection_fields
+    # Serves both the transcription and the metadata field editors
+    fields = TranscriptionField.where(collection_id: @collection.id)
     Array(params[:field]).each_with_index do |id, index|
       fields.where(id: id).update_all(position: index + 1, line_number: params[:line])
     end
@@ -134,7 +138,7 @@ class TranscriptionFieldController < ApplicationController
 
     @line_count = 1
     @count = 1
-    require_transcription_field
+    @transcription_field = @collection.transcription_fields.find(params[:transcription_field_id])
     respond_to do |format|
       format.js
     end
@@ -143,15 +147,17 @@ class TranscriptionFieldController < ApplicationController
   def edit_columns
     require_permission(:collection_owner, @collection)
 
-    @current_columns = require_transcription_field.spreadsheet_columns.order(:position)
+    @transcription_field = @collection.transcription_fields.find(params[:transcription_field_id])
+    @current_columns = @transcription_field.spreadsheet_columns.order(:position)
   end
 
   def add_columns
     require_permission(:collection_owner, @collection)
 
-    require_transcription_field
+    @transcription_field = @collection.transcription_fields.find(params[:transcription_field_id])
+    error_messages = []
     if params[:starting_rows].blank?
-      errors.add(:base, t('.starting_rows_must_not_be_blank'))
+      error_messages << t('.starting_rows_must_not_be_blank')
     else
       @transcription_field.update(starting_rows: params[:starting_rows].to_i)
     end
@@ -165,7 +171,7 @@ class TranscriptionFieldController < ApplicationController
           column[:options] = nil
           if column[:input_type] == 'select'
             column[:input_type] = 'text'
-            errors.add(:base, t('.must_have_options_list'))
+            error_messages << t('.must_have_options_list')
           end
         else
           column[:options].gsub!(/;\s/, ';')
@@ -184,11 +190,11 @@ class TranscriptionFieldController < ApplicationController
         end
       end
     end
-    if errors[:base].any?
-      flash[:error] = errors[:base].uniq.join(' ')
+    if error_messages.any?
+      flash[:error] = error_messages.uniq.join(' ')
     end
     if params[:done].nil?
-      redirect_to transcription_field_spreadsheet_column_path(@transcription_field.id)
+      redirect_to transcription_field_spreadsheet_column_path(@transcription_field.id, collection_id: @collection)
     else
       redirect_to transcription_field_edit_fields_path(collection_id: @collection.slug)
     end
@@ -198,7 +204,8 @@ class TranscriptionFieldController < ApplicationController
   def reorder_columns
     require_permission(:collection_owner, @collection)
 
-    columns = require_transcription_field.spreadsheet_columns
+    transcription_field = @collection.transcription_fields.find(params[:field_id])
+    columns = transcription_field.spreadsheet_columns
     Array(params[:column]).each_with_index do |id, index|
       columns.where(id: id).update_all(position: index + 1)
     end
@@ -208,31 +215,33 @@ class TranscriptionFieldController < ApplicationController
   def delete_column
     require_permission(:collection_owner, @collection)
 
-    transcription_field = require_transcription_field
+    transcription_field = @collection.transcription_fields.find(params[:field_id])
     column = transcription_field.spreadsheet_columns.find(params[:spreadsheet_column_id])
     column.remove_from_list
     column.destroy
-    redirect_to transcription_field_spreadsheet_column_path(transcription_field.id)
+    redirect_to transcription_field_spreadsheet_column_path(transcription_field.id, collection_id: @collection)
   end
 
   def enable_ruler
     require_permission(:collection_owner, @collection)
 
-    require_transcription_field.update(row_highlight: true)
-    redirect_to transcription_field_spreadsheet_column_path(@transcription_field.id)
+    transcription_field = @collection.transcription_fields.find(params[:transcription_field_id])
+    transcription_field.update(row_highlight: true)
+    redirect_to transcription_field_spreadsheet_column_path(transcription_field.id, collection_id: @collection)
   end
 
   def disable_ruler
     require_permission(:collection_owner, @collection)
 
-    require_transcription_field.update(row_highlight: false)
-    redirect_to transcription_field_spreadsheet_column_path(@transcription_field.id)
+    transcription_field = @collection.transcription_fields.find(params[:transcription_field_id])
+    transcription_field.update(row_highlight: false)
+    redirect_to transcription_field_spreadsheet_column_path(transcription_field.id, collection_id: @collection)
   end
 
   def choose_offset
     require_permission(:collection_owner, @collection)
 
-    require_transcription_field
+    @transcription_field = @collection.transcription_fields.find(params[:transcription_field_id])
     @page = @collection.pages.sample(1).first
     # shared/_osd_div builds collection_monitor_view_path from @work, which was never set
     # here, so the page raised a 500.
@@ -242,7 +251,7 @@ class TranscriptionFieldController < ApplicationController
   def save_offset
     require_permission(:collection_owner, @collection)
 
-    transcription_field = require_transcription_field
+    transcription_field = @collection.transcription_fields.find(params[:transcription_field_id])
     # load_objects_from_params loaded @page from page_id with no check on which collection it
     # belongs to. Re-scope it, so a page from another collection is a 404.
     @page = @collection.pages.find(params[:page_id])
@@ -255,45 +264,10 @@ class TranscriptionFieldController < ApplicationController
     transcription_field.top_offset = raw_y.to_f / @page.base_height
     transcription_field.bottom_offset = 1.0 - ((raw_h.to_f + raw_y.to_f).to_f / @page.base_height)
     transcription_field.save!
-    ajax_redirect_to transcription_field_spreadsheet_column_path(transcription_field.id)
+    ajax_redirect_to transcription_field_spreadsheet_column_path(transcription_field.id, collection_id: @collection)
   end
 
   private
-
-  # Resolves the collection being acted on from the most specific param available.
-  #
-  # A transcription field id (transcription_field_id or field_id) wins: @collection becomes
-  # the field's own collection, replacing whatever load_objects_from_params set from
-  # collection_id or page_id. If collection_id was also sent and names a different
-  # collection, the ids don't belong together, so it's a 404.
-  #
-  # Otherwise @collection is whatever ApplicationController loaded from collection_id (nil
-  # if absent, which require_permission then denies).
-  def load_permission_context
-    field_id = params[:transcription_field_id].presence || params[:field_id].presence
-    return if field_id.nil?
-
-    @transcription_field = TranscriptionField.find(field_id)
-    field_collection = @transcription_field.collection
-
-    if params[:collection_id].present? && @collection != field_collection
-      raise ActiveRecord::RecordNotFound, "TranscriptionField #{field_id} is not in collection #{params[:collection_id]}"
-    end
-
-    @collection = field_collection
-  end
-
-  # For actions that need a field. The field has already been authorized through its
-  # collection by load_permission_context + require_permission.
-  def require_transcription_field
-    @transcription_field || raise(ActiveRecord::RecordNotFound, 'transcription field id is required')
-  end
-
-  # Every field in @collection, transcription *and* metadata. Collection#transcription_fields
-  # is scoped to transcription fields only, but add_fields / reorder_fields serve both.
-  def collection_fields
-    TranscriptionField.where(collection_id: @collection.id)
-  end
 
   def transcription_field_params(fields)
     fields.permit(:label, :input_type, :options, :line_number, :page_number, :percentage)

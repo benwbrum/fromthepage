@@ -7,14 +7,14 @@ div.columns
     h3 =t('.screen_ruler')
     p= t('.screen_ruler_description')
     -if @transcription_field.row_highlight
-      =link_to t('.disable_ruler'), transcription_field_spreadsheet_column_disable_ruler_path(@transcription_field), method: :patch, class: 'button'
+      =link_to t('.disable_ruler'), transcription_field_spreadsheet_column_disable_ruler_path(@transcription_field, collection_id: @collection), method: :patch, class: 'button'
 
       h4 =t('.page_layout')
       p= t('.identify_rows_description')
-      =link_to t('.identify_rows'), transcription_field_spreadsheet_column_choose_offset_path(@transcription_field), class: 'button'
+      =link_to t('.identify_rows'), transcription_field_spreadsheet_column_choose_offset_path(@transcription_field, collection_id: @collection), class: 'button'
 
     -else
-      =link_to t('.enable_ruler'), transcription_field_spreadsheet_column_enable_ruler_path(@transcription_field), method: :patch, class: 'button'
+      =link_to t('.enable_ruler'), transcription_field_spreadsheet_column_enable_ruler_path(@transcription_field, collection_id: @collection), method: :patch, class: 'button'
 
     =form_tag transcription_field_spreadsheet_column_add_columns_path
       =hidden_field_tag(:collection_id, @collection.id)
