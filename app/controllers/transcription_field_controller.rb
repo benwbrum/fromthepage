@@ -20,7 +20,12 @@ class TranscriptionFieldController < ApplicationController
     field = TranscriptionField.where(collection: @collection).find(params[:field_id])
     field.remove_from_list
     field.destroy
-    redirect_to collection_edit_fields_path(@collection.owner, @collection)
+    # Return to the editor the field was deleted from.
+    if field.field_type == TranscriptionField::FieldType::METADATA
+      redirect_to collection_edit_metadata_fields_path(@collection.owner, @collection)
+    else
+      redirect_to collection_edit_fields_path(@collection.owner, @collection)
+    end
   end
 
   def edit_fields
