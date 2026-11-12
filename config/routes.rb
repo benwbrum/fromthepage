@@ -330,7 +330,7 @@ Fromthepage::Application.routes.draw do
 
   scope 'transcription_field', as: 'transcription_field' do
     patch 'reorder', to: 'transcription_field#reorder_fields'
-    get 'delete', to: 'transcription_field#delete'
+    delete 'delete', to: 'transcription_field#delete'
     get 'edit_fields', to: 'transcription_field#edit_fields'
     get 'edit_metadata_fields', to: 'transcription_field#edit_metadata_fields'
     get 'line_form', to: 'transcription_field#line_form'
@@ -340,12 +340,12 @@ Fromthepage::Application.routes.draw do
 
     scope 'spreadsheet_column', as: 'spreadsheet_column' do
       patch 'reorder', to: 'transcription_field#reorder_columns'
-      get 'delete', to: 'transcription_field#delete_column'
+      delete 'delete', to: 'transcription_field#delete_column'
       get ':transcription_field_id/edit_columns', to: 'transcription_field#edit_columns'
       get ':transcription_field_id/column_form', to: 'transcription_field#column_form'
       post 'add_columns', to: 'transcription_field#add_columns'
-      get ':transcription_field_id/disable_ruler', to: 'transcription_field#disable_ruler', as: 'disable_ruler'
-      get ':transcription_field_id/enable_ruler', to: 'transcription_field#enable_ruler', as: 'enable_ruler'
+      patch ':transcription_field_id/disable_ruler', to: 'transcription_field#disable_ruler', as: 'disable_ruler'
+      patch ':transcription_field_id/enable_ruler', to: 'transcription_field#enable_ruler', as: 'enable_ruler'
       get ':transcription_field_id/choose_offset', to: 'transcription_field#choose_offset', as: 'choose_offset'
       post ':transcription_field_id/:page_id/save_offset', to: 'transcription_field#save_offset', as: 'save_offset'
     end

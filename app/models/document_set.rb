@@ -140,6 +140,8 @@ class DocumentSet < ApplicationRecord
     )
   end
 
+  # TODO: Deprecate. Duplicated in Permissions::DocumentSetRules.viewer? (app/lib/permissions).
+  # Keep both in sync until every controller uses require_permission.
   def show_to?(user)
     is_public? || visibility_read_only? || user&.like_owner?(self) || user&.collaborator?(self)
   end

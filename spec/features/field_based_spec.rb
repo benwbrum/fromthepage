@@ -187,6 +187,18 @@ describe 'collection field-based transcription settings' do
     expect(page.evaluate_script('window.__fieldEditorReloadCalled')).to be(false)
   end
 
+  it 'adds a new line through line_form', js: true do
+    first_field
+
+    visit transcription_field_edit_fields_path(collection_id: collection)
+    expect(page).to have_selector('#new-fields > tbody', count: 1)
+
+    click_button 'add-line'
+
+    expect(page).to have_selector('#new-fields > tbody', count: 2)
+    expect(page).to have_selector('.field-form_line', text: 'Line 2')
+  end
+
   it 'persists line order when a full line block is moved', js: true do
     first_field
     second_field.update!(line_number: 2)

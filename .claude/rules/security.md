@@ -11,9 +11,13 @@ paths:
 
 - No Pundit/CanCan — authorization is hand-rolled:
   - Global `authorize_collection` (uses `collection.show_to?`) runs before every action with `@collection`
-  - Each controller defines a private `authorized?` + `before_action` for edit/owner actions
+  - New/migrated controllers: `enforce_permission_checks` + `require_permission(:perm, record)` as the
+    first line of every action — read `doc/permissions.md` (rationale + rules of thumb) before touching auth
+    - Load child records inline through the authorized parent (`@collection.<assoc>.find`); no shared loaders
+  - Legacy controllers still define a private `authorized?` + `before_action` for edit/owner actions
   - Permission predicates: `admin?`, `like_owner?(obj)`, `can_transcribe?(work)`, `collaborator?(collection)`
-- New actions: confirm which `before_action :authorized?` `only:/except:` lists cover them
+    (mirrored in `app/lib/permissions/*_rules.rb`; keep both in sync)
+- New actions in legacy controllers: confirm which `before_action :authorized?` `only:/except:` lists cover them
 - Auto-loaded objects (`load_objects_from_params`) come from user-controlled IDs — always verify the user
   may act on them; IDOR via swapped `page_id`/`work_id` is the main risk
 - Re-check permissions in jobs/interactors that can be enqueued from multiple places (pattern: `GenerateJob`)
