@@ -106,6 +106,34 @@ describe 'Evidence-based LC matching', :subject_headings do
     expect(result('Alabama')).to include('result' => 'possible_match', 'authority_type' => 'Name')
   end
 
+  it 'reads the untagged authorized label when a record also lists vernacular script forms' do
+    # Shape of the live names/n79027034 record: the root is not the first node and
+    # authoritativeLabel holds "Alabama" plus language-tagged non-Latin forms.
+    uri = 'https://id.loc.gov/authorities/names/n79027034'
+    nodes = [
+      { '@id' => '_:b1', "#{mads}elementValue" => [{ '@value' => 'AL' }] },
+      { '@id' => uri, "#{mads}authoritativeLabel" => [
+        { '@value' => 'Alabama' }, { '@language' => 'und-cyrl', '@value' => 'Алабама' }, { '@language' => 'ko-hang', '@value' => '앨라배마' }
+      ], "#{mads}hasVariant" => [{ '@id' => '_:v1' }] },
+      { '@id' => '_:v1', "#{mads}variantLabel" => [{ '@value' => 'State of Alabama' }] }
+    ]
+    stub_request(:get, "#{uri}.madsrdf_raw.jsonld").to_return(body: nodes.to_json)
+    search('Alabama', [{ 'aLabel' => 'Alabama', 'uri' => uri }], source: 'names')
+    hits = service.call('Alabama')
+    expect(hits.first).to include('aLabel' => 'Alabama', 'authority_type' => 'Name')
+    expect(hits.first['variants']).to contain_exactly('Алабама', '앨라배마', 'State of Alabama')
+    expect(result('Alabama')).to include('result' => 'possible_match', 'suggested_uri' => uri)
+  end
+
+  it 'still rejects a record with more than one untagged authorized label' do
+    hit = record('Alabama')
+    search('Alabama', [hit])
+    stub_request(:get, "#{hit['uri']}.madsrdf_raw.jsonld").to_return(body: [
+      { '@id' => hit['uri'], "#{mads}authoritativeLabel" => [{ '@value' => 'Alabama' }, { '@value' => 'Alabama (State)' }] }
+    ].to_json)
+    expect { result('Alabama') }.to raise_error(SubjectHeadings::AuthorityLookup::LookupError, 'Authority response could not be processed.')
+  end
+
   it 'never turns an unprocessable Alabama authority response into no match' do
     hit = record('Alabama')
     search('Alabama', [hit])

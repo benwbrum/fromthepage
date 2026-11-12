@@ -78,13 +78,19 @@ class SubjectHeadings::AuthorityLookup
       graph = data.is_a?(Hash) ? data['@graph'] : data
       raise LookupError, 'Authority response could not be processed.' unless graph.is_a?(Array) && graph.all? { |node| node.is_a?(Hash) }
       root = graph.find { |node| authority_uri(node['@id']) == canonical }
-      labels = values(root, 'authoritativeLabel')
-      raise LookupError, 'Authority response could not be processed.' unless labels.one? && labels.first.is_a?(String)
-      variants = Array(root["#{MADS}hasVariant"]).flat_map do |link|
+      # Records such as names/n79027034 (Alabama) also carry language-tagged
+      # vernacular forms of the authorized label (앨라배마, Алабама, ...). The
+      # untagged value is the authorized heading; the others count as variants.
+      labels = Array(root && root["#{MADS}authoritativeLabel"]).select { |label| label.is_a?(Hash) && label['@value'].is_a?(String) }
+      primary, vernacular = labels.partition { |label| label['@language'].blank? }
+      primary = labels if primary.empty? && labels.one?
+      raise LookupError, 'Authority response could not be processed.' unless primary.one?
+      variants = vernacular.map { |label| label['@value'] } - [primary.first['@value']]
+      variants += Array(root["#{MADS}hasVariant"]).flat_map do |link|
         node = graph.find { |entry| entry['@id'] == link['@id'] } if link.is_a?(Hash)
         values(node, 'variantLabel')
       end
-      { 'aLabel' => labels.first, 'uri' => canonical, 'variants' => variants,
+      { 'aLabel' => primary.first['@value'], 'uri' => canonical, 'variants' => variants,
         'authority_type' => TYPES.fetch(canonical.split('/')[4]), 'evidence' => 'authority' }
     end
   end
