@@ -7,6 +7,10 @@ class AiWorkMetadata::GenerateJob < ApplicationJob
   # This job expects a valid ai_work_metadata db record to exist
   # For initializing AiWorkMetadata objects, use AiWorkMetadata::Create
   #
+  # Drafts launched from the collection AI settings tab belong to an AiWorkMetadataRun. Those start
+  # once the collection is AI-transcribed; the prompt is rebuilt here from the current text with the
+  # run's reviewed examples.
+  #
   # @params ai_work_metadata_id
   #   - valid ai_work_metadata record id to be used for generation
   def perform(user_id:, ai_work_metadata_id:)
@@ -19,6 +23,11 @@ class AiWorkMetadata::GenerateJob < ApplicationJob
       store_error!(ai_work_metadata, error_message)
 
       raise ArgumentError, error_message
+    end
+
+    if (run = ai_work_metadata.ai_work_metadata_run)
+      prompt = AiWorkMetadata::Lib::PromptBuilder.new(work: ai_work_metadata.work, examples: run.examples).build
+      ai_work_metadata.update!(status: :processing, prompt: prompt)
     end
 
     result = AiWorkMetadata::Generate.new(ai_work_metadata: ai_work_metadata).call

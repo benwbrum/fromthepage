@@ -55,11 +55,15 @@ describe SubjectHeadings::CreateSampleSet do
     end
   end
 
-  context 'when there are fewer transcribed works than requested' do
+  it 'samples 10 works by default' do
+    expect(described_class::SIZE).to eq(10)
+  end
+
+  context 'when the collection has no more works than the sample size' do
     let(:size) { 20 }
 
-    it 'uses all of them' do
-      expect(result.document_set.works.size).to eq(6)
+    it 'uses every work, transcribed or not' do
+      expect(result.document_set.works).to match_array(collection.works.reload)
     end
   end
 

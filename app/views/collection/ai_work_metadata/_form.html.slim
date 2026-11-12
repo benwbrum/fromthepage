@@ -1,56 +1,99 @@
-table.form.collection-settings
-  -if collection.metadata_fields.exists?
-    tr
-      td(colspan="2")
-        h3 =t('.heading')
-        -if @not_started_work_metadata_count.positive? || @failed_work_metadata_count.positive?
-          p =t('.description')
-        -else
-          p =t('.description_complete')
-        div[style='margin: 5px 0']
-          =link_to(collection_ai_work_metadata_path(collection.owner, collection), class: 'button action-btn', data: { turbo: true, turbo_method: :post })
-            span =t('.generate')
-
-    tr
-      td(colspan="2")
-        =fe_stacked_bar(title: 'Works', labels: [t('.finished'), t('.in_progress'), t('.failed'), t('.not_started')], \
-          values: [@finished_work_metadata_count, @queued_work_metadata_count, @failed_work_metadata_count, @not_started_work_metadata_count], colors: AiWorkMetadata::FE_COLOR_STATUSES.values, \
-          options: { legend_position: 'bottom', tooltip_enabled: true, border_radius: 20 })
-
-    tr
-      td(colspan="2")
-        section.collection-stats
-          .collection-stats_counters
-            .counter [data-prefix=@works_count]
-              =t('.works')
-          .collection-stats_counters
-            .counter [data-prefix=@finished_work_metadata_count]
-              =t('.finished')
-            .counter [data-prefix=@queued_work_metadata_count]
-              =t('.queued')
-            .counter [data-prefix=@failed_work_metadata_count]
-              =t('.failed')
-            .counter [data-prefix=@not_started_work_metadata_count]
-              =t('.not_started')
-        -if @total_work_metadata_token_count.to_i > 0
-          .collection-stats_counters
-            .counter [data-prefix=@total_work_metadata_token_count]
-              =t('.total_tokens_used')
-
-    -if @failed_ai_work_metadata.present?
-      tr
-        td(colspan="2")
-          h4 =t('.failed_work_metadata_errors')
-          ul
-            -@failed_ai_work_metadata.each do |ai_work_metadata|
-              li
-                =link_to ai_work_metadata.work.title, describe_collection_work_path(collection.owner, collection, ai_work_metadata.work)
-                |  —
-                =link_to ai_work_metadata.short_error_message, collection_ai_work_metadatum_path(user_slug: collection.owner.to_param, collection_id: collection.to_param, id: ai_work_metadata.id)
-          -if @failed_ai_work_metadata_hidden_count.positive?
-            p =t('.failed_work_metadata_errors_hidden', count: @failed_ai_work_metadata_hidden_count)
+section.ai-settings_section
+  .ai-settings_header
+    h3 =t('.heading')
+    span.fgfaded =t('.summary', works: number_with_delimiter(status.works_count), without: number_with_delimiter(status.works_without_ai_transcription_count))
+  -if !collection.metadata_fields.exists?
+    p =t('.no_metadata_fields')
   -else
-    tr
-      td(colspan="2")
-        h3 =t('.heading')
-        p =t('.no_metadata_fields')
+    p.ai-settings_intro =t('.intro')
+
+    -sample_size = status.sample_size
+    -sample_active = status.remainder_run.nil?
+    .ai-step class=(sample_active ? 'ai-step--active' : nil)
+      span.ai-step_badge 1
+      .ai-step_body
+        .ai-step_title
+          h4 =t('.step1_title')
+          span.ai-step_recommended =t('.recommended')
+        p =status.small_collection? ? t('.sample_intro_small', count: status.works_count) : t('.sample_intro', count: sample_size)
+
+        -if status.sample_run.nil?
+          .ai-settings_launch
+            =link_to (status.small_collection? ? t('.draft_sample_small', count: status.works_count) : t('.draft_sample', count: sample_size)), sample_collection_ai_work_metadata_path(collection.owner, collection), class: 'button', data: { turbo: true, turbo_method: :post }
+            -if status.transcription_counts[:not_started].positive?
+              span.fgfaded =t('.transcription_first', count: status.transcription_counts[:not_started])
+        -elsif status.sample_run.waiting?
+          p.ai-settings_status =t('.waiting_sample', count: status.pages_left_to_transcribe)
+        -else
+          -status_labels = { 'queued' => t('.status_queued'), 'drafting' => t('.status_drafting'), 'ready' => t('.status_ready'), 'reviewed' => t('.status_reviewed'), 'failed' => t('.status_failed') }
+          p.ai-step_summary =t('.sample_summary_html', reviewed: status.reviewed_count, total: status.sample_rows.size, ready: status.ready_count)
+          .ai-sample
+            -status.sample_rows.each do |row|
+              .ai-sample_row
+                .ai-sample_title
+                  strong =row.work.title
+                  span.fgfaded
+                    =t('.page_count', count: row.pages_count)
+                    =" · "
+                    =row.needs_transcription ? t('.needs_transcription') : t('.transcription_done')
+                .ai-sample_status class="ai-sample_status--#{row.status}"
+                  =status_labels[row.status]
+                .ai-sample_action
+                  -if %w[ready reviewed].include?(row.status)
+                    =link_to (row.status == 'ready' ? t('.review') : t('.edit')), describe_collection_work_path(collection.owner, collection, row.work)
+          =render 'collection/ai_work_metadata/failures', collection: collection, drafts: status.failed_sample_drafts, hidden_count: 0
+
+    .ai-step class=(sample_active ? nil : 'ai-step--active')
+      span.ai-step_badge 2
+      .ai-step_body
+        -run = status.remainder_run
+        -if run&.all?
+          h4 =t('.step2_title', count: status.works_count)
+          p =t('.step2_intro_skipped', count: status.works_count)
+        -elsif run || status.sample_set || !status.small_collection?
+          h4 =t('.step2_title', count: run ? run.ai_work_metadata.count : status.remaining_works_count)
+          p =t('.step2_intro')
+        -else
+          h4 =t('.step2_title_small')
+          p =t('.step2_intro_small')
+
+        -if run&.waiting?
+          p.ai-settings_status =t('.waiting_remainder', count: status.pages_left_to_transcribe)
+        -elsif run
+          -counts = status.remainder_counts
+          -examples = run.example_work_ids.size
+          =render 'collection/ai_transcriptions/progress', counts: counts, labels: { finished: t('.finished'), in_progress: t('.in_progress'), failed: t('.failed'), not_started: t('.not_started') }
+          -parts = []
+          -if status.remainder_running?
+            -parts << (examples.positive? ? t('.run_running', count: examples) : t('.run_running_no_examples'))
+            -parts << t('.run_failed_so_far', count: counts[:failed]) if counts[:failed].positive?
+          -else
+            -parts << (examples.positive? ? t('.run_done', count: examples) : t('.run_done_no_examples'))
+            -parts << t('.run_failed', count: counts[:failed]) if counts[:failed].positive?
+          p.ai-settings_status =parts.join(' ')
+          =render 'collection/ai_work_metadata/failures', collection: collection, drafts: run.failed_records, hidden_count: [0, counts[:failed] - AiWorkMetadata::MAX_FAILED_ERRORS].max
+
+        -remaining = status.remaining_works_count
+        -reviewed = status.reviewed_count
+        -if status.can_draft_remaining?
+          -if run
+            p =t('.added_later', count: remaining)
+          .ai-settings_launch
+            -label = reviewed.positive? ? t('.draft_remaining_examples', works: remaining, count: reviewed) : t('.draft_remaining_no_examples', count: remaining)
+            =link_to label, remainder_collection_ai_work_metadata_path(collection.owner, collection), class: 'button', data: { turbo: true, turbo_method: :post }
+            -if status.sample_run
+              -if reviewed.positive?
+                -unreviewed = status.sample_rows.size - reviewed
+                -if unreviewed.positive?
+                  span.fgfaded =t('.remaining_note_unreviewed', count: unreviewed)
+              -else
+                span.ai-settings_warning =t('.remaining_note_none')
+        -elsif run.nil? && remaining.positive? && status.waiting_run.nil? && !status.sample_run&.started_at
+          .ai-settings_launch
+            =button_tag t('.draft_remaining', count: remaining), type: 'button', disabled: true
+            span.fgfaded =t('.remaining_note_idle')
+
+    -if status.idle?
+      p.ai-settings_skip
+        =link_to (status.small_collection? ? t('.skip_small', count: status.works_count) : t('.skip', count: status.works_count)), collection_ai_work_metadata_path(collection.owner, collection), data: { turbo: true, turbo_method: :post }
+        span.fgfaded =" #{t('.skip_note')}"

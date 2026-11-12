@@ -2,24 +2,29 @@
 #
 # Table name: ai_work_metadata
 #
-#  id            :bigint           not null, primary key
-#  metadata      :text(4294967295)
-#  metadata_json :text(65535)
-#  model         :string(255)      not null
-#  prompt        :text(65535)
-#  reasoning     :text(65535)
-#  status        :string(255)      default("new")
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  work_id       :integer          not null
+#  id                         :bigint           not null, primary key
+#  metadata                   :text(4294967295)
+#  metadata_json              :text(65535)
+#  model                      :string(255)      not null
+#  prompt                     :text(65535)
+#  reasoning                  :text(65535)
+#  reviewed_at                :datetime
+#  status                     :string(255)      default("new")
+#  subject_heading_candidates :text(16777215)
+#  created_at                 :datetime         not null
+#  updated_at                 :datetime         not null
+#  ai_work_metadata_run_id    :bigint
+#  work_id                    :integer          not null
 #
 # Indexes
 #
-#  index_ai_work_metadata_on_status   (status)
-#  index_ai_work_metadata_on_work_id  (work_id)
+#  index_ai_work_metadata_on_ai_work_metadata_run_id  (ai_work_metadata_run_id)
+#  index_ai_work_metadata_on_status                   (status)
+#  index_ai_work_metadata_on_work_id                  (work_id)
 #
 # Foreign Keys
 #
+#  fk_rails_...  (ai_work_metadata_run_id => ai_work_metadata_runs.id) ON DELETE => nullify
 #  fk_rails_...  (work_id => works.id) ON DELETE => cascade
 #
 class AiWorkMetadata < ApplicationRecord
@@ -36,6 +41,7 @@ class AiWorkMetadata < ApplicationRecord
   }.freeze
 
   belongs_to :work
+  belongs_to :ai_work_metadata_run, optional: true
   # AI subject heading suggestions, keyed by subject heading field id like metadata_json:
   # { '<field id>' => [{ 'heading' => ..., 'uri' => ... }, ...] }
   serialize :subject_heading_candidates, coder: JSON
@@ -125,6 +131,29 @@ class AiWorkMetadata < ApplicationRecord
       failed_hidden_count: [0, failed_count - failed_records.size].max,
       total_token_count: total_token_count
     )
+  end
+
+  # Draft values keyed by field id, as metadata_json, plus the subject headings suggested for each
+  # subject heading field (from the separate subject heading prompt) as arrays of heading text.
+  def draft_values
+    values = metadata_json.is_a?(Hash) ? metadata_json.dup : {}
+    return values unless subject_heading_candidates.is_a?(Hash)
+
+    subject_heading_candidates.each do |field_id, candidates|
+      headings = Array(candidates).filter_map { |candidate| candidate['heading'] if candidate.is_a?(Hash) }
+      values[field_id.to_s] = headings if headings.any?
+    end
+    values
+  end
+
+  # Sample set stage shown on the AI settings tab
+  def sample_status
+    return 'reviewed' if status_finished? && reviewed_at.present?
+    return 'ready' if status_finished?
+    return 'failed' if status_error?
+    return 'queued' if status_new?
+
+    'drafting'
   end
 
   def error_message

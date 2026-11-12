@@ -7,39 +7,120 @@ de:
       form:
         ai_transcription: KI-Transkription
         contact_us: Wenden Sie sich an %{email}, um auf einen Tarif mit KI-Entwürfen aufzurüsten.
-        description: Starte einen KI-Transkriptionsauftrag für Seiten in dieser Sammlung.
-        description_complete: Alle Seiten dieser Sammlung enthalten KI-Transkriptionen.
+      transcription:
+        ai_transcription: KI-Transkription
+        description: Starten Sie einen KI-Transkriptionsauftrag für Seiten in dieser Sammlung. Der KI-Metadatenentwurf transkribiert hier zuerst alle verbleibenden Seiten.
         failed: Fehlgeschlagen
-        failed_transcription_errors: Fehlgeschlagene Transkriptionsfehler
         failed_transcription_errors_hidden: "%{count} zusätzliche Transkriptionsfehler werden nicht angezeigt."
+        failed_transcriptions: Fehlgeschlagene Transkriptionen
         finished: Fertig
-        generate: Erstellen Sie KI-Entwürfe für Seiten ohne diese.
+        generate: KI-Entwürfe für Seiten ohne Entwurf erstellen.
         in_progress: Im Gange
         not_started: Nicht gestartet
-        pages: Seiten
-        queued: In der Warteschlange
-        retry: Fehlgeschlagene Aufträge erneut versuchen
-        total_tokens_used: Gesamte verwendete Tokens
+        pages_without:
+          one: "%{count} Seite ohne KI-Transkription."
+          other: "%{count} Seiten ohne KI-Transkription."
+        retry: Fehlgeschlagene Seiten erneut versuchen
+        retry_note: Prüfen Sie zuerst die Fehler oben. Fehler, die durch den Seiteninhalt verursacht werden, treten meist erneut auf.
+        status_done:
+          one: Die Seite wurde verarbeitet.
+          other: Alle %{count} Seiten wurden verarbeitet.
+        status_failed:
+          one: "%{count} Seite fehlgeschlagen; siehe Fehler unten."
+          other: "%{count} Seiten fehlgeschlagen; siehe Fehler unten."
+        status_not_run:
+          one: 1 Seite · Die KI-Transkription wurde nicht ausgeführt.
+          other: "%{count} Seiten · Die KI-Transkription wurde nicht ausgeführt."
+        status_partial: "%{finished} von %{total} Seiten transkribiert."
+        status_running: Seiten werden transkribiert.
+        status_running_metadata: Seiten werden für den KI-Metadatenentwurfsauftrag transkribiert.
+        total_tokens_used: 'Gesamte verwendete Tokens: %{tokens}.'
       update:
         success: KI-Transkriptionsauftrag wird wiederholt.
     ai_work_metadata:
       create:
         success: KI-Metadaten-Entwurfsauftrag gestartet.
+      failures:
+        failed_drafts: Fehlgeschlagene Metadatenentwürfe
+        hidden: "%{count} zusätzliche Metadatenentwurfsfehler werden nicht angezeigt."
+        retry: Fehlgeschlagene Werke erneut versuchen
+        retry_note: Prüfen Sie zuerst die Fehler oben. Fehler, die durch den Dokumentinhalt verursacht werden, treten meist erneut auf.
       form:
-        description: Starten Sie KI-Metadatenentwurfsaufträge für Werke ohne diese.
-        description_complete: Alle Werke dieser Sammlung enthalten KI-Metadatenentwürfe.
+        added_later:
+          one: "%{count} seit dem letzten Entwurf hinzugefügtes Werk wurde noch nicht entworfen."
+          other: "%{count} seit dem letzten Entwurf hinzugefügte Werke wurden noch nicht entworfen."
+        draft_remaining: Restliche %{count} Werke entwerfen
+        draft_remaining_examples:
+          one: Restliche %{works} Werke mit %{count} Beispiel entwerfen
+          other: Restliche %{works} Werke mit %{count} Beispielen entwerfen
+        draft_remaining_no_examples: Restliche %{count} Werke ohne Beispiele entwerfen
+        draft_sample: Stichprobe von %{count} Werken entwerfen
+        draft_sample_small: Alle %{count} Werke zur Prüfung entwerfen
+        edit: Bearbeiten
         failed: Fehlgeschlagen
-        failed_work_metadata_errors: Fehlgeschlagene Metadatenentwurfsfehler
-        failed_work_metadata_errors_hidden: "%{count} zusätzliche Metadatenentwurfsfehler werden nicht angezeigt."
         finished: Fertig
-        generate: Erstellen Sie KI-Metadatenentwürfe für Werke ohne diese.
         heading: KI-Metadatenentwurf
         in_progress: Im Gange
+        intro: Die KI entwirft Metadaten für jedes Werk anhand seiner Transkription. Seiten ohne KI-Transkription werden zuerst für die ganze Sammlung transkribiert, bevor Entwürfe entstehen.
+        needs_transcription: benötigt KI-Transkription
         no_metadata_fields: Bitte konfigurieren Sie Metadatenfelder unter Aufgabenkonfiguration, bevor Sie KI-Metadatenentwürfe erstellen.
         not_started: Nicht gestartet
-        queued: In der Warteschlange
-        total_tokens_used: Gesamte verwendete Tokens
-        works: Werke
+        page_count:
+          one: "%{count} Seite"
+          other: "%{count} Seiten"
+        recommended: Empfohlen
+        remaining_note_idle: Verfügbar, sobald die Stichprobe entworfen wurde.
+        remaining_note_none: Noch keine Stichprobenwerke geprüft; die Entwürfe werden weniger einheitlich sein.
+        remaining_note_unreviewed: "%{count} ungeprüfte Stichprobenwerke bleiben unverändert."
+        review: Prüfen & korrigieren
+        run_done:
+          one: Fertig. Mit %{count} geprüften Beispiel entworfen.
+          other: Fertig. Mit %{count} geprüften Beispielen entworfen.
+        run_done_no_examples: Fertig. Ohne Beispiele entworfen.
+        run_failed:
+          one: "%{count} Werk fehlgeschlagen; siehe Fehler unten."
+          other: "%{count} Werke fehlgeschlagen; siehe Fehler unten."
+        run_failed_so_far:
+          one: "%{count} Werk bisher fehlgeschlagen; siehe Fehler unten."
+          other: "%{count} Werke bisher fehlgeschlagen; siehe Fehler unten."
+        run_running:
+          one: Mit %{count} geprüften Beispiel. Seiten werden bei Bedarf transkribiert, dann werden Metadaten entworfen.
+          other: Mit %{count} geprüften Beispielen. Seiten werden bei Bedarf transkribiert, dann werden Metadaten entworfen.
+        run_running_no_examples: Entwurf ohne Beispiele. Seiten werden bei Bedarf transkribiert, dann werden Metadaten entworfen.
+        sample_intro: Wir entwerfen Metadaten für %{count} Werke, die die Vielfalt der Dokumente in dieser Sammlung abbilden. Prüfen und korrigieren Sie jeden Entwurf; geprüfte Werke dienen als Beispiele für den Rest der Sammlung. Sie müssen nicht alle %{count} abschließen, aber jedes geprüfte Werk verbessert die Ergebnisse.
+        sample_intro_small: Diese Sammlung hat %{count} Werke, daher sind alle in der Stichprobe. Prüfen und korrigieren Sie jeden KI-Entwurf. Ihre geprüften Werke dienen als Beispiele für später hinzugefügte Werke.
+        sample_summary_html: "<strong>%{reviewed} von %{total}</strong> geprüft · %{ready} bereit zur Prüfung"
+        skip: Stichprobe überspringen und alle %{count} Werke entwerfen
+        skip_note: "— schneller, aber die Entwürfe haben keine geprüften Beispiele als Vorlage."
+        skip_small: Prüfung überspringen und alle %{count} Werke entwerfen
+        status_drafting: Metadaten werden entworfen
+        status_failed: Fehlgeschlagen
+        status_queued: In der Warteschlange
+        status_ready: Bereit zur Prüfung
+        status_reviewed: Geprüft
+        step1_title: Eine Stichprobe prüfen
+        step2_intro: Verwendet Ihre geprüften Stichprobenwerke als Beispiele.
+        step2_intro_skipped: Alle %{count} Werke werden ohne Beispiele entworfen.
+        step2_intro_small: Es gibt keine Werke außerhalb der Stichprobe. Wenn neue Werke hinzukommen, können Sie sie hier mit Ihren geprüften Beispielen entwerfen.
+        step2_title: Die restlichen %{count} Werke entwerfen
+        step2_title_small: Später hinzugefügte Werke
+        summary: "%{works} Werke · %{without} ohne KI-Transkription"
+        transcription_done: KI-Transkription fertig
+        transcription_first:
+          one: "%{count} Seite benötigt zuerst eine KI-Transkription."
+          other: "%{count} Seiten benötigen zuerst eine KI-Transkription."
+        waiting_remainder:
+          one: Warten auf die KI-Transkription (noch %{count} Seite). Die Entwürfe beginnen, sobald jede Seite eine KI-Transkription hat.
+          other: Warten auf die KI-Transkription (noch %{count} Seiten). Die Entwürfe beginnen, sobald jede Seite eine KI-Transkription hat.
+        waiting_sample:
+          one: Warten auf die KI-Transkription (noch %{count} Seite). Die Stichprobe wird ausgewählt und entworfen, sobald jede Seite eine KI-Transkription hat.
+          other: Warten auf die KI-Transkription (noch %{count} Seiten). Die Stichprobe wird ausgewählt und entworfen, sobald jede Seite eine KI-Transkription hat.
+      remainder:
+        success: KI-Metadatenentwürfe für die restlichen Werke gestartet.
+      retry:
+        success: Fehlgeschlagene KI-Metadatenentwürfe werden erneut versucht.
+      sample:
+        success: KI-Metadatenentwürfe für die Stichprobe gestartet.
       show:
         back: Zurück zu KI-Einstellungen
         fields_heading: Entwurfsfelder

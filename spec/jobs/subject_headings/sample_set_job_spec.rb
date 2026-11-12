@@ -17,6 +17,11 @@ describe SubjectHeadings::SampleSetJob do
 
   let(:perform_job) { described_class.perform_now(user_id: owner.id, collection_id: collection.id) }
 
+  # Drafting waits for every page to have an AI transcription (see AiWorkMetadata::StartRunJob)
+  before do
+    Page.where(work_id: works.map(&:id)).find_each { |page| create(:ai_transcription, page_id: page.id, status: :finished, source_text: 'AI text') }
+  end
+
   it 'creates the sample set, drafts for its works, and queues generation' do
     expect(AiWorkMetadata::BulkGenerateJob).to receive(:perform_later) do |args|
       expect(args[:scope][:work_ids]).to match_array(works.map(&:id))
@@ -28,15 +33,23 @@ describe SubjectHeadings::SampleSetJob do
     drafts = AiWorkMetadata.where(work_id: works.map(&:id))
     expect(drafts.size).to eq(3)
     expect(drafts.map(&:model).uniq).to eq([AiWorkMetadata::SUBJECT_HEADING_MODEL])
-    expect(drafts.map(&:status).uniq).to eq(['processing'])
+    expect(drafts.map(&:status).uniq).to eq(['new'])
+    expect(drafts.map(&:ai_work_metadata_run).uniq).to eq([collection.ai_work_metadata_runs.find_by!(kind: 'sample')])
   end
 
   context 'when the sample set already exists' do
-    before { create(:document_set, collection: collection, owner_user_id: owner.id, title: SubjectHeadings::CreateSampleSet::TITLE) }
+    let!(:sample_set) do
+      create(:document_set, collection: collection, owner_user_id: owner.id, title: SubjectHeadings::CreateSampleSet::TITLE).tap do |set|
+        set.update!(work_ids: [works.first.id])
+      end
+    end
 
-    it 'raises without queuing drafts' do
-      expect(AiWorkMetadata::BulkGenerateJob).not_to receive(:perform_later)
-      expect { perform_job }.to raise_error(ArgumentError, /already has/)
+    it 'drafts the existing sample instead of creating another' do
+      expect(AiWorkMetadata::BulkGenerateJob).to receive(:perform_later) do |args|
+        expect(args[:scope][:work_ids]).to eq([works.first.id])
+      end
+
+      expect { perform_job }.not_to change(DocumentSet, :count)
     end
   end
 end

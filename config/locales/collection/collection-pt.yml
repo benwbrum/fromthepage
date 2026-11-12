@@ -7,39 +7,120 @@ pt:
       form:
         ai_transcription: Transcrição por IA
         contact_us: Entre em contato com %{email} para atualizar para um plano que inclua rascunhos de IA.
-        description: Inicie um trabalho de transcrição por IA para páginas desta coleção.
-        description_complete: Todas as páginas desta coleção possuem transcrições por IA.
+      transcription:
+        ai_transcription: Transcrição com IA
+        description: Inicie uma tarefa de transcrição com IA para as páginas desta coleção. O rascunho de metadados com IA transcreve aqui as páginas restantes antes de começar.
         failed: Fracassado
-        failed_transcription_errors: Erros de transcrição
-        failed_transcription_errors_hidden: "%{count} erros adicionais de transcrição não são exibidos."
+        failed_transcription_errors_hidden: "%{count} erros de transcrição adicionais não são exibidos."
+        failed_transcriptions: Transcrições com falha
         finished: Finalizado
-        generate: Crie rascunhos com IA para páginas que não os possuem.
+        generate: Criar rascunhos com IA para páginas que não os possuem.
         in_progress: Em andamento
         not_started: Não iniciado
-        pages: Páginas
-        queued: Em fila
-        retry: Tentar novamente trabalhos com falha
-        total_tokens_used: Total de tokens utilizados
+        pages_without:
+          one: "%{count} página sem transcrição com IA."
+          other: "%{count} páginas sem transcrição com IA."
+        retry: Tentar novamente as páginas com falha
+        retry_note: Verifique primeiro os erros acima. Falhas causadas pelo conteúdo da página costumam se repetir.
+        status_done:
+          one: A página foi processada.
+          other: Todas as %{count} páginas foram processadas.
+        status_failed:
+          one: "%{count} página falhou; veja os erros abaixo."
+          other: "%{count} páginas falharam; veja os erros abaixo."
+        status_not_run:
+          one: 1 página · A transcrição com IA não foi executada.
+          other: "%{count} páginas · A transcrição com IA não foi executada."
+        status_partial: "%{finished} de %{total} páginas transcritas."
+        status_running: Transcrevendo páginas.
+        status_running_metadata: Transcrevendo páginas para a tarefa de rascunho de metadados com IA.
+        total_tokens_used: 'Total de tokens utilizados: %{tokens}.'
       update:
         success: Tentando novamente a tarefa de transcrição por IA.
     ai_work_metadata:
       create:
         success: Trabalho de rascunho de metadados por IA iniciado.
+      failures:
+        failed_drafts: Rascunhos de metadados com falha
+        hidden: "%{count} erros adicionais de rascunho de metadados não são exibidos."
+        retry: Tentar novamente as obras com falha
+        retry_note: Verifique primeiro os erros acima. Falhas causadas pelo conteúdo do documento costumam se repetir.
       form:
-        description: Inicie trabalhos de rascunho de metadados com IA para obras que não os possuem.
-        description_complete: Todas as obras desta coleção possuem rascunhos de metadados com IA.
+        added_later:
+          one: "%{count} obra adicionada desde o último rascunho ainda não foi redigida."
+          other: "%{count} obras adicionadas desde o último rascunho ainda não foram redigidas."
+        draft_remaining: Redigir as %{count} obras restantes
+        draft_remaining_examples:
+          one: Redigir as %{works} obras restantes usando %{count} exemplo
+          other: Redigir as %{works} obras restantes usando %{count} exemplos
+        draft_remaining_no_examples: Redigir as %{count} obras restantes sem exemplos
+        draft_sample: Redigir amostra de %{count} obras
+        draft_sample_small: Redigir todas as %{count} obras para revisão
+        edit: Editar
         failed: Fracassado
-        failed_work_metadata_errors: Erros de rascunho de metadados
-        failed_work_metadata_errors_hidden: "%{count} erros adicionais de rascunho de metadados não são exibidos."
         finished: Finalizado
-        generate: Crie rascunhos de metadados com IA para obras que não os possuem.
         heading: Rascunho de metadados com IA
         in_progress: Em andamento
+        intro: A IA redige os metadados de cada obra a partir da sua transcrição. Páginas sem transcrição com IA são transcritas primeiro, para toda a coleção, antes de qualquer redação.
+        needs_transcription: precisa de transcrição com IA
         no_metadata_fields: Configure os campos de metadados em Configuração de tarefas antes de gerar rascunhos de metadados com IA.
         not_started: Não iniciado
-        queued: Em fila
-        total_tokens_used: Total de tokens utilizados
-        works: Obras
+        page_count:
+          one: "%{count} página"
+          other: "%{count} páginas"
+        recommended: Recomendado
+        remaining_note_idle: Disponível depois que a amostra for redigida.
+        remaining_note_none: Nenhuma obra de amostra revisada ainda; os rascunhos serão menos consistentes.
+        remaining_note_unreviewed: "%{count} obras de amostra não revisadas ficarão como estão."
+        review: Revisar e corrigir
+        run_done:
+          one: Concluído. Redigido com %{count} exemplo revisado.
+          other: Concluído. Redigido com %{count} exemplos revisados.
+        run_done_no_examples: Concluído. Redigido sem exemplos.
+        run_failed:
+          one: "%{count} obra falhou; veja os erros abaixo."
+          other: "%{count} obras falharam; veja os erros abaixo."
+        run_failed_so_far:
+          one: "%{count} obra falhou até agora; veja os erros abaixo."
+          other: "%{count} obras falharam até agora; veja os erros abaixo."
+        run_running:
+          one: Usando %{count} exemplo revisado. Transcrevendo páginas quando necessário e depois redigindo metadados.
+          other: Usando %{count} exemplos revisados. Transcrevendo páginas quando necessário e depois redigindo metadados.
+        run_running_no_examples: Redigindo sem exemplos. Transcrevendo páginas quando necessário e depois redigindo metadados.
+        sample_intro: Vamos redigir metadados para %{count} obras escolhidas para representar a variedade de documentos desta coleção. Revise e corrija cada rascunho; as obras revisadas são usadas como exemplos ao redigir o restante da coleção. Não é preciso terminar as %{count}, mas cada uma revisada melhora os resultados.
+        sample_intro_small: Esta coleção tem %{count} obras, então todas estão na amostra. Revise e corrija cada rascunho de IA. Suas obras revisadas serão exemplos para redigir obras adicionadas mais tarde.
+        sample_summary_html: "<strong>%{reviewed} de %{total}</strong> revisadas · %{ready} prontas para revisão"
+        skip: Pular a amostra e redigir todas as %{count} obras
+        skip_note: "— mais rápido, mas os rascunhos não terão exemplos revisados para seguir."
+        skip_small: Pular a revisão e redigir todas as %{count} obras
+        status_drafting: Redigindo metadados
+        status_failed: Com falha
+        status_queued: Em fila
+        status_ready: Pronta para revisão
+        status_reviewed: Revisada
+        step1_title: Revisar uma amostra
+        step2_intro: Usa suas obras de amostra revisadas como exemplos.
+        step2_intro_skipped: Redigindo todas as %{count} obras sem exemplos.
+        step2_intro_small: Não há obras fora da amostra. Quando novas obras forem adicionadas, você poderá redigi-las aqui usando seus exemplos revisados.
+        step2_title: Redigir as %{count} obras restantes
+        step2_title_small: Obras adicionadas mais tarde
+        summary: "%{works} obras · %{without} sem transcrição com IA"
+        transcription_done: transcrição com IA concluída
+        transcription_first:
+          one: "%{count} página precisa primeiro de transcrição com IA."
+          other: "%{count} páginas precisam primeiro de transcrição com IA."
+        waiting_remainder:
+          one: Aguardando a transcrição com IA (falta %{count} página). A redação começa quando todas as páginas tiverem transcrição com IA.
+          other: Aguardando a transcrição com IA (faltam %{count} páginas). A redação começa quando todas as páginas tiverem transcrição com IA.
+        waiting_sample:
+          one: Aguardando a transcrição com IA (falta %{count} página). A amostra é escolhida e redigida quando todas as páginas tiverem transcrição com IA.
+          other: Aguardando a transcrição com IA (faltam %{count} páginas). A amostra é escolhida e redigida quando todas as páginas tiverem transcrição com IA.
+      remainder:
+        success: Rascunhos de metadados com IA iniciados para as obras restantes.
+      retry:
+        success: Tentando novamente os rascunhos de metadados com IA com falha.
+      sample:
+        success: Rascunhos de metadados com IA iniciados para a amostra.
       show:
         back: Voltar às configurações de IA
         fields_heading: Campos do rascunho

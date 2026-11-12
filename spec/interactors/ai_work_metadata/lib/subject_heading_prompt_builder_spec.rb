@@ -24,6 +24,18 @@ describe AiWorkMetadata::Lib::SubjectHeadingPromptBuilder do
 
   let(:builder) { described_class.new(work: work, field: field) }
 
+  it 'adds reviewed examples with their headings to the cacheable system instruction' do
+    example_work = create(:work, collection: collection, title: 'Reviewed trial letter').tap do |example|
+      example.update_columns(metadata_description: [{ 'transcription_field_id' => field.id, 'value' => ['Murder', 'Not in vocabulary'] }].to_json)
+    end
+    examples = AiWorkMetadata::Lib::Examples.new(collection: collection, work_ids: [example_work.id])
+    instruction = described_class.new(work: work, field: field, examples: examples).system_instruction
+
+    expect(instruction).to include('Examples reviewed by the project owner', 'TITLE: Reviewed trial letter', "HEADINGS ASSIGNED:\nH0002 Murder")
+    expect(instruction).not_to include('Not in vocabulary', 'charged with murder')
+    expect(builder.system_instruction).not_to include('Examples reviewed by the project owner')
+  end
+
   it 'lists the vocabulary alphabetically with short ids' do
     expect(builder.system_instruction).to include("H0001 African Americans\nH0002 Murder")
   end

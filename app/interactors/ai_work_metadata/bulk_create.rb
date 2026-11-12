@@ -2,11 +2,15 @@ class AiWorkMetadata::BulkCreate < ApplicationInteractor
   BATCH_SIZE = 1_000
   include AiWorkMetadata::Lib::Common
 
-  def initialize(collection:, user:, scope: nil, model: nil)
+  # @params run: optional AiWorkMetadataRun the drafts belong to. Run drafts start as `new` (not started);
+  #   AiWorkMetadata::GenerateJob moves them to `processing` when it picks them up.
+  def initialize(collection:, user:, scope: nil, model: nil, run: nil)
     @collection = collection
     @user = user
     @scope = scope
     @model = model
+    @run = run
+    @initial_status = run ? :new : :processing
 
     super
   end
@@ -30,17 +34,22 @@ class AiWorkMetadata::BulkCreate < ApplicationInteractor
           work_id: work.id,
           model: @sanitized_model,
           prompt: sanitized_prompt,
-          status: :processing
+          status: @initial_status,
+          ai_work_metadata_run_id: @run&.id
         )
-      elsif existing.status_new? || existing.status_error?
-        existing.status = :processing
+      elsif existing.status_new? || existing.status_error? || (@run && existing.status_finished? && existing.ai_work_metadata_run_id != @run.id)
+        existing.status = @initial_status
         existing.model = @sanitized_model
         existing.prompt = sanitized_prompt
+        existing.ai_work_metadata_run_id = @run.id if @run
+        existing.reviewed_at = nil if @run && existing.ai_work_metadata_run_id_changed?
         ai_work_metadata_records << existing
       end
     end
 
-    AiWorkMetadata.import! ai_work_metadata_records, on_duplicate_key_update: [:status, :model, :prompt], batch_size: BATCH_SIZE
+    AiWorkMetadata.import! ai_work_metadata_records,
+                           on_duplicate_key_update: [:status, :model, :prompt, :ai_work_metadata_run_id, :reviewed_at],
+                           batch_size: BATCH_SIZE
   end
 
   private

@@ -36,7 +36,7 @@
               -options=[]
             =select_tag("fields[#{field.id}][#{field.label}]", options_for_select(options, content), class: 'field-input', data: { controller: 'select2', select2_placeholder_value: 'Choose...' }, size: 1, multiple: true)
           -elsif field.subject_headings?
-            =select_tag("fields[#{field.id}][#{field.label}]", options_for_select(subject_heading_options(field, content), content), class: 'field-input', 'aria-label': field.label, data: { controller: 'select2', select2_placeholder_value: 'Choose...' }, size: 1, multiple: true)
+            =select_tag("fields[#{field.id}][#{field.label}]", options_for_select(subject_heading_options(field, content, ai_suggested_headings(field)), content), class: 'field-input', 'aria-label': field.label, data: { controller: 'select2', select2_placeholder_value: 'Choose...' }, size: 1, multiple: true)
           -elsif field.input_type == "description"
             =hidden_field_tag "fields[#{field.id}][#{field.label}]", content, class: 'field-input'
           -elsif field.input_type == "alt text"
@@ -48,7 +48,7 @@
 -if @work&.ai_metadata_draft_available?
   -content_for :javascript
     javascript:
-      var aiMetadataDraftByEngine = #{{@work.finished_ai_work_metadata_by_engine.transform_values { |m| m.metadata_json || {} }.to_json}};
+      var aiMetadataDraftByEngine = #{{@work.finished_ai_work_metadata_by_engine.transform_values(&:draft_values).to_json}};
       var aiMetadataDraftModelNames = #{{@work.finished_ai_work_metadata_by_engine.transform_values(&:model).to_json}};
       var aiMetadataDraftBothAgreeText = #{{t('.ai_both_agree').to_json}};
       var aiMetadataDraftDisagreeHeaderText = #{{t('.ai_disagree_header').to_json}};

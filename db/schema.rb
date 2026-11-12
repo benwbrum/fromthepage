@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_11_11_000000) do
+ActiveRecord::Schema[7.2].define(version: 2026_11_12_210000) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -109,6 +109,21 @@ ActiveRecord::Schema[7.2].define(version: 2026_11_11_000000) do
     t.index ["work_id"], name: "index_ai_work_metadata_on_work_id"
     t.check_constraint "json_valid(`metadata`)", name: "metadata"
     t.text "subject_heading_candidates", size: :medium
+    t.bigint "ai_work_metadata_run_id"
+    t.datetime "reviewed_at"
+    t.index ["ai_work_metadata_run_id"], name: "index_ai_work_metadata_on_ai_work_metadata_run_id"
+  end
+
+  create_table "ai_work_metadata_runs", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.integer "collection_id", null: false
+    t.integer "user_id"
+    t.string "kind", null: false
+    t.text "example_work_ids"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "started_at"
+    t.index ["collection_id"], name: "index_ai_work_metadata_runs_on_collection_id"
+    t.index ["user_id"], name: "index_ai_work_metadata_runs_on_user_id"
   end
 
   create_table "article_article_links", id: :integer, charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
@@ -1533,7 +1548,10 @@ ActiveRecord::Schema[7.2].define(version: 2026_11_11_000000) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "ai_transcriptions", "pages", on_delete: :cascade
+  add_foreign_key "ai_work_metadata", "ai_work_metadata_runs", on_delete: :nullify
   add_foreign_key "ai_work_metadata", "works", on_delete: :cascade
+  add_foreign_key "ai_work_metadata_runs", "collections", on_delete: :cascade
+  add_foreign_key "ai_work_metadata_runs", "users", on_delete: :nullify
   add_foreign_key "bulk_exports", "collections"
   add_foreign_key "bulk_exports", "document_sets"
   add_foreign_key "bulk_exports", "users"

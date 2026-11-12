@@ -5,7 +5,7 @@ module AiWorkMetadata::Lib::Common
 
   def build_prompt
     AiWorkMetadata::Lib::PromptBuilder
-      .new(work: @work)
+      .new(work: @work, examples: @run&.examples || [])
       .build
   end
 

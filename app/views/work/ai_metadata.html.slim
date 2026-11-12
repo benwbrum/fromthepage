@@ -44,9 +44,9 @@
     .splitter
     .page-column
       .page-preview
-        -if @ai_work_metadata.metadata_json.present?
+        -if (values = @ai_work_metadata.draft_values).present?
           -@collection.metadata_fields.order(:line_number, :position).each do |field|
-            -value =@ai_work_metadata.metadata_json[field.id.to_s]
+            -value = values[field.id.to_s]
             -next if value.nil?
             p
               b ="#{field.label}: "

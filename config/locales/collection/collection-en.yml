@@ -7,39 +7,120 @@ en:
       form:
         ai_transcription: AI Transcription
         contact_us: Contact %{email} to upgrade to a plan that includes AI drafts.
-        description: Launch AI transcription job for pages in this collection.
-        description_complete: All pages in this collection have AI transcriptions.
+      transcription:
+        ai_transcription: AI Transcription
+        description: Launch AI transcription job for pages in this collection. AI metadata drafting transcribes any remaining pages here before it starts.
         failed: Failed
-        failed_transcription_errors: Failed transcription errors
         failed_transcription_errors_hidden: "%{count} additional failed transcription errors are not shown."
+        failed_transcriptions: Failed transcriptions
         finished: Finished
         generate: Create AI drafts for pages without them.
         in_progress: In progress
         not_started: Not started
-        pages: Pages
-        queued: Queued
-        retry: Retry failed jobs
-        total_tokens_used: Total tokens used
+        pages_without:
+          one: "%{count} page without AI transcription."
+          other: "%{count} pages without AI transcription."
+        retry: Retry failed pages
+        retry_note: Check the errors above first. Failures caused by the page's content usually fail again on retry.
+        status_done:
+          one: The page has been processed.
+          other: All %{count} pages have been processed.
+        status_failed:
+          one: "%{count} page failed; see the errors below."
+          other: "%{count} pages failed; see the errors below."
+        status_not_run:
+          one: 1 page · AI transcription has not been run.
+          other: "%{count} pages · AI transcription has not been run."
+        status_partial: "%{finished} of %{total} pages transcribed."
+        status_running: Transcribing pages.
+        status_running_metadata: Transcribing pages for the AI metadata draft job.
+        total_tokens_used: 'Total tokens used: %{tokens}.'
       update:
         success: Retrying AI transcription job.
     ai_work_metadata:
       create:
         success: AI metadata draft job launched.
+      failures:
+        failed_drafts: Failed metadata drafts
+        hidden: "%{count} additional failed metadata draft errors are not shown."
+        retry: Retry failed works
+        retry_note: Check the errors above first. Failures caused by the document's content usually fail again on retry.
       form:
-        description: Launch AI metadata draft jobs for works without them.
-        description_complete: All works in this collection have AI metadata drafts.
+        added_later:
+          one: "%{count} work added since the last draft has not been drafted yet."
+          other: "%{count} works added since the last draft have not been drafted yet."
+        draft_remaining: Draft remaining %{count} works
+        draft_remaining_examples:
+          one: Draft remaining %{works} works using %{count} example
+          other: Draft remaining %{works} works using %{count} examples
+        draft_remaining_no_examples: Draft remaining %{count} works without examples
+        draft_sample: Draft sample of %{count} works
+        draft_sample_small: Draft all %{count} works for review
+        edit: Edit
         failed: Failed
-        failed_work_metadata_errors: Failed metadata draft errors
-        failed_work_metadata_errors_hidden: "%{count} additional failed metadata draft errors are not shown."
         finished: Finished
-        generate: Create AI metadata drafts for works without them.
         heading: AI Metadata Draft
         in_progress: In progress
+        intro: AI drafts metadata for each work from its transcription. Pages without an AI transcription are transcribed first, for the whole collection, before any drafting starts.
+        needs_transcription: needs AI transcription
         no_metadata_fields: Please configure metadata fields under Task Configuration before generating AI metadata drafts.
         not_started: Not started
-        queued: Queued
-        total_tokens_used: Total tokens used
-        works: Works
+        page_count:
+          one: "%{count} page"
+          other: "%{count} pages"
+        recommended: Recommended
+        remaining_note_idle: Available once the sample has been drafted.
+        remaining_note_none: No sample works reviewed yet; drafts will be less consistent.
+        remaining_note_unreviewed: "%{count} unreviewed sample works will be left as-is."
+        review: Review & correct
+        run_done:
+          one: Done. Drafted using %{count} reviewed example.
+          other: Done. Drafted using %{count} reviewed examples.
+        run_done_no_examples: Done. Drafted without examples.
+        run_failed:
+          one: "%{count} work failed; see the errors below."
+          other: "%{count} works failed; see the errors below."
+        run_failed_so_far:
+          one: "%{count} work failed so far; see the errors below."
+          other: "%{count} works failed so far; see the errors below."
+        run_running:
+          one: Using %{count} reviewed example. Transcribing pages where needed, then drafting metadata.
+          other: Using %{count} reviewed examples. Transcribing pages where needed, then drafting metadata.
+        run_running_no_examples: Drafting without examples. Transcribing pages where needed, then drafting metadata.
+        sample_intro: We'll draft metadata for %{count} works chosen to represent the range of documents in this collection. Review and correct each draft; reviewed works are used as examples when drafting the rest of the collection. You don't have to finish all %{count}, but each one you review improves the results.
+        sample_intro_small: This collection has %{count} works, so all of them are in the sample. Review and correct each AI draft. Your reviewed works become examples for drafting any works added later.
+        sample_summary_html: "<strong>%{reviewed} of %{total}</strong> reviewed · %{ready} ready to review"
+        skip: Skip the sample and draft all %{count} works
+        skip_note: "— faster, but drafts won't have reviewed examples to follow."
+        skip_small: Skip review and draft all %{count} works
+        status_drafting: Drafting metadata
+        status_failed: Failed
+        status_queued: Queued
+        status_ready: Ready to review
+        status_reviewed: Reviewed
+        step1_title: Review a sample
+        step2_intro: Uses your reviewed sample works as examples.
+        step2_intro_skipped: Drafting all %{count} works without examples.
+        step2_intro_small: There are no works outside the sample. When new works are added, you can draft them here using your reviewed examples.
+        step2_title: Draft the remaining %{count} works
+        step2_title_small: Works added later
+        summary: "%{works} works · %{without} without AI transcription"
+        transcription_done: AI transcription done
+        transcription_first:
+          one: "%{count} page needs AI transcription first."
+          other: "%{count} pages need AI transcription first."
+        waiting_remainder:
+          one: Waiting for AI transcription (%{count} page left). Drafting starts once every page has an AI transcription.
+          other: Waiting for AI transcription (%{count} pages left). Drafting starts once every page has an AI transcription.
+        waiting_sample:
+          one: Waiting for AI transcription (%{count} page left). The sample is chosen and drafted once every page has an AI transcription.
+          other: Waiting for AI transcription (%{count} pages left). The sample is chosen and drafted once every page has an AI transcription.
+      remainder:
+        success: AI metadata drafts for the remaining works launched.
+      retry:
+        success: Retrying failed AI metadata drafts.
+      sample:
+        success: AI metadata drafts for the sample launched.
       show:
         back: Back to AI Settings
         fields_heading: Draft fields

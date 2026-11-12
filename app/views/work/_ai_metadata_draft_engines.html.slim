@@ -1,9 +1,9 @@
 -engines.each do |engine, ai_work_metadata|
   .page-ai_engine
     h6= t('work.describe.ai_model', model: ai_work_metadata.model)
-    -if ai_work_metadata.metadata_json.present?
+    -if (values = ai_work_metadata.draft_values).present?
       -collection.metadata_fields.order(:line_number, :position).each do |field|
-        -value = ai_work_metadata.metadata_json[field.id.to_s]
+        -value = values[field.id.to_s]
         -next if value.nil?
         p
           b ="#{field.label}: "

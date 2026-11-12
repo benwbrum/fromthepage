@@ -23,10 +23,19 @@ module TranscriptionFieldHelper
     @fields = collection.metadata_fields.order(:line_number).order(:position).group_by(&:line_number)
   end
 
-  def subject_heading_options(field, selected)
+  # The field's vocabulary, plus saved values and AI-suggested headings that are no longer in it,
+  # so they stay selectable.
+  def subject_heading_options(field, selected, suggested = [])
     inventory = field.subject_heading_inventory
     headings = inventory ? inventory.subject_headings.order(:id).pluck(:heading) : []
-    headings | Array(selected)
+    headings | Array(selected) | Array(suggested)
+  end
+
+  # Headings the work's finished AI drafts suggest for a subject heading field
+  def ai_suggested_headings(field)
+    return [] unless @work&.ai_metadata_draft_available?
+
+    @work.finished_ai_work_metadata_by_engine.values.flat_map { |draft| Array(draft.draft_values[field.id.to_s]) }.uniq
   end
 
   def field_layout(array)

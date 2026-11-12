@@ -84,4 +84,17 @@ RSpec.describe AiWorkMetadata, type: :model do
       expect(create(:ai_work_metadata)).to be_status_new
     end
   end
+
+  describe '#draft_values' do
+    it 'adds suggested subject headings to the draft values by field id' do
+      draft = AiWorkMetadata.new(metadata_json: { '1' => 'A title' },
+                                 subject_heading_candidates: { '7' => [{ 'heading' => 'Agriculture', 'uri' => 'http://id.loc.gov/x' }, { 'heading' => 'Cotton' }], '8' => [] })
+      expect(draft.draft_values).to eq('1' => 'A title', '7' => ['Agriculture', 'Cotton'])
+      expect(draft.metadata_json).to eq('1' => 'A title')
+    end
+
+    it 'handles drafts without metadata or candidates' do
+      expect(AiWorkMetadata.new.draft_values).to eq({})
+    end
+  end
 end

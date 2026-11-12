@@ -1,0 +1,14 @@
+-if drafts.any?
+  .ai-settings_failures
+    h4 =t('.failed_drafts')
+    ul
+      -drafts.each do |draft|
+        li
+          strong =draft.work.title
+          =" — "
+          =link_to draft.short_error_message, collection_ai_work_metadatum_path(user_slug: collection.owner.to_param, collection_id: collection.to_param, id: draft.id), class: 'ai-settings_error'
+    -if hidden_count.positive?
+      p.fgfaded =t('.hidden', count: hidden_count)
+    .ai-settings_launch
+      =link_to t('.retry'), retry_collection_ai_work_metadata_path(collection.owner, collection), class: 'button', data: { turbo: true, turbo_method: :post }
+      span.fgfaded =t('.retry_note')

@@ -3,20 +3,13 @@ class SubjectHeadings::SampleSetJob < ApplicationJob
 
   retry_on StandardError, attempts: 1
 
-  # Creates the collection's "Subject Heading Sample Set" document set and queues AI metadata drafts
-  # (including subject heading candidates) for its works.
+  # Creates the collection's sample set (or reuses an existing one) and queues AI metadata drafts
+  # (including subject heading candidates) for its works, as "Draft sample" does on the AI settings tab.
   def perform(user_id:, collection_id:)
     user = User.find(user_id)
     collection = Collection.find(collection_id)
 
-    sample_set = SubjectHeadings::CreateSampleSet.new(collection: collection, user: user).call
-    raise sample_set.full_errors unless sample_set.success?
-
-    scope = { work_ids: sample_set.document_set.work_ids }
-    drafts = AiWorkMetadata::BulkCreate.new(collection: collection, user: user, scope: scope,
-                                            model: AiWorkMetadata::SUBJECT_HEADING_MODEL).call
-    raise drafts.full_errors unless drafts.success?
-
-    AiWorkMetadata::BulkGenerateJob.perform_later(user_id: user.id, collection_id: collection.id, scope: scope)
+    started = AiWorkMetadata::StartRun.new(collection: collection, user: user, kind: :sample).call
+    raise started.full_errors unless started.success?
   end
 end

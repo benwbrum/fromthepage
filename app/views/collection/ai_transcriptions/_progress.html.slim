@@ -1,0 +1,12 @@
+/ Segmented progress bar and the four counters, shared by AI transcription (pages) and metadata drafts (works).
+-total = [counts.values_at(:finished, :in_progress, :failed, :not_started).sum, 1].max
+-summary = labels.map { |key, label| "#{counts[key]} #{label}" }.join(', ')
+.ai-progress role="img" aria-label=summary
+  -[:finished, :in_progress, :failed].each do |key|
+    -if counts[key].positive?
+      span class="ai-progress_#{key.to_s.dasherize}" style="width: #{(counts[key] * 100.0 / total).round(3)}%"
+section.collection-stats
+  .collection-stats_counters
+    -labels.each do |key, label|
+      .counter [data-prefix=number_with_delimiter(counts[key])]
+        =label

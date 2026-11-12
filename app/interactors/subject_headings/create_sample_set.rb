@@ -2,7 +2,7 @@ class SubjectHeadings::CreateSampleSet < ApplicationInteractor
   TITLE = 'Subject Heading Sample Set'.freeze
   DESCRIPTION = 'Documents chosen automatically to represent the variety of this collection, ' \
                 'for reviewing and cataloging AI subject heading suggestions.'.freeze
-  SIZE = 20
+  SIZE = 10
   POOL_SIZE = 1_000
   MIN_TEXT_LENGTH = 200
   HUMAN_STATUSES = [:incomplete, :transcribed, :indexed, :needs_review].freeze
@@ -13,6 +13,9 @@ class SubjectHeadings::CreateSampleSet < ApplicationInteractor
   # chosen from their transcripts alone (see SubjectHeadings::Lib::VariedSelection). Works are drawn from
   # the whole collection whether their text is human or AI transcription, so the sample isn't skewed
   # toward whatever volunteers happened to transcribe first.
+  #
+  # A collection with no more than `size` works uses all of them. AI metadata drafting AI-transcribes
+  # the collection before choosing the sample (see AiWorkMetadata::StartRun).
   #
   # @params collection: required
   # @params user: required
@@ -31,13 +34,8 @@ class SubjectHeadings::CreateSampleSet < ApplicationInteractor
     check_user_permission
     raise ArgumentError, "Collection already has a \"#{TITLE}\" document set" if @collection.document_sets.exists?(title: TITLE)
 
-    candidates = candidate_works
-    raise ArgumentError, 'Collection has no transcribed works to sample' if candidates.empty?
-
-    chosen = SubjectHeadings::Lib::VariedSelection
-             .new(candidates.map(&:last), count: @size, seed: @collection.id)
-             .indexes
-             .map { |i| candidates[i].first }
+    chosen = chosen_works
+    raise ArgumentError, 'Collection has no transcribed works to sample' if chosen.empty?
 
     DocumentSet.transaction do
       @collection.update!(supports_document_sets: true) unless @collection.supports_document_sets
@@ -59,6 +57,18 @@ class SubjectHeadings::CreateSampleSet < ApplicationInteractor
     return if @user.admin? || @user.like_owner?(@collection)
 
     raise ArgumentError, 'User has no permission to create a sample set for this collection'
+  end
+
+  def chosen_works
+    return @collection.works.reorder(:id).to_a if @collection.works.count <= @size
+
+    candidates = candidate_works
+    return [] if candidates.empty?
+
+    SubjectHeadings::Lib::VariedSelection
+      .new(candidates.map(&:last), count: @size, seed: @collection.id)
+      .indexes
+      .map { |i| candidates[i].first }
   end
 
   # [work, text] pairs for a random POOL_SIZE of the works with human or AI transcription

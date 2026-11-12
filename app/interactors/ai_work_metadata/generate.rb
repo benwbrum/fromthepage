@@ -47,7 +47,7 @@ class AiWorkMetadata::Generate < ApplicationInteractor
 
     subject_heading_fields.each do |field|
       field_candidates, field_reasoning, field_usage =
-        AiWorkMetadata::Lib::SubjectHeadingGenerator.new(work: @work, field: field).perform
+        AiWorkMetadata::Lib::SubjectHeadingGenerator.new(work: @work, field: field, examples: examples).perform
       candidates[field.id.to_s] = field_candidates
       reasoning[field.id.to_s] = field_reasoning if field_reasoning.present?
       usage[field.id.to_s] = field_usage
@@ -62,6 +62,10 @@ class AiWorkMetadata::Generate < ApplicationInteractor
       reasoning: [@ai_work_metadata.reasoning, *reasoning.values].compact_blank.join("\n\n").presence,
       metadata: metadata
     )
+  end
+
+  def examples
+    @ai_work_metadata.ai_work_metadata_run&.examples || []
   end
 
   def handle_response(response_text, reasoning, metadata)

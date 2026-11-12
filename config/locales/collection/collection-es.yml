@@ -7,39 +7,120 @@ es:
       form:
         ai_transcription: Transcripción de IA
         contact_us: Comuníquese con %{email} para actualizar a un plan que incluya borradores de IA.
-        description: Iniciar un trabajo de transcripción de IA para las páginas de esta colección.
-        description_complete: Todas las páginas de esta colección tienen transcripciones de IA.
+      transcription:
+        ai_transcription: Transcripción con IA
+        description: Inicia una tarea de transcripción con IA para las páginas de esta colección. El borrador de metadatos con IA transcribe aquí las páginas pendientes antes de comenzar.
         failed: Fallido
-        failed_transcription_errors: Errores de transcripción fallidos
-        failed_transcription_errors_hidden: No se muestran los errores de transcripción adicionales %{count}.
+        failed_transcription_errors_hidden: No se muestran %{count} errores de transcripción adicionales.
+        failed_transcriptions: Transcripciones fallidas
         finished: Finalizado
-        generate: Crea borradores de IA para páginas que no los tengan.
+        generate: Crear borradores con IA para las páginas que no los tengan.
         in_progress: En curso
         not_started: No iniciado
-        pages: Páginas
-        queued: En cola
-        retry: Reintentar trabajos fallidos
-        total_tokens_used: Total de tokens utilizados
+        pages_without:
+          one: "%{count} página sin transcripción con IA."
+          other: "%{count} páginas sin transcripción con IA."
+        retry: Reintentar páginas fallidas
+        retry_note: Revise primero los errores anteriores. Los fallos causados por el contenido de la página suelen repetirse al reintentar.
+        status_done:
+          one: La página ha sido procesada.
+          other: Se han procesado las %{count} páginas.
+        status_failed:
+          one: "%{count} página falló; consulte los errores abajo."
+          other: "%{count} páginas fallaron; consulte los errores abajo."
+        status_not_run:
+          one: 1 página · No se ha ejecutado la transcripción con IA.
+          other: "%{count} páginas · No se ha ejecutado la transcripción con IA."
+        status_partial: "%{finished} de %{total} páginas transcritas."
+        status_running: Transcribiendo páginas.
+        status_running_metadata: Transcribiendo páginas para la tarea de borrador de metadatos con IA.
+        total_tokens_used: 'Total de tokens utilizados: %{tokens}.'
       update:
         success: Reintentando el trabajo de transcripción de IA.
     ai_work_metadata:
       create:
         success: Se ha lanzado un trabajo de borrador de metadatos con IA.
+      failures:
+        failed_drafts: Borradores de metadatos fallidos
+        hidden: No se muestran %{count} errores de borrador de metadatos adicionales.
+        retry: Reintentar obras fallidas
+        retry_note: Revise primero los errores anteriores. Los fallos causados por el contenido del documento suelen repetirse al reintentar.
       form:
-        description: Inicia trabajos de borrador de metadatos con IA para las obras que no los tengan.
-        description_complete: Todas las obras de esta colección tienen borradores de metadatos con IA.
+        added_later:
+          one: "%{count} obra añadida desde el último borrador aún no se ha redactado."
+          other: "%{count} obras añadidas desde el último borrador aún no se han redactado."
+        draft_remaining: Redactar las %{count} obras restantes
+        draft_remaining_examples:
+          one: Redactar las %{works} obras restantes con %{count} ejemplo
+          other: Redactar las %{works} obras restantes con %{count} ejemplos
+        draft_remaining_no_examples: Redactar las %{count} obras restantes sin ejemplos
+        draft_sample: Redactar una muestra de %{count} obras
+        draft_sample_small: Redactar las %{count} obras para revisión
+        edit: Editar
         failed: Fallido
-        failed_work_metadata_errors: Errores de borrador de metadatos fallidos
-        failed_work_metadata_errors_hidden: No se muestran los errores de borrador de metadatos adicionales %{count}.
         finished: Finalizado
-        generate: Crea borradores de metadatos con IA para las obras que no los tengan.
         heading: Borrador de metadatos con IA
         in_progress: En curso
+        intro: La IA redacta los metadatos de cada obra a partir de su transcripción. Las páginas sin transcripción con IA se transcriben primero, para toda la colección, antes de redactar.
+        needs_transcription: necesita transcripción con IA
         no_metadata_fields: Configure los campos de metadatos en Configuración de tareas antes de generar borradores de metadatos con IA.
         not_started: No iniciado
-        queued: En cola
-        total_tokens_used: Total de tokens utilizados
-        works: Obras
+        page_count:
+          one: "%{count} página"
+          other: "%{count} páginas"
+        recommended: Recomendado
+        remaining_note_idle: Disponible cuando se haya redactado la muestra.
+        remaining_note_none: Aún no se ha revisado ninguna obra de muestra; los borradores serán menos coherentes.
+        remaining_note_unreviewed: "%{count} obras de muestra sin revisar se dejarán como están."
+        review: Revisar y corregir
+        run_done:
+          one: Listo. Redactado con %{count} ejemplo revisado.
+          other: Listo. Redactado con %{count} ejemplos revisados.
+        run_done_no_examples: Listo. Redactado sin ejemplos.
+        run_failed:
+          one: "%{count} obra falló; consulte los errores abajo."
+          other: "%{count} obras fallaron; consulte los errores abajo."
+        run_failed_so_far:
+          one: "%{count} obra ha fallado hasta ahora; consulte los errores abajo."
+          other: "%{count} obras han fallado hasta ahora; consulte los errores abajo."
+        run_running:
+          one: Usando %{count} ejemplo revisado. Transcribiendo páginas cuando es necesario y luego redactando metadatos.
+          other: Usando %{count} ejemplos revisados. Transcribiendo páginas cuando es necesario y luego redactando metadatos.
+        run_running_no_examples: Redactando sin ejemplos. Transcribiendo páginas cuando es necesario y luego redactando metadatos.
+        sample_intro: Redactaremos metadatos para %{count} obras elegidas para representar la variedad de documentos de esta colección. Revise y corrija cada borrador; las obras revisadas se usan como ejemplos al redactar el resto de la colección. No es necesario terminar las %{count}, pero cada una que revise mejora los resultados.
+        sample_intro_small: Esta colección tiene %{count} obras, así que todas están en la muestra. Revise y corrija cada borrador de IA. Sus obras revisadas serán ejemplos para redactar las obras que se añadan más adelante.
+        sample_summary_html: "<strong>%{reviewed} de %{total}</strong> revisadas · %{ready} listas para revisar"
+        skip: Omitir la muestra y redactar las %{count} obras
+        skip_note: "— más rápido, pero los borradores no tendrán ejemplos revisados que seguir."
+        skip_small: Omitir la revisión y redactar las %{count} obras
+        status_drafting: Redactando metadatos
+        status_failed: Fallida
+        status_queued: En cola
+        status_ready: Lista para revisar
+        status_reviewed: Revisada
+        step1_title: Revisar una muestra
+        step2_intro: Usa sus obras de muestra revisadas como ejemplos.
+        step2_intro_skipped: Redactando las %{count} obras sin ejemplos.
+        step2_intro_small: No hay obras fuera de la muestra. Cuando se añadan obras nuevas, podrá redactarlas aquí usando sus ejemplos revisados.
+        step2_title: Redactar las %{count} obras restantes
+        step2_title_small: Obras añadidas más adelante
+        summary: "%{works} obras · %{without} sin transcripción con IA"
+        transcription_done: transcripción con IA completada
+        transcription_first:
+          one: "%{count} página necesita primero transcripción con IA."
+          other: "%{count} páginas necesitan primero transcripción con IA."
+        waiting_remainder:
+          one: Esperando la transcripción con IA (falta %{count} página). La redacción comienza cuando todas las páginas tengan transcripción con IA.
+          other: Esperando la transcripción con IA (faltan %{count} páginas). La redacción comienza cuando todas las páginas tengan transcripción con IA.
+        waiting_sample:
+          one: Esperando la transcripción con IA (falta %{count} página). La muestra se elige y redacta cuando todas las páginas tengan transcripción con IA.
+          other: Esperando la transcripción con IA (faltan %{count} páginas). La muestra se elige y redacta cuando todas las páginas tengan transcripción con IA.
+      remainder:
+        success: Se iniciaron los borradores de metadatos con IA para las obras restantes.
+      retry:
+        success: Reintentando los borradores de metadatos con IA fallidos.
+      sample:
+        success: Se iniciaron los borradores de metadatos con IA para la muestra.
       show:
         back: Volver a la configuración de IA
         fields_heading: Campos del borrador

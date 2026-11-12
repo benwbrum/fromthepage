@@ -7,39 +7,120 @@ fr:
       form:
         ai_transcription: Transcription par IA
         contact_us: Contactez %{email} pour passer à un forfait incluant les brouillons IA.
-        description: Lancer une tâche de transcription IA pour les pages de cette collection.
-        description_complete: Toutes les pages de cette collection comportent des transcriptions IA.
+      transcription:
+        ai_transcription: Transcription par IA
+        description: Lancer une tâche de transcription par IA pour les pages de cette collection. Le brouillon de métadonnées par IA transcrit ici les pages restantes avant de commencer.
         failed: Échoué
-        failed_transcription_errors: Erreurs de transcription échouées
-        failed_transcription_errors_hidden: Les erreurs de transcription supplémentaires %{count} ne sont pas affichées.
+        failed_transcription_errors_hidden: "%{count} erreurs de transcription supplémentaires ne sont pas affichées."
+        failed_transcriptions: Transcriptions échouées
         finished: Fini
-        generate: Créer des brouillons IA pour les pages qui en sont dépourvues.
+        generate: Créer des brouillons par IA pour les pages qui en sont dépourvues.
         in_progress: En cours
         not_started: Pas encore commencé
-        pages: Pages
-        queued: File d'attente
-        retry: Réessayer les tâches ayant échoué
-        total_tokens_used: Total de tokens utilisés
+        pages_without:
+          one: "%{count} page sans transcription par IA."
+          other: "%{count} pages sans transcription par IA."
+        retry: Réessayer les pages échouées
+        retry_note: Vérifiez d'abord les erreurs ci-dessus. Les échecs dus au contenu de la page se reproduisent généralement.
+        status_done:
+          one: La page a été traitée.
+          other: Les %{count} pages ont été traitées.
+        status_failed:
+          one: "%{count} page a échoué ; voir les erreurs ci-dessous."
+          other: "%{count} pages ont échoué ; voir les erreurs ci-dessous."
+        status_not_run:
+          one: 1 page · La transcription par IA n'a pas été lancée.
+          other: "%{count} pages · La transcription par IA n'a pas été lancée."
+        status_partial: "%{finished} pages sur %{total} transcrites."
+        status_running: Transcription des pages en cours.
+        status_running_metadata: Transcription des pages pour la tâche de brouillon de métadonnées par IA.
+        total_tokens_used: 'Total de tokens utilisés : %{tokens}.'
       update:
         success: Nouvelle tentative de transcription par IA.
     ai_work_metadata:
       create:
         success: Tâche de brouillon de métadonnées par IA lancée.
+      failures:
+        failed_drafts: Brouillons de métadonnées échoués
+        hidden: "%{count} erreurs de brouillon de métadonnées supplémentaires ne sont pas affichées."
+        retry: Réessayer les œuvres échouées
+        retry_note: Vérifiez d'abord les erreurs ci-dessus. Les échecs dus au contenu du document se reproduisent généralement.
       form:
-        description: Lancer des tâches de brouillon de métadonnées par IA pour les œuvres qui en sont dépourvues.
-        description_complete: Toutes les œuvres de cette collection comportent des brouillons de métadonnées par IA.
+        added_later:
+          one: "%{count} œuvre ajoutée depuis le dernier brouillon n'a pas encore été rédigée."
+          other: "%{count} œuvres ajoutées depuis le dernier brouillon n'ont pas encore été rédigées."
+        draft_remaining: Rédiger les %{count} œuvres restantes
+        draft_remaining_examples:
+          one: Rédiger les %{works} œuvres restantes avec %{count} exemple
+          other: Rédiger les %{works} œuvres restantes avec %{count} exemples
+        draft_remaining_no_examples: Rédiger les %{count} œuvres restantes sans exemples
+        draft_sample: Rédiger un échantillon de %{count} œuvres
+        draft_sample_small: Rédiger les %{count} œuvres pour révision
+        edit: Modifier
         failed: Échoué
-        failed_work_metadata_errors: Erreurs de brouillon de métadonnées échouées
-        failed_work_metadata_errors_hidden: Les erreurs de brouillon de métadonnées supplémentaires %{count} ne sont pas affichées.
         finished: Fini
-        generate: Créer des brouillons de métadonnées par IA pour les œuvres qui en sont dépourvues.
         heading: Brouillon de métadonnées par IA
         in_progress: En cours
+        intro: L'IA rédige les métadonnées de chaque œuvre à partir de sa transcription. Les pages sans transcription par IA sont d'abord transcrites, pour toute la collection, avant toute rédaction.
+        needs_transcription: transcription par IA nécessaire
         no_metadata_fields: Veuillez configurer les champs de métadonnées dans la configuration des tâches avant de générer des brouillons de métadonnées par IA.
         not_started: Pas encore commencé
-        queued: File d'attente
-        total_tokens_used: Total de tokens utilisés
-        works: Œuvres
+        page_count:
+          one: "%{count} page"
+          other: "%{count} pages"
+        recommended: Recommandé
+        remaining_note_idle: Disponible une fois l'échantillon rédigé.
+        remaining_note_none: Aucune œuvre d'échantillon révisée pour l'instant ; les brouillons seront moins cohérents.
+        remaining_note_unreviewed: "%{count} œuvres d'échantillon non révisées resteront telles quelles."
+        review: Réviser et corriger
+        run_done:
+          one: Terminé. Rédigé avec %{count} exemple révisé.
+          other: Terminé. Rédigé avec %{count} exemples révisés.
+        run_done_no_examples: Terminé. Rédigé sans exemples.
+        run_failed:
+          one: "%{count} œuvre a échoué ; voir les erreurs ci-dessous."
+          other: "%{count} œuvres ont échoué ; voir les erreurs ci-dessous."
+        run_failed_so_far:
+          one: "%{count} œuvre a échoué jusqu'ici ; voir les erreurs ci-dessous."
+          other: "%{count} œuvres ont échoué jusqu'ici ; voir les erreurs ci-dessous."
+        run_running:
+          one: Utilisation de %{count} exemple révisé. Transcription des pages si nécessaire, puis rédaction des métadonnées.
+          other: Utilisation de %{count} exemples révisés. Transcription des pages si nécessaire, puis rédaction des métadonnées.
+        run_running_no_examples: Rédaction sans exemples. Transcription des pages si nécessaire, puis rédaction des métadonnées.
+        sample_intro: Nous rédigerons les métadonnées de %{count} œuvres choisies pour représenter la diversité des documents de cette collection. Révisez et corrigez chaque brouillon ; les œuvres révisées servent d'exemples pour rédiger le reste de la collection. Inutile de terminer les %{count}, mais chaque révision améliore les résultats.
+        sample_intro_small: Cette collection compte %{count} œuvres, elles font donc toutes partie de l'échantillon. Révisez et corrigez chaque brouillon. Vos œuvres révisées serviront d'exemples pour les œuvres ajoutées plus tard.
+        sample_summary_html: "<strong>%{reviewed} sur %{total}</strong> révisées · %{ready} prêtes à réviser"
+        skip: Ignorer l'échantillon et rédiger les %{count} œuvres
+        skip_note: "— plus rapide, mais les brouillons n'auront pas d'exemples révisés à suivre."
+        skip_small: Ignorer la révision et rédiger les %{count} œuvres
+        status_drafting: Rédaction des métadonnées
+        status_failed: Échouée
+        status_queued: En file d'attente
+        status_ready: Prête à réviser
+        status_reviewed: Révisée
+        step1_title: Réviser un échantillon
+        step2_intro: Utilise vos œuvres d'échantillon révisées comme exemples.
+        step2_intro_skipped: Rédaction des %{count} œuvres sans exemples.
+        step2_intro_small: Aucune œuvre n'est hors de l'échantillon. Lorsque de nouvelles œuvres seront ajoutées, vous pourrez les rédiger ici avec vos exemples révisés.
+        step2_title: Rédiger les %{count} œuvres restantes
+        step2_title_small: Œuvres ajoutées plus tard
+        summary: "%{works} œuvres · %{without} sans transcription par IA"
+        transcription_done: transcription par IA terminée
+        transcription_first:
+          one: "%{count} page nécessite d'abord une transcription par IA."
+          other: "%{count} pages nécessitent d'abord une transcription par IA."
+        waiting_remainder:
+          one: En attente de la transcription par IA (%{count} page restante). La rédaction commence une fois toutes les pages transcrites par IA.
+          other: En attente de la transcription par IA (%{count} pages restantes). La rédaction commence une fois toutes les pages transcrites par IA.
+        waiting_sample:
+          one: En attente de la transcription par IA (%{count} page restante). L'échantillon est choisi et rédigé une fois toutes les pages transcrites par IA.
+          other: En attente de la transcription par IA (%{count} pages restantes). L'échantillon est choisi et rédigé une fois toutes les pages transcrites par IA.
+      remainder:
+        success: Brouillons de métadonnées par IA lancés pour les œuvres restantes.
+      retry:
+        success: Nouvelle tentative des brouillons de métadonnées par IA échoués.
+      sample:
+        success: Brouillons de métadonnées par IA lancés pour l'échantillon.
       show:
         back: Retour aux paramètres IA
         fields_heading: Champs du brouillon

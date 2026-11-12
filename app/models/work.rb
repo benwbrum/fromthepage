@@ -343,6 +343,12 @@ class Work < ApplicationRecord
     pages.any? { |page| !page.status_blank? && page.machine_plaintext_for_ai? }
   end
 
+  # Saving the metadata form after an AI draft finished marks that draft reviewed;
+  # reviewed sample works become examples for drafting the rest of the collection.
+  def mark_ai_metadata_reviewed!
+    ai_work_metadata.status_finished.where(reviewed_at: nil).update_all(reviewed_at: Time.current)
+  end
+
   def ai_metadata_draft_available?
     finished_ai_work_metadata_by_engine.any?
   end

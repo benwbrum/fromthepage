@@ -1,8 +1,9 @@
 class AiWorkMetadata::Lib::PromptBuilder
   SKIP_TYPES = %w[instruction].freeze
 
-  def initialize(work:)
+  def initialize(work:, examples: [])
     @work = work
+    @examples = examples
     @collection = work.collection
     ordered_fields = @collection.metadata_fields.order(:line_number, :position)
     @prompt_fields = ordered_fields.reject { |field| field.input_type == 'subject_headings' }
@@ -28,13 +29,28 @@ class AiWorkMetadata::Lib::PromptBuilder
 
       Expected JSON format:
       #{example_json}
-
+      #{reviewed_examples}
       #{document_text_label}
       #{@work.plaintext_for_ai}
     PROMPT
   end
 
   private
+
+  # Owner-reviewed documents from this collection, so drafts follow the collection's cataloging conventions
+  def reviewed_examples
+    examples = @examples.filter_map do |example|
+      json = example.metadata_json(@fields)
+      next if json.values.all?(&:nil?)
+
+      "Example document: #{example.title}\nText:\n#{example.text}\nMetadata:\n#{JSON.pretty_generate(json)}"
+    end
+    return '' if examples.empty?
+
+    "\nThe project owner reviewed and corrected the metadata for these documents from the same collection. " \
+      "Follow their conventions (wording, level of detail, date and name formats) for the document below.\n\n" \
+      "#{examples.join("\n\n")}\n"
+  end
 
   def document_text_label
     return 'Document text:' unless @work.machine_plaintext_for_ai?

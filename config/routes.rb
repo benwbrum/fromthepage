@@ -542,7 +542,11 @@ Fromthepage::Application.routes.draw do
       scope module: :collection do
         resource :ai_transcriptions, only: [:edit, :create, :update]
         resources :ai_transcriptions, only: [:show], controller: 'ai_transcriptions'
-        resource :ai_work_metadata, only: [:create], controller: 'ai_work_metadata'
+        resource :ai_work_metadata, only: [:create], controller: 'ai_work_metadata' do
+          post :sample
+          post :remainder
+          post :retry
+        end
         resources :ai_work_metadata, only: [:show], controller: 'ai_work_metadata'
       end
 

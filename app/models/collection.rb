@@ -76,6 +76,7 @@ class Collection < ApplicationRecord
   has_many :notes, -> { order(created_at: :desc) }, dependent: :destroy
   has_many :articles, dependent: :destroy
   has_many :document_sets, -> { order(:title) }, dependent: :destroy
+  has_many :ai_work_metadata_runs, dependent: :destroy
   has_many :categories, -> { order(:title) }
   has_many :deeds, -> { order(created_at: :desc) }, dependent: :destroy
   has_one :sc_collection, dependent: :destroy

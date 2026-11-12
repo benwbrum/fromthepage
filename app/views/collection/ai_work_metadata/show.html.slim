@@ -12,13 +12,13 @@
           tr
             td(colspan="2")
               p.fgerror =@ai_work_metadata.short_error_message
-        -elsif @ai_work_metadata.metadata_json.present?
+        -elsif (values = @ai_work_metadata.draft_values).present?
           tr
             td(colspan="2")
               h4 =t('.fields_heading')
               table
                 -@collection.metadata_fields.order(:line_number, :position).each do |field|
-                  -value = @ai_work_metadata.metadata_json[field.id.to_s]
+                  -value = values[field.id.to_s]
                   -next if value.nil?
                   tr
                     th =field.label

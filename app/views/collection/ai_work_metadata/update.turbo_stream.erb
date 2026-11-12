@@ -1,0 +1,6 @@
+<% if @result.success? %>
+  <%= turbo_flash(@notice, :notice) %>
+<% else %>
+  <%= turbo_flash(@result.full_errors.message.presence || t('errors.error'), :error) %>
+<% end %>
+<%= turbo_stream.update('collection-settings', partial: 'collection/ai_transcriptions/form', locals: { collection: @collection }) %>

@@ -177,4 +177,23 @@ describe 'Project owner subject heading configuration', js: true do
     click_button 'save_button_top'
     expect(JSON.parse(work.reload.metadata_description).first['value']).to contain_exactly('Agriculture', 'Abolitionists')
   end
+
+  it 'fills the subject heading field from the AI draft' do
+    import_headings(field, "heading\nAgriculture\nAbolitionists\nLocal history\n")
+    work = create(:work_with_pages, collection: collection, owner: owner, owner_user_id: owner.id)
+    create(:ai_work_metadata, work: work, status: :finished, metadata_json: {},
+                              subject_heading_candidates: { field.id.to_s => [{ 'heading' => 'Agriculture' }, { 'heading' => 'Local history' }] })
+
+    visit describe_collection_work_path(owner, collection, work)
+    # Wait for select2 to take over the subject heading field before applying the draft
+    expect(page).to have_css('.field-wrapper .select2-container')
+    expect(page).not_to have_css('.select2-selection__choice')
+    find('#ai-draft-metadata-fields').click
+
+    expect(page).to have_css('.select2-selection__choice', count: 2)
+    expect(find('.field-wrapper select', visible: :all).value).to contain_exactly('Agriculture', 'Local history')
+    click_button 'save_button_top'
+    values = JSON.parse(work.reload.metadata_description).find { |entry| entry['transcription_field_id'] == field.id }['value']
+    expect(values).to contain_exactly('Agriculture', 'Local history')
+  end
 end

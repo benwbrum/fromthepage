@@ -1,47 +1,48 @@
 class Collection::AiWorkMetadataController < CollectionController
   before_action :authorized?
-  before_action :require_ai_work_metadata_feature, only: :create
+  before_action :require_ai_work_metadata_feature, except: :show
 
   def show
     @ai_work_metadata = AiWorkMetadata.joins(:work).where(works: { collection_id: @collection.id }).find(params[:id])
     @work = @ai_work_metadata.work
   end
 
+  # Skip the sample: draft every work without examples
   def create
-    @result = AiWorkMetadata::BulkCreate.new(
-      collection: @collection,
-      user: current_user
-    ).call
+    start_run(:all, t('collection.ai_work_metadata.create.success'))
+  end
 
-    if @result.success?
-      AiWorkMetadata::BulkGenerateJob.perform_later(
-        collection_id: @collection.id,
-        user_id: current_user.id
-      )
-    end
+  # Step 1: draft the sample set for review
+  def sample
+    start_run(:sample, t('collection.ai_work_metadata.sample.success'))
+  end
 
-    assign_stats
+  # Step 2: draft the works outside the sample, using the reviewed sample works as examples
+  def remainder
+    start_run(:remainder, t('collection.ai_work_metadata.remainder.success'))
+  end
 
-    respond_to(&:turbo_stream)
+  def retry
+    drafts = AiWorkMetadata.where(ai_work_metadata_run_id: @collection.ai_work_metadata_runs.select(:id))
+    @result = AiWorkMetadata::RetryFailed.new(collection: @collection, user: current_user, drafts: drafts).call
+    @notice = t('collection.ai_work_metadata.retry.success')
+    render_settings
   end
 
   private
 
-  def require_ai_work_metadata_feature
-    head :not_found unless helpers.ai_work_metadata_available?(@collection)
+  def start_run(kind, notice)
+    @result = AiWorkMetadata::StartRun.new(collection: @collection, user: current_user, kind: kind).call
+    @notice = notice
+    render_settings
   end
 
-  def assign_stats
-    stats = AiWorkMetadata.stats_for_collection(@collection)
+  def render_settings
+    @status = AiSettingsStatus.new(@collection)
+    render :update, formats: :turbo_stream
+  end
 
-    @works_count = stats.works_count
-    @ai_work_metadata_count = stats.ai_work_metadata_count
-    @queued_work_metadata_count = stats.queued_count
-    @finished_work_metadata_count = stats.finished_count
-    @failed_work_metadata_count = stats.failed_count
-    @not_started_work_metadata_count = stats.not_started_count
-    @failed_ai_work_metadata = stats.failed_records
-    @failed_ai_work_metadata_hidden_count = stats.failed_hidden_count
-    @total_work_metadata_token_count = stats.total_token_count
+  def require_ai_work_metadata_feature
+    head :not_found unless helpers.ai_work_metadata_available?(@collection)
   end
 end

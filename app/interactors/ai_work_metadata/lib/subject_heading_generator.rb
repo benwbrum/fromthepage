@@ -1,10 +1,11 @@
 # Asks the model for subject headings for one work and one subject heading field.
 # Returns [candidates, reasoning, usage]: candidates are SubjectHeading snapshots ({'heading', 'uri'}).
 class AiWorkMetadata::Lib::SubjectHeadingGenerator
-  def initialize(work:, field:, model: AiWorkMetadata::SUBJECT_HEADING_MODEL)
+  def initialize(work:, field:, model: AiWorkMetadata::SUBJECT_HEADING_MODEL, examples: [])
     @work = work
     @field = field
     @model = model
+    @examples = examples
   end
 
   def perform
@@ -21,7 +22,7 @@ class AiWorkMetadata::Lib::SubjectHeadingGenerator
   private
 
   def prompt_builder
-    @prompt_builder ||= AiWorkMetadata::Lib::SubjectHeadingPromptBuilder.new(work: @work, field: @field)
+    @prompt_builder ||= AiWorkMetadata::Lib::SubjectHeadingPromptBuilder.new(work: @work, field: @field, examples: @examples)
   end
 
   def handler

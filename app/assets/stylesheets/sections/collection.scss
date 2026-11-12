@@ -476,6 +476,154 @@
   border-top: 2px solid rgba(#000, 0.15);
 }
 
+// Collection settings > AI: transcription progress and the AI metadata draft sample flow.
+// Segment colors match AiTranscription::FE_COLOR_STATUSES / AiWorkMetadata::FE_COLOR_STATUSES.
+$aiFinished: #6C2;
+$aiInProgress: #F0E68C;
+$aiFailed: #CC4444;
+$aiReviewed: #3f8a12;
+$aiQueued: #cfc4b0;
+
+.ai-settings {
+  // Global `strong` uses the larger heading face; keep emphasis inline here.
+  strong {
+    font-size: inherit;
+    font-family: inherit;
+    font-weight: bold;
+  }
+  &_section {
+    h3 { margin-top: 0; }
+    h4 { margin: 0 0 0.4em; }
+  }
+  &_header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5em;
+  }
+  &_intro { max-width: 46em; }
+  &_launch {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5em 1em;
+    margin: 0.75em 0;
+    .fgfaded, .ai-settings_warning { max-width: 36em; font-size: 0.9em; }
+  }
+  &_warning { color: $fgLink; }
+  &_status {
+    text-align: center;
+    font-size: 0.9em;
+    color: $bodyFgFaded;
+  }
+  &_failures {
+    margin-top: $gapSize;
+    padding-top: $gapSize;
+    border-top: 1px solid rgba(#000, 0.1);
+    h4 { font-size: 1.1em; }
+    ul { margin: 0 0 0.5em; padding-left: 1.2em; }
+    li { margin-bottom: 0.3em; font-size: 0.9em; }
+  }
+  &_error { color: $fgLink; }
+  &_skip { margin-top: $gapSize; font-size: 0.9em; }
+}
+
+.ai-progress {
+  display: flex;
+  height: 16px;
+  margin: $gapSize 0;
+  overflow: hidden;
+  border: 1px solid rgba(#000, 0.35);
+  border-radius: 9px;
+  background: $bgWhite;
+  &_finished { background: $aiFinished; }
+  &_in-progress { background: $aiInProgress; }
+  &_failed { background: $aiFailed; }
+}
+
+.ai-step {
+  display: flex;
+  gap: 0.75em;
+  margin: $gapSize 0;
+  padding: 14px 16px;
+  background: mix(#FFF, $bodyBg, 60);
+  border: 1px solid rgba(#000, 0.12);
+  border-radius: 4px;
+
+  &_badge {
+    flex: 0 0 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #9a8d7c;
+    color: $fgWhite;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 22px;
+    text-align: center;
+  }
+  &--active &_badge { background: $fgLink; }
+  &_body {
+    flex: 1;
+    min-width: 0;
+    p { margin: 0.3em 0; }
+    > h4 { margin: 0; font-size: 1.1em; }
+  }
+  &_title {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75em;
+    h4 { margin: 0; font-size: 1.1em; }
+  }
+  &_recommended {
+    color: #4a7a1f;
+    font-size: 0.85em;
+    font-weight: bold;
+  }
+  &_summary { margin-top: 0.75em !important; font-size: 0.9em; }
+}
+
+.ai-sample {
+  border-top: 1px solid rgba(#000, 0.1);
+
+  &_row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 190px 110px;
+    gap: 0.75em;
+    align-items: center;
+    padding: 0.5em 0;
+    border-bottom: 1px solid rgba(#000, 0.08);
+
+    @media screen and (max-width: $widthMin) {
+      grid-template-columns: minmax(0, 1fr) auto;
+      .ai-sample_action { grid-column: 1 / -1; text-align: left; }
+    }
+  }
+  &_title {
+    min-width: 0;
+    strong, span { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    strong { font-size: 0.95em; }
+    span { font-size: 0.85em; }
+  }
+  &_status {
+    font-size: 0.9em;
+    &:before {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      margin-right: 0.5em;
+      border-radius: 50%;
+      background: $aiQueued;
+    }
+    &--drafting:before { background: #e3c94a; }
+    &--ready:before { background: $aiFinished; }
+    &--reviewed:before { background: $aiReviewed; }
+    &--failed:before { background: $aiFailed; }
+  }
+  &_action { text-align: right; font-size: 0.9em; }
+}
+
 .collection-settings {
   border-collapse: separate;
   border-spacing: 0.25em 0.5em;

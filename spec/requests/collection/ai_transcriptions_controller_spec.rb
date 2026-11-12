@@ -115,7 +115,7 @@ describe Collection::AiTranscriptionsController do
           login_as owner
           subject
 
-          expect(response.body).to include('Failed transcription errors')
+          expect(response.body).to include('Failed transcriptions', 'Retry failed pages')
           expect(response.body).to include('RECITATION')
           expect(response.body).to include('Failed Collection Page')
           expect(response.body).to include('Failed Work')
@@ -125,8 +125,9 @@ describe Collection::AiTranscriptionsController do
 
       context 'with failed ai work metadata' do
         let!(:metadata_field) { create(:transcription_field, :as_metadata, :text_field, collection_id: collection.id) }
+        let!(:run) { collection.ai_work_metadata_runs.create!(kind: 'all', user: owner, started_at: Time.current) }
         let!(:failed_ai_work_metadata) do
-          create(:ai_work_metadata, work_id: work.id, status: :error, metadata: { error_message: 'RECITATION' })
+          create(:ai_work_metadata, work_id: work.id, status: :error, metadata: { error_message: 'RECITATION' }, ai_work_metadata_run: run)
         end
 
         it 'renders failed work metadata draft details alongside the transcription section' do
@@ -135,7 +136,7 @@ describe Collection::AiTranscriptionsController do
           collection.update!(data_entry_type: 'text_and_metadata')
           subject
 
-          expect(response.body).to include('Failed metadata draft errors')
+          expect(response.body).to include('Failed metadata drafts', 'Retry failed works', 'Done. Drafted without examples.')
           expect(response.body).to include('RECITATION')
         end
       end

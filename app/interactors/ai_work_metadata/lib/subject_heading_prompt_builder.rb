@@ -5,9 +5,10 @@
 # user prompt (title + transcript) changes per work. Each heading gets a short ID ("H0001") that the
 # model returns and we map back to the heading, so headings can't be misspelled or invented.
 class AiWorkMetadata::Lib::SubjectHeadingPromptBuilder
-  def initialize(work:, field:)
+  def initialize(work:, field:, examples: [])
     @work = work
     @field = field
+    @examples = examples
     @collection = work.collection
   end
 
@@ -27,7 +28,7 @@ class AiWorkMetadata::Lib::SubjectHeadingPromptBuilder
       - Every heading you assign must appear in the vocabulary exactly. Never invent or combine headings.
       - Do not assign headings for the document's own form or genre (for example a letter or a report) unless the document is about that subject.
       - Do not assign headings for what the whole collection is about (see the collection description) unless the document is specifically about that topic.
-      #{local_practice}
+      #{local_practice}#{reviewed_examples}
       Respond with JSON only, in this form:
       {"headings": [{"id": "#{id_for(0)}", "heading": "exact heading text"}]}
 
@@ -69,6 +70,23 @@ class AiWorkMetadata::Lib::SubjectHeadingPromptBuilder
 
   def collection_description
     CGI.unescapeHTML(Rails::Html::FullSanitizer.new.sanitize(@collection.intro_block.to_s)).squish
+  end
+
+  # Owner-reviewed documents and the headings they chose. Part of the system instruction, which is
+  # the same for every work in a run, so it stays cacheable.
+  def reviewed_examples
+    examples = @examples.filter_map do |example|
+      chosen = example.headings(@field).filter_map do |text|
+        index = headings.index { |heading| heading.heading == text }
+        "#{id_for(index)} #{text}" if index
+      end
+      next if chosen.empty?
+
+      "TITLE: #{example.title}\nTRANSCRIPT EXCERPT:\n#{example.text}\nHEADINGS ASSIGNED:\n#{chosen.join("\n")}"
+    end
+    return '' if examples.empty?
+
+    "\nExamples reviewed by the project owner (follow how they assign headings):\n\n#{examples.join("\n\n")}\n"
   end
 
   def local_practice

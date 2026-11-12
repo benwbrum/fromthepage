@@ -1,0 +1,42 @@
+-counts = status.transcription_counts
+section.ai-settings_section
+  h3 =t('.ai_transcription')
+  p.ai-settings_intro =t('.description')
+  -if counts[:not_started].positive? && !status.transcription_running?
+    .ai-settings_launch
+      =link_to t('.generate'), collection_ai_transcriptions_path(collection.owner, collection), class: 'button', data: { turbo: true, turbo_method: :post }
+      span.fgfaded =t('.pages_without', count: counts[:not_started])
+
+  =render 'collection/ai_transcriptions/progress', counts: counts, labels: { finished: t('.finished'), in_progress: t('.in_progress'), failed: t('.failed'), not_started: t('.not_started') }
+
+  -parts = []
+  -if status.transcription_running?
+    -parts << (status.waiting_run ? t('.status_running_metadata') : t('.status_running'))
+  -elsif counts[:finished] + counts[:failed] == 0
+    -parts << t('.status_not_run', count: status.pages_count)
+  -elsif counts[:not_started].zero?
+    -parts << t('.status_done', count: status.pages_count)
+  -else
+    -parts << t('.status_partial', finished: number_with_delimiter(counts[:finished]), total: number_with_delimiter(status.pages_count))
+  -parts << t('.status_failed', count: counts[:failed]) if counts[:failed].positive?
+  -if (tokens = status.transcription_token_count.to_i).positive?
+    -parts << t('.total_tokens_used', tokens: number_with_delimiter(tokens))
+  p.ai-settings_status =parts.join(' ')
+
+  -if status.failed_transcriptions.any?
+    .ai-settings_failures
+      h4 =t('.failed_transcriptions')
+      ul
+        -status.failed_transcriptions.each do |ai_transcription|
+          -page = ai_transcription.page
+          li
+            strong =page.work.title
+            =" — "
+            =link_to page.title, collection_display_page_path(collection.owner, collection, page.work, page)
+            =" — "
+            =link_to ai_transcription.short_error_message, collection_ai_transcription_path(user_slug: collection.owner.to_param, collection_id: collection.to_param, id: ai_transcription.id), class: 'ai-settings_error'
+      -if status.failed_transcriptions_hidden_count.positive?
+        p.fgfaded =t('.failed_transcription_errors_hidden', count: status.failed_transcriptions_hidden_count)
+      .ai-settings_launch
+        =link_to t('.retry'), collection_ai_transcriptions_path(collection.owner, collection), class: 'button', data: { turbo: true, turbo_method: :put }
+        span.fgfaded =t('.retry_note')

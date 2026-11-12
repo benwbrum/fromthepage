@@ -117,6 +117,7 @@ class WorkController < ApplicationController
       else
         record_deed(@work, DeedType::EDITED_METADATA, current_user)
       end
+      @work.mark_ai_metadata_reviewed!
 
       flash[:notice] = t('.work_described')
       render :describe
