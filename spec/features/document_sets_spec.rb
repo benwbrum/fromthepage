@@ -4,8 +4,11 @@ require 'spec_helper'
 
 describe 'document sets' do
   let(:owner) { create(:unique_user, :owner) }
-  let(:user) { create(:unique_user) }
-  let(:rest_user) { create(:unique_user) }
+  # The collaborator select only renders the first 100 users by display_name (the rest are
+  # reached via select2 AJAX search, which this non-JS spec can't use). Leading zeros sort
+  # these users first, so they stay in that list however many users earlier specs created.
+  let(:user) { create(:unique_user, login: "000_docset_user_#{SecureRandom.uuid}") }
+  let(:rest_user) { create(:unique_user, login: "000_docset_rest_user_#{SecureRandom.uuid}") }
   let(:collection) do
     create(:collection, :docset_enabled, owner_user_id: owner.id, works: [], hide_completed: false)
   end
