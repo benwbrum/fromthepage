@@ -394,6 +394,9 @@ EOF
     articles_by_title = collection.articles.each_with_object({}) do |article, hash|
       hash[article.title.to_s.strip] = article
     end
+    # Preserve exact matches for historical duplicates, then ignore case as the
+    # Article title uniqueness validation does.
+    articles_by_lowercase_title = articles_by_title.transform_keys(&:downcase)
 
     candidate_articles = collection.articles.left_joins(:article_versions) # fall-back
     page_update_timestamp = 1.hour.ago
@@ -414,7 +417,7 @@ EOF
       # change the xml version of quotes back to double quotes for article title
       title = title.gsub('&quot;', '"').strip
 
-      article = articles_by_title[title]
+      article = articles_by_title[title] || articles_by_lowercase_title[title.downcase]
 
       if article.nil?
         article = candidate_articles.where('TRIM(article_versions.title) = ?', title)
@@ -435,6 +438,7 @@ EOF
         article.save! unless preview_mode
         # add the new article to the hash
         articles_by_title[title] = article
+        articles_by_lowercase_title[title.downcase] = article
       end
 
       link_id = create_link(article, display_text, text_type) unless preview_mode
