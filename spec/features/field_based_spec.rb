@@ -219,6 +219,10 @@ describe 'collection field-based transcription settings' do
 
     click_button 'Save'
 
+    # Wait for add_fields to finish and redirect before reading the DB; otherwise the
+    # assertions (and the after-hook destroy) race the in-flight request.
+    expect(page).to have_current_path(collection_edit_fields_path(owner, collection))
+
     expect(collection.transcription_fields.reload.find_by(label: 'First field').line_number).to eq(1)
     expect(collection.transcription_fields.reload.find(third_field.id).line_number).to eq(2)
     expect(collection.transcription_fields.reload.find_by(label: 'Second field').line_number).to eq(3)
