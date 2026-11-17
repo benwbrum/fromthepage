@@ -10,18 +10,18 @@
       =link_to t('article.list.add_root_category'), category_add_new_path(collection_id: @collection.slug), data: { controller: 'litebox' }
       hr
       -if category.gis_enabled
-        =link_to t('article.list.disable_gis_for_category'), category_disable_gis_path(collection_id: @collection.slug, category_id: category.id)
+        =link_to t('article.list.disable_gis_for_category'), category_disable_gis_path(collection_id: @collection.slug, category_id: category.id), method: :patch
       -else
-        =link_to t('article.list.enable_gis_for_category'), category_enable_gis_path(collection_id: @collection.slug, category_id: category.id)
+        =link_to t('article.list.enable_gis_for_category'), category_enable_gis_path(collection_id: @collection.slug, category_id: category.id), method: :patch
       -if category.bio_fields_enabled
-        =link_to t('article.list.disable_bio_fields_for_category'), category_disable_bio_fields_path(collection_id: @collection.slug, category_id: category.id)
+        =link_to t('article.list.disable_bio_fields_for_category'), category_disable_bio_fields_path(collection_id: @collection.slug, category_id: category.id), method: :patch
       -else
-        =link_to t('article.list.enable_bio_fields_for_category'), category_enable_bio_fields_path(collection_id: @collection.slug, category_id: category.id)
+        =link_to t('article.list.enable_bio_fields_for_category'), category_enable_bio_fields_path(collection_id: @collection.slug, category_id: category.id), method: :patch
       -if category.org_fields_enabled
-        =link_to t('article.list.disable_org_fields_for_category'), category_disable_org_fields_path(collection_id: @collection.slug, category_id: category.id)
+        =link_to t('article.list.disable_org_fields_for_category'), category_disable_org_fields_path(collection_id: @collection.slug, category_id: category.id), method: :patch
       -else
-        =link_to t('article.list.enable_org_fields_for_category'), category_enable_org_fields_path(collection_id: @collection.slug, category_id: category.id)
+        =link_to t('article.list.enable_org_fields_for_category'), category_enable_org_fields_path(collection_id: @collection.slug, category_id: category.id), method: :patch
       hr
-      =link_to t('article.list.delete_category'), { controller: 'category', action: 'delete', collection_id: @collection.slug, category_id: category.id }, class: 'fgred', data: { confirm: t('article.list.confirm_delete_category') }
+      =link_to t('article.list.delete_category'), category_delete_path(collection_id: @collection.slug, category_id: category.id), method: :delete, class: 'fgred', data: { confirm: t('article.list.confirm_delete_category') }
       hr
       =link_to t('article.list.upload_subjects'), article_upload_form_path(@collection.slug)
