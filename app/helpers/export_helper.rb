@@ -527,11 +527,7 @@ module ExportHelper
 
     tei << "              <gloss>#{xml_to_export_tei(subject.xml_text, ExportContext.new, "SD#{subject.id}")}</gloss>\n" unless subject.source_text.blank?
     unless subject.bibliography.blank?
-      subject.bibliography.split("\n").each do |line|
-        next if line.blank?
-        escaped_line = ERB::Util.html_escape(line.chomp)
-        tei << "<bibl>#{escaped_line}</bibl>"
-      end
+      tei << "<bibl>#{bibliography_to_export_tei(subject.bibliography, ExportContext.new, "S#{subject.id}")}</bibl>"
     end
 
     tei << "            </catDesc>\n"
@@ -589,17 +585,18 @@ module ExportHelper
 
     # Preprocess bibliography content for TEI export
     processed_xml = preprocess_bibliography_for_tei_export(bibliography_text)
-    return '' if processed_xml.blank?
 
     # Use a modified version of xml_to_export_tei that processes entire document structure
     xml_to_export_tei_full_document(processed_xml, context, page_id, add_corrsp)
+  rescue Nokogiri::XML::SyntaxError, REXML::ParseException => e
+    Rails.logger.warn "Bibliography XML parsing failed for TEI export (#{page_id}): #{e.message}"
+    '<!-- Bibliography XML could not be parsed; original content follows as escaped text. -->' +
+      ERB::Util.html_escape(bibliography_text)
   end
 
   def xml_to_export_tei_full_document(xml_text, context, page_id = '', add_corrsp = false)
     return '' if xml_text.blank?
     xml_text.gsub!('ISO-8859-15', 'UTF-8')
-    xml_text.gsub!('&', '&amp;')
-    xml_text.gsub!('&amp;amp;', '&amp;')
 
     doc = REXML::Document.new(xml_text)
 
@@ -632,43 +629,7 @@ module ExportHelper
   end
 
   def preprocess_bibliography_for_tei_export(bibliography_text)
-    # Clean up malformed lb elements and other self-closing tags
-    xml_text = bibliography_text.dup
-    xml_text.gsub!(/<lb><\/lb>/, '<lb/>')
-    xml_text.gsub!(/<lb>\s*<\/lb>/, '<lb/>')
-    # Remove orphaned closing lb tags (like </lb></lb></lb>)
-    xml_text.gsub!(/<\/lb>/, '')
-    # Convert non-self-closing lb tags to self-closing
-    xml_text.gsub!(/<lb>/, '<lb/>')
-    xml_text.gsub!(/<lb\s+/, '<lb ')  # Handle <lb attributes>
-    xml_text.gsub!(/<lb\s+([^>]*)>/, '<lb \1/>')
-
-    # Handle XML fragments that need wrapping:
-    # 1. Multiple root elements: <elem>...</elem><elem>...
-    # 2. Content with text before first XML element
-    # 3. TEI content that doesn't have a single root element
-    # Use Unicode-aware whitespace removal to handle non-breaking spaces and other Unicode whitespace
-    cleaned_text = xml_text.strip.gsub(/\A[[:space:]]+|[[:space:]]+\z/, '')
-
-    needs_wrapping = cleaned_text.match(/^<\w+.*?>.*<\/\w+>\s*<\w+/) || # Multiple roots
-                     cleaned_text.match(/^[^<]/) || # Starts with text
-                     !cleaned_text.match(/^<\w+.*?>.*<\/\w+>$/) # Not a single well-formed element
-
-    wrapped_xml = if needs_wrapping
-      "<root>#{xml_text}</root>"
-    else
-      cleaned_text  # Use cleaned text when no wrapping is needed
-    end
-
-    # Test if the XML can be parsed, if not return empty to avoid TEI export errors
-    begin
-      test_doc = REXML::Document.new(wrapped_xml)
-      wrapped_xml
-    rescue REXML::ParseException => e
-      # For TEI export, we can't fall back to HTML, so log error and return empty
-      Rails.logger.error "Bibliography XML parsing failed for TEI export: #{e.message}" if defined?(Rails)
-      ''
-    end
+    BibliographyXml.parse(bibliography_text)
   end
 
   def xml_to_export_tei(xml_text, context, page_id = '', add_corrsp = false)

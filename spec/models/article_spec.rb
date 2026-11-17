@@ -3,6 +3,32 @@ require 'spec_helper'
 # TODO: We want individual es_search specs for other models as well,
 # not just in multi_query_spec
 describe Article do
+  describe 'bibliography XML validation' do
+    around { |example| DatabaseCleaner.cleaning { example.run } }
+
+    it 'normalizes pasted attribute quotes, bare ampersands and line breaks on save' do
+      article = create(:article, bibliography: '<hi rend=”italic”>Census</hi>, Towns, &c.<lb></lb>')
+      expect(article.reload.bibliography).to eq('<hi rend="italic">Census</hi>, Towns, &amp;c.<lb/>')
+    end
+
+    it 'rejects an unbalanced tag' do
+      article = build(:article, bibliography: '<hi>Unclosed citation')
+      expect(article).not_to be_valid
+      expect(article.errors[:bibliography].join).to include('contains invalid XML')
+    end
+
+    it 'allows unrelated edits to legacy invalid bibliographies' do
+      article = create(:article)
+      article.update_column(:bibliography, '<hi>Legacy citation')
+      expect(article.update(short_summary: 'Updated summary')).to be true
+      expect(article.reload.bibliography).to eq('<hi>Legacy citation')
+    end
+
+    it 'allows an empty bibliography' do
+      expect(build(:article, bibliography: '')).to be_valid
+    end
+  end
+
   context 'es_search' do
     let(:identifier) { 'pneumonoultramicroscopicsilicovolcanoconiosis' }
 

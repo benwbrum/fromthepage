@@ -18,6 +18,10 @@ en:
         title: Title
     errors:
       models:
+        article:
+          attributes:
+            bibliography:
+              invalid_xml: contains invalid XML. Check that tags are balanced and attribute values are quoted. %{detail}
         collection:
           attributes:
             slug:

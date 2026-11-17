@@ -18,6 +18,10 @@ fr:
         title: Titre
     errors:
       models:
+        article:
+          attributes:
+            bibliography:
+              invalid_xml: contient du XML non valide. Vérifiez que les balises sont équilibrées et que les valeurs des attributs sont entre guillemets. %{detail}
         collection:
           attributes:
             slug:

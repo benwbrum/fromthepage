@@ -48,6 +48,8 @@ class Article < ApplicationRecord
   DUPLICATE_WORD_REGEX = /[[:alpha:]]{#{MINIMUM_DUPLICATE_WORD_LENGTH},}/.freeze
 
   before_validation :strip_title_whitespace
+  before_validation :normalize_bibliography, if: :will_save_change_to_bibliography?
+  validate :bibliography_must_be_well_formed, if: :will_save_change_to_bibliography?
   before_save :process_source
 
   validates_presence_of :title
@@ -191,6 +193,16 @@ class Article < ApplicationRecord
   # Related Articles
   #######################
   def related_article_ranks
+  end
+
+  def normalize_bibliography
+    self.bibliography = BibliographyXml.normalize(bibliography) if bibliography.present?
+  end
+
+  def bibliography_must_be_well_formed
+    BibliographyXml.parse(bibliography) if bibliography.present?
+  rescue Nokogiri::XML::SyntaxError => e
+    errors.add(:bibliography, :invalid_xml, detail: e.message.lines.first.to_s.strip)
   end
 
   def gis_enabled?
