@@ -18,6 +18,10 @@ de:
         title: Titel
     errors:
       models:
+        article:
+          attributes:
+            bibliography:
+              invalid_xml: enthält ungültiges XML. Prüfen Sie, ob alle Tags korrekt geschlossen und Attributwerte in Anführungszeichen gesetzt sind. %{detail}
         collection:
           attributes:
             slug:

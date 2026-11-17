@@ -18,6 +18,10 @@ es:
         title: Título
     errors:
       models:
+        article:
+          attributes:
+            bibliography:
+              invalid_xml: contiene XML no válido. Compruebe que las etiquetas estén equilibradas y que los valores de los atributos estén entre comillas. %{detail}
         collection:
           attributes:
             slug:
