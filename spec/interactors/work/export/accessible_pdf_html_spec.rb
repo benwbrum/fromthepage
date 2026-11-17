@@ -106,7 +106,10 @@ describe Work::Export::AccessiblePdfHtml do
   describe 'announcing author deletions' do
     # Chrome drops <strike>/<s>/<del> from the PDF structure tree entirely, so
     # role="img" + aria-label (which it exports as a /Figure with /Alt) is the
-    # only way a screen reader learns the author cut the words.
+    # only way a screen reader learns the author cut the words. Covers only
+    # the deletion tags - underline/superscript/subscript are below, since
+    # they share the mechanism but not the ancestor-table-swallowing risk a
+    # deletion runs into when it wraps a whole struck table.
     %w[strike s del].each do |tag|
       it "labels <#{tag}> so a screen reader announces the deletion" do
         result = doc("<p>Saturday 1<#{tag}>8</#{tag}>th Meeting</p>")
@@ -150,6 +153,64 @@ describe Work::Export::AccessiblePdfHtml do
 
       expect(result.at_css('del')['role']).to be_nil
       expect(result.at_css('table')).to be_present
+    end
+  end
+
+  describe 'announcing underline, superscript and subscript' do
+    # Same mechanism as deletions - Chrome drops <u>/<sup>/<sub> from the
+    # structure tree entirely, so without a label they read as plain text
+    # indistinguishable from what surrounds them.
+    { 'u' => 'underlined', 'sup' => 'superscript', 'sub' => 'subscript' }.each do |tag, word|
+      it "labels <#{tag}> so a screen reader announces it as #{word}" do
+        result = doc("<p>1<#{tag}>8</#{tag}>th</p>")
+
+        node = result.at_css(tag)
+        expect(node['role']).to eq('img')
+        expect(node['aria-label']).to eq("#{word}: 8")
+      end
+
+      it "keeps <#{tag}> text visible and unchanged" do
+        result = doc("<p>a <#{tag}>middle</#{tag}> b</p>")
+
+        expect(result.css(tag).text).to eq('middle')
+        expect(result.css('p').text).to eq('a middle b')
+      end
+    end
+
+    it 'labels only the outermost of two different nested styles' do
+      result = doc('<p><strike>struck <sup>raised</sup> words</strike></p>')
+
+      expect(result.at_css('strike')['aria-label']).to eq('struck through: struck raised words')
+      expect(result.at_css('sup')['aria-label']).to be_nil
+    end
+
+    it 'labels a superscript that is not inside any other styled run' do
+      result = doc('<p>Halling<sup>wood</sup></p>')
+
+      expect(result.at_css('sup')['aria-label']).to eq('superscript: wood')
+    end
+  end
+
+  describe 'footnote markers' do
+    # abstract_xml_helper.rb renders a <footnote> as <sup class="footnote-marker">
+    # with the entire footnote body nested inside it. Labelling that node like
+    # any other superscript would swallow the whole footnote into a figure's
+    # alternate text instead of leaving it in the normal reading flow.
+    it 'leaves a footnote marker untouched' do
+      html = '<p>text<sup class="footnote-marker">*<span class="footnote-body">the note</span></sup></p>'
+
+      result = doc(html)
+      expect(result.at_css('sup')['role']).to be_nil
+      expect(result.css('p').text).to eq('text*the note')
+    end
+
+    it 'still labels an ordinary superscript elsewhere on the same page' do
+      html = '<p>a<sup class="footnote-marker">*<span class="footnote-body">note</span></sup></p>' \
+             '<p>1<sup>8</sup>th</p>'
+
+      result = doc(html)
+      expect(result.css('sup')[0]['role']).to be_nil
+      expect(result.css('sup')[1]['aria-label']).to eq('superscript: 8')
     end
   end
 
@@ -239,6 +300,92 @@ describe Work::Export::AccessiblePdfHtml do
       expect(result.at_css('img')).to be_nil
     end
   end
+
+  describe 'ditto abbreviations' do
+    describe 'D<sup>o</sup>' do
+      it 'merges the D and the superscript into one "ditto" figure' do
+        result = doc('<p>new D<sup>o</sup></p>')
+
+        wrapper = result.at_css('sup').parent
+        expect(wrapper.name).to eq('span')
+        expect(wrapper['role']).to eq('img')
+        expect(wrapper['aria-label']).to eq('ditto')
+        expect(wrapper.text).to eq('Do')
+      end
+
+      it 'removes the generic superscript label from the <sup> itself' do
+        sup = doc('<p>new D<sup>o</sup></p>').at_css('sup')
+
+        expect(sup['role']).to be_nil
+        expect(sup['aria-label']).to be_nil
+      end
+
+      it 'keeps the visible text exactly as written' do
+        result = doc('<p>Bbls D<sup>o</sup> in Lynchburg</p>')
+
+        expect(result.css('p').text).to eq('Bbls Do in Lynchburg')
+      end
+
+      it 'handles D as the only text before the superscript' do
+        result = doc('<p>D<sup>o</sup></p>')
+
+        wrapper = result.at_css('sup').parent
+        expect(wrapper['aria-label']).to eq('ditto')
+        expect(result.css('p').text).to eq('Do')
+      end
+
+      it 'does not merge when D is not its own token' do
+        result = doc('<p>GRAND<sup>o</sup></p>')
+
+        sup = result.at_css('sup')
+        expect(sup.parent.name).not_to eq('span')
+        expect(sup['aria-label']).to eq('superscript: o')
+      end
+
+      it 'does not merge a superscript letter other than o' do
+        result = doc('<p>D<sup>r</sup></p>')
+
+        sup = result.at_css('sup')
+        expect(sup.parent.name).not_to eq('span')
+        expect(sup['aria-label']).to eq('superscript: r')
+      end
+    end
+
+    describe 'a lone "' do
+      it 'labels an isolated quote mark as ditto, leaving it visible' do
+        result = doc('<table><tr><td>" 14</td></tr></table>')
+
+        mark = result.at_css('span[role="img"]')
+        expect(mark['aria-label']).to eq('ditto')
+        expect(mark.text).to eq('"')
+        expect(result.at_css('td').text).to eq('" 14')
+      end
+
+      it 'labels two ditto marks in the same cell separately' do
+        result = doc('<table><tr><td>" "</td></tr></table>')
+
+        marks = result.css('span[role="img"]')
+        expect(marks.size).to eq(2)
+        expect(marks.map(&:text)).to eq(['"', '"'])
+        expect(result.at_css('td').text).to eq('" "')
+      end
+
+      it 'does not label quotes wrapping an actual quotation' do
+        result = doc('<p>she said "hello world" today</p>')
+
+        expect(result.css('span[role="img"]')).to be_empty
+        expect(result.css('p').text).to eq('she said "hello world" today')
+      end
+
+      it 'does not separately label a ditto mark already inside a labelled deletion' do
+        result = doc('<p><strike>" repeated</strike></p>')
+
+        expect(result.at_css('strike')['aria-label']).to eq('struck through: " repeated')
+        expect(result.css('strike span[role="img"]')).to be_empty
+      end
+    end
+  end
+
 
   it 'applies every transform in one pass' do
     html = <<~HTML

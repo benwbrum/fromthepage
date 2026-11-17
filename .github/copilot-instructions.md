@@ -6,7 +6,7 @@ You are an experienced software developer tasked with addressing a GitHub issue.
 
 Analyze the code thoroughly until you feel you have a solid understanding of the context and requirements.
 
-3. Create a new branch from the main branch for this issue. The branch name should be descriptive and relate to the issue. Use the following format: feature/[issue-number]-brief-description
+3. Create a new branch from the `development` branch for this issue. The branch name should start with the issue number and be descriptive. Use the following format: [issue-number]-brief-description (e.g. `6001-update-puppeteer`). Every commit message must include the issue number (e.g. `#6001 Pin Puppeteer to 24.43.1`).
 
 4. Create a comprehensive plan and todo list for addressing the issue. Consider the following aspects:
 
@@ -36,6 +36,9 @@ Remember, your task is to create a plan, not to implement the changes. Focus on 
 
 9.  Code Quality:
    Always run `bundle exec rubocop -A` to fix syntax errors and style issues before committing code changes. This ensures consistent code formatting and catches potential issues early.
+
+10.  AI Disclosure:
+   FromThePage accepts AI-assisted contributions but requires explicit disclosure (see "AI-assisted contributions" in CONTRIBUTING.md). Every pull request you open or draft must fill in the "AI Disclosure" section of `.github/pull_request_template.md`, naming GitHub Copilot (and the model, if known) and describing what it was used for. Never remove AI attribution trailers from commits.
 
 ## New Relic read-only access
 

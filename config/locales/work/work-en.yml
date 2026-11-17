@@ -45,7 +45,7 @@ en:
       create:
         success: AI metadata draft job launched.
       form:
-        description: Generate AI drafts of this work's metadata using Gemini and Claude.
+        description: Generate AI drafts of this work's metadata using Gemini.
         drafts_heading: Drafts
         generate: Generate AI metadata draft
         heading: AI Metadata Draft

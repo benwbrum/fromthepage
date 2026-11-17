@@ -1,10 +1,12 @@
 require 'open-uri'
 require 'contentdm_translator'
+require 'iiif_http'
+require 'internet_archive_translator'
 require 'shellwords'
 
 class ScCollectionsController < ApplicationController
   before_action :set_sc_collection, only: %i[show edit update destroy explore_manifest import_manifest]
-  before_action :require_authenticated_user, only: %i[import_collection convert_manifest cdm_bulk_import_new cdm_bulk_import_create]
+  before_action :require_authenticated_user, only: %i[import_collection convert_manifest cdm_bulk_import_new cdm_bulk_import_create import_ia]
 
   respond_to :html
 
@@ -55,6 +57,29 @@ class ScCollectionsController < ApplicationController
       flash[:error] = e.message
       redirect_back fallback_location: { action: 'import' }
     end
+  end
+
+  def import_ia
+    ia_url = params[:ia_url]
+
+    if ia_url.blank?
+      flash[:error] = t('.please_enter_url')
+      redirect_back fallback_location: dashboard_owner_path
+      return
+    end
+
+    begin
+      at_id = InternetArchiveTranslator.ia_url_to_iiif(ia_url)
+    rescue ArgumentError => e
+      logger.error t('.bad_internet_archive_url', url: ia_url, message: e.message)
+      flash[:error] = t('.please_enter_valid_url')
+      redirect_back fallback_location: dashboard_owner_path
+      return
+    end
+
+    redirect_params = { action: :import, at_id: at_id, source: 'internet_archive', source_url: ia_url }
+    redirect_params[:collection_id] = @collection.slug if @collection
+    redirect_to redirect_params
   end
 
   def import
@@ -109,6 +134,8 @@ class ScCollectionsController < ApplicationController
       flash[:error] = case params[:source]
       when 'contentdm'
                         t('.no_manifest_exist', url: params[:source_url])
+      when 'internet_archive'
+                        t('.no_internet_archive_manifest_exist', url: params[:source_url])
       else
                         t('.please_enter_valid_url')
       end
@@ -241,6 +268,10 @@ class ScCollectionsController < ApplicationController
         work = @sc_manifest.convert_with_collection(current_user, @collection, document_set, annotation_ocr)
       end
     end
+    if annotation_ocr && @sc_manifest.v3? && @sc_manifest.has_annotations?
+      flash[:notice] = t('.annotation_text_is_being_imported')
+    end
+
     if ContentdmTranslator.iiif_manifest_is_cdm? at_id
       ocr = !params[:contentdm_ocr].blank?
       # make sure import folder exists
@@ -355,35 +386,6 @@ class ScCollectionsController < ApplicationController
   end
 
   def fetch_manifest(at_id)
-    if @raw_manifest.nil?
-      # Set OpenSSL flag to ignore unexpected EOF (for OpenSSL 3.0 compatibility)
-      if OpenSSL::SSL.const_defined?(:OP_IGNORE_UNEXPECTED_EOF)
-        OpenSSL::SSL::SSLContext::DEFAULT_PARAMS[:options] |= OpenSSL::SSL::OP_IGNORE_UNEXPECTED_EOF
-      end
-
-      # Custom headers to avoid SSL/compression issues with OpenSSL 3.0
-      options = {
-        'Accept-Encoding' => 'identity', # Disable compression to avoid inflater path
-        'User-Agent' => 'FromThePage-IIIF/1.0',
-        'Connection' => 'close',
-        open_timeout: 10,
-        read_timeout: 20,
-        ssl_verify_mode: OpenSSL::SSL::VERIFY_PEER
-      }
-
-      # Retry logic for SSL/EOF errors common with OpenSSL 3.0
-      attempts = 0
-      begin
-        uri = URI.parse(at_id)
-        raise ArgumentError, 'manifest URL must use HTTP or HTTPS' unless uri.is_a?(URI::HTTP)
-
-        @raw_manifest = uri.open(options).read
-      rescue OpenSSL::SSL::SSLError, EOFError => e
-        attempts += 1
-        retry if attempts < 2
-        raise e
-      end
-    end
-    @raw_manifest
+    @raw_manifest ||= IiifHttp.fetch(at_id)
   end
 end

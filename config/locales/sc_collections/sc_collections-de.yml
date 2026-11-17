@@ -12,6 +12,7 @@ de:
       select_a_collection_to_import_into: "- Wählen Sie eine Sammlung aus, in die importiert werden soll -"
       separate_urls_with: Trennen Sie URLs durch Leerzeichen oder Zeilenumbrüche.
     convert_manifest:
+      annotation_text_is_being_imported: Text wird aus den Annotationen des Manifests importiert und sollte in Kürze erscheinen.
       metadata_is_being_imported: Die Metadaten %{ocr_text} werden aus CONTENTdm importiert und sollten in Kürze erscheinen.
     explore_collection:
       already_imported_into: Bereits importiert in
@@ -44,6 +45,7 @@ de:
       select_a_collection_to_import_into: "- Wählen Sie eine Sammlung aus, in die importiert werden soll -"
       select_a_collection_to_import_into_label: Wählen Sie eine Sammlung aus, in die importiert werden soll
     import:
+      no_internet_archive_manifest_exist: Für das Internet-Archive-Objekt %{url} konnte kein IIIF-Manifest geladen werden
       no_manifest_exist: Für das CONTENTdm-Element %{url} ist kein IIIF-Manifest vorhanden
       please_enter_valid_url: Bitte geben Sie eine gültige IIIF-Manifest-URL ein.
     import_cdm:
@@ -52,3 +54,7 @@ de:
       using_manifest_for: Verwendung des CONTENTdm IIIF-Manifests für %{url}
     import_collection:
       import_is_processing: Import der IIIF-Sammlung wird verarbeitet. Laden Sie diese Seite in ein paar Minuten neu, um importierte Werke angezeigt zu bekommen.
+    import_ia:
+      bad_internet_archive_url: 'Fehlerhafte Internet-Archive-URL: %{url} FEHLER: %{message}'
+      please_enter_url: Bitte geben Sie eine URL für ein Internet-Archive-Objekt ein.
+      please_enter_valid_url: Bitte geben Sie die URL eines Internet-Archive-Objekts ein, z. B. https://archive.org/details/IDENTIFIER.

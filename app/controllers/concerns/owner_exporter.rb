@@ -47,7 +47,6 @@ module OwnerExporter
     @collections = current_user.all_owner_collections
     @notes = current_user.notes
     @works = current_user.owner_works
-    @ia_works = current_user.ia_works
     @document_sets = current_user.document_sets
   end
 

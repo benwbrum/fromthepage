@@ -1,0 +1,370 @@
+{
+ "@context": "http://iiif.io/api/presentation/3/context.json",
+ "id": "https://iiif.archive.org/iiif/3/annotations/journalofexpedit00ford/journalofexpedit00ford_djvu.xml/6.json",
+ "items": [
+  {
+   "body": {
+    "format": "text/plain",
+    "type": "TextualBody",
+    "value": "[David "
+   },
+   "id": "https://iiif.archive.org/iiif/journalofexpedit00ford/canvas/5/anno/8",
+   "motivation": "supplementing",
+   "target": "https://iiif.archive.org/iiif/journalofexpedit00ford$5/canvas#xywh=444,1294,191,59",
+   "type": "Annotation"
+  },
+  {
+   "body": {
+    "format": "text/plain",
+    "type": "TextualBody",
+    "value": "Ford "
+   },
+   "id": "https://iiif.archive.org/iiif/journalofexpedit00ford/canvas/5/anno/9",
+   "motivation": "supplementing",
+   "target": "https://iiif.archive.org/iiif/journalofexpedit00ford$5/canvas#xywh=635,1294,147,42",
+   "type": "Annotation"
+  },
+  {
+   "body": {
+    "format": "text/plain",
+    "type": "TextualBody",
+    "value": "was "
+   },
+   "id": "https://iiif.archive.org/iiif/journalofexpedit00ford/canvas/5/anno/10",
+   "motivation": "supplementing",
+   "target": "https://iiif.archive.org/iiif/journalofexpedit00ford$5/canvas#xywh=782,1305,112,30",
+   "type": "Annotation"
+  },
+  {
+   "body": {
+    "format": "text/plain",
+    "type": "TextualBody",
+    "value": "a "
+   },
+   "id": "https://iiif.archive.org/iiif/journalofexpedit00ford/canvas/5/anno/11",
+   "motivation": "supplementing",
+   "target": "https://iiif.archive.org/iiif/journalofexpedit00ford$5/canvas#xywh=894,1305,47,30",
+   "type": "Annotation"
+  },
+  {
+   "body": {
+    "format": "text/plain",
+    "type": "TextualBody",
+    "value": "native "
+   },
+   "id": "https://iiif.archive.org/iiif/journalofexpedit00ford/canvas/5/anno/12",
+   "motivation": "supplementing",
+   "target": "https://iiif.archive.org/iiif/journalofexpedit00ford$5/canvas#xywh=941,1292,171,43",
+   "type": "Annotation"
+  },
+  {
+   "body": {
+    "format": "text/plain",
+    "type": "TextualBody",
+    "value": "of "
+   },
+   "id": "https://iiif.archive.org/iiif/journalofexpedit00ford/canvas/5/anno/13",
+   "motivation": "supplementing",
+   "target": "https://iiif.archive.org/iiif/journalofexpedit00ford$5/canvas#xywh=1112,1291,71,43",
+   "type": "Annotation"
+  },
+  {
+   "body": {
+    "format": "text/plain",
+    "type": "TextualBody",
+    "value": "Morristown, "
+   },
+   "id": "https://iiif.archive.org/iiif/journalofexpedit00ford/canvas/5/anno/14",
+   "motivation": "supplementing",
+   "target": "https://iiif.archive.org/iiif/journalofexpedit00ford$5/canvas#xywh=1183,1289,319,57",
+   "type": "Annotation"
+  },
+  {
+   "body": {
+    "format": "text/plain",
+    "type": "TextualBody",
+    "value": "N. "
+   },
+   "id": "https://iiif.archive.org/iiif/journalofexpedit00ford/canvas/5/anno/15",
+   "motivation": "supplementing",
+   "target": "https://iiif.archive.org/iiif/journalofexpedit00ford$5/canvas#xywh=1502,1289,79,44",
+   "type": "Annotation"
+  },
+  {
+   "body": {
+    "format": "text/plain",
+    "type": "TextualBody",
+    "value": "J., "
+   },
+   "id": "https://iiif.archive.org/iiif/journalofexpedit00ford/canvas/5/anno/16",
+   "motivation": "supplementing",
+   "target": "https://iiif.archive.org/iiif/journalofexpedit00ford$5/canvas#xywh=1581,1290,83,48",
+   "type": "Annotation"
+  },
+  {
+   "body": {
+    "format": "text/plain",
+    "type": "TextualBody",
+    "value": "and "
+   },
+   "id": "https://iiif.archive.org/iiif/journalofexpedit00ford/canvas/5/anno/17",
+   "motivation": "supplementing",
+   "target": "https://iiif.archive.org/iiif/journalofexpedit00ford$5/canvas#xywh=1664,1289,109,44",
+   "type": "Annotation"
+  },
+  {
+   "body": {
+    "format": "text/plain",
+    "type": "TextualBody",
+    "value": "having "
+   },
+   "id": "https://iiif.archive.org/iiif/journalofexpedit00ford/canvas/5/anno/18",
+   "motivation": "supplementing",
+   "target": "https://iiif.archive.org/iiif/journalofexpedit00ford$5/canvas#xywh=1773,1289,184,56",
+   "type": "Annotation"
+  },
+  {
+   "body": {
+    "format": "text/plain",
+    "type": "TextualBody",
+    "value": "in "
+   },
+   "id": "https://iiif.archive.org/iiif/journalofexpedit00ford/canvas/5/anno/19",
+   "motivation": "supplementing",
+   "target": "https://iiif.archive.org/iiif/journalofexpedit00ford$5/canvas#xywh=1957,1290,68,43",
+   "type": "Annotation"
+  },
+  {
+   "body": {
+    "format": "text/plain",
+    "type": "TextualBody",
+    "value": "early "
+   },
+   "id": "https://iiif.archive.org/iiif/journalofexpedit00ford/canvas/5/anno/20",
+   "motivation": "supplementing",
+   "target": "https://iiif.archive.org/iiif/journalofexpedit00ford$5/canvas#xywh=2025,1289,140,57",
+   "type": "Annotation"
+  },
+  {
+   "body": {
+    "format": "text/plain",
+    "type": "TextualBody",
+    "value": "life"
+   },
+   "id": "https://iiif.archive.org/iiif/journalofexpedit00ford/canvas/5/anno/21",
+   "motivation": "supplementing",
+   "target": "https://iiif.archive.org/iiif/journalofexpedit00ford$5/canvas#xywh=2165,1290,71,44",
+   "type": "Annotation"
+  },
+  {
+   "body": {
+    "format": "text/plain",
+    "type": "TextualBody",
+    "value": "lost "
+   },
+   "id": "https://iiif.archive.org/iiif/journalofexpedit00ford/canvas/5/anno/22",
+   "motivation": "supplementing",
+   "target": "https://iiif.archive.org/iiif/journalofexpedit00ford$5/canvas#xywh=384,1366,119,44",
+   "type": "Annotation"
+  },
+  {
+   "body": {
+    "format": "text/plain",
+    "type": "TextualBody",
+    "value": "both "
+   },
+   "id": "https://iiif.archive.org/iiif/journalofexpedit00ford/canvas/5/anno/23",
+   "motivation": "supplementing",
+   "target": "https://iiif.archive.org/iiif/journalofexpedit00ford$5/canvas#xywh=503,1364,144,43",
+   "type": "Annotation"
+  },
+  {
+   "body": {
+    "format": "text/plain",
+    "type": "TextualBody",
+    "value": "parents, "
+   },
+   "id": "https://iiif.archive.org/iiif/journalofexpedit00ford/canvas/5/anno/24",
+   "motivation": "supplementing",
+   "target": "https://iiif.archive.org/iiif/journalofexpedit00ford$5/canvas#xywh=647,1361,217,57",
+   "type": "Annotation"
+  },
+  {
+   "body": {
+    "format": "text/plain",
+    "type": "TextualBody",
+    "value": "he "
+   },
+   "id": "https://iiif.archive.org/iiif/journalofexpedit00ford/canvas/5/anno/25",
+   "motivation": "supplementing",
+   "target": "https://iiif.archive.org/iiif/journalofexpedit00ford$5/canvas#xywh=864,1361,91,42",
+   "type": "Annotation"
+  },
+  {
+   "body": {
+    "format": "text/plain",
+    "type": "TextualBody",
+    "value": "spent "
+   },
+   "id": "https://iiif.archive.org/iiif/journalofexpedit00ford/canvas/5/anno/26",
+   "motivation": "supplementing",
+   "target": "https://iiif.archive.org/iiif/journalofexpedit00ford$5/canvas#xywh=955,1361,149,55",
+   "type": "Annotation"
+  },
+  {
+   "body": {
+    "format": "text/plain",
+    "type": "TextualBody",
+    "value": "his "
+   },
+   "id": "https://iiif.archive.org/iiif/journalofexpedit00ford/canvas/5/anno/27",
+   "motivation": "supplementing",
+   "target": "https://iiif.archive.org/iiif/journalofexpedit00ford$5/canvas#xywh=1104,1361,91,41",
+   "type": "Annotation"
+  },
+  {
+   "body": {
+    "format": "text/plain",
+    "type": "TextualBody",
+    "value": "childhood "
+   },
+   "id": "https://iiif.archive.org/iiif/journalofexpedit00ford/canvas/5/anno/28",
+   "motivation": "supplementing",
+   "target": "https://iiif.archive.org/iiif/journalofexpedit00ford$5/canvas#xywh=1195,1360,269,42",
+   "type": "Annotation"
+  },
+  {
+   "body": {
+    "format": "text/plain",
+    "type": "TextualBody",
+    "value": "with "
+   },
+   "id": "https://iiif.archive.org/iiif/journalofexpedit00ford/canvas/5/anno/29",
+   "motivation": "supplementing",
+   "target": "https://iiif.archive.org/iiif/journalofexpedit00ford$5/canvas#xywh=1464,1359,142,43",
+   "type": "Annotation"
+  },
+  {
+   "body": {
+    "format": "text/plain",
+    "type": "TextualBody",
+    "value": "his "
+   },
+   "id": "https://iiif.archive.org/iiif/journalofexpedit00ford/canvas/5/anno/30",
+   "motivation": "supplementing",
+   "target": "https://iiif.archive.org/iiif/journalofexpedit00ford$5/canvas#xywh=1606,1359,102,43",
+   "type": "Annotation"
+  },
+  {
+   "body": {
+    "format": "text/plain",
+    "type": "TextualBody",
+    "value": "paternal "
+   },
+   "id": "https://iiif.archive.org/iiif/journalofexpedit00ford/canvas/5/anno/31",
+   "motivation": "supplementing",
+   "target": "https://iiif.archive.org/iiif/journalofexpedit00ford$5/canvas#xywh=1708,1359,235,54",
+   "type": "Annotation"
+  },
+  {
+   "body": {
+    "format": "text/plain",
+    "type": "TextualBody",
+    "value": "grandfather,"
+   },
+   "id": "https://iiif.archive.org/iiif/journalofexpedit00ford/canvas/5/anno/32",
+   "motivation": "supplementing",
+   "target": "https://iiif.archive.org/iiif/journalofexpedit00ford$5/canvas#xywh=1943,1359,296,55",
+   "type": "Annotation"
+  },
+  {
+   "body": {
+    "format": "text/plain",
+    "type": "TextualBody",
+    "value": "Jacob "
+   },
+   "id": "https://iiif.archive.org/iiif/journalofexpedit00ford/canvas/5/anno/33",
+   "motivation": "supplementing",
+   "target": "https://iiif.archive.org/iiif/journalofexpedit00ford$5/canvas#xywh=383,1433,164,46",
+   "type": "Annotation"
+  },
+  {
+   "body": {
+    "format": "text/plain",
+    "type": "TextualBody",
+    "value": "Ford. "
+   },
+   "id": "https://iiif.archive.org/iiif/journalofexpedit00ford/canvas/5/anno/34",
+   "motivation": "supplementing",
+   "target": "https://iiif.archive.org/iiif/journalofexpedit00ford$5/canvas#xywh=547,1432,190,43",
+   "type": "Annotation"
+  },
+  {
+   "body": {
+    "format": "text/plain",
+    "type": "TextualBody",
+    "value": "The "
+   },
+   "id": "https://iiif.archive.org/iiif/journalofexpedit00ford/canvas/5/anno/35",
+   "motivation": "supplementing",
+   "target": "https://iiif.archive.org/iiif/journalofexpedit00ford$5/canvas#xywh=737,1431,116,42",
+   "type": "Annotation"
+  },
+  {
+   "body": {
+    "format": "text/plain",
+    "type": "TextualBody",
+    "value": "death "
+   },
+   "id": "https://iiif.archive.org/iiif/journalofexpedit00ford/canvas/5/anno/36",
+   "motivation": "supplementing",
+   "target": "https://iiif.archive.org/iiif/journalofexpedit00ford$5/canvas#xywh=853,1430,154,42",
+   "type": "Annotation"
+  },
+  {
+   "body": {
+    "format": "text/plain",
+    "type": "TextualBody",
+    "value": "of "
+   },
+   "id": "https://iiif.archive.org/iiif/journalofexpedit00ford/canvas/5/anno/37",
+   "motivation": "supplementing",
+   "target": "https://iiif.archive.org/iiif/journalofexpedit00ford$5/canvas#xywh=1007,1431,73,41",
+   "type": "Annotation"
+  },
+  {
+   "body": {
+    "format": "text/plain",
+    "type": "TextualBody",
+    "value": "the "
+   },
+   "id": "https://iiif.archive.org/iiif/journalofexpedit00ford/canvas/5/anno/38",
+   "motivation": "supplementing",
+   "target": "https://iiif.archive.org/iiif/journalofexpedit00ford$5/canvas#xywh=1080,1430,96,42",
+   "type": "Annotation"
+  },
+  {
+   "body": {
+    "format": "text/plain",
+    "type": "TextualBody",
+    "value": "latter "
+   },
+   "id": "https://iiif.archive.org/iiif/journalofexpedit00ford/canvas/5/anno/39",
+   "motivation": "supplementing",
+   "target": "https://iiif.archive.org/iiif/journalofexpedit00ford$5/canvas#xywh=1176,1430,153,42",
+   "type": "Annotation"
+  },
+  {
+   "body": {
+    "format": "text/plain",
+    "type": "TextualBody",
+    "value": "occurred "
+   },
+   "id": "https://iiif.archive.org/iiif/journalofexpedit00ford/canvas/5/anno/40",
+   "motivation": "supplementing",
+   "target": "https://iiif.archive.org/iiif/journalofexpedit00ford$5/canvas#xywh=1329,1428,241,43",
+   "type": "Annotation"
+  }
+ ],
+ "type": "AnnotationPage"
+}

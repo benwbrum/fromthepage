@@ -45,7 +45,7 @@ pt:
       create:
         success: Trabalho de rascunho de metadados por IA iniciado.
       form:
-        description: Gere rascunhos de metadados desta obra usando IA com Gemini e Claude.
+        description: Gere rascunhos de metadados desta obra usando IA com Gemini.
         drafts_heading: Rascunhos
         generate: Gerar rascunho de metadados com IA
         heading: Rascunho de metadados com IA

@@ -45,7 +45,7 @@ es:
       create:
         success: Se ha lanzado un trabajo de borrador de metadatos con IA.
       form:
-        description: Genera borradores de IA de los metadatos de esta obra usando Gemini y Claude.
+        description: Genera borradores de IA de los metadatos de esta obra usando Gemini.
         drafts_heading: Borradores
         generate: Generar borrador de metadatos con IA
         heading: Borrador de metadatos con IA

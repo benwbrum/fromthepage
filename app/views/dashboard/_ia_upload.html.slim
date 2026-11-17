@@ -3,4 +3,12 @@
     =link_to t('.import_from_the_internet_archive'), '#', class: 'title', id: 'import-internet-archive', data: { action: 'click->toggle-view#toggle' }
 
   section[data-toggle-view-target='toggleable' style='display: none']
-    =link_to t('.import_from_archive_dot_org'), ia_book_form_path, data: { controller: 'litebox', litebox: { hash: 'import-ia' } }, class: 'button'
+    =label_tag :ia_url, t('.paste_in_the_url')
+    =form_tag(sc_collections_import_ia_path) do |f|
+      table.form
+        td
+          .input-file
+            =text_field_tag :ia_url
+            -if @collection
+              =hidden_field_tag :collection_id, @collection.slug
+            =button_tag t('.import'), id: 'ia_import'

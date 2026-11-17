@@ -69,6 +69,93 @@ RSpec.describe XmlSourceProcessor, type: :model do
       end
     end
   end
+  describe 'case-insensitive subject linking' do
+    before { DatabaseCleaner.clean_with(:truncation) }
+
+    let(:collection) { create(:collection) }
+    let(:work) { create(:work, collection: collection) }
+    let(:page) { create(:page, work: work) }
+    let(:source) { '[[William Warner]] and [[WILLIAM WARNER|Mr. Warner]]' }
+
+    it 'saves a transcription using the existing subject and preserves the transcribed text' do
+      article = create(:article, collection: collection, title: 'William WArner')
+      article.article_versions.update_all(created_on: 2.hours.ago)
+
+      expect { page.update!(source_text: source) }.not_to change(Article, :count)
+
+      expect(page.reload.source_text).to eq(source)
+      expect(page.page_article_links.reload.pluck(:article_id)).to eq([article.id, article.id])
+      expect(page.page_article_links.reload.pluck(:display_text)).to eq(['William Warner', 'Mr. Warner'])
+      links = REXML::Document.new(page.xml_text).get_elements('//link')
+      expect(links.map { |link| link.attributes['target_id'] }).to eq([article.id.to_s] * 2)
+      expect(links.map(&:text)).to eq(['William Warner', 'Mr. Warner'])
+      expect(article.reload.title).to eq('William WArner')
+    end
+
+    it 'reuses a subject created earlier in the same save' do
+      expect { page.update!(source_text: source) }.to change(Article, :count).by(1)
+
+      article = collection.articles.find_by!(title: 'William Warner')
+      expect(page.page_article_links.reload.pluck(:article_id)).to eq([article.id, article.id])
+      expect(page.page_article_links.reload.pluck(:display_text)).to eq(['William Warner', 'Mr. Warner'])
+    end
+
+    it 'keeps subject matching scoped to the collection' do
+      other_article = create(:article, collection: create(:collection), title: 'William WArner')
+
+      expect { page.update!(source_text: '[[William Warner]]') }.to change(Article, :count).by(1)
+
+      link = page.page_article_links.reload.first
+      expect(link.article.collection_id).to eq(collection.id)
+      expect(link.article_id).not_to eq(other_article.id)
+    end
+
+    it 'also reuses the subject when saving a translation' do
+      article = create(:article, collection: collection, title: 'William WArner')
+      article.article_versions.update_all(created_on: 2.hours.ago)
+
+      expect { page.update!(source_translation: source) }.not_to change(Article, :count)
+
+      expect(page.reload.source_translation).to eq(source)
+      expect(page.page_article_links.reload.pluck(:article_id)).to eq([article.id, article.id])
+      expect(page.page_article_links.reload.pluck(:text_type)).to eq([Page::TEXT_TYPE::TRANSLATION] * 2)
+    end
+
+    it 'does not create articles or links in preview mode' do
+      create(:article, collection: collection, title: 'William WArner')
+      page.source_text = source
+      xml = nil
+
+      expect do
+        expect do
+          xml = page.wiki_to_xml(page, Page::TEXT_TYPE::TRANSCRIPTION, true)
+        end.not_to change(Article, :count)
+      end.not_to change(PageArticleLink, :count)
+
+      expect(REXML::Document.new(xml).get_elements('//link').map(&:text)).to eq(['William Warner', 'Mr. Warner'])
+    end
+
+    it 'prefers an exact match when historical case variants exist' do
+      article = create(:article, collection: collection, title: 'William Warner')
+      legacy_article = build(:article, collection: collection, title: 'William WArner')
+      legacy_article.save!(validate: false)
+
+      page.update!(source_text: '[[William Warner]]')
+
+      expect(page.page_article_links.reload.pluck(:article_id)).to eq([article.id])
+    end
+
+    it 'still matches historical titles with surrounding whitespace' do
+      article = create(:article, collection: collection, title: 'William WArner')
+      article.update_column(:title, ' William WArner ')
+      article.article_versions.update_all(created_on: 2.hours.ago)
+
+      expect { page.update!(source_text: '[[William Warner]]') }.not_to change(Article, :count)
+
+      expect(page.page_article_links.reload.pluck(:article_id)).to eq([article.id])
+    end
+  end
+
   describe '#valid_xml_from_source' do
     let(:collection) { build_stubbed(:collection) }
     let(:work)      { build_stubbed(:work, collection: collection) }

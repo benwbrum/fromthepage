@@ -35,11 +35,41 @@ describe AiWorkMetadata::Create do
   end
 
   context 'when a custom model is used' do
-    let(:model) { 'claude-sonnet-4-6' }
+    let(:model) { 'gemini-3-flash-preview' }
 
     it 'uses the supplied model' do
       expect(result.success?).to be_truthy
       expect(result.ai_work_metadata.model).to eq(model)
+    end
+  end
+
+  %w[claude-sonnet-4-6 gpt-4o unknown-model].each do |unsupported_model|
+    context "when the requested model is #{unsupported_model}" do
+      let(:model) { unsupported_model }
+
+      it 'rejects the request without creating metadata records' do
+        expect { result }.not_to change(AiWorkMetadata, :count)
+        expect(result.success?).to be_falsey
+        expect(result.full_errors.message).to eq('AI Draft Metadata generation only supports Gemini models')
+      end
+    end
+  end
+
+  %w[claude-sonnet-4-6 gpt-4o].each do |legacy_model|
+    context "when a completed #{legacy_model} draft exists" do
+      let!(:legacy_draft) do
+        create(:ai_work_metadata, work_id: work.id, model: legacy_model,
+                                  status: :finished, metadata_json: { text_field.id.to_s => 'Original title' })
+      end
+
+      it 'creates a Gemini draft and preserves the historical draft' do
+        expect { result }.to change { work.ai_work_metadata.count }.by(1)
+        expect(result.success?).to be_truthy
+        expect(work.ai_work_metadata.order(:id).last.model).to eq(AiWorkMetadata::DEFAULT_MODEL)
+        expect(legacy_draft.reload.model).to eq(legacy_model)
+        expect(legacy_draft.metadata_json).to eq({ text_field.id.to_s => 'Original title' })
+        expect(legacy_draft).to be_status_finished
+      end
     end
   end
 

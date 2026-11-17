@@ -189,6 +189,12 @@ class ScManifest < ApplicationRecord
     self.work = work
     self.save!
 
+    # v3 canvases usually reference their annotation pages rather than embedding
+    # them, so fetching the text is slow and is done in the background
+    if annotation_ocr && v3? && has_annotations?
+      Work::ImportAnnotationTextJob.perform_later(user_id: user.id, work_id: work.id)
+    end
+
     if document_set
       document_set.works << work
     end
@@ -253,11 +259,15 @@ class ScManifest < ApplicationRecord
 
 
   def has_annotations?
-    return false if v3?
+    return items.any? { |canvas| ScManifest.v3_annotation_pages(canvas).any? } if v3?
 
     self.service.sequences.first.canvases.detect do |canvas|
       canvas.other_content && canvas.other_content.detect { |e| e['@type'] == 'sc:AnnotationList' }
     end
+  end
+
+  def self.v3_annotation_pages(canvas)
+    Array.wrap(canvas['annotations']).select { |annotation| annotation.is_a?(Hash) && annotation['type'] == 'AnnotationPage' }
   end
 
   def manifest_canvas_to_sc_canvas(canvas)

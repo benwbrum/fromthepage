@@ -83,6 +83,21 @@ describe AiWorkMetadata::GenerateJob do
     end
   end
 
+  %w[claude-sonnet-4-6 gpt-4o].each do |model|
+    context "when a legacy pending record uses #{model}" do
+      before { ai_work_metadata.update!(model: model) }
+
+      it 'stores an unsupported-model error without calling Gemini' do
+        expect(AiWorkMetadata::Lib::Gemini::GenerateHandler).not_to receive(:new)
+
+        expect { perform_worker }.to raise_error(ArgumentError, /only supports Gemini models/)
+        expect(ai_work_metadata.reload).to be_status_error
+        expect(ai_work_metadata.model).to eq(model)
+        expect(ai_work_metadata.error_message).to eq('AI Draft Metadata generation only supports Gemini models')
+      end
+    end
+  end
+
   context 'no permission' do
     let!(:user) { create(:unique_user) }
 

@@ -45,7 +45,7 @@ de:
       create:
         success: KI-Metadaten-Entwurfsauftrag gestartet.
       form:
-        description: Erstellen Sie KI-Entwürfe der Metadaten dieses Werks mit Gemini und Claude.
+        description: Erstellen Sie KI-Entwürfe der Metadaten dieses Werks mit Gemini.
         drafts_heading: Entwürfe
         generate: KI-Metadatenentwurf erstellen
         heading: KI-Metadatenentwurf

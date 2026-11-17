@@ -2,8 +2,12 @@
 fr:
   export:
     accessible_pdf:
+      ditto: idem
       struck_through: 'biffé : %{text}'
+      subscript: 'indice : %{text}'
+      superscript: 'exposant : %{text}'
       table_without_headers: Tableau tel que transcrit, %{rows} lignes sur %{columns} colonnes. Les en-têtes de colonne n'ont pas été indiqués dans la transcription d'origine ; les cellules sont donc lues sans eux.
+      underlined: 'souligné : %{text}'
     edit_contentdm_credentials:
       connect: Relier
       contentdm_credentials: CONTENUdm Identifiants

@@ -2,8 +2,12 @@
 en:
   export:
     accessible_pdf:
+      ditto: ditto
       struck_through: 'struck through: %{text}'
+      subscript: 'subscript: %{text}'
+      superscript: 'superscript: %{text}'
       table_without_headers: Table as transcribed, %{rows} rows by %{columns} columns. Column headers were not marked in the original transcription, so cells are read without them.
+      underlined: 'underlined: %{text}'
     edit_contentdm_credentials:
       connect: Connect
       contentdm_credentials: CONTENTdm Credentials

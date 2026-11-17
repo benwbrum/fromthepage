@@ -138,4 +138,20 @@ RSpec.describe ScManifest, type: :model do
       }.to raise_error(ArgumentError, /contains a collection, not an item/)
     end
   end
+
+  describe '#has_annotations? for v3 manifests' do
+    let(:manifest_hash) do
+      JSON.parse(File.read(Rails.root.join('test_data/iiif/internet_archive/mcht_c55_massey_26_manifest.json')))
+    end
+
+    it 'is true when canvases reference annotation pages' do
+      expect(described_class.manifest_for_v3_hash(manifest_hash).has_annotations?).to be_truthy
+    end
+
+    it 'is false when no canvas has annotation pages' do
+      manifest_hash['items'].each { |canvas| canvas.delete('annotations') }
+
+      expect(described_class.manifest_for_v3_hash(manifest_hash).has_annotations?).to be(false)
+    end
+  end
 end
