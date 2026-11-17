@@ -73,7 +73,9 @@ describe 'URL tests' do
     visit dashboard_watchlist_path
     click_link(owner.display_name, match: :first)
     expect(page.current_path).to eq "/#{owner.slug}"
-    expect(page).to have_content('Projects')
+    # Assert on the owner profile itself. The header link reads "Projects" only while the
+    # whole DB has <= 30 collections, so it depends on what earlier specs left behind.
+    expect(page).to have_selector('h1.headline_title', text: owner.display_name)
     owner.all_owner_collections.each do |c|
       expect(page).to have_content(c.title)
     end
