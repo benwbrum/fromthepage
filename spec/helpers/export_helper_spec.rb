@@ -190,18 +190,38 @@ Henry Tanner, ed., <hi rend=\"italic\">Directory</hi> (Louisville, 1861), 227."
         expect(result).to include("(1850), Population Schedules, Kentucky.")
       end
 
+      it 'exports the Frankfort bibliography with italics, line breaks and ampersands intact' do
+        input = Rails.root.join('spec/fixtures/bibliographies/frankfort.xml').read
+        result = bibliography_to_export_tei(input, @context)
+        doc = Nokogiri::XML("<bibl>#{result}</bibl>") { |config| config.strict }
+
+        expect(doc.xpath('//hi[@rend="italic"]').size).to eq(4)
+        expect(doc.xpath('//lb').size).to eq(5)
+        expect(doc.text).to include('Towns, &c.')
+        expect(doc.at_xpath('//a')['href']).to eq('https://earthexplorer.usgs.gov/.')
+        expect(doc.xpath('//comment()')).to be_empty
+      end
+
+      it 'does not double-escape existing entities or numeric references' do
+        input = '<hi>One &amp; two &#38; three &#x26; four</hi>'
+        result = bibliography_to_export_tei(input, @context)
+        doc = Nokogiri::XML("<bibl>#{result}</bibl>") { |config| config.strict }
+        expect(doc.text).to eq('One & two & three & four')
+      end
+
       it "returns empty string for empty content" do
         result = bibliography_to_export_tei('', @context)
         expect(result).to eq('')
       end
 
-      it "handles malformed XML gracefully" do
+      it "preserves malformed XML as escaped text with a diagnostic comment" do
         malformed_xml = "Text with <invalid>unclosed tag and <lb> tags"
 
         result = bibliography_to_export_tei(malformed_xml, @context)
 
-        # Should return empty string for malformed XML in TEI export context
-        expect(result).to eq('')
+        doc = Nokogiri::XML("<bibl>#{result}</bibl>") { |config| config.strict }
+        expect(doc.at_xpath('/bibl').text).to eq(malformed_xml)
+        expect(doc.at_xpath('/bibl/comment()').text).to include('could not be parsed')
       end
     end
   end

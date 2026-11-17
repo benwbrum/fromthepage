@@ -313,6 +313,22 @@ describe ArticleController do
       end
     end
 
+    context 'when bibliography XML is unbalanced' do
+      let(:params) { { article: { bibliography: '<hi>Unclosed citation' }, save: '1' } }
+
+      it 'shows a validation error and retains the submitted bibliography without saving it' do
+        login_as owner
+        original = article.bibliography
+        subject
+
+        expect(response).to have_http_status(:unprocessable_entity)
+        rendered_page = Capybara.string(response.body)
+        expect(rendered_page).to have_content('Bibliography contains invalid XML')
+        expect(rendered_page.find('#article_bibliography').value).to eq('<hi>Unclosed citation')
+        expect(article.reload.bibliography).to eq(original)
+      end
+    end
+
     context 'when successful save' do
       let(:params) do
         {

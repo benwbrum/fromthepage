@@ -687,6 +687,28 @@ describe ExportController do
         page.page_article_links.create!(article: organization_article)
       end
 
+      it 'preserves legacy malformed bibliographies as text in all entity lists and the taxonomy' do
+        invalid = '<hi>Unclosed & citation -- >'
+        [person_article, place_article, organization_article].each do |article|
+          article.update_column(:bibliography, invalid)
+        end
+        generic_category = create(:category, collection: collection, title: 'Other subjects')
+        generic_article = create(:article, collection: collection, categories: [generic_category])
+        generic_article.update_column(:bibliography, invalid)
+        page.page_article_links.create!(article: generic_article)
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        doc = Nokogiri::XML(response.body) { |config| config.strict }.remove_namespaces!
+        [person_article, place_article, organization_article, generic_article].each do |article|
+          bibl = doc.at_xpath("//*[@*[local-name()='id']='S#{article.id}']//bibl")
+          expect(bibl).to be_present
+          expect(bibl.text).to eq(invalid)
+          expect(bibl.at_xpath('comment()').text).to include('could not be parsed')
+        end
+      end
+
       it 'includes bibl elements for all article types with bibliography data and preserves TEI formatting' do
         login_as owner
         subject
