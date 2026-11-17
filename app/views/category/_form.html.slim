@@ -1,5 +1,4 @@
   =hidden_field_tag(:collection_id, @collection.slug)
-  =f.hidden_field(:collection_id)
   =f.hidden_field(:parent_id)
   / only show a hidden field with the category id if the record is not new
   -if category.persisted?
