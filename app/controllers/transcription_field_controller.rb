@@ -4,6 +4,9 @@ class TranscriptionFieldController < ApplicationController
   # @collection is loaded from params[:collection_id] by ApplicationController, so every
   # action that acts on a field receives collection_id and looks the field up *through*
   # @collection. A field id from another collection is a 404.
+  #
+  # collection_id also accepts a DocumentSet slug, and a set's id can equal another
+  # collection's id. Raw collection_id queries must use the set's parent collection_id.
 
   def multiselect_form
     require_permission(:collection_owner, @collection)
@@ -25,7 +28,8 @@ class TranscriptionFieldController < ApplicationController
     require_permission(:collection_owner, @collection)
 
     # Serves both the transcription and the metadata field editors
-    field = TranscriptionField.where(collection_id: @collection.id).find(params[:field_id])
+    collection_id = @collection.is_a?(DocumentSet) ? @collection.collection_id : @collection.id
+    field = TranscriptionField.where(collection_id: collection_id).find(params[:field_id])
     field.remove_from_list
     field.destroy
     redirect_to collection_edit_fields_path(@collection.owner, @collection)
@@ -55,6 +59,8 @@ class TranscriptionFieldController < ApplicationController
       @collection.update(data_entry_type: params[:data_entry_type])
     end
 
+    # Serves both the transcription and the metadata field editors
+    collection_id = @collection.is_a?(DocumentSet) ? @collection.collection_id : @collection.id
     field_type = params[:field_type]
     new_fields = params[:transcription_fields]
     error_messages = []
@@ -77,13 +83,13 @@ class TranscriptionFieldController < ApplicationController
         end
         if fields[:id].blank?
           # if the field doesn't exist, create a new one
-          transcription_field = TranscriptionField.where(collection_id: @collection.id).new(transcription_field_params(fields))
+          transcription_field = TranscriptionField.where(collection_id: collection_id).new(transcription_field_params(fields))
           transcription_field.starting_rows = 1
           transcription_field.field_type = field_type
           transcription_field.save
         else
           # otherwise update field if anything changed
-          transcription_field = TranscriptionField.where(collection_id: @collection.id).find(fields[:id])
+          transcription_field = TranscriptionField.where(collection_id: collection_id).find(fields[:id])
           transcription_field.label = fields[:label]
           transcription_field.input_type = fields[:input_type]
           transcription_field.options = fields[:options] if fields[:input_type] == 'select'
@@ -113,7 +119,8 @@ class TranscriptionFieldController < ApplicationController
     require_permission(:collection_owner, @collection)
 
     # Serves both the transcription and the metadata field editors
-    fields = TranscriptionField.where(collection_id: @collection.id)
+    collection_id = @collection.is_a?(DocumentSet) ? @collection.collection_id : @collection.id
+    fields = TranscriptionField.where(collection_id: collection_id)
     Array(params[:field]).each_with_index do |id, index|
       fields.where(id: id).update_all(position: index + 1, line_number: params[:line])
     end

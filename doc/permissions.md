@@ -100,8 +100,13 @@ end
   We never trust a child record to tell us its parent.
 - **Each action picks the scope it needs.** Spreadsheet actions use
   `@collection.transcription_fields`, multiselect uses `@collection.metadata_fields`, and
-  actions that serve both editors use `TranscriptionField.where(collection_id: @collection.id)`.
+  actions that serve both editors use `TranscriptionField.where(collection_id: collection_id)`.
   A shared helper tends to pick the broadest scope for everyone.
+- **`@collection` may be a `DocumentSet`.** `collection_id` also accepts a document set's
+  slug, and a set's id can equal another collection's id. Associations like
+  `@collection.transcription_fields` are delegated to the set's parent and are safe, but a
+  raw `where(collection_id: ...)` must use the parent's id
+  (`@collection.is_a?(DocumentSet) ? @collection.collection_id : @collection.id`).
 - **Changing one action can't weaken another.** Editing a shared loader changes every
   action that uses it. With inline lookups, a change only affects the action it was made
   in.

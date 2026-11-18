@@ -14,6 +14,7 @@ paths:
   - New/migrated controllers: `enforce_permission_checks` + `require_permission(:perm, record)` as the
     first line of every action — read `doc/permissions.md` (rationale + rules of thumb) before touching auth
     - Load child records inline through the authorized parent (`@collection.<assoc>.find`); no shared loaders
+    - `@collection` may be a `DocumentSet` (slug in `collection_id`); raw `where(collection_id:)` needs its parent's id
   - Legacy controllers still define a private `authorized?` + `before_action` for edit/owner actions
   - Permission predicates: `admin?`, `like_owner?(obj)`, `can_transcribe?(work)`, `collaborator?(collection)`
     (mirrored in `app/lib/permissions/*_rules.rb`; keep both in sync)

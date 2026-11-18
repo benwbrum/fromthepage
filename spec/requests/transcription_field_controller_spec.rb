@@ -222,6 +222,67 @@ describe TranscriptionFieldController do
     end
   end
 
+  # collection_id also accepts a DocumentSet slug. The set's id can equal the id of a
+  # collection owned by someone else, so raw collection_id queries must use the set's parent.
+  describe 'collection_id given as a DocumentSet slug whose id matches another collection' do
+    let!(:shared_id) { [Collection.maximum(:id).to_i, DocumentSet.maximum(:id).to_i].max + 1 }
+    let!(:victim_collection) { create(:collection, id: shared_id, owner_user_id: other_owner.id) }
+    let!(:victim_field) do
+      create(:transcription_field, :as_transcription, collection_id: victim_collection.id, label: 'Victim', position: 5)
+    end
+    let!(:attacker_set) do
+      collection.update!(supports_document_sets: true)
+      create(:document_set, id: shared_id, collection_id: collection.id, owner_user_id: owner.id)
+    end
+
+    before { login_as owner }
+
+    it 'resolves collection_id to the document set' do
+      expect(Collection::Lib::SetFriendlyFind.perform(id: attacker_set.slug)).to eq(attacker_set)
+    end
+
+    it "doesn't delete the other collection's field" do
+      delete transcription_field_delete_path, params: { field_id: victim_field.id, collection_id: attacker_set.slug }
+
+      expect(TranscriptionField.exists?(victim_field.id)).to be(true)
+    end
+
+    it "doesn't update the other collection's field" do
+      post transcription_field_add_fields_path, params: {
+        collection_id: attacker_set.slug,
+        field_type: TranscriptionField::FieldType::TRANSCRIPTION,
+        transcription_fields: [{ id: victim_field.id, label: 'Hijacked', line_number: 1, input_type: 'text' }]
+      }
+
+      expect(victim_field.reload.label).to eq('Victim')
+    end
+
+    it 'creates new fields in the parent collection, not the other one' do
+      post transcription_field_add_fields_path, params: {
+        collection_id: attacker_set.slug,
+        field_type: TranscriptionField::FieldType::TRANSCRIPTION,
+        transcription_fields: [{ label: 'Planted', line_number: 1, input_type: 'text' }]
+      }
+
+      expect(TranscriptionField.where(collection_id: victim_collection.id, label: 'Planted')).to be_empty
+      expect(TranscriptionField.where(collection_id: collection.id, label: 'Planted')).to exist
+    end
+
+    it "doesn't reorder the other collection's field" do
+      patch transcription_field_reorder_path,
+            params: { collection_id: attacker_set.slug, field: [victim_field.id], line: 9 }, xhr: true
+
+      expect(victim_field.reload.position).to eq(5)
+      expect(victim_field.line_number).not_to eq(9)
+    end
+
+    it "still lets the owner delete the parent collection's own field" do
+      delete transcription_field_delete_path, params: { field_id: field.id, collection_id: attacker_set.slug }
+
+      expect(TranscriptionField.exists?(field.id)).to be(false)
+    end
+  end
+
   describe 'DELETE delete (metadata field)' do
     it 'lets the owner delete a metadata field' do
       login_as owner
