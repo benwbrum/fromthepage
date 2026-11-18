@@ -1,6 +1,65 @@
 require 'spec_helper'
 
 describe ScCollectionsController, type: :controller do
+  describe 'v2 manifest requests' do
+    let(:manifest_url) { 'https://example.com/iiif/manifest' }
+    let(:manifest_json) do
+      {
+        '@context' => 'http://iiif.io/api/presentation/2/context.json',
+        '@id' => manifest_url,
+        '@type' => 'sc:Manifest',
+        'label' => 'Test manifest',
+        'sequences' => []
+      }.to_json
+    end
+    let!(:manifest_request) do
+      stub_request(:get, manifest_url)
+        .to_return(status: 200, body: manifest_json)
+        .then.to_return(status: 403)
+    end
+
+    it 'previews a manifest with one request' do
+      allow(controller).to receive(:params).and_return(at_id: manifest_url)
+      expect(controller).to receive(:render).with('explore_manifest', at_id: manifest_url)
+
+      controller.import
+
+      expect(assigns(:sc_manifest).label).to eq('Test manifest')
+      expect(manifest_request).to have_been_requested.once
+    end
+
+    it 'explores a manifest with one request' do
+      allow(controller).to receive(:params).and_return(at_id: manifest_url)
+      allow(controller).to receive(:set_collection)
+
+      controller.explore_manifest
+
+      expect(assigns(:sc_manifest).label).to eq('Test manifest')
+      expect(manifest_request).to have_been_requested.once
+    end
+
+    it 'converts a manifest with one request' do
+      owner = instance_double(User)
+      collection = instance_double(Collection, owner: owner, text_entry?: false)
+      work = instance_double(Work)
+      allow(controller).to receive(:params).and_return(at_id: manifest_url, sc_manifest: { collection_id: '42' })
+      allow(controller).to receive(:current_user).and_return(owner)
+      allow(Collection).to receive(:find_by).with(id: '42').and_return(collection)
+      allow(ScManifest).to receive(:new).and_wrap_original do |original|
+        manifest = original.call
+        expect(manifest).to receive(:convert_with_collection).with(owner, collection, nil, false).and_return(work)
+        manifest
+      end
+      allow(controller).to receive(:describe_collection_work_path).with(owner, collection, work).and_return('/work')
+      expect(controller).to receive(:redirect_to).with('/work')
+
+      controller.convert_manifest
+
+      expect(assigns(:sc_manifest).label).to eq('Test manifest')
+      expect(manifest_request).to have_been_requested.once
+    end
+  end
+
   describe '#fetch_manifest' do
     let(:controller) { ScCollectionsController.new }
     let(:manifest_url) { 'https://texashistory.unt.edu/ark:/67531/metapth1741604/manifest/' }

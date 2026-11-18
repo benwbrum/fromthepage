@@ -96,7 +96,7 @@ class ScCollectionsController < ApplicationController
 
           render 'explore_collection', at_id: at_id
         elsif service['@type'] == 'sc:Manifest'
-          @sc_manifest = ScManifest.manifest_for_at_id(at_id)
+          @sc_manifest = ScManifest.manifest_for_v2_service(at_id, service)
           find_parent = @sc_manifest.service['within']
           if find_parent.nil? || !find_parent.is_a?(Hash)
             @sc_collection = nil
@@ -151,7 +151,7 @@ class ScCollectionsController < ApplicationController
       @sc_manifest = if version == 3
                        ScManifest.manifest_for_v3_hash(fetch_manifest(at_id))
       else
-        ScManifest.manifest_for_at_id(at_id)
+        ScManifest.manifest_for_v2_service(at_id, find_service(at_id))
       end
     rescue ArgumentError
       redirect_to action: 'explore_collection', at_id: at_id
@@ -247,7 +247,7 @@ class ScCollectionsController < ApplicationController
     @sc_manifest = if version == 3
                      ScManifest.manifest_for_v3_hash(fetch_manifest(at_id))
     else
-      ScManifest.manifest_for_at_id(at_id)
+      ScManifest.manifest_for_v2_service(at_id, find_service(at_id))
     end
     work = nil
     if params[:sc_manifest][:collection_id] == 'sc_collection'
