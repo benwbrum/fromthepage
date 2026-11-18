@@ -1,5 +1,8 @@
 class TranscriptionFieldController < ApplicationController
   enforce_permission_checks
+  # Every action calls require_permission, so the legacy visibility filter only gets in the
+  # way: it runs first, and it would redirect admins and JSON requests before the check.
+  skip_before_action :authorize_collection
 
   # @collection is loaded from params[:collection_id] by ApplicationController, so every
   # action that acts on a field receives collection_id and looks the field up *through*

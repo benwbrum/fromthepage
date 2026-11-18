@@ -11,6 +11,7 @@ paths:
 
 - No Pundit/CanCan — authorization is hand-rolled:
   - Global `authorize_collection` (uses `collection.show_to?`) runs before every action with `@collection`
+    in legacy controllers; fully migrated controllers `skip_before_action :authorize_collection`
   - New/migrated controllers: `enforce_permission_checks` + `require_permission(:perm, record)` as the
     first line of every action — read `doc/permissions.md` (rationale + rules of thumb) before touching auth
     - Load child records inline through the authorized parent (`@collection.<assoc>.find`); no shared loaders

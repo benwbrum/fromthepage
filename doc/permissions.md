@@ -125,6 +125,12 @@ The repetition is intentional. Don't factor it back out.
    the parent from the child.
 5. Cover each action with request specs for: signed out, signed-in non-owner, the owner,
    and a cross-collection ID (the IDOR case).
+6. Once every action calls `require_permission`, add
+   `skip_before_action :authorize_collection`. That legacy filter runs first and redirects
+   on `show_to?` alone, so it blocks the admin bypass and turns JSON 401 / 403 into
+   redirects. Replacing it is the point of this architecture; don't keep both. Check that
+   the controller doesn't rely on its other side effects first (the Thredded message-board
+   check, and `set_fallback_collection` swapping in a document set for `@work`).
 
 ## Where things live
 

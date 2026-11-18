@@ -11,8 +11,7 @@ describe TranscriptionFieldController do
   let!(:owner) { create(:unique_user, :owner) }
   let!(:collection) { create(:collection, owner_user_id: owner.id) }
   # A work makes the collection viewable (Collection#show_to? requires works), so denied
-  # signed-in users land on the collection page and authorize_collection lets anonymous
-  # requests reach the controller.
+  # signed-in users are sent back to the collection page.
   let!(:work) { create(:work, collection: collection, owner_user_id: owner.id) }
   let!(:page) { create(:page, work: work, base_height: 1000, base_width: 800) }
   let!(:field) { create(:transcription_field, :as_transcription, collection_id: collection.id, label: 'Original') }
@@ -280,6 +279,46 @@ describe TranscriptionFieldController do
       delete transcription_field_delete_path, params: { field_id: field.id, collection_id: attacker_set.slug }
 
       expect(TranscriptionField.exists?(field.id)).to be(false)
+    end
+  end
+
+  # The legacy authorize_collection filter is skipped: it used to redirect before
+  # require_permission ran, blocking the admin bypass and the JSON 401 / 403.
+  describe 'on a restricted collection' do
+    before { collection.update!(visibility: :private) }
+
+    it 'lets an admin who does not own it open the field editor' do
+      login_as admin
+      get collection_edit_fields_path(owner, collection)
+
+      expect(response).to have_http_status(:ok)
+    end
+
+    it 'lets an admin who does not own it delete a field' do
+      login_as admin
+      delete transcription_field_delete_path, params: { field_id: field.id, collection_id: collection.slug }
+
+      expect(TranscriptionField.exists?(field.id)).to be(false)
+    end
+
+    it 'answers JSON with a bare 401 / 403 instead of redirecting' do
+      params = { field_id: field.id, collection_id: collection.slug }
+      delete transcription_field_delete_path, params: params, as: :json
+      expect(response).to have_http_status(:unauthorized)
+
+      login_as stranger
+      delete transcription_field_delete_path, params: params, as: :json
+      expect(response).to have_http_status(:forbidden)
+
+      expect(TranscriptionField.exists?(field.id)).to be(true)
+    end
+
+    it 'denies a signed-in non-owner HTML request' do
+      login_as stranger
+      get collection_edit_fields_path(owner, collection)
+
+      expect(response).to have_http_status(:see_other)
+      expect(flash[:error]).to eq(I18n.t('permission_denied'))
     end
   end
 
