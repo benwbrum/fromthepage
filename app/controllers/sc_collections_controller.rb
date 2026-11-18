@@ -2,6 +2,7 @@ require 'open-uri'
 require 'contentdm_translator'
 require 'iiif_http'
 require 'internet_archive_translator'
+require 'securerandom'
 require 'shellwords'
 
 class ScCollectionsController < ApplicationController
@@ -112,6 +113,7 @@ class ScCollectionsController < ApplicationController
             @label = nil
             @col = nil
           end
+          cache_manifest_preview
           render 'explore_manifest', at_id: at_id
         end
       elsif version == 3
@@ -125,6 +127,7 @@ class ScCollectionsController < ApplicationController
           @sc_collection = nil # TODO: figure out within partOf
           @label = nil # TODO
           @col = nil # TODO
+          cache_manifest_preview
           render 'explore_manifest', at_id: at_id
         end
 
@@ -165,6 +168,7 @@ class ScCollectionsController < ApplicationController
       @label = nil
       @col = nil
     end
+    cache_manifest_preview
   end
 
   def explore_collection
@@ -241,6 +245,15 @@ class ScCollectionsController < ApplicationController
 
   def convert_manifest
     at_id = params[:at_id]
+    if params.key?(:manifest_preview_token)
+      @raw_manifest = read_manifest_preview(params[:manifest_preview_token], at_id)
+      unless @raw_manifest
+        flash[:error] = t('.manifest_preview_expired')
+        redirect_to dashboard_owner_path
+        return
+      end
+    end
+
     annotation_ocr = !params[:annotation_ocr].blank?
     generate_ai_draft = !params[:generate_ai_draft].blank?
     version = detect_version(at_id)
@@ -387,5 +400,33 @@ class ScCollectionsController < ApplicationController
 
   def fetch_manifest(at_id)
     @raw_manifest ||= IiifHttp.fetch(at_id)
+  end
+
+  def cache_manifest_preview
+    return unless user_signed_in?
+    return if Rails.cache.is_a?(ActiveSupport::Cache::NullStore)
+    return unless URI.parse(@sc_manifest.at_id).is_a?(URI::HTTP)
+
+    token = SecureRandom.hex(32)
+    preview = { at_id: @sc_manifest.at_id, body: @raw_manifest }
+    if Rails.cache.write(manifest_preview_key(token), preview, expires_in: 30.minutes)
+      @manifest_preview_token = token
+    end
+  rescue StandardError => e
+    logger.warn("IIIF manifest preview cache write failed: #{e.class}")
+  end
+
+  def read_manifest_preview(token, at_id)
+    return unless token.is_a?(String) && token.match?(/\A[0-9a-f]{64}\z/)
+
+    preview = Rails.cache.read(manifest_preview_key(token))
+    preview[:body] if preview && preview[:at_id] == at_id
+  rescue StandardError => e
+    logger.warn("IIIF manifest preview cache read failed: #{e.class}")
+    nil
+  end
+
+  def manifest_preview_key(token)
+    "iiif-manifest-preview:#{current_user.id}:#{token}"
   end
 end
