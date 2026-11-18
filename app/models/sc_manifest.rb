@@ -59,11 +59,10 @@ class ScManifest < ApplicationRecord
     uri = URI.parse(at_id)
     raise ArgumentError, 'manifest URL must use HTTP or HTTPS' unless uri.is_a?(URI::HTTP)
 
-    connection = uri.open
-    manifest_json = connection.read
-    # manifest_json = TEST_MANIFEST
-    service = IIIF::Service.parse(manifest_json)
+    manifest_for_v2_service(at_id, IIIF::Service.parse(uri.open.read))
+  end
 
+  def self.manifest_for_v2_service(at_id, service)
     if service['@type'] == 'sc:Collection'
       raise ArgumentError, "#{at_id} contains a collection, not an item"
     end

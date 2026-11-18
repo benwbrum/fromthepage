@@ -13,6 +13,7 @@ fr:
       separate_urls_with: Séparez les URL par des espaces ou des retours à la ligne.
     convert_manifest:
       annotation_text_is_being_imported: Le texte est en cours d'importation depuis les annotations du manifeste et devrait apparaître sous peu.
+      manifest_preview_expired: L'aperçu de ce manifeste IIIF n'est plus disponible. Ouvrez de nouveau l'aperçu pour importer le manifeste.
       metadata_is_being_imported: Les métadonnées %{ocr_text} sont en cours d'importation depuis CONTENTdm et devraient apparaître sous peu.
     explore_collection:
       already_imported_into: Déjà importé dans

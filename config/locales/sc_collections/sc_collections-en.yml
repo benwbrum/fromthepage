@@ -13,6 +13,7 @@ en:
       separate_urls_with: Separate URLs with spaces or newlines.
     convert_manifest:
       annotation_text_is_being_imported: Text is being imported from the manifest's annotations and should appear shortly.
+      manifest_preview_expired: This IIIF manifest preview is no longer available. Open the preview again to import the manifest.
       metadata_is_being_imported: Metadata %{ocr_text} is being imported from CONTENTdm and should appear shortly.
     explore_collection:
       already_imported_into: Already imported into

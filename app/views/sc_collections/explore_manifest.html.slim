@@ -23,6 +23,8 @@
       -unless @sc_collection.nil?
       	=hidden_field_tag :sc_collection_id, @sc_collection.id
       =hidden_field_tag :at_id, @sc_manifest.at_id
+      -if @manifest_preview_token
+        =hidden_field_tag :manifest_preview_token, @manifest_preview_token
       -new_collection = @collection ? @collection.id : nil
       =f.select(:collection_id, target_collection_options(new_collection), {prompt: t('.select_a_collection_to_import_into')}, {required: true, 'aria-label' => t('.select_a_collection_to_import_into_label')})
       =f.button t('.import_manifest')
