@@ -72,10 +72,10 @@ describe "Work Settings" do
     # Visit work settings tab
     visit edit_collection_work_path(owner, collection, work_no_ocr)
 
-    # Enter custom work conventions
+    # Enter custom work conventions. The form submits itself on change, so leaving the
+    # field saves it. Clicking Save as well would send a second, concurrent update.
     page.fill_in('work_transcription_conventions', with: 'Work-specific convention text')
-    script = "$('#collection-settings-save').click()"
-    page.execute_script(script)
+    page.find('#work_transcription_conventions').send_keys(:tab)
     expect(page).to have_content("Work updated successfully")
 
     # Verify work has its own conventions
@@ -96,11 +96,9 @@ describe "Work Settings" do
     # Verify the revert button is visible
     expect(page).to have_button('Revert')
 
-    # Clear the conventions field and save
+    # Clear the conventions field and leave it; the form submits itself on change
     page.fill_in('work_transcription_conventions', with: '')
-
-    script = "$('#collection-settings-save').click()"
-    page.execute_script(script)
+    page.find('#work_transcription_conventions').send_keys(:tab)
 
     expect(page).to have_content("Work updated successfully")
 

@@ -14,7 +14,7 @@ tr id="#{column_id}"
   td.field-form_actions
     -if !column.blank?
       =hidden_field_tag "spreadsheet_columns[][id]", column.id
-      =link_to transcription_field_spreadsheet_column_delete_path(spreadsheet_column_id: column.id, field_id: @transcription_field.id, collection_id: @collection), title: t('.delete_column'), 'aria-label' => t('.delete_column'), class: 'field-form_icon'
+      =link_to transcription_field_spreadsheet_column_delete_path(spreadsheet_column_id: column.id, field_id: @transcription_field.id, collection_id: @collection), method: :delete, title: t('.delete_column'), 'aria-label' => t('.delete_column'), class: 'field-form_icon'
         =svg_symbol '#icon-remove-sign', class: 'icon', title: 'Delete column'
       span.field-form_icon.reorder title=t('.reorder_column')
         =svg_symbol '#icon-reorder', class: 'icon', title: 'Reorder column'

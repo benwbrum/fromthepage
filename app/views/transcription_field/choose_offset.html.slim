@@ -13,7 +13,7 @@ div.columns
     =link_to t('.save_selection'), '#', class: 'button', id: 'save-selection-button'
 
     p= t('.replace_image_description')
-    =link_to t('.replace_image'), transcription_field_spreadsheet_column_choose_offset_path(@transcription_field), class: 'button'
+    =link_to t('.replace_image'), transcription_field_spreadsheet_column_choose_offset_path(@transcription_field, collection_id: @collection), class: 'button'
 
 
 
@@ -69,13 +69,13 @@ div.columns
         raw_selector = annotations[0]['target'].selector.value;
 
         $.post(
-          "#{transcription_field_spreadsheet_column_save_offset_path(@transcription_field,@page)}", 
+          "#{transcription_field_spreadsheet_column_save_offset_path(@transcription_field, @page, collection_id: @collection)}", 
           {'selector': raw_selector}
         ).done(function() { 
-          window.location.replace("#{transcription_field_spreadsheet_column_path(@transcription_field.id)}"); 
+          window.location.replace("#{transcription_field_spreadsheet_column_path(@transcription_field.id, collection_id: @collection)}"); 
         });
 
-        window.location.replace("#{transcription_field_spreadsheet_column_path(@transcription_field.id)}"); 
+        window.location.replace("#{transcription_field_spreadsheet_column_path(@transcription_field.id, collection_id: @collection)}"); 
 
         
       });

@@ -307,6 +307,8 @@ class Collection < ApplicationRecord
     subjects.export
   end
 
+  # TODO: Deprecate. Duplicated in Permissions::CollectionRules.viewer? (app/lib/permissions).
+  # Keep both in sync until every controller uses require_permission.
   def show_to?(user)
     (!self.restricted && self.works.present? && self.collection_blocks.where(user_id: user&.id).none?
     ) || (user && user.like_owner?(self)) || (user && user.collaborator?(self))

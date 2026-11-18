@@ -21,6 +21,7 @@ es:
   es: Español
   fr: Français
   message_boards_are_disabled: El foro para %{project} ha sido deshabilitado.
+  permission_denied: No tienes permiso para hacer eso.
   pt: Português
   time:
     formats:
