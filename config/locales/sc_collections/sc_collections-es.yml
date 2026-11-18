@@ -13,6 +13,7 @@ es:
       separate_urls_with: Separe las URL con espacios o saltos de línea.
     convert_manifest:
       annotation_text_is_being_imported: El texto se está importando desde las anotaciones del manifiesto y debería aparecer en breve.
+      manifest_preview_expired: La vista previa de este manifiesto IIIF ya no está disponible. Vuelva a abrir la vista previa para importar el manifiesto.
       metadata_is_being_imported: Los metadatos %{ocr_text} se están importando desde CONTENTdm y aparecerán en breve.
     explore_collection:
       already_imported_into: Ya importado en

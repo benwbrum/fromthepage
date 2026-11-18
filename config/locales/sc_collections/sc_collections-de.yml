@@ -13,6 +13,7 @@ de:
       separate_urls_with: Trennen Sie URLs durch Leerzeichen oder Zeilenumbrüche.
     convert_manifest:
       annotation_text_is_being_imported: Text wird aus den Annotationen des Manifests importiert und sollte in Kürze erscheinen.
+      manifest_preview_expired: Die Vorschau dieses IIIF-Manifests ist nicht mehr verfügbar. Öffnen Sie die Vorschau erneut, um das Manifest zu importieren.
       metadata_is_being_imported: Die Metadaten %{ocr_text} werden aus CONTENTdm importiert und sollten in Kürze erscheinen.
     explore_collection:
       already_imported_into: Bereits importiert in
