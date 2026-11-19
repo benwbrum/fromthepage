@@ -363,7 +363,7 @@
           }
         } else {
           hideCustomAlert();
-          allowFormToSubmit();
+          // Let the current submit event continue; submitting again here recurses.
         }
 
       });
