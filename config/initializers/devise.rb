@@ -112,7 +112,8 @@ Devise.setup do |config|
   # algorithm), the cost increases exponentially with the number of stretches (e.g.
   # a value of 20 is already extremely slow: approx. 60 seconds for 1 calculation).
   #  config.stretches = Rails.env.test? ? 1 : 11
-  config.stretches = 1
+  # bcrypt cost. Legacy SHA-1 hashes are handled by LegacyPasswordHash, which doesn't use this.
+  config.stretches = Rails.env.test? ? 1 : 12
 
   # Set up a pepper to generate the hashed password.
   # config.pepper = 'b0564e7f7af0f749de25a955f9a8a9361c5da8b74aa0648b849835c87ca7406b96e3376dc049a27eaa5b0c0342b5ad2ff3c221d3918b219c4187dfb8b7a0ccd6'
@@ -169,7 +170,8 @@ Devise.setup do |config|
 
   # ==> Configuration for :validatable
   # Range for password length.
-  config.password_length = 6..128
+  # bcrypt ignores everything after 72 bytes; LegacyPasswordHash also checks the byte length.
+  config.password_length = 8..72
 
   # Email regex used to validate email formats. It simply asserts that
   # one (and only one) @ exists in the given string. This is mainly

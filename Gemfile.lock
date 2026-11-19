@@ -257,8 +257,6 @@ GEM
       railties (>= 7.0)
       responders
       warden (~> 1.2.3)
-    devise-encryptable (0.2.0)
-      devise (>= 2.1.0)
     devise_masquerade (1.2.0)
       devise (>= 4.7.0)
       railties (>= 5.2.0)
@@ -980,7 +978,6 @@ DEPENDENCIES
   config
   database_cleaner
   devise
-  devise-encryptable
   devise_masquerade (~> 1.2.0)
   diffy
   dotenv
