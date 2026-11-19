@@ -87,6 +87,13 @@ namespace :fromthepage do
       print "=== AI Draft Text Generation Complete ===\n\n"
     end
 
+    Elasticsearch::Collection::SyncJob.perform_now(
+      user_id: nil,
+      collection_id: document_upload.collection.id,
+      type: :collection,
+      skip_collection: true
+    )
+
     if SMTP_ENABLED
       begin
         if works_created > 0
