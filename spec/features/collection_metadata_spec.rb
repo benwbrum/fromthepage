@@ -205,6 +205,26 @@ RSpec.describe 'collection metadata', order: :defined do
     expect(page).to have_content('Order is not a number')
   end
 
+  # SEC-04: the translate form posts back through the owner-gated update_localization (XHR).
+  it 'saves translated facet labels from the litebox', js: true do
+    c = create_metadata_collection
+    facet_config = c.facet_configs.joins(:metadata_coverage).find_by(metadata_coverages: { key: 'filename' })
+    facet_config.update!(label: { en: 'Filename' }.to_json, order: 0)
+
+    login_as @owner
+    visit collection_facets_path(@owner, c)
+    click_link 'Translate'
+    within(page.find('.litebox_content', wait: 5)) do
+      expect(page).to have_content('Translate Facet Labels')
+      fill_in "facets_#{facet_config.id}_es", with: 'Nombre de archivo'
+      click_button 'Save'
+    end
+
+    expect(page).to have_current_path(collection_facets_path(@owner, c))
+    expect(page).to have_no_css('.litebox_content')
+    expect(facet_config.reload.label_hash).to include('en' => 'Filename', 'es' => 'Nombre de archivo')
+  end
+
   it 'should not be available/visible for the Individual Researcher plan', js: true do
     c = create_metadata_collection
 

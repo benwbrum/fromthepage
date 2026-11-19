@@ -105,6 +105,47 @@ describe CollectionController do
     end
   end
 
+  # SEC-04: the facet config page is owner-only.
+  describe '#facets' do
+    let!(:coverage) { create(:metadata_coverage, collection: collection, key: "facet-#{SecureRandom.hex(4)}") }
+    let!(:facet_config) { create(:facet_config, metadata_coverage: coverage) }
+    let(:action_path) { collection_facets_path(owner, collection) }
+
+    it 'renders the config form for the owner' do
+      login_as owner
+      get action_path
+
+      expect(response).to have_http_status(:ok)
+      expect(response).to render_template(:facets)
+      expect(response.body).to include(coverage.key)
+      expect(response.body).to include("action=\"#{facets_update_path}\"")
+    end
+
+    it 'redirects a non-owner to the collection page' do
+      login_as user
+      get action_path
+
+      expect(response).to redirect_to(collection_path(owner, collection))
+    end
+
+    it 'redirects a signed-out user to the dashboard' do
+      get action_path
+
+      expect(response).to redirect_to(dashboard_path)
+    end
+
+    it 'posts the parent collection id from a document set' do
+      collection.update!(supports_document_sets: true)
+      document_set = create(:document_set, collection_id: collection.id, owner_user_id: owner.id)
+      login_as owner
+      get collection_facets_path(owner, document_set)
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include(coverage.key)
+      expect(response.body).to include("name=\"collection_id\" id=\"collection_id\" value=\"#{collection.id}\"")
+    end
+  end
+
   describe '#edit' do
     let(:action_path) { edit_collection_path(owner, collection) }
 
