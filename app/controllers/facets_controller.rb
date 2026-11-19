@@ -1,12 +1,24 @@
 class FacetsController < ApplicationController
+  enforce_permission_checks
+  # Every action calls require_permission, so the legacy visibility filter only gets in the
+  # way: it runs first, and it would redirect admins before the check.
+  skip_before_action :authorize_collection
+
+  # @collection is loaded from params[:collection_id] by ApplicationController, and every
+  # facet lookup goes through it. A missing or unknown collection_id leaves @collection nil,
+  # which require_permission denies.
+
   def enable
-    @collection = Collection.find(params[:collection_id])
-    @collection.facets_enabled = true
-    @collection.save
+    require_permission(:collection_owner, @collection)
+
+    # Facets are a collection-wide setting, so a document set acts on its parent collection.
+    collection = @collection.is_a?(DocumentSet) ? @collection.collection : @collection
+    collection.facets_enabled = true
+    collection.save
 
     # create metadata_coverages for collections that don't have any.
-    if @collection.metadata_coverages.empty?
-      @collection.works.each do |w|
+    if collection.metadata_coverages.empty?
+      collection.works.each do |w|
         unless w.original_metadata.nil?
           om = JSON.parse(w.original_metadata)
 
@@ -14,13 +26,11 @@ class FacetsController < ApplicationController
             unless m['label'].blank?
               label = m['label']
 
-              collection = w.collection
-
               unless w.collection.nil?
-                mc = collection.metadata_coverages.build
+                mc = w.collection.metadata_coverages.build
 
                 # check that record exist
-                test = collection.metadata_coverages.where(key: label).first
+                test = w.collection.metadata_coverages.where(key: label).first
 
                 # increment count field if a record is returned
                 if test
@@ -40,18 +50,22 @@ class FacetsController < ApplicationController
       end
     end
 
-    redirect_to collection_facets_path(@collection.owner, @collection)
+    redirect_to collection_facets_path(collection.owner, collection)
   end
 
   def disable
-    @collection = Collection.find(params[:collection_id])
-    @collection.facets_enabled = false
-    @collection.save
-    redirect_to edit_collection_path(@collection.owner, @collection)
+    require_permission(:collection_owner, @collection)
+
+    collection = @collection.is_a?(DocumentSet) ? @collection.collection : @collection
+    collection.facets_enabled = false
+    collection.save
+    redirect_to edit_collection_path(collection.owner, collection)
   end
 
   def update
-    collection = Collection.find(params[:collection_id])
+    require_permission(:collection_owner, @collection)
+
+    collection = @collection.is_a?(DocumentSet) ? @collection.collection : @collection
     errors = []
     collection.metadata_coverages.each do |m|
       metadata = params[:metadata][m[:key]]
@@ -93,6 +107,7 @@ class FacetsController < ApplicationController
 
       redirect_to collection_facets_path(collection.owner, collection), notice: t('collection.facets.collection_facets_updated_successfully')
     else
+      @collection = collection
       @metadata_coverages = collection.metadata_coverages
       @errors = errors
 
@@ -102,10 +117,14 @@ class FacetsController < ApplicationController
 
 
   def localize
+    require_permission(:collection_owner, @collection)
+
     render('collection/localize', layout: false)
   end
 
   def update_localization
+    require_permission(:collection_owner, @collection)
+
     facet_params = params[:facets]
     facet_params.each do |facet_config_id, labels|
       facet_config = @collection.facet_configs.where(id: facet_config_id).first
