@@ -67,6 +67,65 @@ RSpec.describe PageVersionController do
     end
   end
 
+  # SEC-05: the raw source a transcriber typed is printed in div.source-code. It must be escaped in
+  # every branch of the view (selected newer, selected older, no comparison version).
+  describe 'GET #show with markup in the source' do
+    let(:transcription_payload) { '<img src=x onerror=alert(1)><lb/>first & second' }
+    let(:translation_payload) { '<svg onload=alert(2)></svg>translated' }
+    let(:translated_work) { create(:work, collection: collection, owner_user_id: owner.id, supports_translation: true) }
+    let(:xss_page) { create(:page, work: translated_work, title: 'XSS page') }
+    let!(:older_version) do
+      create(:page_version, page: xss_page, user: owner, page_version: 1, title: 'Older',
+                            transcription: transcription_payload, source_translation: translation_payload)
+    end
+    let!(:newer_version) do
+      create(:page_version, page: xss_page, user: owner, page_version: 2, title: 'Newer',
+                            transcription: "#{transcription_payload} more", source_translation: "#{translation_payload} more")
+    end
+
+    before do
+      # Drop the version Page#create_version made, so older_version has no previous version.
+      xss_page.page_versions.where.not(id: [older_version.id, newer_version.id]).delete_all
+      login_as(owner, scope: :user)
+    end
+
+    def expect_source_escaped
+      doc = Nokogiri::HTML(response.body)
+      source_blocks = doc.css('div.source-code')
+
+      # two columns, each with a transcription and a translation block
+      expect(source_blocks.size).to eq(4)
+      source_blocks.each { |block| expect(block.element_children).to be_empty }
+      expect(doc.css('img[onerror], svg[onload]')).to be_empty
+      expect(source_blocks.map(&:text).join).to include(transcription_payload, translation_payload)
+    end
+
+    it 'escapes the source when the selected version is newer than the comparison' do
+      get page_version_show_path, params: { page_version_id: newer_version.id }
+
+      expect(response).to have_http_status(:ok)
+      expect_source_escaped
+    end
+
+    it 'escapes the source when the selected version is older than the comparison' do
+      get page_version_show_path, params: { page_version_id: older_version.id, compare_version_id: newer_version.id }
+
+      expect(response).to have_http_status(:ok)
+      expect_source_escaped
+    end
+
+    it 'escapes the source when there is no comparison version' do
+      get page_version_show_path, params: { page_version_id: older_version.id }
+
+      expect(response).to have_http_status(:ok)
+      doc = Nokogiri::HTML(response.body)
+      source_blocks = doc.css('div.source-code')
+      source_blocks.each { |block| expect(block.element_children).to be_empty }
+      expect(doc.css('img[onerror], svg[onload]')).to be_empty
+      expect(source_blocks.map(&:text).join).to include(transcription_payload, translation_payload)
+    end
+  end
+
   describe 'POST #revert' do
     let(:transcriber) { create(:unique_user) }
 
