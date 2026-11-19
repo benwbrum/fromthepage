@@ -1,9 +1,9 @@
 graph G {
-  graph [label="<%=t('.title', subject: @article.title)%>"];
+  graph [label="<%=t('.title', subject: article.title)%>"];
   node [fontsize=8,fontname="Helvetica"];
-  <%= @article.id %> 
+  <%= article.id %>
     [style=filled,
-     label="<%= @article.title.gsub(/ /, '\n') %>",
+     label="<%= article.title.gsub(/ /, '\n') %>",
      color="/blues9/8"];
   <% for link in article_links %>
     <% if link['link_count'].to_i >= min_rank %>
@@ -13,12 +13,12 @@ graph G {
          # stretch and pad a bit
          scaled = (normalized * 1) + 0.75
          color = ((1-normalized)*7).to_i + 1 %>
-      <%= link['article_id'] %> 
+      <%= link['article_id'] %>
         [style=filled,
-         URL="<%= url_for :article_id => link['article_id'] %>",
+         URL="<%= article_show_path(article_id: link['article_id']) %>",
          label="<%= link['title'].gsub(/ /, '\n')  %>",
          color="/blues9/<%= color %>"];
-      <%= @article.id %> -- <%= link['article_id'] %> [len=<%= scaled %>];
+      <%= article.id %> -- <%= link['article_id'] %> [len=<%= scaled %>];
     <% end %>
   <% end %>
 }
