@@ -62,8 +62,9 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable, :masqueradable,
          :recoverable, :rememberable, :trackable, :validatable,
-         :omniauthable, :encryptable, encryptor: :restful_authentication_sha1,
-         omniauth_providers: [:google_oauth2, :saml]
+         :omniauthable, omniauth_providers: [:google_oauth2, :saml]
+  # After devise, so its valid_password? / password= wrap Devise's bcrypt ones.
+  include LegacyPasswordHash
 
   include OwnerStatistic
   extend FriendlyId
@@ -472,7 +473,7 @@ class User < ApplicationRecord
       self.deleted = true
       self.admin = false
       self.owner = false
-      self.password = [*'A'..'Z'].sample(8).join
+      self.password = Devise.friendly_token(32)
       self.save!
     end
   end

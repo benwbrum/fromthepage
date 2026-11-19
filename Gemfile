@@ -27,7 +27,6 @@ gem 'get_process_mem'
 
 # Authentication / Security
 gem 'devise'
-gem 'devise-encryptable'
 gem 'devise_masquerade', '~> 1.2.0'
 gem 'omniauth', '~> 1.9'
 gem 'omniauth-google-oauth2'
