@@ -6,7 +6,7 @@ p =t('.metadata_facets_localize_description')
   -@errors.each do |error|
     p =error
 
-=form_tag(facets_update_localization_path(@collection)) do |f|
+=form_tag(facets_update_localization_path) do |f|
   -I18n.available_locales.each do |locale_option|
     h3 =I18n.translate(locale_option)
     table.datagrid
@@ -22,7 +22,8 @@ p =t('.metadata_facets_localize_description')
               td =JSON.parse(facet_config.label).first[1]
               td =text_field_tag("facets[#{facet_config.id}][#{locale_option}]", facet_config.label_hash[locale_option.to_s])
 
-  =hidden_field_tag :collection_id, @collection.id
+  / A document set's id can match another collection's id, so post the parent collection's.
+  =hidden_field_tag :collection_id, @collection.is_a?(DocumentSet) ? @collection.collection_id : @collection.id
   .toolbar
     .toolbar-group.aright =submit_tag(t('.save'))
 
