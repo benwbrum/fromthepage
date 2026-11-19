@@ -3,6 +3,8 @@
 require 'spec_helper'
 
 describe 'document sets' do
+  include ActiveJob::TestHelper
+
   let(:owner) { create(:unique_user, :owner) }
   let(:user) { create(:unique_user) }
   let(:rest_user) { create(:unique_user) }
@@ -258,6 +260,8 @@ describe 'document sets' do
     page.find('a', text: "Test private note").click
     expect(page.current_path).to eq collection_display_page_path(document_set.owner, document_set, document_set.works.first, document_set.works.first.pages.first)
     page.find('.user-bubble_content', text: "Test private note")
+
+    perform_enqueued_jobs
 
     # test activity stream for set
     visit collection_path(document_set.owner, document_set)
