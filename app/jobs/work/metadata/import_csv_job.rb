@@ -11,13 +11,7 @@ class Work::Metadata::ImportCsvJob < ApplicationJob
       collection: collection
     ).call
 
-    if result.full_errors.present?
-      send_email(user, result) if executions == Settings.active_job.attempts
-
-      raise result.full_errors
-    else
-      send_email(user, result)
-    end
+    send_email(user, result)
   ensure
     metadata_file.close
   end
