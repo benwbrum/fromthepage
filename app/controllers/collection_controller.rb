@@ -43,7 +43,8 @@ class CollectionController < ApplicationController
     :new_mobile_user,
     :search_users,
     :edit_buttons,
-    :update_buttons
+    :update_buttons,
+    :facets
   ]
 
   before_action :review_authorized?, only: [:reviewer_dashboard, :works_to_review, :one_off_list, :recent_contributor_list, :user_contribution_list]
@@ -175,8 +176,7 @@ class CollectionController < ApplicationController
   end
 
   def facets
-    collection = Collection.find(params[:collection_id])
-    @metadata_coverages = collection.metadata_coverages
+    @metadata_coverages = @collection.metadata_coverages
   end
 
   def facet_search
