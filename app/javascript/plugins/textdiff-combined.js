@@ -156,9 +156,11 @@ See https://github.com/arnab/jQuery.prettyXMLDiff/
       dmp = new $.diff_match_patch();
       return this.each(function() {
         var changed, diff_as_html, diffs, original;
-        original = ($(settings.originalContainer, this).html() || "").trim();
+        // The containers hold escaped source text. Read it with .text(): .html() would return
+        // it entity-escaped, and createHTML would escape it a second time.
+        original = ($(settings.originalContainer, this).text() || "").trim();
         $.fn.prettyXMLDiff.debug("Original HTML found: ", original, settings);
-        changed = ($(settings.changedContainer, this).html() || "").trim();
+        changed = ($(settings.changedContainer, this).text() || "").trim();
         $.fn.prettyXMLDiff.debug("Changed HTML found: ", changed, settings);
         diffs = dmp.diff_main(original, changed);
 
