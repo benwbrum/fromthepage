@@ -85,12 +85,12 @@ module XmlSourceProcessor
   # All code to convert transcriptions from source
   # format to canonical xml format belongs here.
   ##############################################
-  def process_source
-    if source_text_changed?
+  def process_source(force_text: false, force_translation: false)
+    if force_text || source_text_changed?
       self.xml_text = wiki_to_xml(self, Page::TEXT_TYPE::TRANSCRIPTION)
     end
 
-    if self.respond_to?(:source_translation) && source_translation_changed?
+    if force_translation || (self.respond_to?(:source_translation) && source_translation_changed?)
       self.xml_translation = wiki_to_xml(self, Page::TEXT_TYPE::TRANSLATION)
     end
   end
@@ -203,7 +203,7 @@ module XmlSourceProcessor
   end
 
   HEADER = /\s\|\s/
-  SEPARATOR = /---.*\|/
+  SEPARATOR = /[-_]{2,}.*\|/
   ROW = HEADER
 
   def process_linewise_markup(text)
@@ -224,7 +224,7 @@ module XmlSourceProcessor
           cells.shift if line.match(/^\|/) # remove leading pipe
 
           # trim whitespace from each header cell
-          cells = cells.map(&:strip)
+          cells = cells.map { |c| c.gsub(/\A[[:space:]]+|[[:space:]]+\z/, '') }
 
           current_table[:header] = cells.map { |cell_title| cell_title.sub(/^!\s*/, '') }
           heading = cells.map do |cell|
@@ -242,7 +242,12 @@ module XmlSourceProcessor
       else
         # this is either an end or a separator
         if line.match(SEPARATOR)
-          # NO-OP
+          is_header_blank = current_table[:header].all? { |cell| cell.to_s.gsub(/[[:space:]]/, '').empty? }
+
+          if is_header_blank
+            new_lines.pop
+            current_table = nil
+          end
         elsif line.match(ROW)
           # handle initial blank cells - if line starts with whitespace followed by pipe, preserve empty cell
           line_chomp = line.chomp
@@ -254,7 +259,7 @@ module XmlSourceProcessor
           cells = clean_line.split(/\s*\|\s*/, -1) # -1 means "don't prune empty values at the end"
 
           # trim whitespace from each cell
-          cells = cells.map(&:strip)
+          cells = cells.map { |c| c.gsub(/\A[[:space:]]+|[[:space:]]+\z/, '') }
 
           # if there was initial whitespace before pipe, add empty cell at beginning
           cells.unshift('') if has_initial_empty_cell
