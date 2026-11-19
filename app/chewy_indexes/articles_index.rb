@@ -9,7 +9,15 @@ class ArticlesIndex < Chewy::Index
   field :db_id, type: 'integer', value: -> { id }
   field :collection_id, type: 'integer'
   field :docset_id, type: 'integer', value: -> { works.flat_map(&:document_sets).pluck(:id) }
+
+  # NOTE:
+  # Singular for compatibility with other indices
+  # Expects array
+  field :work_id, type: 'integer', value: -> { works.map(&:id) }
+  field :page_id, type: 'integer', value: -> { pages.map(&:id) }
+
   field :category_ids, type: 'integer', value: -> { categories.map(&:id) }
+
   field :owner_user_id, type: 'integer', value: -> { created_by_id }
   field :is_public, type: 'boolean', value: -> {
     !collection&.restricted ||

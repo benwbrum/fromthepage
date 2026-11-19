@@ -91,7 +91,7 @@ namespace :fromthepage do
         works_scope = Work.includes({ collection: :owner }, :document_sets)
         users_scope = User.all
         pages_scope = Page.includes(work: [{ collection: :owner }, :document_sets])
-        articles_scope = Article.includes(:collection, :categories, { works: :document_sets })
+        articles_scope = Article.includes(:collection, :categories, :pages, { works: :document_sets })
 
         if args[:hours_ago]
           hours_ago = args[:hours_ago].to_i

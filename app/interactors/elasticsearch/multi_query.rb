@@ -153,11 +153,12 @@ class Elasticsearch::MultiQuery < ApplicationInteractor
         base_query[:query][:bool][:filter] << { term: { owner_user_id: owner_user_id } }
 
         base_query[:query][:bool][:must][:bool][:should] << collection_query
+        base_query[:query][:bool][:must][:bool][:should] << article_query
         base_query[:query][:bool][:must][:bool][:should] << document_set_query
         base_query[:query][:bool][:must][:bool][:should] << page_query
         base_query[:query][:bool][:must][:bool][:should] << work_query
 
-        return [CollectionsIndex.index_name, PagesIndex.index_name, WorksIndex.index_name]
+        return [CollectionsIndex.index_name, ArticlesIndex.index_name, PagesIndex.index_name, WorksIndex.index_name]
       end
     end
 
@@ -198,19 +199,21 @@ class Elasticsearch::MultiQuery < ApplicationInteractor
       if work_id.present?
         base_query[:query][:bool][:filter] << { term: { work_id: work_id } }
 
+        base_query[:query][:bool][:must][:bool][:should] << article_query
         base_query[:query][:bool][:must][:bool][:should] << page_query
 
-        return [PagesIndex.index_name]
+        return [ArticlesIndex.index_name, PagesIndex.index_name]
       end
     end
 
     base_query[:query][:bool][:must][:bool][:should] << collection_query
+    base_query[:query][:bool][:must][:bool][:should] << article_query
     base_query[:query][:bool][:must][:bool][:should] << document_set_query
     base_query[:query][:bool][:must][:bool][:should] << user_query
     base_query[:query][:bool][:must][:bool][:should] << page_query
     base_query[:query][:bool][:must][:bool][:should] << work_query
 
-    [CollectionsIndex.index_name, PagesIndex.index_name, UsersIndex.index_name, WorksIndex.index_name]
+    [CollectionsIndex.index_name, ArticlesIndex.index_name, PagesIndex.index_name, UsersIndex.index_name, WorksIndex.index_name]
   end
 
   def collection_query

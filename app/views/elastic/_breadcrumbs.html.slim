@@ -37,7 +37,7 @@
 -if bc_work && bc_collection && (@breadcrumb_scope[:collection] || @breadcrumb_scope[:site] || @breadcrumb_scope[:owner])
   -path.push(link_to bc_work.title, collection_read_work_path(bc_owner.slug, bc_collection.slug, bc_work.slug))
 
--if bc_category && bc_collection && @breadcrumb_scope[:collection]
+-if bc_category && bc_collection
   -if @docset_filter.present?
     -path.push(link_to bc_collection.title, document_set_path(bc_collection.owner, bc_collection))
   -path.push(link_to bc_category.title, collection_subjects_path(bc_collection.owner, bc_collection.slug, selected_category_id: bc_category&.id))
