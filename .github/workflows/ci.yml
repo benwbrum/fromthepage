@@ -46,11 +46,13 @@ jobs:
     env:
       RAILS_ENV: test
       MYSQL_ROOT_PASSWORD: password
+      SECRET_KEY_BASE: secret_key_base
+      DEVISE_SECRET_KEY: devise_secret_key
+      DEVISE_PEPPER: ''
       MYSQL_HOST: mysql
       ELASTIC_HOST_URL: http://elasticsearch:9200
       ELASTIC_SUFFIX: ci
       GEMINI_API_KEY: redacted
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
