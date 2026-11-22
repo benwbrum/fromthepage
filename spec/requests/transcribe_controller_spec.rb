@@ -10,6 +10,37 @@ describe TranscribeController do
   let!(:work) { create(:work, collection: collection, owner_user_id: owner.id) }
   let!(:page) { create(:page, work: work) }
 
+  describe '#guest' do
+    let(:guest_path) { collection_guest_page_path(owner, collection, work, page) }
+    let(:editor_path) { collection_transcribe_page_path(owner, collection, work, page) }
+
+    it 'redirects a signed-in user to the editor for the same page' do
+      login_as owner
+
+      get guest_path
+
+      expect(response).to redirect_to(editor_path)
+    end
+
+    it 'lets the editor enforce work restrictions for a signed-in user' do
+      work.update!(restrict_scribes: true)
+      login_as create(:unique_user)
+
+      get guest_path
+
+      expect(response).to redirect_to(editor_path)
+      follow_redirect!
+      expect(response).to redirect_to(collection_display_page_path(owner, collection, work, page))
+    end
+
+    it 'renders guest transcription for a signed-out visitor to a public collection' do
+      get guest_path
+
+      expect(response).to have_http_status(:ok)
+      expect(response).to render_template(:guest)
+    end
+  end
+
   describe '#display_page' do
     let(:action_path) { collection_transcribe_page_path(owner, collection, work, page) }
     let(:subject) { get action_path }
